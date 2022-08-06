@@ -1,0 +1,49 @@
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory name="main">
+        <!--
+                <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+                <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+                <property name="hibernate.connection.username">anjunar</property>
+                <property name="hibernate.connection.password">anjunar</property>
+                <property name="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</property>
+        -->
+
+        <mapping class="com.anjunar.common.ddd.AbstractEntity"/>
+
+        <mapping class="com.anjunar.common.filedisk.Image"/>
+
+        <mapping class="com.anjunar.common.mail.Template"/>
+
+        <mapping class="com.anjunar.common.security.Permission"/>
+        <mapping class="com.anjunar.common.security.Role"/>
+        <mapping class="com.anjunar.common.security.Identity"/>
+        <mapping class="com.anjunar.common.security.User"/>
+
+        <mapping class="com.anjunar.blomst.shared.Likeable"/>
+
+        <mapping class="com.anjunar.blomst.social.pages.Page"/>
+        <mapping class="com.anjunar.blomst.social.pages.page.Answer"/>
+        <mapping class="com.anjunar.blomst.social.pages.page.Question"/>
+
+        <mapping class="com.anjunar.blomst.social.timeline.Comment"/>
+        <mapping class="com.anjunar.blomst.social.timeline.AbstractPost"/>
+        <mapping class="com.anjunar.blomst.social.timeline.TextPost"/>
+        <mapping class="com.anjunar.blomst.social.timeline.ImagePost"/>
+        <mapping class="com.anjunar.blomst.social.timeline.LinkPost"/>
+        <mapping class="com.anjunar.blomst.social.timeline.SystemPost"/>
+
+        <mapping class="com.anjunar.blomst.control.users.Category"/>
+        <mapping class="com.anjunar.blomst.control.users.UserConnection"/>
+        <mapping class="com.anjunar.blomst.control.users.ResumeItem"/>
+        <mapping class="com.anjunar.blomst.control.users.Resume"/>
+
+        <mapping class="com.anjunar.blomst.control.notifications.Notification"/>
+
+        <mapping class="com.anjunar.blomst.social.communities.Community"/>
+        <mapping class="com.anjunar.blomst.social.communities.CommunitiesConnection"/>
+
+        <mapping class="com.anjunar.blomst.social.sites.Site"/>
+        <mapping class="com.anjunar.blomst.social.sites.SiteConnection"/>
+
+    </session-factory>
+</hibernate-configuration>

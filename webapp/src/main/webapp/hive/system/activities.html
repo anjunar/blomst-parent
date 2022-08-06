@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <template>
+        <table is="mat-table" bind:items="items">
+            <colgroup>
+                <col path="created">
+                <col path="description">
+                <col path="content">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td><span>Created</span></td>
+                    <td><span>Description</span></td>
+                    <td><span>Content</span></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div let="data">{{{date(data.created)}}}</div>
+                    </td>
+                    <td>
+                        <div let="data">{{{data.description}}}</div>
+                    </td>
+                    <td>
+                        <div let="data" style="max-width: 600px">
+                            <meta-form bind:model="data.content" bind:onaction="onAction($event)"></meta-form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+</body>
+</html>

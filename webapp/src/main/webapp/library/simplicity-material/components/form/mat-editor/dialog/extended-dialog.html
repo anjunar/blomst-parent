@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        context-dialog {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <template>
+        <mat-tabs bind:page="page">
+            <mat-tab bind:for="let segment of path">
+                <div>
+                    {{segment.localName}}
+                </div>
+            </mat-tab>
+        </mat-tabs>
+        <mat-pages bind:page="page">
+            <mat-page bind:for="let segment of path">
+                <div>
+                    <margins-node bind:node="segment"></margins-node>
+                    <padding-node bind:node="segment"></padding-node>
+                    <sizing-node bind:node="segment"></sizing-node>
+                    <flex-box-node bind:if="segment.className === 'flex'" bind:node="segment"></flex-box-node>
+                </div>
+            </mat-page>
+        </mat-pages>
+    </template>
+</body>
+</html>

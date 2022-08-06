@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        editor-toolbar {
+            display: block;
+            width: 100%;
+        }
+
+        editor-toolbar .row {
+            margin: 2px;
+            border: var(--main-dark1-color) solid 1px;
+            align-items: stretch;
+            vertical-align: top;
+            flex : 1
+        }
+
+    </style>
+</head>
+<body>
+<template>
+    <div style="display: flex; align-items : stretch; justify-content: flex-start; flex-wrap : wrap; width: 100%">
+        <toolbar-font class="row" bind:contents="contents"></toolbar-font>
+        <toolbar-colors class="row" bind:contents="contents"></toolbar-colors>
+        <toolbar-justify class="row" bind:contents="contents"></toolbar-justify>
+        <toolbar-tools class="row" bind:contents="contents"></toolbar-tools>
+        <toolbar-inserts class="row" bind:contents="contents"></toolbar-inserts>
+        <div class="row" style="flex: 1"></div>
+    </div>
+</template>
+</body>
+</html>

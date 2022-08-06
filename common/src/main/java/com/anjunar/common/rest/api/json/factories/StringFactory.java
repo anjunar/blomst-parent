@@ -1,0 +1,56 @@
+package com.anjunar.common.rest.api.json.factories;
+
+import com.anjunar.common.rest.api.json.validators.EmailValidator;
+import com.anjunar.common.rest.api.json.validators.NotBlankValidator;
+import com.anjunar.common.rest.api.json.validators.PatternValidator;
+import com.anjunar.common.rest.api.json.validators.SizeValidator;
+import com.google.common.reflect.TypeToken;
+import com.anjunar.common.rest.api.json.schema.JsonString;
+import de.anjunar.introspector.bean.BeanProperty;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+@SuppressWarnings("UnstableApiUsage")
+public class StringFactory extends JsonAbstractFactory<JsonString> {
+    @Override
+    public boolean test(TypeToken<?> typeToken) {
+        return typeToken.getRawType().equals(String.class);
+    }
+
+    @Override
+    public JsonString build(TypeToken<?> typeToken) {
+        return new JsonString();
+    }
+
+    @Override
+    public JsonString buildWithAnnotation(BeanProperty<?, ?> property) {
+        JsonString jsonString = super.buildWithAnnotation(property);
+
+        Email email = property.getAnnotation(Email.class);
+        if (email != null) {
+            jsonString.setFormat(JsonString.Format.EMAIL);
+            jsonString.addValidator("email", new EmailValidator());
+        }
+
+        Pattern pattern = property.getAnnotation(Pattern.class);
+        if (pattern != null) {
+            jsonString.setPattern(pattern.regexp());
+            jsonString.addValidator("pattern", new PatternValidator(pattern.regexp()));
+        }
+
+        NotBlank notBlank = property.getAnnotation(NotBlank.class);
+        if (notBlank != null) {
+            jsonString.addValidator("notBlank", new NotBlankValidator());
+        }
+
+        Size size = property.getAnnotation(Size.class);
+        if (size != null) {
+            jsonString.addValidator("size", new SizeValidator(size.min(), size.max()));
+        }
+
+        return jsonString;
+    }
+}

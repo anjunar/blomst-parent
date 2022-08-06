@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="main" transaction-type="JTA">
+        <jta-data-source>java:jboss/datasources/anjunar</jta-data-source>
+        <class>com.anjunar.common.ddd.AbstractEntity</class>
+
+        <class>com.anjunar.common.filedisk.Image</class>
+
+        <class>com.anjunar.common.mail.Template</class>
+
+        <class>com.anjunar.common.security.Permission</class>
+        <class>com.anjunar.common.security.Role</class>
+        <class>com.anjunar.common.security.Identity</class>
+        <class>com.anjunar.common.security.User</class>
+
+        <class>com.anjunar.blomst.shared.Likeable</class>
+
+        <class>com.anjunar.blomst.social.pages.Page</class>
+        <class>com.anjunar.blomst.social.pages.page.Question</class>
+        <class>com.anjunar.blomst.social.pages.page.Answer</class>
+
+        <class>com.anjunar.blomst.social.timeline.Comment</class>
+        <class>com.anjunar.blomst.social.timeline.AbstractPost</class>
+        <class>com.anjunar.blomst.social.timeline.LinkPost</class>
+        <class>com.anjunar.blomst.social.timeline.ImagePost</class>
+        <class>com.anjunar.blomst.social.timeline.TextPost</class>
+        <class>com.anjunar.blomst.social.timeline.SystemPost</class>
+
+        <class>com.anjunar.blomst.control.users.UserConnection</class>
+        <class>com.anjunar.blomst.control.users.Category</class>
+        <class>com.anjunar.blomst.control.users.ResumeItem</class>
+        <class>com.anjunar.blomst.control.users.Resume</class>
+
+        <class>com.anjunar.blomst.control.notifications.Notification</class>
+
+        <class>com.anjunar.blomst.social.communities.CommunitiesConnection</class>
+        <class>com.anjunar.blomst.social.communities.Community</class>
+
+        <class>com.anjunar.blomst.social.sites.Site</class>
+        <class>com.anjunar.blomst.social.sites.SiteConnection</class>
+
+        <properties>
+            <property name="hibernate.dialect" value="com.anjunar.blomst.Oracle18Dialect"/>
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

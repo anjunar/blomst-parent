@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/XSL/Transform" xmlns:read="http://www.w3.org/1999/xhtml"
+      xmlns:read="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <template>
+        <div>
+            <p>
+                {{{link}}}
+            </p>
+
+            <a read:for="let link of links(model.$schema.links)" read:href="hrefLink(link.url)" style="margin: 5px">{{{link.rel}}}</a>
+
+            <div bind:if="model.$schema.widget === 'form'" style="width: 600px; margin: auto">
+                <meta-form bind:model="model" bind:onaction="onAction($event)">
+                    <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
+                    <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
+                </meta-form>
+            </div>
+
+            <meta-table bind:if="model.$schema.widget === 'table'" bind:items="items" bind:onmodel="onRowClick($event)"></meta-table>
+        </div>
+    </template>
+</body>
+</html>

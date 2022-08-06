@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<template>
+    <mat-table-extension>
+        <tsearch>
+            <div bind:for="let [key, column] of schema.properties.rows.items.properties">
+                <mat-table-search bind:path="key" read:sortable="column.type === 'string'">
+                    <meta-table-filter let=model read:schema="column" read:model="model" bind:onmodel="search()"></meta-table-filter>
+                </mat-table-search>
+            </div>
+        </tsearch>
+        <table is="mat-table" bind:items="items" bind:onmodel="onRowClick($event)">
+            <thead>
+            <tr>
+                <td bind:for="let [key, column] of schema.properties.rows.items.properties">
+                    <div>{{column.title}}</div>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td bind:for="let [key, column] of schema.properties.rows.items.properties">
+                    <div let="data">
+                        <meta-column read:schema="column" read:model="data.${key}"></meta-column>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </mat-table-extension>
+</template>
+</body>
+</html>

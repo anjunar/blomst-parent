@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Mat Editor</title>
+    <style>
+        mat-editor {
+            display: block;
+        }
+
+        mat-editor div.content{
+            outline: 0 solid transparent;
+            border : var(--main-dark1-color) solid 1px;
+            margin : 2px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 300px;
+        }
+
+        mat-editor div.content * {
+            border: 1px solid var(--main-dark2-color);
+        }
+
+        mat-editor div.content table tr td:empty::after {
+            content: "\00a0";
+        }
+
+        mat-editor div.flex {
+            display: flex;
+        }
+
+        mat-editor div.flex div:empty:after {
+            content: "\00a0";
+        }
+
+    </style>
+</head>
+<body>
+    <template>
+        <editor-toolbar bind:contents="contents"></editor-toolbar>
+        <div read:variable="contents" class="content" contenteditable="true" bind:oncontextmenu="contextmenuClick($event)"></div>
+    </template>
+</body>
+</html>
