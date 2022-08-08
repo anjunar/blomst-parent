@@ -28,12 +28,12 @@ import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -77,7 +77,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             if (user == null) {
                 return new ResponseOk();
             } else {
-                throw new WebApplicationException(javax.ws.rs.core.Response.Status.BAD_REQUEST);
+                throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.BAD_REQUEST);
             }
         } else {
             if (user == null) {
@@ -86,7 +86,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
                 if (user.getId().equals(resource.getId())) {
                     return new ResponseOk();
                 } else {
-                    throw new WebApplicationException(javax.ws.rs.core.Response.Status.BAD_REQUEST);
+                    throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.BAD_REQUEST);
                 }
             }
         }

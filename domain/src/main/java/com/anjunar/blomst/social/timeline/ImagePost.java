@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.timeline;
 import com.anjunar.common.filedisk.Image;
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")

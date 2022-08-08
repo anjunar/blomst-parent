@@ -1,6 +1,6 @@
 package com.anjunar.common.rest;
 
-import de.anjunar.introspector.type.resolved.ResolvedMethod;
+import com.anjunar.introspector.type.resolved.ResolvedMethod;
 
 public class MethodInvocation {
 

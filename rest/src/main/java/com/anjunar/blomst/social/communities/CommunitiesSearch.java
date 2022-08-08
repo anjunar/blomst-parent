@@ -4,7 +4,7 @@ import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
 import com.anjunar.common.rest.api.jaxrs.RestSort;
 import com.anjunar.common.rest.api.jaxrs.provider.GenericSortProvider;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.util.List;
 
 public class CommunitiesSearch extends AbstractRestSearch {

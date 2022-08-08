@@ -2,7 +2,7 @@ package com.anjunar.common.rest.api.json.factories;
 
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.api.json.schema.JsonString;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanProperty;
 
 import java.time.Duration;
 

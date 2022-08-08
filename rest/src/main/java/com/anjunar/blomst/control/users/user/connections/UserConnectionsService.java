@@ -4,8 +4,8 @@ import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.UserConnection;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.UUID;
 

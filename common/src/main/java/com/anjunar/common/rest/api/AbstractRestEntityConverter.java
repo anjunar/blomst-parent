@@ -3,7 +3,7 @@ package com.anjunar.common.rest.api;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.ddd.AbstractEntity;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public abstract class AbstractRestEntityConverter<E extends AbstractEntity, R extends AbstractRestEntity> {
 

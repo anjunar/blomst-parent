@@ -2,15 +2,14 @@ package com.anjunar.common.i18n;
 
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.enterprise.LoggedInEvent;
-import org.apache.deltaspike.core.api.common.DeltaSpike;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -24,7 +23,7 @@ public class i18nResolver implements Serializable {
     private final IdentityProvider identity;
 
     @Inject
-    public i18nResolver(HttpServletRequest request, @DeltaSpike HttpServletResponse response, IdentityProvider identity) {
+    public i18nResolver(HttpServletRequest request, HttpServletResponse response, IdentityProvider identity) {
         this.request = request;
         this.response = response;
         this.identity = identity;

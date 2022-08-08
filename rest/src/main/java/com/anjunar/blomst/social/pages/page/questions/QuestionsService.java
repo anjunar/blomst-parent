@@ -4,8 +4,8 @@ import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 public class QuestionsService extends AbstractCriteriaSearchService<Question, QuestionsSearch> {
 

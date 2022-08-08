@@ -7,7 +7,7 @@ import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.communities.Community;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class CommunityForm extends AbstractRestEntity {

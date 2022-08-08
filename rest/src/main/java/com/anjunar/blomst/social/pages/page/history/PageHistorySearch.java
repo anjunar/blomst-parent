@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.pages.page.history;
 
 import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.util.UUID;
 
 public class PageHistorySearch extends AbstractRestSearch {

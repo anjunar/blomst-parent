@@ -4,7 +4,7 @@ import com.anjunar.common.rest.api.DateTimeDuration;
 import com.anjunar.common.rest.api.DurationCreatedProvider;
 import com.anjunar.common.rest.api.DurationModifiedProvider;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 public abstract class AbstractRestSearch {
 

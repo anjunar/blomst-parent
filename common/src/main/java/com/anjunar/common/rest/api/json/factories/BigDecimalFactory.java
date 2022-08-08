@@ -5,11 +5,11 @@ import com.anjunar.common.rest.api.json.validators.DecimalMinValidator;
 import com.anjunar.common.rest.api.json.validators.DigitsValidator;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.api.json.schema.JsonString;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanProperty;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
 
 public class BigDecimalFactory extends JsonAbstractFactory<JsonString> {

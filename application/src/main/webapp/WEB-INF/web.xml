@@ -61,9 +61,4 @@
         <role-name>Guest</role-name>
     </security-role>
 
-    <login-config>
-        <auth-method>CLIENT-CERT</auth-method>
-        <realm-name>jaspitest</realm-name>
-    </login-config>
-
 </web-app>

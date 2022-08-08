@@ -1,32 +1,36 @@
 package com.anjunar.blomst;
 
 import com.anjunar.common.ddd.OracleIndex;
-import de.anjunar.introspector.bean.BeanIntrospector;
-import de.anjunar.introspector.bean.BeanModel;
-import de.anjunar.introspector.bean.BeanProperty;
-import de.anjunar.introspector.type.TypeResolver;
-import de.anjunar.introspector.type.resolved.ResolvedType;
+import com.anjunar.introspector.bean.BeanIntrospector;
+import com.anjunar.introspector.bean.BeanModel;
+import com.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedType;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
-import javax.enterprise.event.Observes;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.servlet.ServletContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.servlet.ServletContext;
+import jakarta.transaction.Transactional;
+import oracle.jdbc.pool.OracleDataSource;
+
 import javax.sql.DataSource;
-import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 public class OracleIndexes {
 
     @Transactional
-    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, DataSource dataSource) throws SQLException {
-
+    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init) throws SQLException {
+/*
+        DataSource dataSource = new OracleDataSource();
+        ConnectionBuilder builder = dataSource.createConnectionBuilder();
+        dataSource.setURL(props.getProperty("ORACLE_DB_URL"));
+        dataSource.setUser(props.getProperty("ORACLE_DB_USERNAME"));
+        dataSource.setPassword(props.getProperty("ORACLE_DB_PASSWORD"));
         List<ResolvedType<?>> entities = TypeResolver.filter(resolvedType -> resolvedType.getAnnotation(Entity.class) != null);
 
         for (ResolvedType<?> entity : entities) {
@@ -70,5 +74,6 @@ public class OracleIndexes {
                 }
             }
         }
+*/
     }
 }

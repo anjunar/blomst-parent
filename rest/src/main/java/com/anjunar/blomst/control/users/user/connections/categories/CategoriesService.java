@@ -4,9 +4,9 @@ import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.Category;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 public class CategoriesService extends AbstractCriteriaSearchService<Category, CategoriesSearch> {

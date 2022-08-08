@@ -5,7 +5,7 @@ import com.anjunar.common.security.Identity;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,7 +9,7 @@ import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.sites.Site;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.net.URL;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)

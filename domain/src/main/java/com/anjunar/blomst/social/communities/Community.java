@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.communities;
 
 import com.anjunar.common.security.Identity;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Community extends Identity {

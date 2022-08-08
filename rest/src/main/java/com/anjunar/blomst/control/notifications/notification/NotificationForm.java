@@ -8,7 +8,7 @@ import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.notifications.Notification;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class NotificationForm extends AbstractRestEntity {

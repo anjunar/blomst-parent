@@ -8,15 +8,14 @@ import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
 import org.apache.commons.io.IOUtils;
 
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
-import javax.enterprise.event.Observes;
-import javax.sql.DataSource;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -33,7 +32,7 @@ public class StartUp {
     private Event<User> userEvent;
 
     @Transactional
-    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, IdentityService service, DataSource dataSource) throws SQLException {
+    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, IdentityService service) throws SQLException {
 
         LocalDate birthdate = LocalDate.of(1980, 4, 1);
         User patrick = service.findUser("Patrick", "Bittner", birthdate);

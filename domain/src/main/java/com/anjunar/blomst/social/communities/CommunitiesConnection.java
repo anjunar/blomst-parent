@@ -4,9 +4,9 @@ import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity(name = "CommunitiesConnection")
 @Table(name = "do_coconnection")

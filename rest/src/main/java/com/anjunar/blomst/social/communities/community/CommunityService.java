@@ -6,10 +6,10 @@ import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.communities.Status;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import java.util.UUID;
 
 @ApplicationScoped

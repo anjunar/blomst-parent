@@ -32,16 +32,15 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -93,7 +92,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
             }
         }
 
-        throw new WebApplicationException(javax.ws.rs.core.Response.Status.FORBIDDEN);
+        throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);
     }
 
     @Transactional
@@ -192,7 +191,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Save User")
-    public UserForm save(@Valid UserForm resource) {
+    public UserForm save(UserForm resource) {
 
         User user = new User();
 
@@ -240,7 +239,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update User")
     @MethodPredicate(SelfIdentity.class)
-    public UserForm update(UUID id, @Valid UserForm resource) {
+    public UserForm update(UUID id, UserForm resource) {
         User user = entityManager.find(User.class, id);
 
         UserForm.updater(resource, user, entityManager, identityProvider);

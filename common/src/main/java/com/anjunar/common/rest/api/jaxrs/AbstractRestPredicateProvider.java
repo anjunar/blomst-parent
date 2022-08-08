@@ -3,8 +3,8 @@ package com.anjunar.common.rest.api.jaxrs;
 import com.anjunar.common.security.IdentityProvider;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 
 public abstract class AbstractRestPredicateProvider<V, E> {
 

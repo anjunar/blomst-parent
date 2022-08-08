@@ -5,10 +5,10 @@ import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.notifications.Notification;
 import com.anjunar.blomst.control.users.UserConnection;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.UUID;

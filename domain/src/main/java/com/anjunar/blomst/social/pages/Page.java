@@ -7,7 +7,7 @@ import com.anjunar.blomst.shared.Likeable;
 import org.hibernate.annotations.Filter;
 import org.hibernate.envers.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Locale;

@@ -6,14 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.ext.ContextResolver;
+import jakarta.ws.rs.ext.Provider;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -37,14 +34,7 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
         simpleModule.addDeserializer(Locale.class, new LocaleDeserializer());
         simpleModule.addSerializer(Locale.class, new LocaleSerializer());
 
-        JavaTimeModule module = new JavaTimeModule();
-        module.addSerializer(LocalDateTime.class, new UTCLocalDateTimeSerializer());
-        module.addDeserializer(LocalDateTime.class, new UTCLocalDateTimeDeserializer());
-        module.addSerializer(Instant.class, new UTCInstantSerializer());
-        module.addDeserializer(Instant.class, new UTCInstantDeserializer());
-
         objectMapper.registerModule(simpleModule);
-        objectMapper.registerModule(module);
 
         return objectMapper;
     }

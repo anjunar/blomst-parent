@@ -1,6 +1,6 @@
 package com.anjunar.blomst;
 
-import javax.servlet.*;
+import jakarta.servlet.*;
 
 import java.io.IOException;
 

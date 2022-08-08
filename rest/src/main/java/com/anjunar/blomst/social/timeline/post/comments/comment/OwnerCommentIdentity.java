@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.timeline.post.comments.comment;
 import com.anjunar.blomst.social.timeline.Comment;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 public class OwnerCommentIdentity {

@@ -3,8 +3,8 @@ package com.anjunar.blomst.control.roles;
 import com.anjunar.common.security.*;
 import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 import java.util.UUID;
 
 public class UserProvider extends AbstractRestPredicateProvider<UUID, Role> {

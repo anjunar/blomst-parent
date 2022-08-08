@@ -1,6 +1,6 @@
 package com.anjunar.blomst.jaxrs;
 
-import javax.ws.rs.ext.ParamConverter;
+import jakarta.ws.rs.ext.ParamConverter;
 import java.util.Locale;
 
 public class LocalParamConverter implements ParamConverter<Locale> {

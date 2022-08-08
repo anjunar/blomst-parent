@@ -6,15 +6,14 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.WebURLBuilderFactory.*;
@@ -73,7 +72,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Save Role")
-    public RoleForm save(@Valid RoleForm form) {
+    public RoleForm save(RoleForm form) {
 
         Role role = new Role();
 
@@ -94,7 +93,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Update Role")
-    public RoleForm update(UUID id, @Valid RoleForm form) {
+    public RoleForm update(UUID id, RoleForm form) {
 
         Role role = entityManager.find(Role.class, id);
 

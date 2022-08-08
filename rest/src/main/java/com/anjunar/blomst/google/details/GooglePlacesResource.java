@@ -3,12 +3,12 @@ package com.anjunar.blomst.google.details;
 import com.anjunar.blomst.google.details.client.PlaceDetailForm;
 import com.anjunar.blomst.google.details.client.PlaceDetailsForm;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("generic/google")

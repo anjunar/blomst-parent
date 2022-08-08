@@ -5,7 +5,7 @@ import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.blomst.social.timeline.SystemPost;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public class SystemPostForm extends AbstractPostForm{
 

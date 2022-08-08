@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.timeline.post;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 public class OwnerPostIdentity {

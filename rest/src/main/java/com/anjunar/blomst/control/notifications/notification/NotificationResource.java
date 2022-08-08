@@ -7,11 +7,11 @@ import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.notifications.Notification;
 import com.anjunar.blomst.control.users.user.UserResource;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.ws.rs.Path;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.WebURLBuilderFactory.*;

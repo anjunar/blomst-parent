@@ -4,7 +4,7 @@ import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.security.User;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 

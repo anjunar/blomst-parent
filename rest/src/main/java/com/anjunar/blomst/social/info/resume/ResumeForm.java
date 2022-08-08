@@ -9,7 +9,7 @@ import com.anjunar.blomst.control.users.Resume;
 import com.anjunar.blomst.control.users.ResumeItem;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 

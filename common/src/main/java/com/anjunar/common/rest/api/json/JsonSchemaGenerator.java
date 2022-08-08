@@ -6,11 +6,11 @@ import com.anjunar.common.rest.api.json.schema.JsonArray;
 import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.common.rest.api.json.schema.JsonObject;
 import com.google.common.reflect.TypeToken;
-import de.anjunar.introspector.bean.BeanIntrospector;
-import de.anjunar.introspector.bean.BeanModel;
-import de.anjunar.introspector.bean.BeanProperty;
-import de.anjunar.introspector.type.TypeResolver;
-import de.anjunar.introspector.type.resolved.ResolvedType;
+import com.anjunar.introspector.bean.BeanIntrospector;
+import com.anjunar.introspector.bean.BeanModel;
+import com.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedType;
 
 @SuppressWarnings("UnstableApiUsage")
 public class JsonSchemaGenerator {

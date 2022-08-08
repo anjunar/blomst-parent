@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.sites;
 
 import com.anjunar.common.security.Identity;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.net.URL;
 
 @Entity

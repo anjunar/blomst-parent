@@ -12,8 +12,8 @@ import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)

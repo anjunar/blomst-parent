@@ -1,8 +1,8 @@
 package com.anjunar.common.rest.api;
 
-import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import javax.ws.rs.*;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
 import java.util.UUID;
 
 public interface LoginResourceTemplate<F extends AbstractSchemaEntity> {

@@ -16,13 +16,12 @@ import com.anjunar.blomst.social.pages.Page;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.*;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -133,7 +132,7 @@ public class PageResource {
     @POST
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Page")
-    public PageForm save(@Valid PageForm resource) {
+    public PageForm save(PageForm resource) {
 
         Page page = new Page();
 
@@ -157,7 +156,7 @@ public class PageResource {
     @PUT
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Page")
-    public PageForm update(@QueryParam("id") UUID id, @Valid PageForm resource) {
+    public PageForm update(@QueryParam("id") UUID id, PageForm resource) {
 
         Page page = entityManager.find(Page.class, id);
 

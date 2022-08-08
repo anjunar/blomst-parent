@@ -1,17 +1,17 @@
 package com.anjunar.common.rest;
 
 import com.anjunar.common.security.IdentityProvider;
-import de.anjunar.introspector.type.TypeResolver;
-import de.anjunar.introspector.type.resolved.ResolvedMethod;
-import de.anjunar.introspector.type.resolved.ResolvedType;
+import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedMethod;
+import com.anjunar.introspector.type.resolved.ResolvedType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
-import javax.ws.rs.NotAuthorizedException;
+import jakarta.inject.Inject;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.InvocationContext;
+import jakarta.ws.rs.NotAuthorizedException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 

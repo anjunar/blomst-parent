@@ -2,14 +2,14 @@ package com.anjunar.common.rest.api.jaxrs;
 
 import com.anjunar.common.security.IdentityProvider;
 import com.google.common.collect.Iterables;
-import de.anjunar.introspector.bean.BeanIntrospector;
-import de.anjunar.introspector.bean.BeanModel;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanIntrospector;
+import com.anjunar.introspector.bean.BeanModel;
+import com.anjunar.introspector.bean.BeanProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

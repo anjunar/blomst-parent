@@ -2,7 +2,7 @@ package com.anjunar.common.rest;
 
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 public class SelfIdentity {

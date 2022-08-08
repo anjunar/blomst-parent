@@ -6,7 +6,7 @@ import com.anjunar.blomst.shared.Likeable;
 import com.anjunar.blomst.social.pages.Page;
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

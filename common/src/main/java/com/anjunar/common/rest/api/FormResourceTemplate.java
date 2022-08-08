@@ -1,7 +1,7 @@
 package com.anjunar.common.rest.api;
 
-import javax.validation.Valid;
-import javax.ws.rs.*;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
 import java.util.UUID;
 
 public interface FormResourceTemplate<F extends AbstractRestEntity> {

@@ -374,7 +374,7 @@ export function generateDomProxy(node) {
             },
             set(value) {
                 let start = performance.now();
-                if (value.isProxy) {
+                if (value && value.isProxy) {
                     value = value.resolve;
                 }
                 Reflect.set(data, property, value)

@@ -10,10 +10,10 @@ import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class TemplateForm extends AbstractRestEntity {

@@ -9,10 +9,10 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.UserConnection;
 
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.Path;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 

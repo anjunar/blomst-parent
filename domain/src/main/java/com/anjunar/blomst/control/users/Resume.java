@@ -3,7 +3,7 @@ package com.anjunar.blomst.control.users;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.security.User;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.anjunar.common.security;
 
-import javax.persistence.Embeddable;
-import javax.validation.constraints.Email;
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Email;
 
 @Embeddable
 public class EmailType {

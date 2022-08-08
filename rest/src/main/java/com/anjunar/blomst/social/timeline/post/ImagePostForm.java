@@ -7,7 +7,7 @@ import com.anjunar.blomst.social.timeline.ImagePost;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public class ImagePostForm extends AbstractPostForm {
 

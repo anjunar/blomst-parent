@@ -2,7 +2,7 @@ package com.anjunar.common.rest.client.themoviedb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.ws.rs.Path;
+import jakarta.ws.rs.Path;
 import java.time.LocalDate;
 import java.util.List;
 

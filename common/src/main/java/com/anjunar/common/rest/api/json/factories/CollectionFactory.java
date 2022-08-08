@@ -3,9 +3,9 @@ package com.anjunar.common.rest.api.json.factories;
 import com.anjunar.common.rest.api.json.validators.SizeValidator;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.api.json.schema.JsonArray;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanProperty;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 import java.util.Collection;
 
 import static com.anjunar.common.rest.api.json.JsonSchemaGenerator.generateArray;

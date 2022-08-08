@@ -2,7 +2,7 @@ package com.anjunar.common.security;
 
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 

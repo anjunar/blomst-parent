@@ -2,9 +2,9 @@ package com.anjunar.common.rest.api.json.factories;
 
 import com.anjunar.common.rest.api.json.validators.*;
 import com.anjunar.common.rest.api.json.schema.JsonNumeric;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanProperty;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 public abstract class NumericFactory<J extends JsonNumeric> extends JsonAbstractFactory<J> {
 

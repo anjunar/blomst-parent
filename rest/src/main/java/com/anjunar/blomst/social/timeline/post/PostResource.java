@@ -14,16 +14,15 @@ import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.WebURLBuilderFactory.*;
@@ -134,7 +133,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
-    public AbstractPostForm save(@Valid AbstractPostForm resource) {
+    public AbstractPostForm save(AbstractPostForm resource) {
 
         AbstractPost post = resource.accept(new AbstractPostFormVisitor<>() {
             @Override
@@ -197,7 +196,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
-    public AbstractPostForm update(UUID id, @Valid AbstractPostForm resource) {
+    public AbstractPostForm update(UUID id, AbstractPostForm resource) {
 
         AbstractPost post = entityManager.find(AbstractPost.class, id);
 

@@ -9,7 +9,7 @@ import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.ResumeItem;
 import com.anjunar.blomst.social.sites.Site;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Year;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)

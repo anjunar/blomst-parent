@@ -7,9 +7,9 @@ import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class RoleForm extends AbstractRestEntity {

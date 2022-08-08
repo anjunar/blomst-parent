@@ -2,7 +2,7 @@ package com.anjunar.blomst.jaxrs;
 
 import com.anjunar.common.rest.api.DateTimeDuration;
 
-import javax.ws.rs.ext.ParamConverter;
+import jakarta.ws.rs.ext.ParamConverter;
 import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

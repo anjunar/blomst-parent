@@ -6,7 +6,7 @@ import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public class AbstractLikeableRestEntityConverter<E extends Likeable, R extends AbstractLikeableRestEntity> extends AbstractRestEntityConverter<E, R> {
 

@@ -3,7 +3,7 @@ package com.anjunar.common.ddd;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;

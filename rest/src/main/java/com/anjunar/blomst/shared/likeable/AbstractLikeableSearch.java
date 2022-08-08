@@ -3,7 +3,7 @@ package com.anjunar.blomst.shared.likeable;
 import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
 import com.anjunar.common.rest.api.jaxrs.RestPredicate;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.util.Set;
 import java.util.UUID;
 

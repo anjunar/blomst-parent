@@ -6,7 +6,7 @@ import com.anjunar.common.rest.api.jaxrs.RestSort;
 import com.anjunar.common.rest.api.jaxrs.provider.GenericSortProvider;
 import com.anjunar.blomst.social.communities.Status;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.util.List;
 import java.util.UUID;
 

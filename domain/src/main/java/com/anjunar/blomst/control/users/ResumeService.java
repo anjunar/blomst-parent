@@ -3,9 +3,9 @@ package com.anjunar.blomst.control.users;
 import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.security.User;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.persistence.EntityManager;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 public class ResumeService {

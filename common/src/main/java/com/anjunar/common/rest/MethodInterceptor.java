@@ -1,8 +1,8 @@
 package com.anjunar.common.rest;
 
-import de.anjunar.introspector.type.TypeResolver;
-import de.anjunar.introspector.type.resolved.ResolvedMethod;
-import de.anjunar.introspector.type.resolved.ResolvedType;
+import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedMethod;
+import com.anjunar.introspector.type.resolved.ResolvedType;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;

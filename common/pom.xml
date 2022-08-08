@@ -14,6 +14,31 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.glassfish.soteria</groupId>
+            <artifactId>jakarta.security.enterprise</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet-shaded</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
         </dependency>
@@ -50,13 +75,8 @@
         </dependency>
 
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <artifactId>hibernate-core-jakarta</artifactId>
         </dependency>
 
         <dependency>
@@ -98,18 +118,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.deltaspike.core</groupId>
-            <artifactId>deltaspike-core-impl</artifactId>
-            <version>1.9.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-servlet-module-impl</artifactId>
-            <version>1.9.5</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
             <version>2.9.7</version>
@@ -121,12 +129,12 @@
         </dependency>
 
         <dependency>
-            <groupId>de.anjunar</groupId>
+            <groupId>com.anjunar</groupId>
             <artifactId>bean-introspector</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>de.anjunar</groupId>
+            <groupId>com.anjunar</groupId>
             <artifactId>jsr3339-meta</artifactId>
         </dependency>
 

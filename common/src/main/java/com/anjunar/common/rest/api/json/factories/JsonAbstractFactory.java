@@ -4,9 +4,9 @@ import com.anjunar.common.rest.api.json.annotations.JsonSchema;
 import com.anjunar.common.rest.api.json.validators.NotNullValidator;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.api.json.schema.JsonNode;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanProperty;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class JsonAbstractFactory<J extends JsonNode> {

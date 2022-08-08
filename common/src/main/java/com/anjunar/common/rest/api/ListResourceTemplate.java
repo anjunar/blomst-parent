@@ -1,6 +1,6 @@
 package com.anjunar.common.rest.api;
 
-import javax.ws.rs.*;
+import jakarta.ws.rs.*;
 
 public interface ListResourceTemplate<R extends AbstractRestEntity, S> {
 

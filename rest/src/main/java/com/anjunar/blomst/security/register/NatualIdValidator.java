@@ -3,11 +3,11 @@ package com.anjunar.blomst.security.register;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.constraintvalidation.SupportedValidationTarget;
-import javax.validation.constraintvalidation.ValidationTarget;
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.constraintvalidation.SupportedValidationTarget;
+import jakarta.validation.constraintvalidation.ValidationTarget;
 
 @SupportedValidationTarget(ValidationTarget.ANNOTATED_ELEMENT)
 public class NatualIdValidator implements ConstraintValidator<NaturalId, RegisterForm> {

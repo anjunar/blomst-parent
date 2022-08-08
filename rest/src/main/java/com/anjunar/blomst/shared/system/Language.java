@@ -6,9 +6,9 @@ import com.anjunar.common.rest.api.json.annotations.JsonSchema;
 import com.anjunar.common.rest.api.json.schema.JsonNode;
 import com.anjunar.common.rest.api.json.schema.JsonObject;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Locale;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)

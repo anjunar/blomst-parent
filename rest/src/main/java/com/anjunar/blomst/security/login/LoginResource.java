@@ -1,20 +1,20 @@
 package com.anjunar.blomst.security.login;
 
+import com.anjunar.blomst.ApplicationResource;
 import com.anjunar.common.rest.LinkDescription;
 import com.anjunar.common.rest.api.LoginResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
-import com.anjunar.blomst.ApplicationResource;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.ws.rs.*;
 import java.util.UUID;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
 
 @Path("security")
 @RequestScoped
@@ -51,7 +51,7 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @Produces("application/json")
     @Path("login")
     @LinkDescription("Do Login")
-    public ResponseOk login(@Valid LoginForm resource) {
+    public ResponseOk login(LoginForm resource) {
 
         User user = identityProvider.findUser(resource.getFirstname(), resource.getLastname(), resource.getBirthday());
 
@@ -62,7 +62,7 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
 
             return new ResponseOk();
         } else {
-            throw new WebApplicationException(javax.ws.rs.core.Response.Status.FORBIDDEN);
+            throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);
         }
     }
 

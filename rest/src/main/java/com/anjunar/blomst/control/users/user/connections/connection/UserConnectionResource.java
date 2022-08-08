@@ -11,16 +11,16 @@ import com.anjunar.blomst.control.users.user.connections.categories.CategoriesRe
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.WebURLBuilderFactory.*;
-import static javax.ws.rs.core.Response.*;
+import static jakarta.ws.rs.core.Response.*;
 
 @Path("control/users/user/connections/connection")
 @ApplicationScoped

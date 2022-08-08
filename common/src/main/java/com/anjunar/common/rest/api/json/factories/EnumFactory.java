@@ -2,10 +2,10 @@ package com.anjunar.common.rest.api.json.factories;
 
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.api.json.schema.JsonEnum;
-import de.anjunar.introspector.bean.BeanProperty;
-import de.anjunar.introspector.type.TypeResolver;
-import de.anjunar.introspector.type.resolved.ResolvedMethod;
-import de.anjunar.introspector.type.resolved.ResolvedType;
+import com.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedMethod;
+import com.anjunar.introspector.type.resolved.ResolvedType;
 
 @SuppressWarnings("UnstableApiUsage")
 public class EnumFactory extends JsonAbstractFactory<JsonEnum> {

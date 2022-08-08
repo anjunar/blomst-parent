@@ -13,7 +13,7 @@ import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.communities.Status;
 import com.anjunar.blomst.social.communities.community.CommunityForm;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class CommunityConnectionForm extends AbstractRestEntity {

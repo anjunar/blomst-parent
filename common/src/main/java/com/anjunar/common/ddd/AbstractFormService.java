@@ -2,7 +2,7 @@ package com.anjunar.common.ddd;
 
 import com.google.common.reflect.TypeToken;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 public class AbstractFormService<E> {

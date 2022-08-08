@@ -3,7 +3,7 @@ package com.anjunar.common.security;
 import com.anjunar.common.ddd.AbstractEntity;
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 

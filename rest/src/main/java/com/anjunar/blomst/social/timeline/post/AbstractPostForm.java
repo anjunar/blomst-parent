@@ -11,7 +11,7 @@ import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)

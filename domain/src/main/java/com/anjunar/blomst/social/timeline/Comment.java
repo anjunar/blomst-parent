@@ -5,7 +5,7 @@ import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "do_comment")

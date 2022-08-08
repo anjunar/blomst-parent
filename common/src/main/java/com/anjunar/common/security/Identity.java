@@ -3,7 +3,7 @@ package com.anjunar.common.security;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.filedisk.Image;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "co_identity")

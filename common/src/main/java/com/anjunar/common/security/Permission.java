@@ -3,9 +3,9 @@ package com.anjunar.common.security;
 import com.anjunar.common.ddd.AbstractEntity;
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "co_permission")

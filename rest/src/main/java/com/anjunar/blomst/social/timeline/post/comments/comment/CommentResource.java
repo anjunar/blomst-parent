@@ -15,16 +15,15 @@ import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.Comment;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
@@ -109,7 +108,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Comment")
-    public CommentForm save(@Valid CommentForm resource) {
+    public CommentForm save(CommentForm resource) {
 
         Comment comment = new Comment();
 
@@ -132,7 +131,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerCommentIdentity.class)
     @LinkDescription("Update Comment")
-    public CommentForm update(UUID id, @Valid CommentForm resource) {
+    public CommentForm update(UUID id, CommentForm resource) {
         Comment comment = entityManager.find(Comment.class, id);
 
         CommentForm.updater(resource, comment, identityProvider, entityManager);

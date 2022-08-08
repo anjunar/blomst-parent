@@ -14,13 +14,12 @@ import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.*;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -98,7 +97,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Question")
-    public QuestionForm save(@Valid QuestionForm resource) {
+    public QuestionForm save(QuestionForm resource) {
 
         UserSelect owner = resource.getOwner();
         if (!owner.getId().equals(identityProvider.getUser().getId())) {
@@ -126,7 +125,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
-    public QuestionForm update(UUID id, @Valid QuestionForm resource) {
+    public QuestionForm update(UUID id, QuestionForm resource) {
 
         Question question = entityManager.find(Question.class, id);
 

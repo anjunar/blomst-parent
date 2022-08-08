@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.timeline;
 
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")

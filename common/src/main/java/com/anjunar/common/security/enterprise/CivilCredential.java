@@ -1,7 +1,7 @@
 package com.anjunar.common.security.enterprise;
 
-import javax.security.enterprise.credential.AbstractClearableCredential;
-import javax.security.enterprise.credential.Password;
+import jakarta.security.enterprise.credential.AbstractClearableCredential;
+import jakarta.security.enterprise.credential.Password;
 import java.time.LocalDate;
 
 public class CivilCredential extends AbstractClearableCredential {

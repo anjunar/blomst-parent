@@ -11,8 +11,8 @@ import com.anjunar.blomst.control.users.user.connections.categories.category.Cat
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.control.users.Category;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotNull;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class UserConnectionForm extends AbstractRestEntity {

@@ -10,7 +10,7 @@ import com.anjunar.blomst.social.sites.Site;
 import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.sites.site.SiteForm;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class SiteConnectionForm extends AbstractRestEntity {

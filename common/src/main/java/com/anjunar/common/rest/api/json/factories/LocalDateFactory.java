@@ -6,12 +6,12 @@ import com.anjunar.common.rest.api.json.validators.PastOrPresentValidator;
 import com.anjunar.common.rest.api.json.validators.PastValidator;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.api.json.schema.JsonString;
-import de.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.bean.BeanProperty;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 @SuppressWarnings("UnstableApiUsage")

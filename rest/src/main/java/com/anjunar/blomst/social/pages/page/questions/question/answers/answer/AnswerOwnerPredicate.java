@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 import com.anjunar.blomst.social.pages.page.Answer;
 import com.anjunar.common.security.IdentityProvider;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 public class AnswerOwnerPredicate {

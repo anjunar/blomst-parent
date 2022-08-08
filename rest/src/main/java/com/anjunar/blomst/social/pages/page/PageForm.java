@@ -11,10 +11,10 @@ import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class PageForm extends AbstractLikeableRestEntity {

@@ -4,7 +4,7 @@ import com.anjunar.common.ddd.AbstractEntity;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;

@@ -1,16 +1,14 @@
 package com.anjunar.common.security.enterprise;
 
-import org.apache.deltaspike.core.api.common.DeltaSpike;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.security.enterprise.AuthenticationStatus;
-import javax.security.enterprise.SecurityContext;
-import javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
-import javax.security.enterprise.credential.Credential;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.AuthenticationStatus;
+import jakarta.security.enterprise.SecurityContext;
+import jakarta.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
+import jakarta.security.enterprise.credential.Credential;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @RequestScoped
@@ -23,7 +21,7 @@ public class Authenticator {
     private final HttpServletResponse response;
 
     @Inject
-    public Authenticator(SecurityContext securityContext, HttpServletRequest request,  @DeltaSpike HttpServletResponse response) {
+    public Authenticator(SecurityContext securityContext, HttpServletRequest request,  HttpServletResponse response) {
         this.securityContext = securityContext;
         this.request = request;
         this.response = response;
