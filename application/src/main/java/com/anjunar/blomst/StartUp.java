@@ -6,10 +6,10 @@ import com.anjunar.common.security.EmailType;
 import com.anjunar.common.security.IdentityService;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
+import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
 import jakarta.enterprise.event.Event;
-import jakarta.inject.Inject;
 import jakarta.servlet.ServletContext;
 
 import jakarta.enterprise.context.ApplicationScoped;

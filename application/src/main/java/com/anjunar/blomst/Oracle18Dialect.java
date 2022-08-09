@@ -1,7 +1,6 @@
 package com.anjunar.blomst;
 
-import com.anjunar.blomst.sqlfunction.OracleSQLContainsFunction;
-import com.anjunar.blomst.sqlfunction.OracleSQLLevenstheinFunction;
+
 import org.hibernate.dialect.Oracle12cDialect;
 
 public class Oracle18Dialect extends Oracle12cDialect {
