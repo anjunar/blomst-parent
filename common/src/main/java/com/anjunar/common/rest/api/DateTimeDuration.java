@@ -23,4 +23,8 @@ public class DateTimeDuration {
     public void setTo(LocalDateTime to) {
         this.to = to;
     }
+
+    public static DateTimeDuration valueOf(String value) {
+        return new DateTimeDuration();
+    }
 }

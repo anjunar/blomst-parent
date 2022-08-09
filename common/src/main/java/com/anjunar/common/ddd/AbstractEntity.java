@@ -16,7 +16,7 @@ import java.util.UUID;
 public abstract class AbstractEntity implements Entity {
 
     @Id
-    @Type(type = "uuid-binary")
+//    @Type(type = "uuid-binary")
     @Column(name = "id", length = 16, unique = true, nullable = false)
     private UUID id = UUID.randomUUID();
 

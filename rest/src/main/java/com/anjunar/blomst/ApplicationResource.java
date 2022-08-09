@@ -41,7 +41,6 @@ import java.util.Locale;
 import static com.anjunar.common.rest.WebURLBuilderFactory.*;
 
 @Path("/")
-@ApplicationScoped
 public class ApplicationResource implements ValidationResource<UserForm> {
 
     private final IdentityProvider identityProvider;

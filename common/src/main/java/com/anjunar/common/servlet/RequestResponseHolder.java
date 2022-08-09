@@ -28,8 +28,7 @@ import jakarta.servlet.ServletResponse;
  * @param <Type>
  *            {@link ServletRequest} or {@link ServletResponse}
  */
-class RequestResponseHolder<Type>
-{
+class RequestResponseHolder<Type> {
 
     /**
      * Instance for storing the {@link ServletRequest}

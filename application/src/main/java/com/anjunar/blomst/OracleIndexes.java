@@ -6,7 +6,6 @@ import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
 import com.anjunar.introspector.type.TypeResolver;
 import com.anjunar.introspector.type.resolved.ResolvedType;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Initialized;
 import jakarta.enterprise.event.Observes;
@@ -15,22 +14,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.servlet.ServletContext;
 import jakarta.transaction.Transactional;
-import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class OracleIndexes {
 
     @Transactional
-    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init) throws SQLException {
-/*
-        DataSource dataSource = new OracleDataSource();
-        ConnectionBuilder builder = dataSource.createConnectionBuilder();
-        dataSource.setURL(props.getProperty("ORACLE_DB_URL"));
-        dataSource.setUser(props.getProperty("ORACLE_DB_USERNAME"));
-        dataSource.setPassword(props.getProperty("ORACLE_DB_PASSWORD"));
+    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, DataSource dataSource) throws SQLException {
+
         List<ResolvedType<?>> entities = TypeResolver.filter(resolvedType -> resolvedType.getAnnotation(Entity.class) != null);
 
         for (ResolvedType<?> entity : entities) {
@@ -74,6 +70,5 @@ public class OracleIndexes {
                 }
             }
         }
-*/
     }
 }

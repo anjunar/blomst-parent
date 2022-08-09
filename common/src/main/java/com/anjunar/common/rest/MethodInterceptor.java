@@ -3,13 +3,13 @@ package com.anjunar.common.rest;
 import com.anjunar.introspector.type.TypeResolver;
 import com.anjunar.introspector.type.resolved.ResolvedMethod;
 import com.anjunar.introspector.type.resolved.ResolvedType;
-import net.sf.cglib.proxy.MethodProxy;
+import javassist.util.proxy.MethodHandler;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MethodInterceptor implements net.sf.cglib.proxy.MethodInterceptor, LastInvocationProxy {
+public class MethodInterceptor implements MethodHandler, LastInvocationProxy {
 
     private final MethodInterceptor last;
 
@@ -38,7 +38,7 @@ public class MethodInterceptor implements net.sf.cglib.proxy.MethodInterceptor, 
     }
 
     @Override
-    public Object intercept(Object self, Method thisMethod, Object[] args, MethodProxy proxy) throws Throwable {
+    public Object invoke(Object self, Method thisMethod, Method proceed, Object[] args) throws Throwable {
         ResolvedType<?> type = TypeResolver.resolve(self.getClass());
 
         final ResolvedMethod<?> resolvedMethod = type.getMethods()
@@ -51,5 +51,4 @@ public class MethodInterceptor implements net.sf.cglib.proxy.MethodInterceptor, 
 
         return WebURLBuilderFactory.createProxy(thisMethod.getReturnType(), new MethodInterceptor(this));
     }
-
 }

@@ -1,9 +1,10 @@
 package com.anjunar.common.rest;
 
 import com.anjunar.common.security.IdentityProvider;
-import net.sf.cglib.proxy.Callback;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.Factory;
+import javassist.util.proxy.MethodHandler;
+import javassist.util.proxy.Proxy;
+import javassist.util.proxy.ProxyFactory;
+import javassist.util.proxy.ProxyObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +32,9 @@ public class WebURLBuilderFactory {
     }
 
     public static WebURLBuilder linkTo(Object invocation) {
-        Factory getCallbacks = (Factory) invocation;
-        Callback[] interceptor = getCallbacks.getCallbacks();
-        List<MethodInvocation> invocations = ((MethodInterceptor)interceptor[0]).getInvocations();
+        ProxyObject getCallbacks = (ProxyObject) invocation;
+        MethodHandler interceptor = getCallbacks.getHandler();
+        List<MethodInvocation> invocations = ((MethodInterceptor)interceptor).getInvocations();
         List<JaxRSInvocation> jaxRSInvocations = new ArrayList<>();
         UriBuilder uriBuilder = UriBuilder.fromPath("/");
 
@@ -56,15 +57,23 @@ public class WebURLBuilderFactory {
         return createProxy(aClass, new MethodInterceptor(null));
     }
 
-    public static <B> B createProxy(Class<B> aClass, MethodInterceptor methodHandler) {
-        Enhancer enhancer = new Enhancer();
+    public static <B> B createProxy(Class<B> aClass, MethodHandler methodHandler) {
+        ProxyFactory proxyFactory = new ProxyFactory();
         if (aClass.isInterface()) {
-            enhancer.setInterfaces(new Class[]{aClass});
+            proxyFactory.setInterfaces(new Class[]{aClass});
         } else {
-            enhancer.setSuperclass(aClass);
+            proxyFactory.setSuperclass(aClass);
         }
-        enhancer.setCallback(methodHandler);
-        return (B) enhancer.create();
+        Class<?> factoryClass = proxyFactory.createClass();
+        try {
+            B instance = (B) factoryClass.newInstance();
+            ((Proxy) instance).setHandler(methodHandler);
+            return instance;
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

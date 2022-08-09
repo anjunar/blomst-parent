@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="main" transaction-type="JTA">
+        <jta-data-source>java:jboss/datasources/anjunar</jta-data-source>
         <class>com.anjunar.common.ddd.AbstractEntity</class>
 
         <class>com.anjunar.common.filedisk.Image</class>
@@ -43,9 +44,6 @@
             <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="connection.username" value="anjunar"/>
-            <property name="connection.password" value="anjunar"/>
-            <property name="connection.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
         </properties>
 
     </persistence-unit>
