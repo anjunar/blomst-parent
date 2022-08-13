@@ -5,11 +5,12 @@ import com.anjunar.common.filedisk.FileDiskUtils;
 import com.anjunar.common.filedisk.Image;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @author Patrick Bittner on 01.08.17.
  */
-public class ImageType {
+public class ImageType extends AbstractRestEntity {
 
     private String name;
 

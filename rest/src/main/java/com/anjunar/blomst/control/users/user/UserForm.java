@@ -1,9 +1,13 @@
 package com.anjunar.blomst.control.users.user;
 
+import com.anjunar.common.filedisk.Base64Resource;
+import com.anjunar.common.filedisk.FileDiskUtils;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.api.ImageType;
+import com.anjunar.common.rest.objectmapper.Converter;
+import com.anjunar.common.rest.objectmapper.Mapper;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.EmailType;
@@ -46,6 +50,7 @@ public class UserForm extends AbstractRestEntity {
     private String password;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
+    @Mapper(ImageConverter.class)
     private ImageType picture = new ImageType();
 
     @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
@@ -121,6 +126,39 @@ public class UserForm extends AbstractRestEntity {
 
     public void setRoles(Set<RoleForm> roles) {
         this.roles = roles;
+    }
+
+    public static class ImageConverter implements Converter<Image, ImageType> {
+
+        @Override
+        public ImageType factory(Image harddiskFile) {
+            if (harddiskFile == null) {
+                return new ImageType();
+            }
+            ImageType image = new ImageType();
+            image.setId(harddiskFile.getId());
+            image.setName(harddiskFile.getName());
+            image.setLastModified(harddiskFile.getLastModified());
+            image.setData(FileDiskUtils.buildBase64(harddiskFile.getType(), harddiskFile.getSubType(), harddiskFile.getData()));
+            return image;
+        }
+
+        @Override
+        public Image updater(Image image, ImageType imageType) {
+            if (image == null) {
+                return null;
+            } else {
+                Base64Resource process = FileDiskUtils.extractBase64(imageType.getData());
+
+                image.setData(process.getData());
+                image.setType(process.getType());
+                image.setSubType(process.getSubType());
+
+                image.setName(imageType.getName());
+                image.setLastModified(imageType.getLastModified());
+            }
+            return image;
+        }
     }
 
     public static class UserFormConverter extends AbstractRestEntityConverter<User, UserForm> {
