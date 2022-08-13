@@ -1,9 +1,9 @@
 package com.anjunar.blomst.control.roles;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
-import com.anjunar.common.rest.api.jaxrs.RestPredicate;
-import com.anjunar.common.rest.api.jaxrs.RestSort;
-import com.anjunar.common.rest.api.jaxrs.provider.GenericSortProvider;
+import com.anjunar.common.rest.search.AbstractRestSearch;
+import com.anjunar.common.rest.search.RestPredicate;
+import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import jakarta.ws.rs.QueryParam;
 import java.util.List;

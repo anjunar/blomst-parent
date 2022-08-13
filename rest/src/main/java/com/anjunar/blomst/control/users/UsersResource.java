@@ -2,7 +2,7 @@ package com.anjunar.blomst.control.users;
 
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.UserResource;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.security.User;
@@ -15,7 +15,7 @@ import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("control/users")

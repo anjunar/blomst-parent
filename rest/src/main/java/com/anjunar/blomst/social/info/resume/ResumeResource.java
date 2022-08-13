@@ -2,10 +2,10 @@ package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.api.json.schema.JsonObject;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.Resume;
 
@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import java.util.UUID;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("social/info/resume")

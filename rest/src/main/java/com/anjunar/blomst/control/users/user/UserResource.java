@@ -7,12 +7,12 @@ import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
 import com.google.common.collect.Sets;
 import com.anjunar.common.filedisk.Image;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.SelfIdentity;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.api.json.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.security.EmailType;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
@@ -47,8 +47,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @RequestScoped
 @Path("control/users/user")

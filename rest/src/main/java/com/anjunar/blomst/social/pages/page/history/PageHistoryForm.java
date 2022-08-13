@@ -1,8 +1,8 @@
 package com.anjunar.blomst.social.pages.page.history;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 

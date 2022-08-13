@@ -1,7 +1,7 @@
 package com.anjunar.blomst.security.register;
 
 import com.anjunar.common.filedisk.Image;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
@@ -23,8 +23,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("security/register")
 @ApplicationScoped

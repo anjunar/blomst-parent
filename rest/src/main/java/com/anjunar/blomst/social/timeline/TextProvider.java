@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.timeline;
 import com.google.common.base.Strings;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.Question_;
-import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
+import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 
 import jakarta.persistence.EntityManager;

@@ -4,8 +4,8 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.anjunar.common.rest.api.Link;
 import com.anjunar.common.rest.api.LinksContainer;
-import com.anjunar.common.rest.api.json.JsonSchemaGenerator;
-import com.anjunar.common.rest.api.json.schema.JsonObject;
+import com.anjunar.common.rest.schema.JsonSchemaGenerator;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 
 public class ApplicationForm implements LinksContainer {
 

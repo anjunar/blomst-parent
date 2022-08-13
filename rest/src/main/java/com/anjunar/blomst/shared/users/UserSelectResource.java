@@ -1,7 +1,7 @@
 package com.anjunar.blomst.shared.users;
 
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.security.User;

@@ -1,6 +1,6 @@
 package com.anjunar.blomst.security.logout;
 
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.ApplicationResource;
 
@@ -12,8 +12,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("security/logout")
 @ApplicationScoped

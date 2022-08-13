@@ -3,10 +3,10 @@ package com.anjunar.blomst.security.logout;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.anjunar.common.rest.api.Link;
 import com.anjunar.common.rest.api.LinksContainer;
-import com.anjunar.common.rest.api.json.JsonSchemaGenerator;
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
-import com.anjunar.common.rest.api.json.schema.JsonObject;
+import com.anjunar.common.rest.schema.JsonSchemaGenerator;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class LogoutForm implements LinksContainer {

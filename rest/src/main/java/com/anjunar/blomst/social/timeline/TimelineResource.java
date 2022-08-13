@@ -1,9 +1,9 @@
 package com.anjunar.blomst.social.timeline;
 
 import com.anjunar.blomst.social.timeline.post.*;
-import com.anjunar.common.rest.LinkDescription;
-import com.anjunar.common.rest.api.json.schema.JsonArray;
-import com.anjunar.common.rest.api.json.schema.JsonObject;
+import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.common.rest.api.Table;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("home/timeline")

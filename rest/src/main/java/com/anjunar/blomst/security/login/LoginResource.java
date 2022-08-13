@@ -1,7 +1,7 @@
 package com.anjunar.blomst.security.login;
 
 import com.anjunar.blomst.ApplicationResource;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.LoginResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityProvider;
@@ -13,8 +13,8 @@ import jakarta.ws.rs.*;
 
 import java.util.UUID;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("security")
 @RequestScoped

@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.sites;
 
 import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.blomst.social.sites.site.SiteResource;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 
@@ -14,8 +14,8 @@ import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("social/sites")
 @ApplicationScoped

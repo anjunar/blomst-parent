@@ -2,8 +2,8 @@ package com.anjunar.blomst.control.users.user.connections.connection;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractRestEntityConverter;
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.users.UserConnection;

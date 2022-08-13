@@ -3,7 +3,7 @@ package com.anjunar.blomst.control.mail;
 import com.anjunar.blomst.control.mail.template.TemplateForm;
 import com.anjunar.blomst.control.mail.template.TemplateResource;
 import com.anjunar.common.mail.Template;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 
@@ -15,7 +15,7 @@ import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("mail/templates")
 @ApplicationScoped

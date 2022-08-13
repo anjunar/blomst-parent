@@ -4,7 +4,7 @@ import com.anjunar.blomst.social.communities.community.connections.CommunityConn
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
 import com.google.common.collect.Sets;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityProvider;
@@ -23,7 +23,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import java.util.UUID;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("social/communities/community")

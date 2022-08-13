@@ -1,6 +1,6 @@
 package com.anjunar.common.ddd;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
+import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.security.IdentityProvider;
 import com.google.common.reflect.TypeToken;
 

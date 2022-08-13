@@ -1,7 +1,7 @@
 package com.anjunar.common.rest.api;
 
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 
 public class Editor {
 

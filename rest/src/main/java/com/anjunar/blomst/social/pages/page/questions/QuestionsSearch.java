@@ -2,9 +2,9 @@ package com.anjunar.blomst.social.pages.page.questions;
 
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.api.jaxrs.RestPredicate;
-import com.anjunar.common.rest.api.jaxrs.RestSort;
-import com.anjunar.common.rest.api.jaxrs.provider.GenericSortProvider;
+import com.anjunar.common.rest.search.RestPredicate;
+import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import jakarta.ws.rs.QueryParam;
 import java.util.List;

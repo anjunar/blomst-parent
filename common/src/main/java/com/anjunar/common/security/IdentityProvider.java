@@ -3,7 +3,7 @@ package com.anjunar.common.security;
 import com.anjunar.common.security.enterprise.Authenticator;
 import com.anjunar.common.security.enterprise.CivilCredential;
 import com.anjunar.common.i18n.i18nResolver;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Link;
 import com.anjunar.common.rest.api.LinkType;
 import com.anjunar.jsr339.Operation;

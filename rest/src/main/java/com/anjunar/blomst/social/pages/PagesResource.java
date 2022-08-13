@@ -1,10 +1,10 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.blomst.social.pages.page.PageResource;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.api.json.schema.JsonObject;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.ApplicationResource;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -14,8 +14,8 @@ import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("pages")

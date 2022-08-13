@@ -4,8 +4,8 @@ import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.sites.Site;
 

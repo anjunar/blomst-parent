@@ -1,8 +1,8 @@
 package com.anjunar.common.rest.api;
 
-import com.anjunar.common.rest.api.json.JsonSchemaGenerator;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
-import com.anjunar.common.rest.api.json.schema.JsonObject;
+import com.anjunar.common.rest.schema.JsonSchemaGenerator;
+import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MetaTable<E> implements LinksContainer {

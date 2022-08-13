@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.communities.community.connections;
 
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionForm;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
-import com.anjunar.common.rest.LinkDescription;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
@@ -15,8 +15,8 @@ import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.linkTo;
-import static com.anjunar.common.rest.WebURLBuilderFactory.methodOn;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("social/communities/community/connections")

@@ -1,7 +1,7 @@
 package com.anjunar.blomst.control.mail.template;
 
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
 import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.common.mail.Template;

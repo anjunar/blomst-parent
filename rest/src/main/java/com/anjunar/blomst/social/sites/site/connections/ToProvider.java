@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.sites.site.connections;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
+import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.sites.SiteConnection_;

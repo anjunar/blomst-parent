@@ -1,6 +1,6 @@
 package com.anjunar.blomst.control.users.user.connections;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
+import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User_;
 import com.anjunar.blomst.control.users.UserConnection;

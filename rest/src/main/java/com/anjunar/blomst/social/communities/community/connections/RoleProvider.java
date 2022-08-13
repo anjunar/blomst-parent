@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.communities.community.connections;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
+import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role_;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;

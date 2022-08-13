@@ -2,8 +2,8 @@ package com.anjunar.blomst.social.timeline.post;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.anjunar.common.rest.api.json.annotations.JsonSchema;
-import com.anjunar.common.rest.api.json.schema.JsonNode;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.Identity;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;

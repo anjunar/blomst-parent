@@ -3,7 +3,7 @@ package com.anjunar.blomst.shared.likeable;
 import com.anjunar.common.security.User_;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.shared.Likeable_;
-import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
+import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 

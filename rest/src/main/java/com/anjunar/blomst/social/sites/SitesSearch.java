@@ -1,8 +1,8 @@
 package com.anjunar.blomst.social.sites;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
-import com.anjunar.common.rest.api.jaxrs.RestSort;
-import com.anjunar.common.rest.api.jaxrs.provider.GenericSortProvider;
+import com.anjunar.common.rest.search.AbstractRestSearch;
+import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import java.util.List;
 

@@ -28,7 +28,6 @@ import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -38,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.anjunar.common.rest.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("/")
 public class ApplicationResource implements ValidationResource<UserForm> {

@@ -1,7 +1,7 @@
 package com.anjunar.blomst.shared.likeable;
 
-import com.anjunar.common.rest.api.jaxrs.AbstractRestSearch;
-import com.anjunar.common.rest.api.jaxrs.RestPredicate;
+import com.anjunar.common.rest.search.AbstractRestSearch;
+import com.anjunar.common.rest.search.RestPredicate;
 
 import jakarta.ws.rs.QueryParam;
 import java.util.Set;

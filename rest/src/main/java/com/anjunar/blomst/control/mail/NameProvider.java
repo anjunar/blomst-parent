@@ -3,7 +3,7 @@ package com.anjunar.blomst.control.mail;
 import com.google.common.base.Strings;
 import com.anjunar.common.mail.Template_;
 import com.anjunar.common.mail.Template;
-import com.anjunar.common.rest.api.jaxrs.AbstractRestPredicateProvider;
+import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 
 import jakarta.persistence.EntityManager;
