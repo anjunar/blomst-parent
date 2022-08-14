@@ -3,6 +3,8 @@ package com.anjunar.blomst.social.sites.site.connections.connection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.Site;
@@ -49,8 +51,10 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public SiteConnectionForm create(@QueryParam("to") UUID to) {
         SiteConnectionForm form = new SiteConnectionForm();
 
-        form.setFrom(UserSelect.factory(identityProvider.getUser()));
-        form.setTo(SiteForm.factory(entityManager.find(Site.class, to)));
+        ObjectMapper mapper = new ObjectMapper();
+
+        form.setFrom(mapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setTo(mapper.map(entityManager.find(Site.class, to), SiteForm.class));
 
         linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
                 .build(form::addLink);
@@ -63,8 +67,10 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @LinkDescription("Read Site Connection")
     @Override
     public SiteConnectionForm read(UUID id) {
+        ObjectMapper mapper = new ObjectMapper();
+
         SiteConnection entity = entityManager.find(SiteConnection.class, id);
-        SiteConnectionForm form = SiteConnectionForm.factory(entity);
+        SiteConnectionForm form = mapper.map(entity, SiteConnectionForm.class);
 
         linkTo(methodOn(SiteConnectionResource.class).update(id, new SiteConnectionForm()))
                 .build(form::addLink);
@@ -80,9 +86,10 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @LinkDescription("Save Site Connection")
     @Override
     public SiteConnectionForm save(SiteConnectionForm form) {
-        SiteConnection entity = new SiteConnection();
 
-        SiteConnectionForm.updater(form, entity, identityProvider, entityManager);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        SiteConnection entity = mapper.map(form, SiteConnection.class);
 
         entityManager.persist(entity);
 
@@ -99,9 +106,9 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @LinkDescription("Update Site Connection")
     @Override
     public SiteConnectionForm update(UUID id, SiteConnectionForm form) {
-        SiteConnection entity = entityManager.find(SiteConnection.class, id);
-
-        SiteConnectionForm.updater(form, entity, identityProvider, entityManager);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        mapper.map(form, SiteConnection.class);
 
         linkTo(methodOn(SiteConnectionResource.class).update(id, new SiteConnectionForm()))
                 .build(form::addLink);

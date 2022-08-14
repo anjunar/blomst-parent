@@ -2,11 +2,27 @@ import {customComponents} from "../../../../simplicity-core/simplicity.js";
 import {libraryLoader} from "../../../../simplicity-core/processors/loader-processor.js";
 import MatInputContainer from "../../form/container/mat-input-container.js";
 import DomLazyMultiSelect from "../../../../simplicity-core/components/form/dom-lazy-multi-select.js";
+import {Membrane} from "../../../../simplicity-core/services/tools.js";
 
 class MetaInputLazyMultiSelect extends HTMLElement {
 
     property;
     schema;
+
+    initialize() {
+        let input = this.querySelector("dom-lazy-multi-select");
+        if (this.schema.validators.notBlank || this.schema.validators.notNull) {
+            input.required = true;
+        }
+        Membrane.track(input, {
+            property : "dirty",
+            element : this,
+            handler : (value) => {
+                this.schema.dirty = value;
+            }
+        })
+    }
+
 
     domLazySelect(schema) {
         let link = schema.links.list;

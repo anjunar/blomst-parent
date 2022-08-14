@@ -1,7 +1,6 @@
 package com.anjunar.blomst.control.users.user.connections.categories.category;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
@@ -51,36 +50,6 @@ public class CategoryForm extends AbstractRestEntity {
 
     public void setOwner(UserSelect owner) {
         this.owner = owner;
-    }
-
-    public static class CategoryFormConverter extends AbstractRestEntityConverter<Category, CategoryForm> {
-
-        public static final CategoryFormConverter INSTANCE = new CategoryFormConverter();
-
-        @Override
-        public CategoryForm factory(CategoryForm restEntity, Category entity) {
-            CategoryForm categoryForm = super.factory(restEntity, entity);
-            categoryForm.setName(entity.getName());
-            categoryForm.setDescription(entity.getDescription());
-            categoryForm.setOwner(UserSelect.factory(entity.getOwner()));
-            return categoryForm;
-        }
-
-        @Override
-        public Category updater(CategoryForm restEntity, Category entity, EntityManager entityManager, IdentityProvider identityProvider) {
-            entity.setOwner(identityProvider.getUser());
-            entity.setName(restEntity.getName());
-            entity.setDescription(restEntity.getDescription());
-            return entity;
-        }
-    }
-
-    public static CategoryForm factory(Category category) {
-        return CategoryForm.CategoryFormConverter.INSTANCE.factory(new CategoryForm(), category);
-    }
-
-    public static Category updater(CategoryForm resource, Category entity, EntityManager entityManager, IdentityProvider identityProvider) {
-        return CategoryForm.CategoryFormConverter.INSTANCE.updater(resource, entity, entityManager, identityProvider);
     }
 
 }

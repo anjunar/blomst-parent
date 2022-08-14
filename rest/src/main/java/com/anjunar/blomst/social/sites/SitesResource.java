@@ -6,6 +6,8 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -42,7 +44,8 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
         final List<SiteForm> resources = new ArrayList<>();
 
         for (Site site : sites) {
-            SiteForm form = SiteForm.factory(site);
+            ObjectMapper mapper = new ObjectMapper();
+            SiteForm form = mapper.map(site, SiteForm.class);
 
             linkTo(methodOn(SiteResource.class).read(site.getId()))
                     .build(form::addLink);

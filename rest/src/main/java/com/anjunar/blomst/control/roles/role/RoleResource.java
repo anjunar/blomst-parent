@@ -1,8 +1,11 @@
 package com.anjunar.blomst.control.roles.role;
 
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
 
@@ -57,7 +60,8 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
 
         Role role = entityManager.find(Role.class, id);
 
-        RoleForm resource = RoleForm.factory(role);
+        ObjectMapper mapper = new ObjectMapper();
+        RoleForm resource = mapper.map(role, RoleForm.class);
 
         linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
                 .build(resource::addLink);
@@ -74,9 +78,9 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @LinkDescription("Save Role")
     public RoleForm save(RoleForm form) {
 
-        Role role = new Role();
-
-        RoleForm.updater(form, role, entityManager, identityProvider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Role role = mapper.map(form, Role.class);
 
         entityManager.persist(role);
         form.setId(role.getId());
@@ -95,9 +99,9 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @LinkDescription("Update Role")
     public RoleForm update(UUID id, RoleForm form) {
 
-        Role role = entityManager.find(Role.class, id);
-
-        RoleForm.updater(form, role, entityManager, identityProvider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Role role = mapper.map(form, Role.class);
 
         linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
                 .build(form::addLink);

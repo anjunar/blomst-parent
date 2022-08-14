@@ -1,7 +1,6 @@
 package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
@@ -33,41 +32,5 @@ public class ResumeForm extends AbstractRestEntity {
     public List<ResumeItemForm> getItems() {
         return items;
     }
-
-    public static class ResumeFormConverter extends AbstractRestEntityConverter<Resume, ResumeForm> {
-
-        public static final ResumeFormConverter INSTANCE = new ResumeFormConverter();
-
-        @Override
-        public Resume updater(ResumeForm restEntity, Resume entity, EntityManager entityManager, IdentityProvider identityProvider) {
-            entity.setOwner(identityProvider.getUser());
-            entity.getItems().clear();
-            for (ResumeItemForm item : restEntity.getItems()) {
-                entity.getItems().add(ResumeItemForm.updater(item, new ResumeItem(), identityProvider, entityManager));
-            }
-            return entity;
-        }
-
-        @Override
-        public ResumeForm factory(ResumeForm restEntity, Resume entity) {
-            ResumeForm form = super.factory(restEntity, entity);
-
-            form.setOwner(UserSelect.factory(entity.getOwner()));
-            for (ResumeItem item : entity.getItems()) {
-                form.getItems().add(ResumeItemForm.factory(item));
-            }
-
-            return form;
-        }
-    }
-
-    public static ResumeForm factory(Resume entity) {
-        return ResumeForm.ResumeFormConverter.INSTANCE.factory(new ResumeForm(), entity);
-    }
-
-    public static Resume updater(ResumeForm form, Resume entity, IdentityProvider identityProvider, EntityManager entityManager) {
-        return ResumeForm.ResumeFormConverter.INSTANCE.updater(form, entity, entityManager, identityProvider);
-    }
-
 
 }

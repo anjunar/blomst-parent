@@ -7,6 +7,8 @@ import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -43,7 +45,8 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
         final List<SiteConnectionForm> resources = new ArrayList<>();
 
         for (SiteConnection connection : connections) {
-            SiteConnectionForm form = SiteConnectionForm.factory(connection);
+            ObjectMapper mapper = new ObjectMapper();
+            SiteConnectionForm form = mapper.map(connection, SiteConnectionForm.class);
 
             linkTo(methodOn(SiteConnectionResource.class).read(connection.getId()))
                     .build(form::addLink);

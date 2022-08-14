@@ -9,7 +9,6 @@ import com.anjunar.common.validators.Dom;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
 import jakarta.persistence.EntityManager;
@@ -80,35 +79,4 @@ public class QuestionForm extends AbstractLikeableRestEntity {
         return likes;
     }
 
-    private static class QuestionFormConverter extends AbstractLikeableRestEntityConverter<Question, QuestionForm> {
-
-        public static QuestionFormConverter INSTANCE = new QuestionFormConverter();
-
-        public QuestionForm factory(QuestionForm resource, Question question) {
-            resource.setId(question.getId());
-            resource.setTopic(question.getTopic());
-            resource.setEditor(Editor.factory(question.getHtml(), question.getText()));
-            resource.setPage(question.getPage().getId());
-            resource.setOwner(UserSelect.factory(question.getOwner()));
-            return super.factory(resource, question);
-        }
-
-        public Question updater(QuestionForm resource, Question question, EntityManager entityManager, IdentityProvider identityProvider) {
-            question.setTopic(resource.getTopic());
-            question.setPage(entityManager.find(Page.class, resource.getPage()));
-            question.setHtml(resource.getEditor().getHtml());
-            question.setText(resource.getEditor().getText());
-            User owner = entityManager.find(User.class, resource.getOwner().getId());
-            question.setOwner(owner);
-            return super.updater(resource, question, entityManager, identityProvider);
-        }
-    }
-
-    public static QuestionForm factory(Question question) {
-        return QuestionFormConverter.INSTANCE.factory(new QuestionForm(), question);
-    }
-
-    public static Question updater(QuestionForm resource, Question question, IdentityProvider identityProvider, EntityManager entityManager) {
-        return QuestionFormConverter.INSTANCE.updater(resource, question, entityManager, identityProvider);
-    }
 }

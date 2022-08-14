@@ -6,8 +6,11 @@ import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -90,7 +93,8 @@ public class PageResource {
 
         Page page = auditReader.find(Page.class, id, revision);
 
-        PageForm pageForm = PageForm.factory(page);
+        ObjectMapper mapper = new ObjectMapper();
+        PageForm pageForm = mapper.map(page, PageForm.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
                 .build(pageForm::addLink);
@@ -134,9 +138,9 @@ public class PageResource {
     @LinkDescription("Save Page")
     public PageForm save(PageForm resource) {
 
-        Page page = new Page();
-
-        PageForm.updater(resource, page, identityProvider, entityManager);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Page page = mapper.map(resource, Page.class);
 
         entityManager.persist(page);
 
@@ -158,9 +162,9 @@ public class PageResource {
     @LinkDescription("Update Page")
     public PageForm update(@QueryParam("id") UUID id, PageForm resource) {
 
-        Page page = entityManager.find(Page.class, id);
-
-        PageForm.updater(resource, page, identityProvider, entityManager);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        PageForm page = mapper.map(resource, PageForm.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
                 .build(resource::addLink);

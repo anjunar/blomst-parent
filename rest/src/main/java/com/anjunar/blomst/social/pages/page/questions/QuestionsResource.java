@@ -2,11 +2,14 @@ package com.anjunar.blomst.social.pages.page.questions;
 
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionResource;
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.pages.page.Question;
 
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -45,7 +48,8 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
         List<QuestionForm> resources = new ArrayList<>();
 
         for (Question question : questions) {
-            QuestionForm resource = QuestionForm.factory(question);
+            ObjectMapper mapper = new ObjectMapper();
+            QuestionForm resource = mapper.map(question, QuestionForm.class);
 
             resources.add(resource);
 

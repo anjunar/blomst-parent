@@ -2,15 +2,19 @@ package com.anjunar.blomst.social.communities.community.connections;
 
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionForm;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
+import org.hibernate.mapping.DenormalizedTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +46,8 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
         final List<CommunityConnectionForm> resources = new ArrayList<>();
 
         for (CommunitiesConnection entity : connections) {
-            CommunityConnectionForm form = CommunityConnectionForm.factory(entity);
+            ObjectMapper mapper = new ObjectMapper();
+            CommunityConnectionForm form = mapper.map(entity, CommunityConnectionForm.class);
 
             linkTo(methodOn(CommunityConnectionResource.class).read(entity.getId()))
                     .build(form::addLink);

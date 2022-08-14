@@ -7,7 +7,6 @@ import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.validators.Dom;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
@@ -69,39 +68,4 @@ public class PageForm extends AbstractLikeableRestEntity {
         this.modifier = modifier;
     }
 
-    private static class PageFormConverter extends AbstractLikeableRestEntityConverter<Page, PageForm> {
-
-        public static PageFormConverter INSTANCE = new PageFormConverter();
-
-        public PageForm factory(PageForm pageForm, Page page) {
-            pageForm.setId(page.getId());
-            pageForm.setTitle(page.getTitle());
-            pageForm.setContent(Editor.factory(page.getContent(), page.getText()));
-            pageForm.setLanguage(Language.factory(page.getLanguage()));
-            pageForm.setCreated(page.getCreated());
-            pageForm.setModified(page.getModified());
-            pageForm.setModifier(UserSelect.factory(page.getModifier()));
-            return super.factory(pageForm, page);
-        }
-
-        @Override
-        public Page updater(PageForm pageForm, Page page, EntityManager entityManager, IdentityProvider identityProvider) {
-            page.setTitle(pageForm.getTitle());
-            page.setContent(pageForm.getContent().getHtml());
-            page.setText(pageForm.getContent().getText());
-            page.setModifier(identityProvider.getUser());
-            page.setLanguage(Language.updater(pageForm.getLanguage()));
-            page.setModifier(identityProvider.getUser());
-            page.getLinks().clear();
-            return super.updater(pageForm, page, entityManager, identityProvider);
-        }
-    }
-
-    public static PageForm factory(Page entity) {
-        return PageFormConverter.INSTANCE.factory(new PageForm(), entity);
-    }
-
-    public static Page updater(PageForm form, Page entity, IdentityProvider identityProvider, EntityManager entityManager) {
-        return PageFormConverter.INSTANCE.updater(form, entity, entityManager, identityProvider);
-    }
 }

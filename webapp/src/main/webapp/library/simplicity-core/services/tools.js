@@ -408,26 +408,33 @@ export function generateDomProxy(node) {
         let name = options.property, handler = options.handler, element = options.element,
             scoped = options.scoped || false, passive = options.passive || false, override = options.override || false;
 
-        let result = {
-            node : node,
-            path: name,
-            handler: handler,
-            element: element,
-            scoped : scoped,
-            passive : passive,
-            override : override
-        };
-        node.handlers.push(result);
+        if (node[name] instanceof Object && Reflect.has(node[name], "method") && Reflect.has(node[name], "resonator")) {
+            let nodeElement = node[name];
+            nodeElement.resonator(() => {
+                handler(nodeElement.method());
+            }, element);
+        } else {
+            let result = {
+                node : node,
+                path: name,
+                handler: handler,
+                element: element,
+                scoped : scoped,
+                passive : passive,
+                override : override
+            };
+            node.handlers.push(result);
 
-        element.addEventListener("removed", () => {
-            let entry = node.handlers.find((entry) => entry.path === name && entry.handler === handler);
-            if (entry) {
-                let indexOf = node.handlers.indexOf(entry);
-                node.handlers.splice(indexOf, 1)
-            }
-        })
+            element.addEventListener("removed", () => {
+                let entry = node.handlers.find((entry) => entry.path === name && entry.handler === handler);
+                if (entry) {
+                    let indexOf = node.handlers.indexOf(entry);
+                    node.handlers.splice(indexOf, 1)
+                }
+            })
 
-        return result;
+            return result;
+        }
     }
 
     function removeEventHandler(options) {

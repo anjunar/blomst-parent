@@ -2,7 +2,6 @@ package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.IdentityProvider;
@@ -46,37 +45,6 @@ public class ResumeItemForm extends AbstractRestEntity {
 
     public void setEnd(Year end) {
         this.end = end;
-    }
-
-    public static class ResumeItemConverter extends AbstractRestEntityConverter<ResumeItem, ResumeItemForm> {
-
-        public static final ResumeItemConverter INSTANCE = new ResumeItemConverter();
-
-        @Override
-        public ResumeItem updater(ResumeItemForm restEntity, ResumeItem entity, EntityManager entityManager, IdentityProvider identityProvider) {
-            entity.setSite(entityManager.find(Site.class, restEntity.getSite().getId()));
-            entity.setEnd(restEntity.getEnd());
-            entity.setStart(restEntity.getStart());
-            return entity;
-        }
-
-        @Override
-        public ResumeItemForm factory(ResumeItemForm restEntity, ResumeItem entity) {
-            ResumeItemForm form = super.factory(restEntity, entity);
-            form.setSite(SiteForm.factory(entity.getSite()));
-            form.setEnd(entity.getEnd());
-            form.setStart(entity.getStart());
-            return form;
-        }
-
-    }
-
-    public static ResumeItemForm factory(ResumeItem entity) {
-        return ResumeItemConverter.INSTANCE.factory(new ResumeItemForm(), entity);
-    }
-
-    public static ResumeItem updater(ResumeItemForm form, ResumeItem entity, IdentityProvider identityProvider, EntityManager entityManager) {
-        return ResumeItemConverter.INSTANCE.updater(form, entity, entityManager, identityProvider);
     }
 
 }

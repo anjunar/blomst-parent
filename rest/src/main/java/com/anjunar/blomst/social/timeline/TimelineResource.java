@@ -1,7 +1,10 @@
 package com.anjunar.blomst.social.timeline;
 
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.timeline.post.*;
 import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -52,27 +55,29 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
 
         List<AbstractPostForm> resources = new ArrayList<>();
 
+        ObjectMapper mapper = new ObjectMapper();
+
         for (AbstractPost post : posts) {
 
             AbstractPostForm resource = post.accept(new AbstractPostVisitor<>() {
                 @Override
                 public AbstractPostForm visit(ImagePost post) {
-                    return ImagePostForm.factory(post);
+                    return mapper.map(post, ImagePostForm.class);
                 }
 
                 @Override
                 public AbstractPostForm visit(LinkPost post) {
-                    return LinkPostForm.factory(post);
+                    return mapper.map(post, LinkPostForm.class);
                 }
 
                 @Override
                 public AbstractPostForm visit(TextPost post) {
-                    return TextPostForm.factory(post);
+                    return mapper.map(post, TextPostForm.class);
                 }
 
                 @Override
                 public AbstractPostForm visit(SystemPost post) {
-                    return SystemPostForm.factory(post);
+                    return mapper.map(post, SystemPostForm.class);
                 }
             });
 

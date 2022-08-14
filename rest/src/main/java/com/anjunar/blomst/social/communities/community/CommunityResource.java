@@ -3,6 +3,9 @@ package com.anjunar.blomst.social.communities.community;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
+import com.anjunar.blomst.social.sites.SiteConnection;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -66,7 +69,9 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @Override
     public CommunityForm read(UUID id) {
         Community community = entityManager.find(Community.class, id);
-        CommunityForm form = CommunityForm.factory(community);
+
+        ObjectMapper mapper = new ObjectMapper();
+        CommunityForm form = mapper.map(community, CommunityForm.class);
 
         try {
             CommunitiesConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
@@ -106,9 +111,9 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @Override
     public CommunityForm save(CommunityForm form) {
 
-        Community entity = new Community();
-
-        CommunityForm.updater(form, entity, identityProvider, entityManager);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Community entity = mapper.map(form, Community.class);
 
         entityManager.persist(entity);
         form.setId(entity.getId());
@@ -131,9 +136,9 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     public CommunityForm update(UUID id, CommunityForm form) {
 
         if (service.hasRole("Administrator", id)) {
-            Community entity = entityManager.find(Community.class, id);
-
-            CommunityForm.updater(form, entity, identityProvider, entityManager);
+            NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+            ObjectMapper mapper = new ObjectMapper(instanceProvider);
+            mapper.map(form, Community.class);
 
             linkTo(methodOn(CommunityResource.class).update(id, new CommunityForm()))
                     .build(form::addLink);

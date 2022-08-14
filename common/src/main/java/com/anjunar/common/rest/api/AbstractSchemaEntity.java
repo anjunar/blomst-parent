@@ -12,7 +12,7 @@ import java.util.List;
 public class AbstractSchemaEntity {
 
     @JsonSchema(ignore = true)
-    @JsonProperty(value = "$schema", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "$schema")
     protected final JsonObject schema;
 
     public AbstractSchemaEntity() {

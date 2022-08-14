@@ -2,9 +2,9 @@ package com.anjunar.blomst.shared.users.user;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
+import com.anjunar.common.rest.objectmapper.Mapper;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.User;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +31,8 @@ public class UserSelect extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture", readOnly = true)
-    private ImageType image;
+    @Mapper(ImageConverter.class)
+    private ImageType picture;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Language", readOnly = true)
@@ -61,12 +62,12 @@ public class UserSelect extends AbstractRestEntity {
         this.birthDate = birthDate;
     }
 
-    public ImageType getImage() {
-        return image;
+    public ImageType getPicture() {
+        return picture;
     }
 
-    public void setImage(ImageType image) {
-        this.image = image;
+    public void setPicture(ImageType picture) {
+        this.picture = picture;
     }
 
     public Locale getLanguage() {
@@ -75,19 +76,6 @@ public class UserSelect extends AbstractRestEntity {
 
     public void setLanguage(Locale language) {
         this.language = language;
-    }
-
-    public static UserSelect factory(User user) {
-        UserSelect resource = new UserSelect();
-        resource.setId(user.getId());
-        resource.setFirstName(user.getFirstName());
-        resource.setLastName(user.getLastName());
-        resource.setBirthDate(user.getBirthDate());
-        resource.setLanguage(user.getLanguage());
-        resource.setImage(ImageType.factory(user.getPicture()));
-        resource.setCreated(user.getCreated());
-        resource.setModified(user.getModified());
-        return resource;
     }
 
 }

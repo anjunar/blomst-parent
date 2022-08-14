@@ -1,9 +1,12 @@
 package com.anjunar.blomst.shared.users;
 
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.security.User;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -40,7 +43,8 @@ public class UserSelectResource implements ListResourceTemplate<UserSelect, User
 
         List<UserSelect> resources = new ArrayList<>();
         for (User user : users) {
-            UserSelect resource = UserSelect.factory(user);
+            ObjectMapper mapper = new ObjectMapper();
+            UserSelect resource = mapper.map(user, UserSelect.class);
             resources.add(resource);
         }
 

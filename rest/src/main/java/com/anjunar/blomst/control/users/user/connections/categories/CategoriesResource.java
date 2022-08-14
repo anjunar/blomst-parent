@@ -2,11 +2,14 @@ package com.anjunar.blomst.control.users.user.connections.categories;
 
 import com.anjunar.blomst.control.users.user.connections.categories.category.CategoryForm;
 import com.anjunar.blomst.control.users.user.connections.categories.category.CategoryResource;
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.control.users.Category;
 
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -43,7 +46,8 @@ public class CategoriesResource implements ListResourceTemplate<CategoryForm, Ca
         final List<CategoryForm> resources = new ArrayList<>();
 
         for (Category category : categories) {
-            CategoryForm form = CategoryForm.factory(category);
+            ObjectMapper mapper = new ObjectMapper();
+            CategoryForm form = mapper.map(category, CategoryForm.class);
 
             linkTo(methodOn(CategoryResource.class).read(form.getId()))
                     .build(form::addLink);

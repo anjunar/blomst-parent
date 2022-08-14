@@ -1,9 +1,12 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.blomst.social.pages.page.PageResource;
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.ApplicationResource;
 
@@ -42,7 +45,8 @@ public class PagesResource implements ListResourceTemplate<PagesForm, PagesSearc
 
         List<PagesForm> resources = new ArrayList<>();
         for (Page page : pages) {
-            PagesForm resource = PagesForm.factory(page);
+            ObjectMapper mapper = new ObjectMapper();
+            PagesForm resource = mapper.map(page, PagesForm.class);
 
             linkTo(methodOn(PageResource.class).read(page.getId(), null))
                     .build(resource::addLink);

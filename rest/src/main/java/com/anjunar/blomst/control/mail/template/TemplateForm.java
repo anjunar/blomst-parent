@@ -1,16 +1,11 @@
 package com.anjunar.blomst.control.mail.template;
 
+import com.anjunar.blomst.shared.system.Language;
+import com.anjunar.common.rest.api.AbstractRestEntity;
+import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
-import com.anjunar.blomst.shared.system.Language;
-import com.anjunar.common.mail.Template;
-import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractRestEntityConverter;
-import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.security.IdentityProvider;
-
-import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -54,36 +49,6 @@ public class TemplateForm extends AbstractRestEntity {
 
     public void setContent(Editor content) {
         this.content = content;
-    }
-
-    private static class TemplateFormConverter extends AbstractRestEntityConverter<Template, TemplateForm> {
-
-        public static TemplateFormConverter INSTANCE = new TemplateFormConverter();
-
-        public TemplateForm factory(TemplateForm resource, Template template) {
-            super.factory(resource, template);
-            resource.setId(template.getId());
-            resource.setName(template.getName());
-            resource.setLanguage(Language.factory(template.getLanguage()));
-            resource.setContent(Editor.factory(template.getHtml(), template.getText()));
-            return resource;
-        }
-
-        public Template updater(TemplateForm form, Template template, EntityManager entityManager, IdentityProvider identityProvider) {
-            template.setName(form.getName());
-            template.setLanguage(Language.updater(form.getLanguage()));
-            template.setHtml(form.getContent().getHtml());
-            template.setText(form.getContent().getText());
-            return template;
-        }
-    }
-
-    public static TemplateForm factory(Template template) {
-        return TemplateFormConverter.INSTANCE.factory(new TemplateForm(), template);
-    }
-
-    public static void updater(TemplateForm form, Template template, EntityManager entityManager, IdentityProvider identityProvider) {
-        TemplateFormConverter.INSTANCE.updater(form, template, entityManager, identityProvider);
     }
 
 }

@@ -1,22 +1,13 @@
 package com.anjunar.blomst.control.users.user;
 
-import com.anjunar.common.filedisk.Base64Resource;
-import com.anjunar.common.filedisk.FileDiskUtils;
-import com.anjunar.common.filedisk.Image;
+import com.anjunar.blomst.shared.users.user.ImageConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractRestEntityConverter;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.objectmapper.Converter;
 import com.anjunar.common.rest.objectmapper.Mapper;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.EmailType;
-import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.common.security.Role;
-import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.roles.role.RoleForm;
 
-import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -127,102 +118,5 @@ public class UserForm extends AbstractRestEntity {
     public void setRoles(Set<RoleForm> roles) {
         this.roles = roles;
     }
-
-    public static class ImageConverter implements Converter<Image, ImageType> {
-
-        @Override
-        public ImageType factory(Image harddiskFile) {
-            if (harddiskFile == null) {
-                return new ImageType();
-            }
-            ImageType image = new ImageType();
-            image.setId(harddiskFile.getId());
-            image.setName(harddiskFile.getName());
-            image.setLastModified(harddiskFile.getLastModified());
-            image.setData(FileDiskUtils.buildBase64(harddiskFile.getType(), harddiskFile.getSubType(), harddiskFile.getData()));
-            return image;
-        }
-
-        @Override
-        public Image updater(Image image, ImageType imageType) {
-            if (image == null) {
-                return null;
-            } else {
-                Base64Resource process = FileDiskUtils.extractBase64(imageType.getData());
-
-                image.setData(process.getData());
-                image.setType(process.getType());
-                image.setSubType(process.getSubType());
-
-                image.setName(imageType.getName());
-                image.setLastModified(imageType.getLastModified());
-            }
-            return image;
-        }
-    }
-
-    public static class UserFormConverter extends AbstractRestEntityConverter<User, UserForm> {
-
-        public static final UserFormConverter INSTANCE = new UserFormConverter();
-
-        @Override
-        public UserForm factory(UserForm form, User user) {
-            form.setId(user.getId());
-            form.setFirstName(user.getFirstName());
-            form.setLastName(user.getLastName());
-            form.setBirthDate(user.getBirthDate());
-            form.setPassword("s3cr3t");
-            for (EmailType email : user.getEmails()) {
-                form.getEmails().add(EmailForm.factory(email));
-            }
-            form.setEnabled(user.isEnabled());
-            form.setPicture(ImageType.factory(user.getPicture()));
-            Set<RoleForm> roleForms = new HashSet<>();
-            for (Role role : user.getRoles()) {
-                roleForms.add(RoleForm.factory(role));
-            }
-            form.setRoles(roleForms);
-            return super.factory(form, user);
-        }
-
-        @Override
-        public User updater(UserForm resource, User user, EntityManager entityManager, IdentityProvider identityProvider) {
-            user.setFirstName(resource.getFirstName());
-            user.setLastName(resource.getLastName());
-            user.setBirthDate(resource.getBirthDate());
-            user.setEnabled(resource.isEnabled());
-
-            user.getEmails().clear();
-            for (EmailForm emailForm : resource.getEmails()) {
-                user.getEmails().add(EmailForm.updater(emailForm, new EmailType(), entityManager, identityProvider));
-            }
-
-            if (user.getPicture() == null) {
-                user.setPicture(ImageType.updater(resource.getPicture(), new Image()));
-            } else {
-                user.setPicture(ImageType.updater(resource.getPicture(), user.getPicture()));
-            }
-
-            Set<RoleForm> roleForms = resource.getRoles();
-            if (identityProvider.hasRole("Administrator")) {
-                user.getRoles().clear();
-                for (RoleForm roleForm : roleForms) {
-                    Role role = entityManager.find(Role.class, roleForm.getId());
-                    user.getRoles().add(role);
-                }
-            }
-
-            return user;
-        }
-    }
-
-    public static UserForm factory(User user) {
-        return UserFormConverter.INSTANCE.factory(new UserForm(), user);
-    }
-
-    public static User updater(UserForm resource, User entity, EntityManager entityManager, IdentityProvider identityProvider) {
-        return UserFormConverter.INSTANCE.updater(resource, entity, entityManager, identityProvider);
-    }
-
 
 }

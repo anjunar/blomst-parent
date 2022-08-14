@@ -1,8 +1,11 @@
 package com.anjunar.blomst.control.notifications.notification;
 
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.notifications.Notification;
 import com.anjunar.blomst.control.users.user.UserResource;
@@ -39,7 +42,8 @@ public class NotificationResource implements FormResourceTemplate<NotificationFo
     public NotificationForm read(UUID id) {
         Notification entity = entityManager.find(Notification.class, id);
 
-        NotificationForm form = NotificationForm.factory(entity);
+        ObjectMapper mapper = new ObjectMapper();
+        NotificationForm form = mapper.map(entity, NotificationForm.class);
 
         linkTo(methodOn(NotificationResource.class).update(id, new NotificationForm()))
                 .build(form::addLink);
@@ -59,6 +63,12 @@ public class NotificationResource implements FormResourceTemplate<NotificationFo
     @LinkDescription("Save Notification")
     public NotificationForm save(NotificationForm form) {
 
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Notification entity = mapper.map(form, Notification.class);
+
+        entityManager.persist(entity);
+
         linkTo(methodOn(NotificationResource.class).update(form.getId(), new NotificationForm()))
                 .build(form::addLink);
 
@@ -73,9 +83,9 @@ public class NotificationResource implements FormResourceTemplate<NotificationFo
     @LinkDescription("Update Notification")
     public NotificationForm update(UUID id, NotificationForm form) {
 
-        Notification entity = entityManager.find(Notification.class, id);
-
-        NotificationForm.updater(form, entity, entityManager, provider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        mapper.map(form, Notification.class);
 
         linkTo(methodOn(NotificationResource.class).update(id, new NotificationForm()))
                 .build(form::addLink);

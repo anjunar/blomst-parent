@@ -1,14 +1,10 @@
 package com.anjunar.blomst.social.pages;
 
-import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractRestEntityConverter;
-import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-
-import jakarta.persistence.EntityManager;
+import com.anjunar.common.rest.api.AbstractRestEntity;
+import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -64,25 +60,4 @@ public class PagesForm extends AbstractRestEntity {
         this.modifier = modifier;
     }
 
-    private static class PagesFormConverter extends AbstractRestEntityConverter<Page, PagesForm> {
-
-        public static PagesFormConverter INSTANCE = new PagesFormConverter();
-
-        public PagesForm factory(Page page, PagesForm resource) {
-            resource.setTitle(page.getTitle());
-            resource.setText(page.getText());
-            resource.setLanguage(Language.factory(page.getLanguage()));
-            resource.setModifier(UserSelect.factory(page.getModifier()));
-            return super.factory(resource, page);
-        }
-
-        @Override
-        public Page updater(PagesForm restEntity, Page entity, EntityManager entityManager, IdentityProvider identityProvider) {
-            return null;
-        }
-    }
-
-    public static PagesForm factory(Page page) {
-        return PagesFormConverter.INSTANCE.factory(page, new PagesForm());
-    }
 }

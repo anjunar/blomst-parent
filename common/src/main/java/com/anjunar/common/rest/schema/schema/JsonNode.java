@@ -91,6 +91,8 @@ public abstract class JsonNode {
 
     private Boolean readOnly;
 
+    private Boolean dirty;
+
     private final LinkedHashMap<String, Link> links = new LinkedHashMap<>();
 
     private final LinkedHashMap<String, Validator> validators = new LinkedHashMap<>();
@@ -153,6 +155,14 @@ public abstract class JsonNode {
 
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    public Boolean getDirty() {
+        return dirty;
+    }
+
+    public void setDirty(Boolean dirty) {
+        this.dirty = dirty;
     }
 
     public LinkedHashMap<String, Link> getLinks() {

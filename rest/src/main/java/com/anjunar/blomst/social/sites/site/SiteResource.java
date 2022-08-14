@@ -5,6 +5,8 @@ import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionResource;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -67,7 +69,9 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @Override
     public SiteForm read(UUID id) {
         final Site entity = entityManager.find(Site.class, id);
-        final SiteForm form = SiteForm.factory(entity);
+
+        ObjectMapper mapper = new ObjectMapper();
+        SiteForm form = mapper.map(entity, SiteForm.class);
 
         try {
             SiteConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
@@ -105,11 +109,9 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @LinkDescription("Save Site")
     @Override
     public SiteForm save(SiteForm form) {
-        final Site entity = new Site();
-
-        SiteForm.updater(form, entity, identityProvider, entityManager);
-
-        entityManager.persist(entity);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        SiteForm entity = mapper.map(form, SiteForm.class);
 
         linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
                 .build(form::addLink);
@@ -125,9 +127,10 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @LinkDescription("Update Site")
     @Override
     public SiteForm update(UUID id, SiteForm form) {
-        final Site entity = entityManager.find(Site.class, id);
 
-        SiteForm.updater(form, entity, identityProvider, entityManager);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        mapper.map(form, Site.class);
 
         linkTo(methodOn(SiteResource.class).update(id, new SiteForm()))
                 .build(form::addLink);

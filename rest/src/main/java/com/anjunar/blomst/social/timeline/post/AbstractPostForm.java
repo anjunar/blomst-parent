@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.timeline.post;
 
+import com.anjunar.common.rest.objectmapper.Mapper;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -7,7 +8,6 @@ import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.Identity;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.security.IdentityProvider;
 
@@ -57,23 +57,6 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
 
     public void setSource(UUID source) {
         this.source = source;
-    }
-
-    public static class AbstractPostFormConverter<E extends AbstractPost, R extends AbstractPostForm> extends AbstractLikeableRestEntityConverter<E, R> {
-        public R factory(R resource, E post) {
-            resource.setId(post.getId());
-            resource.setText(post.getText());
-            resource.setOwner(UserSelect.factory(post.getOwner()));
-            resource.setSource(post.getSource().getId());
-            return super.factory(resource, post);
-        }
-
-        public E updater(R resource, E post, EntityManager entityManager, IdentityProvider identityProvider) {
-            post.setOwner(identityProvider.getUser());
-            post.setText(resource.getText());
-            post.setSource(entityManager.find(Identity.class, resource.getSource()));
-            return super.updater(resource, post, entityManager, identityProvider);
-        }
     }
 
 }

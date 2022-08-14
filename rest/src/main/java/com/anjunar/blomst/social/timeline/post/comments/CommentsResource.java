@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.timeline.post.comments;
 
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.timeline.post.comments.comment.CommentForm;
 import com.anjunar.blomst.social.timeline.post.comments.comment.CommentResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -7,6 +8,8 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.timeline.Comment;
 
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -45,7 +48,8 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
         List<CommentForm> resources = new ArrayList<>();
 
         for (Comment comment : comments) {
-            CommentForm resource = CommentForm.factory(comment);
+            ObjectMapper mapper = new ObjectMapper();
+            CommentForm resource = mapper.map(comment, CommentForm.class);
 
             resources.add(resource);
 

@@ -27,33 +27,5 @@ public class ImagePostForm extends AbstractPostForm {
         this.image = image;
     }
 
-    public static class ImagePostFormConverter extends AbstractPostFormConverter<ImagePost, ImagePostForm> {
-
-        public static ImagePostFormConverter INSTANCE = new ImagePostFormConverter();
-
-        public ImagePostForm factory(ImagePostForm post, ImagePost form) {
-            post.setImage(ImageType.factory(form.getImage()));
-
-            return super.factory(post, form);
-        }
-
-        public ImagePost updater(ImagePostForm resource, ImagePost post, EntityManager entityManager, IdentityProvider identityProvider) {
-            if (post.getImage() == null) {
-                post.setImage(ImageType.updater(resource.getImage(), new Image()));
-            } else {
-                post.setImage(ImageType.updater(resource.getImage(), post.getImage()));
-            }
-
-            return super.updater(resource, post, entityManager, identityProvider);
-        }
-    }
-
-    public static ImagePostForm factory(ImagePost form) {
-        return new ImagePostFormConverter().factory(new ImagePostForm(), form);
-    }
-
-    public static ImagePost updater(ImagePostForm resource, ImagePost post, IdentityProvider identityProvider, EntityManager entityManager) {
-        return ImagePostFormConverter.INSTANCE.updater(resource, post, entityManager, identityProvider);
-    }
 
 }

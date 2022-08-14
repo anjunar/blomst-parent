@@ -1,11 +1,11 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
+import com.anjunar.common.rest.objectmapper.Mapper;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.social.timeline.Comment;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntityConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.security.IdentityProvider;
 
@@ -73,37 +73,4 @@ public class CommentForm extends AbstractLikeableRestEntity {
         return likes;
     }
 
-    private static class CommentFormConverter extends AbstractLikeableRestEntityConverter<Comment, CommentForm> {
-
-        public static CommentFormConverter INSTANCE = new CommentFormConverter();
-
-        public CommentForm factory(CommentForm resource, Comment comment) {
-            resource.setId(comment.getId());
-            resource.setText(comment.getText());
-            resource.setPost(comment.getPost().getId());
-            if (comment.getParent() != null) {
-                resource.setParent(comment.getParent().getId());
-            }
-            resource.setOwner(UserSelect.factory(comment.getOwner()));
-            return super.factory(resource, comment);
-        }
-
-        public Comment updater(CommentForm resource, Comment comment, EntityManager entityManager, IdentityProvider identityProvider) {
-            comment.setOwner(identityProvider.getUser());
-            comment.setPost(entityManager.find(AbstractPost.class, resource.getPost()));
-            if (resource.getParent() != null) {
-                comment.setParent(entityManager.find(Comment.class, resource.getParent()));
-            }
-            comment.setText(resource.getText());
-            return super.updater(resource, comment, entityManager, identityProvider);
-        }
-    }
-
-    public static CommentForm factory(Comment comment) {
-        return CommentFormConverter.INSTANCE.factory(new CommentForm(), comment);
-    }
-
-    public static Comment updater(CommentForm resource, Comment comment, IdentityProvider identityProvider, EntityManager entityManager) {
-        return CommentFormConverter.INSTANCE.updater(resource, comment, entityManager, identityProvider);
-    }
 }

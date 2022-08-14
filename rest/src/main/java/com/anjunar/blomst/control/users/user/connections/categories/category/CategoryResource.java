@@ -1,8 +1,11 @@
 package com.anjunar.blomst.control.users.user.connections.categories.category;
 
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -51,7 +54,8 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     public CategoryForm create() {
         CategoryForm form = new CategoryForm();
 
-        form.setOwner(UserSelect.factory(identityProvider.getUser()));
+        ObjectMapper mapper = new ObjectMapper();
+        form.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(CategoryResource.class).save(new CategoryForm()))
                 .build(form::addLink);
@@ -71,7 +75,8 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
 
         Category entity = entityManager.find(Category.class, id);
 
-        CategoryForm form = CategoryForm.factory(entity);
+        ObjectMapper mapper = new ObjectMapper();
+        CategoryForm form = mapper.map(entity, CategoryForm.class);
 
         linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))
                 .build(form::addLink);
@@ -91,9 +96,9 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @LinkDescription("Save Category")
     public CategoryForm save(CategoryForm form) {
 
-        Category entity = new Category();
-
-        CategoryForm.updater(form, entity, entityManager, identityProvider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Category entity = mapper.map(form, Category.class);
 
         entityManager.persist(entity);
 
@@ -110,9 +115,10 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Category")
     public CategoryForm update(UUID id, CategoryForm form) {
-        Category entity = entityManager.find(Category.class, id);
 
-        CategoryForm.updater(form, entity, entityManager, identityProvider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        mapper.map(form, Category.class);
 
         linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))
                 .build(form::addLink);

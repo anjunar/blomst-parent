@@ -63,16 +63,4 @@ public class PageHistoryForm extends AbstractRestEntity {
         this.modifier = modifier;
     }
 
-    public static PageHistoryForm factory(Page page, Number revision) {
-        PageHistoryForm resource = new PageHistoryForm();
-        resource.setId(page.getId());
-        resource.setTitle(page.getTitle());
-        resource.setContent(page.getContent());
-        resource.setText(page.getText());
-        resource.setRevision(revision);
-        resource.setModified(page.getModified());
-        resource.setCreated(page.getCreated());
-        resource.setModifier(UserSelect.factory(page.getModifier()));
-        return resource;
-    }
 }

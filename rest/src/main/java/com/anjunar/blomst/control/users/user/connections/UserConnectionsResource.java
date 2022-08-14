@@ -3,9 +3,13 @@ package com.anjunar.blomst.control.users.user.connections;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
+import com.anjunar.blomst.social.sites.SiteConnection;
+import com.anjunar.common.mail.Template;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.UserConnection;
 
@@ -48,7 +52,8 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
         List<UserConnection> accepted = service.accepted(search.getFrom());
 
         for (UserConnection connection : connections) {
-            ConnectionRow form = ConnectionRow.factory(connection);
+            ObjectMapper mapper = new ObjectMapper();
+            ConnectionRow form = mapper.map(connection, ConnectionRow.class);
 
             for (UserConnection acceptedConnection : accepted) {
                 if (acceptedConnection.getFrom().equals(connection.getTo())) {

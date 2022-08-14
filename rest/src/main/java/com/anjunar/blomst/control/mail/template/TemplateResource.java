@@ -1,10 +1,13 @@
 package com.anjunar.blomst.control.mail.template;
 
+import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.mail.Template;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
+import com.anjunar.common.rest.objectmapper.ObjectMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.ApplicationResource;
@@ -68,7 +71,8 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
 
         Template template = entityManager.find(Template.class, id);
 
-        TemplateForm resource = TemplateForm.factory(template);
+        ObjectMapper mapper = new ObjectMapper();
+        TemplateForm resource = mapper.map(template, TemplateForm.class);
 
         linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
                 .build(resource::addLink);
@@ -88,9 +92,9 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @LinkDescription("Save Template")
     public TemplateForm save(TemplateForm form) {
 
-        Template template = new Template();
-
-        TemplateForm.updater(form, template, entityManager, identityProvider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        TemplateForm template = mapper.map(form, TemplateForm.class);
 
         entityManager.persist(template);
 
@@ -110,9 +114,9 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @LinkDescription("Update Template")
     public TemplateForm update(UUID id, TemplateForm form) {
 
-        Template template = entityManager.find(Template.class, id);
-
-        TemplateForm.updater(form, template, entityManager, identityProvider);
+        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
+        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        Template template = mapper.map(form, Template.class);
 
         linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
                 .build(form::addLink);
