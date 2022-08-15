@@ -2,7 +2,7 @@ package com.anjunar.common.rest.link;
 
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Link;
-import com.anjunar.common.rest.api.LinkType;
+import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
@@ -43,7 +43,7 @@ public class JaxRSInvocation {
     private String rel;
     private String httpMethod;
     private Object body;
-    private LinkType type;
+    private com.anjunar.common.rest.api.LinkType type;
 
     private final Object[] args;
     private final ResolvedMethod<?> method;
@@ -177,9 +177,18 @@ public class JaxRSInvocation {
 
         LinkDescription linkDescription = method.getAnnotation(LinkDescription.class);
 
+        Class<?> declaringClass = method.getDeclaringClass();
+
+        LinkType type;
+        if (ListResourceTemplate.class.isAssignableFrom(declaringClass)) {
+            type = LinkType.TABLE;
+        } else {
+            type = LinkType.FORM;
+        }
+
         if (rolesAllowed == null) {
 
-            consumer.accept(rel, new Link("service" + url.toASCIIString(), buildMethod(), rel, linkDescription == null ? null : linkDescription.value()));
+            consumer.accept(rel, new Link("service" + url.toASCIIString(), buildMethod(), rel, linkDescription == null ? null : linkDescription.value(), type));
 
         } else {
             if (hasRoles(rolesAllowed.value())) {
@@ -187,7 +196,7 @@ public class JaxRSInvocation {
                 MethodPredicate methodPredicate = method.getAnnotation(MethodPredicate.class);
 
                 if (methodPredicate == null) {
-                    consumer.accept(rel, new Link("service" + url.toASCIIString(), buildMethod(), rel, linkDescription == null ? null : linkDescription.value()));
+                    consumer.accept(rel, new Link("service" + url.toASCIIString(), buildMethod(), rel, linkDescription == null ? null : linkDescription.value(), type));
                 } else {
 
                     Class<?> resolverCLass = methodPredicate.value();
@@ -202,7 +211,7 @@ public class JaxRSInvocation {
                         boolean result = (boolean) resolvedMethod.invoke(resolverInstance, args[0]);
 
                         if (result) {
-                            consumer.accept(rel, new Link("service" + url.toASCIIString(), buildMethod(), rel, linkDescription == null ? null : linkDescription.value()));
+                            consumer.accept(rel, new Link("service" + url.toASCIIString(), buildMethod(), rel, linkDescription == null ? null : linkDescription.value(), type));
                         }
 
                     } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {

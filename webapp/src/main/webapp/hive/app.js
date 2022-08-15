@@ -10,7 +10,7 @@ import {routes} from "./routes.js"
 class HiveApp extends HTMLElement {
 
     get navigatorLink() {
-        return `navigator?link=${encodeURIComponent("service")}`
+        return `navigator/form?link=${encodeURIComponent("service")}`
     }
 
     static get routes() {

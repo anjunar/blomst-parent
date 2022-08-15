@@ -23,7 +23,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider
     {
         return ConfigurationBuilder.begin()
                 .addRule()
-                .when(Direction.isInbound().and(Path.matches("/navigator")))
+                .when(Direction.isInbound().and(Path.matches("/navigator/{option}")))
                 .perform(Forward.to("/"));
     }
 }

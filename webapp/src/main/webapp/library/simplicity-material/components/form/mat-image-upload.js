@@ -15,6 +15,8 @@ class MatImageUpload extends mix(HTMLElement).with(Input) {
         name : ""
     }
 
+    value;
+
     placeholder = ""
 
     initialize() {
@@ -32,7 +34,9 @@ class MatImageUpload extends mix(HTMLElement).with(Input) {
         this.model.data = event.detail.data;
         this.model.lastModified = event.detail.lastModified;
         this.model.name = event.detail.name;
-        this.dispatchEvent(new CustomEvent("model"))
+        this.value = this.model;
+        this.dispatchEvent(new CustomEvent("model"));
+        this.dispatchEvent(new CustomEvent("input"));
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

@@ -1,10 +1,9 @@
 import {customViews} from "../../library/simplicity-core/simplicity.js";
 import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
 import MetaForm from "../../library/simplicity-material/components/meta/meta-form.js";
-import MetaTable from "../../library/simplicity-material/components/meta/meta-table.js";
 import MetaInput from "../../library/simplicity-material/components/meta/meta-input.js";
 
-class Navigator extends HTMLElement {
+class Table extends HTMLElement {
 
     model;
 
@@ -28,18 +27,22 @@ class Navigator extends HTMLElement {
     }
 
     onAction(link) {
-        fetch(link.url, {body : JSON.stringify(this.model), method : link.method, headers: new Headers({'content-type': 'application/json'}),})
+        fetch(link.url, {
+            body: JSON.stringify(this.model),
+            method: link.method,
+            headers: new Headers({'content-type': 'application/json'}),
+        })
             .then(response => response.json())
             .then(response => {
-/*
-                const tx = db.transaction("activities", "readwrite");
-                const store = tx.objectStore("activities");
-                store.put({
-                    created : Date.now(),
-                    description : link.description,
-                    content : JSON.stringify(this.model)
-                });
-*/
+                /*
+                                const tx = db.transaction("activities", "readwrite");
+                                const store = tx.objectStore("activities");
+                                store.put({
+                                    created : Date.now(),
+                                    description : link.description,
+                                    content : JSON.stringify(this.model)
+                                });
+                */
             })
     }
 
@@ -47,8 +50,11 @@ class Navigator extends HTMLElement {
         return decodeURIComponent(this.queryParams.link);
     }
 
-    hrefLink(url) {
-        return `navigator?link=${encodeURIComponent(url)}`;
+    hrefLink(link) {
+        if (link.type === "table") {
+            return `navigator/table?link=${encodeURIComponent(link.url)}`;
+        }
+        return `navigator/form?link=${encodeURIComponent(link.url)}`;
     }
 
     links(links) {
@@ -60,19 +66,19 @@ class Navigator extends HTMLElement {
     }
 
     static get components() {
-        return [MetaForm, MetaTable, MetaInput];
+        return [MetaForm, MetaInput];
     }
 
     static get template() {
-        return loader("hive/navigator/navigator.html");
+        return loader("hive/navigator/form.html");
     }
 
 
 }
 
 export default customViews.define({
-    name: "app-navigator",
-    class: Navigator,
+    name: "app-navigator-form",
+    class: Table,
     guard(activeRoute) {
         return {
             model: fetch(decodeURIComponent(activeRoute.queryParams.link))

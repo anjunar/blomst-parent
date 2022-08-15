@@ -3,8 +3,9 @@ import {libraryLoader} from "../../../../simplicity-core/processors/loader-proce
 import DomForm from "../../../../simplicity-core/directives/dom-form.js";
 import MetaForm from "../meta-form.js";
 import MetaInput from "../meta-input.js";
+import {Input, Membrane, mix} from "../../../../simplicity-core/services/tools.js";
 
-class MetaInputRepeat extends HTMLElement {
+class MetaInputRepeat extends mix(HTMLElement).with(Input) {
 
     property;
     schema;
@@ -14,11 +15,13 @@ class MetaInputRepeat extends HTMLElement {
     addItem() {
         let chunk = {$schema : this.schema.items};
         this.model.push(chunk)
+        this.dispatchEvent(new Event("input"))
     }
 
     removeItem(value) {
         let indexOf = this.model.indexOf(value);
-        this.model.splice(indexOf); 
+        this.model.splice(indexOf);
+        this.dispatchEvent(new Event("input"))
     }
 
     preInitialize() {
@@ -32,6 +35,14 @@ class MetaInputRepeat extends HTMLElement {
                 domForm.register(this);
             }
         }
+
+        Membrane.track(this, {
+            property : "dirty",
+            element : this,
+            handler : (value) => {
+                this.schema.dirty = value;
+            }
+        })
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

@@ -111,7 +111,9 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     public SiteForm save(SiteForm form) {
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
         ObjectMapper mapper = new ObjectMapper(instanceProvider);
-        SiteForm entity = mapper.map(form, SiteForm.class);
+        Site entity = mapper.map(form, Site.class);
+
+        entityManager.persist(entity);
 
         linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
                 .build(form::addLink);
@@ -130,12 +132,12 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
         ObjectMapper mapper = new ObjectMapper(instanceProvider);
-        mapper.map(form, Site.class);
+        Site entity = mapper.map(form, Site.class);
 
-        linkTo(methodOn(SiteResource.class).update(id, new SiteForm()))
+        linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
                 .build(form::addLink);
 
-        linkTo(methodOn(SiteResource.class).delete(id))
+        linkTo(methodOn(SiteResource.class).delete(entity.getId()))
                 .build(form::addLink);
 
         return form;

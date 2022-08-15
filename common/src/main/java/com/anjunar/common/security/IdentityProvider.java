@@ -112,33 +112,6 @@ public class IdentityProvider implements Serializable {
         return false;
     }
 
-    @Transactional
-    public void createLink(String url, String method, String rel, LinkType type, Consumer<Link> loader) {
-        String[] rawUrl = url.split("\\?");
-
-        Set<Resource<?>> resources = extension.getResources();
-        for (Resource<?> resource : resources) {
-            for (Operation operation : resource.getOperations()) {
-                if (operation.getUrl().equals(rawUrl[0]) && operation.getHttpMethod().equals(method)) {
-                    RolesAllowed rolesAllowed = operation.getMethod().getAnnotation(RolesAllowed.class);
-                    LinkDescription linkDescription = operation.getMethod().getAnnotation(LinkDescription.class);
-                    if (rolesAllowed != null) {
-                        for (String role : rolesAllowed.value()) {
-                            if (hasRole(role)) {
-                                Link link = new Link("service/" + url, method, rel, linkDescription == null ? null : linkDescription.value());
-                                loader.accept(link);
-                                break;
-                            }
-                        }
-                    } else {
-                        Link link = new Link("service/" + url, method, rel, linkDescription == null ? null : linkDescription.value());
-                        loader.accept(link);
-                    }
-                }
-            }
-        }
-    }
-
     public Locale getLanguage() {
         return resolver.getLocale();
     }

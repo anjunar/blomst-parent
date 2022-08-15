@@ -12,6 +12,7 @@ class MetaTable extends HTMLElement {
     parent;
 
     schema = {
+        links : {},
         properties: {
             rows : {
                 items : {
@@ -20,6 +21,17 @@ class MetaTable extends HTMLElement {
             }
         }
     };
+
+    links(links) {
+        return Object.values(links).filter((link) => link.method === "GET");
+    }
+
+    hrefLink(link) {
+        if (link.type === "table") {
+            return `navigator/table?link=${encodeURIComponent(link.url)}`;
+        }
+        return `navigator/form?link=${encodeURIComponent(link.url)}`;
+    }
 
     onRowClick(event) {
         this.dispatchEvent(new CustomEvent("model", {detail : event.detail}));
