@@ -1,10 +1,8 @@
 package com.anjunar.blomst.social.timeline;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.timeline.post.*;
 import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -55,7 +53,7 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
 
         List<AbstractPostForm> resources = new ArrayList<>();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
 
         for (AbstractPost post : posts) {
 

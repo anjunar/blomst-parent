@@ -5,11 +5,8 @@ import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
-import com.anjunar.common.ddd.AbstractEntity;
-import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.objectmapper.IdProvider;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -48,7 +45,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -129,17 +125,19 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         User user = entityManager.find(User.class, id);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         UserForm resource = mapper.map(user, UserForm.class);
 
         if (identityProvider.hasRole("Administrator") || identityProvider.getUser().equals(user)) {
             resource.setPassword(user.getPassword());
         }
 
+/*
         Resume resume = service.findResume(identityProvider.getUser());
         linkTo(methodOn(ResumeResource.class).read(resume.getId()))
                 .withRel("resume")
                 .build(resource::addLink);
+*/
 
         try {
             UserConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
@@ -175,6 +173,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         UserConnectionsSearch userConnectionsSearch = new UserConnectionsSearch();
         userConnectionsSearch.setFrom(id);
+        userConnectionsSearch.setTo(user.getId());
         linkTo(methodOn(UserConnectionsResource.class).list(userConnectionsSearch))
                 .withRel("user-connections")
                 .build(resource::addLink);
@@ -201,7 +200,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     public UserForm save(UserForm resource) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         User user = mapper.map(resource, User.class);
 
         user.setPassword(resource.getPassword());
@@ -249,7 +248,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     public UserForm update(UUID id, UserForm resource) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         User user = mapper.map(resource, User.class);
 
         if (identityProvider.hasRole("Administrator") || identityProvider.getUser().equals(user)) {

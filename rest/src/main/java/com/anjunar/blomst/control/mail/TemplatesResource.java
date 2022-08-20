@@ -2,15 +2,12 @@ package com.anjunar.blomst.control.mail;
 
 import com.anjunar.blomst.control.mail.template.TemplateForm;
 import com.anjunar.blomst.control.mail.template.TemplateResource;
-import com.anjunar.blomst.control.notifications.Notification;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.mail.Template;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -49,7 +46,7 @@ public class TemplatesResource implements ListResourceTemplate<TemplateForm, Tem
 
         for (Template template : templates) {
 
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             TemplateForm resource = mapper.map(template, TemplateForm.class);
 
             linkTo(methodOn(TemplateResource.class).read(template.getId()))

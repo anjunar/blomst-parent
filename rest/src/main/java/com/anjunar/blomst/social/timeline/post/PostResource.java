@@ -2,14 +2,13 @@ package com.anjunar.blomst.social.timeline.post;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.shared.users.user.UserSelect;
@@ -71,7 +70,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         resource.setSource(source);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         resource.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))
@@ -90,7 +89,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         post.setViews(post.getViews() == null ? 0 : post.getViews() + 1);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
 
         AbstractPostForm resource = post.accept(new AbstractPostVisitor<>() {
             @Override
@@ -165,7 +164,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         });
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
 
         post.accept(new AbstractPostVisitor<>() {
             @Override
@@ -211,7 +210,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
 
         post.accept(new AbstractPostVisitor<>() {
             @Override

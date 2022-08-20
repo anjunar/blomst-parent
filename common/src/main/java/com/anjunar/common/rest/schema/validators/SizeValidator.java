@@ -24,9 +24,4 @@ public class SizeValidator implements Validator {
         return max;
     }
 
-    @Override
-    public String getName() {
-        return "size";
-    }
-
 }

@@ -333,6 +333,10 @@ export function membraneFactory(instance, parent = []) {
                     return Reflect.get(target, p, receiver);
                 }
 
+                if (target instanceof WebSocket) {
+                    return Reflect.get(target, p, receiver);
+                }
+
                 let result = Reflect.get(target, p, receiver);
                 if (result && result.isProxy) {
                     return result;

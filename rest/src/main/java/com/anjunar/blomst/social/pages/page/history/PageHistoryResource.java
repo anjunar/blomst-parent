@@ -1,13 +1,11 @@
 package com.anjunar.blomst.social.pages.page.history;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.page.PageResource;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 
@@ -52,7 +50,7 @@ public class PageHistoryResource implements ListResourceTemplate<PageHistoryForm
         for (Number revision : pages) {
             Page page = auditReader.find(Page.class, search.getId(), revision);
 
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             PageHistoryForm resource = mapper.map(page, PageHistoryForm.class);
 
             linkTo(methodOn(PageResource.class).read(page.getId(), (Integer) revision))

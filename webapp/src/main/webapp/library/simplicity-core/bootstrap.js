@@ -46,6 +46,7 @@ export function mountApp(options) {
                 return false;
             }
 
+/*
             if (options.history) {
                 window.addEventListener("click", (event) => {
                     let aElement = event.path.find((element) => element.localName === "a" && element.hasAttribute("href"));
@@ -64,6 +65,7 @@ export function mountApp(options) {
                     return true;
                 })
             }
+*/
         })
 
 }

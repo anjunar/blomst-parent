@@ -94,3 +94,5 @@ jboss-cli.bat --connect --file=configure-elytron.cli
 anjunar-parent/application/src/main/server/wildFly/modules
 
 copy to $JBOSS_HOME/modules
+
+https://github.com/wildfly/quickstart/tree/main/messaging-clustering-singleton

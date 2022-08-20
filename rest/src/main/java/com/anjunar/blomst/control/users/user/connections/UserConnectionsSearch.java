@@ -23,7 +23,6 @@ public class UserConnectionsSearch extends AbstractRestSearch {
     @QueryParam("category")
     private UUID category;
 
-    @RestPredicate(ToProvider.class)
     @QueryParam("to")
     private UUID to;
 

@@ -2,12 +2,10 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers;
 
 import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.AnswerForm;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.AnswerResource;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.social.pages.page.Answer;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -51,7 +49,7 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
         List<AnswerForm> resources = new ArrayList<>();
 
         for (Answer answer : replies) {
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             AnswerForm resource = mapper.map(answer, AnswerForm.class);
 
             resources.add(resource);

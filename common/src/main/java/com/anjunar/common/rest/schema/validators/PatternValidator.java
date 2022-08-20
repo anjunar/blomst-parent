@@ -18,8 +18,4 @@ public class PatternValidator implements Validator {
         return regexp;
     }
 
-    @Override
-    public String getName() {
-        return "pattern";
-    }
 }

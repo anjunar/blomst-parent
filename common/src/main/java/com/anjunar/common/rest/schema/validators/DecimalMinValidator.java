@@ -18,8 +18,4 @@ public class DecimalMinValidator implements Validator {
         return value;
     }
 
-    @Override
-    public String getName() {
-        return "decimalMin";
-    }
 }

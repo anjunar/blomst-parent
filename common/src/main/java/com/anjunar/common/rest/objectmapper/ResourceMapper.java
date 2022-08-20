@@ -15,20 +15,20 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage", "rawtypes"})
-public class ObjectMapper {
+public class ResourceMapper {
 
-    private static final Logger log = LoggerFactory.getLogger(ObjectMapper.class);
+    private static final Logger log = LoggerFactory.getLogger(ResourceMapper.class);
 
     private final NewInstanceProvider newInstanceProvider;
 
     private final IdProvider idProvider;
 
-    public ObjectMapper(NewInstanceProvider newInstanceProvider, IdProvider idProvider) {
+    public ResourceMapper(NewInstanceProvider newInstanceProvider, IdProvider idProvider) {
         this.newInstanceProvider = newInstanceProvider;
         this.idProvider = idProvider;
     }
 
-    public ObjectMapper() {
+    public ResourceMapper() {
         this(
                 (id, sourceClass) -> {
                     try {
@@ -41,7 +41,7 @@ public class ObjectMapper {
                 source -> null);
     }
 
-    public ObjectMapper(NewInstanceProvider newInstanceProvider) {
+    public ResourceMapper(NewInstanceProvider newInstanceProvider) {
         this(
                 newInstanceProvider,
                 source -> {

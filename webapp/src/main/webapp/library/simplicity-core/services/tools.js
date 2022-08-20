@@ -13,7 +13,9 @@ export function css(stylesheet) {
             cssString += "\t" + unescaped + " : " + value + ";\n"
         }
         cssString += "}\n"
-        sheet.insertRule(cssString);
+        if (cssString) {
+            sheet.insertRule(cssString);
+        }
     }
 }
 
@@ -365,7 +367,7 @@ export function generateDomProxy(node) {
             enumerable: true,
             get() {
                 let instance = Reflect.get(data, property);
-                if (instance && instance.isProxy) {
+                if ((instance && instance.isProxy) || (instance && instance instanceof WebSocket)) {
                     return instance;
                 }
                 return membraneFactory(instance, [{

@@ -6,11 +6,10 @@ import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -93,7 +92,7 @@ public class PageResource {
 
         Page page = auditReader.find(Page.class, id, revision);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         PageForm pageForm = mapper.map(page, PageForm.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
@@ -139,7 +138,7 @@ public class PageResource {
     public PageForm save(PageForm resource) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Page page = mapper.map(resource, Page.class);
 
         entityManager.persist(page);
@@ -163,7 +162,7 @@ public class PageResource {
     public PageForm update(@QueryParam("id") UUID id, PageForm resource) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         PageForm page = mapper.map(resource, PageForm.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))

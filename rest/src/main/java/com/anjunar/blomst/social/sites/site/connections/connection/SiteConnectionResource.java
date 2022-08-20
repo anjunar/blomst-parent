@@ -4,7 +4,7 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.Site;
@@ -51,7 +51,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public SiteConnectionForm create(@QueryParam("to") UUID to) {
         SiteConnectionForm form = new SiteConnectionForm();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
 
         form.setFrom(mapper.map(identityProvider.getUser(), UserSelect.class));
         form.setTo(mapper.map(entityManager.find(Site.class, to), SiteForm.class));
@@ -67,7 +67,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @LinkDescription("Read Site Connection")
     @Override
     public SiteConnectionForm read(UUID id) {
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
 
         SiteConnection entity = entityManager.find(SiteConnection.class, id);
         SiteConnectionForm form = mapper.map(entity, SiteConnectionForm.class);
@@ -88,7 +88,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public SiteConnectionForm save(SiteConnectionForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         SiteConnection entity = mapper.map(form, SiteConnection.class);
 
         entityManager.persist(entity);
@@ -107,7 +107,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @Override
     public SiteConnectionForm update(UUID id, SiteConnectionForm form) {
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         mapper.map(form, SiteConnection.class);
 
         linkTo(methodOn(SiteConnectionResource.class).update(id, new SiteConnectionForm()))

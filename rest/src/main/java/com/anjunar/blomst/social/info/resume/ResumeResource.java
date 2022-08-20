@@ -1,13 +1,12 @@
 package com.anjunar.blomst.social.info.resume;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.control.users.Resume;
@@ -45,7 +44,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     public ResumeForm read(UUID id) {
         final Resume entity = entityManager.find(Resume.class, id);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         ResumeForm form = mapper.map(entity, ResumeForm.class);
 
         linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
@@ -66,7 +65,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     public ResumeForm save(ResumeForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Resume entity = mapper.map(form, Resume.class);
 
         entityManager.persist(entity);
@@ -84,7 +83,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     @Override
     public ResumeForm update(UUID id, ResumeForm form) {
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Resume entity = mapper.map(form, Resume.class);
 
         linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))

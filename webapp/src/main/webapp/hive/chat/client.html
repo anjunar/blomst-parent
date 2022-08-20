@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/xhtml" xmlns:read="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<template>
+
+    <div bind:for="let message of messages">
+        <div style="display: flex; margin: 5px;">
+            <img read:src="message.from.picture.data" style="max-width: 32px; max-height: 32px; border-radius: 50%;">
+            <div style="line-height: 32px; margin-left: 5px">{{{message.text}}}</div>
+        </div>
+    </div>
+
+    <mat-input-container placeholder="Text">
+        <input type="text" is="dom-input" bind:model="model.text"/>
+    </mat-input-container>
+
+    <button type="button" bind:onclick="send()">Send</button>
+</template>
+</body>
+</html>

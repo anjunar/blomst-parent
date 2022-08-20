@@ -1,11 +1,10 @@
 package com.anjunar.blomst.control.users.user.connections.categories.category;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -54,7 +53,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     public CategoryForm create() {
         CategoryForm form = new CategoryForm();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         form.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(CategoryResource.class).save(new CategoryForm()))
@@ -75,7 +74,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
 
         Category entity = entityManager.find(Category.class, id);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         CategoryForm form = mapper.map(entity, CategoryForm.class);
 
         linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))
@@ -97,7 +96,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     public CategoryForm save(CategoryForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Category entity = mapper.map(form, Category.class);
 
         entityManager.persist(entity);
@@ -117,7 +116,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     public CategoryForm update(UUID id, CategoryForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         mapper.map(form, Category.class);
 
         linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))

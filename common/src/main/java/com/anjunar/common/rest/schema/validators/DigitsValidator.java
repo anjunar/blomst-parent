@@ -25,8 +25,4 @@ public class DigitsValidator implements Validator {
         return fraction;
     }
 
-    @Override
-    public String getName() {
-        return "digits";
-    }
 }

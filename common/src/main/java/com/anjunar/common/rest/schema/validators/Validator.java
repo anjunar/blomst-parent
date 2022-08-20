@@ -24,8 +24,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(PositiveOrZeroValidator.class),
         @JsonSubTypes.Type(SizeValidator.class),
 })
-public interface Validator {
-
-    String getName();
-
-}
+public interface Validator { }

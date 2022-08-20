@@ -1,11 +1,10 @@
 package com.anjunar.blomst.control.roles.role;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
 
@@ -60,7 +59,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
 
         Role role = entityManager.find(Role.class, id);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         RoleForm resource = mapper.map(role, RoleForm.class);
 
         linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
@@ -79,7 +78,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     public RoleForm save(RoleForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Role role = mapper.map(form, Role.class);
 
         entityManager.persist(role);
@@ -100,7 +99,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     public RoleForm update(UUID id, RoleForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Role role = mapper.map(form, Role.class);
 
         linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))

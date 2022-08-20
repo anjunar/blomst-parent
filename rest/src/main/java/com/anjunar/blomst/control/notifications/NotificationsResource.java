@@ -2,12 +2,10 @@ package com.anjunar.blomst.control.notifications;
 
 import com.anjunar.blomst.control.notifications.notification.NotificationForm;
 import com.anjunar.blomst.control.notifications.notification.NotificationResource;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.security.IdentityProvider;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -53,7 +51,7 @@ public class NotificationsResource implements ListResourceTemplate<NotificationF
         final List<NotificationForm> resources = new ArrayList<>();
 
         for (Notification notification : notifications) {
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             NotificationForm form = mapper.map(notification, NotificationForm.class);
 
             linkTo(methodOn(NotificationResource.class).read(notification.getId()))

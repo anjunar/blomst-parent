@@ -39,8 +39,8 @@ public class UserConnectionService {
         notification.setSource(fromUser);
         notification.setAcknowledge(false);
 
-        ResourceBundle bundle = ResourceBundle.getBundle("de.anjunar.hive.i18nMessages", identityProvider.getLanguage());
-        String template = bundle.getString("de.anjunar.hive.control.users.user.connections.connection.UserConnectionService.createNotification");
+        ResourceBundle bundle = ResourceBundle.getBundle("com.anjunar.blomst.i18nMessages", identityProvider.getLanguage());
+        String template = bundle.getString("com.anjunar.blomst.control.users.user.connections.connection.UserConnectionService.createNotification");
         String format = MessageFormat.format(template, fromUser.getFirstName(), fromUser.getLastName());
         notification.setText(format);
 

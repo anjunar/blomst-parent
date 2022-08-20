@@ -17,8 +17,4 @@ public class MaxValidator implements Validator {
         return value;
     }
 
-    @Override
-    public String getName() {
-        return "max";
-    }
 }

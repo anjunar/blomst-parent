@@ -1,6 +1,5 @@
 package com.anjunar.blomst;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ValidationResource;
@@ -26,8 +25,7 @@ import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 
@@ -129,7 +127,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
         if (identityProvider.isLoggedIn()) {
 
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             UserSelect userSelect = mapper.map(identityProvider.getUser(), UserSelect.class);
 
             PagesSearch search = new PagesSearch();

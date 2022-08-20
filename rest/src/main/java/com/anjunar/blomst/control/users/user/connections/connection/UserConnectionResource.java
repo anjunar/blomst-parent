@@ -1,11 +1,10 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
@@ -56,7 +55,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
         UserConnectionForm form = new UserConnectionForm();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
 
         form.setFrom(mapper.map(identityProvider.getUser(), UserSelect.class));
         form.setTo(mapper.map(entityManager.find(User.class, to), UserSelect.class));
@@ -78,7 +77,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     public UserConnectionForm read(UUID id) {
         UserConnection entity = entityManager.find(UserConnection.class, id);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         UserConnectionForm form = mapper.map(entity, UserConnectionForm.class);
 
         form.setFrom(mapper.map(entity.getFrom(), UserSelect.class));
@@ -109,18 +108,22 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     public UserConnectionForm save(UserConnectionForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
-        UserConnection entity = mapper.map(form, UserConnection.class);
-        entity.setFrom(identityProvider.getUser());
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
+        UserConnection from = mapper.map(form, UserConnection.class);
+        from.setFrom(identityProvider.getUser());
+        entityManager.persist(from);
 
-        entityManager.persist(entity);
+        UserConnection to = new UserConnection();
+        to.setFrom(from.getTo());
+        to.setTo(from.getFrom());
+        entityManager.persist(to);
 
         service.createNotification(form.getTo().getId(), form.getFrom().getId());
 
-        linkTo(methodOn(UserConnectionResource.class).update(entity.getId(), new UserConnectionForm()))
+        linkTo(methodOn(UserConnectionResource.class).update(from.getId(), new UserConnectionForm()))
                 .build(form::addLink);
 
-        linkTo(methodOn(UserConnectionResource.class).delete(entity.getId()))
+        linkTo(methodOn(UserConnectionResource.class).delete(from.getId()))
                 .build(form::addLink);
 
         return form;
@@ -133,7 +136,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     public UserConnectionForm update(UUID id, UserConnectionForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         mapper.map(form, UserConnection.class);
 
         linkTo(methodOn(UserConnectionResource.class).update(id, new UserConnectionForm()))

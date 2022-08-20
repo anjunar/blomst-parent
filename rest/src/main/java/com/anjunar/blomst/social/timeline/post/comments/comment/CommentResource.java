@@ -2,13 +2,12 @@ package com.anjunar.blomst.social.timeline.post.comments.comment;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -63,7 +62,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         resource.setPost(post);
         resource.setParent(parent);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
 
         resource.setOwner(mapper.map(user, UserSelect.class));
 
@@ -86,7 +85,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         Comment comment = entityManager.find(Comment.class, id);
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         CommentForm resource = mapper.map(comment, CommentForm.class);
 
         linkTo(methodOn(CommentResource.class).update(comment.getId(), new CommentForm()))
@@ -118,7 +117,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     public CommentForm save(CommentForm resource) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Comment comment = mapper.map(resource, Comment.class);
 
         entityManager.persist(comment);
@@ -140,7 +139,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @LinkDescription("Update Comment")
     public CommentForm update(UUID id, CommentForm resource) {
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Comment comment = mapper.map(resource, Comment.class);
 
         linkTo(methodOn(CommentResource.class).update(comment.getId(), new CommentForm()))

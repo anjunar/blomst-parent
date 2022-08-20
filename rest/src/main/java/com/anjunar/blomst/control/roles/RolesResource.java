@@ -2,12 +2,10 @@ package com.anjunar.blomst.control.roles;
 
 import com.anjunar.blomst.control.roles.role.RoleForm;
 import com.anjunar.blomst.control.roles.role.RoleResource;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.security.Role;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -45,7 +43,7 @@ public class RolesResource implements ListResourceTemplate<RoleForm, RolesSearch
 
         List<RoleForm> resources = new ArrayList<>();
         for (Role role : roles) {
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             RoleForm resource = mapper.map(role, RoleForm.class);
 
             resources.add(resource);

@@ -5,7 +5,7 @@ import com.anjunar.blomst.control.users.user.UserResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.anjunar.common.security.User;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -40,7 +40,7 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
 
         List<User> users = service.find(search);
         long count = service.count(search);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ResourceMapper objectMapper = new ResourceMapper();
 
         List<UserForm> resources = new ArrayList<>();
         for (User user : users) {

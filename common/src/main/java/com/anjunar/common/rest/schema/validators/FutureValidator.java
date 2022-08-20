@@ -3,9 +3,4 @@ package com.anjunar.common.rest.schema.validators;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("futureValidator")
-public class FutureValidator implements Validator {
-    @Override
-    public String getName() {
-        return "future";
-    }
-}
+public class FutureValidator implements Validator { }

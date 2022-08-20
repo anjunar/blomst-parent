@@ -18,9 +18,4 @@ public class MinValidator implements Validator {
         return value;
     }
 
-    @Override
-    public String getName() {
-        return "min";
-    }
-
 }

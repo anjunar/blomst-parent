@@ -2,13 +2,11 @@ package com.anjunar.blomst.social.communities;
 
 import com.anjunar.blomst.social.communities.community.CommunityForm;
 import com.anjunar.blomst.social.communities.community.CommunityResource;
-import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -46,7 +44,7 @@ public class CommunitiesResource implements ListResourceTemplate<CommunityForm, 
         final List<CommunityForm> resources = new ArrayList<>();
 
         for (final Community community : communities) {
-            ObjectMapper mapper = new ObjectMapper();
+            ResourceMapper mapper = new ResourceMapper();
             CommunityForm form = mapper.map(community, CommunityForm.class);
 
             linkTo(methodOn(CommunityResource.class).read(form.getId()))

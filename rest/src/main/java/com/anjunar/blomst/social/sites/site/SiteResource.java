@@ -6,7 +6,7 @@ import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectio
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ObjectMapper;
+import com.anjunar.common.rest.objectmapper.ResourceMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -70,7 +70,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     public SiteForm read(UUID id) {
         final Site entity = entityManager.find(Site.class, id);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResourceMapper mapper = new ResourceMapper();
         SiteForm form = mapper.map(entity, SiteForm.class);
 
         try {
@@ -110,7 +110,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @Override
     public SiteForm save(SiteForm form) {
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Site entity = mapper.map(form, Site.class);
 
         entityManager.persist(entity);
@@ -131,7 +131,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     public SiteForm update(UUID id, SiteForm form) {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ObjectMapper mapper = new ObjectMapper(instanceProvider);
+        ResourceMapper mapper = new ResourceMapper(instanceProvider);
         Site entity = mapper.map(form, Site.class);
 
         linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
