@@ -7,7 +7,7 @@ import {windowManager} from "../../library/simplicity-material/manager/window-ma
 
 class Users extends HTMLElement {
 
-    socket = new WebSocket("ws://localhost:8080/app/socket/chat")
+    socket = new WebSocket("ws://localhost:8080/app/socket")
 
     user = null;
 

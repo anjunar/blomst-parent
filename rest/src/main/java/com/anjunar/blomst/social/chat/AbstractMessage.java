@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.chat;
 
+import com.anjunar.blomst.ApplicationWebSocketMessage;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,7 +15,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(BinaryMessage.class),
 })
 @JsonTypeName("message")
-public class AbstractMessage extends WebSocketMessage {
+public class AbstractMessage extends ApplicationWebSocketMessage {
 
     private Set<UUID> to;
 

@@ -1,12 +1,13 @@
 package com.anjunar.blomst.social.chat;
 
+import com.anjunar.blomst.ApplicationWebSocketMessage;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
 @JsonTypeName("users")
-public class UsersUpdate extends WebSocketMessage {
+public class UsersUpdate extends ApplicationWebSocketMessage {
 
     private List<UserSelect> list;
 
