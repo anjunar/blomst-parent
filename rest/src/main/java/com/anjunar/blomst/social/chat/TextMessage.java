@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.chat;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeName("text-message")
+@JsonTypeName("chat-text-message")
 public class TextMessage extends AbstractMessage {
 
     private String text;

@@ -244,6 +244,9 @@ export function membraneFactory(instance, parent = []) {
                         }
                     }
                 }
+                if (thisArg instanceof Array && target.name === "find") {
+                    return Reflect.apply(target, thisArg, argArray);
+                }
                 return membraneFactory(result, [...parent, {proxy : target, property : "()"}]);;
             },
             has(target, p) {

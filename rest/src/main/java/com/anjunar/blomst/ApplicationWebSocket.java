@@ -61,7 +61,7 @@ public class ApplicationWebSocket {
     }
 
     @OnOpen
-    public void onOpen(Session session) throws IOException {
+    public void onOpen(Session session) {
         pool.put(session.getUserPrincipal().getName(), session);
 
         ApplicationWebSocketMessage socketMessage = new ApplicationWebSocketMessage();
@@ -72,7 +72,7 @@ public class ApplicationWebSocket {
     }
 
     @OnClose
-    public void onClose(Session session) throws IOException {
+    public void onClose(Session session)  {
         ApplicationWebSocketMessage socketMessage = new ApplicationWebSocketMessage();
         socketMessage.setSession(session);
         socketMessage.setPool(pool);

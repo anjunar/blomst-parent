@@ -45,7 +45,7 @@ public class ChatResourceStream {
         }
     }
 
-    public void onOpen(@Observes @OnOpenEvent ApplicationWebSocketMessage message, EntityManager entityManager) throws IOException {
+    public void onOpen(@Observes @OnMessageEvent UsersRead message, EntityManager entityManager) throws IOException {
         User loggedInUser = entityManager.find(User.class, UUID.fromString(message.getSession().getUserPrincipal().getName()));
 
         ResourceMapper mapper = new ResourceMapper();

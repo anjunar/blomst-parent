@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-@JsonTypeName("users")
+@JsonTypeName("chat-users-update")
 public class UsersUpdate extends ApplicationWebSocketMessage {
 
     private List<UserSelect> list;

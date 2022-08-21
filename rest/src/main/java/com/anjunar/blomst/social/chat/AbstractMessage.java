@@ -14,7 +14,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(TextMessage.class),
         @JsonSubTypes.Type(BinaryMessage.class),
 })
-@JsonTypeName("message")
+@JsonTypeName("chat-message")
 public class AbstractMessage extends ApplicationWebSocketMessage {
 
     private Set<UUID> to;

@@ -2,6 +2,7 @@ package com.anjunar.blomst;
 
 import com.anjunar.blomst.social.chat.AbstractMessage;
 import com.anjunar.blomst.social.chat.StatusUpdate;
+import com.anjunar.blomst.social.chat.UsersRead;
 import com.anjunar.blomst.social.chat.UsersUpdate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -15,6 +16,7 @@ import java.util.Map;
         @JsonSubTypes.Type(AbstractMessage.class),
         @JsonSubTypes.Type(StatusUpdate.class),
         @JsonSubTypes.Type(UsersUpdate.class),
+        @JsonSubTypes.Type(UsersRead.class),
 })
 public class ApplicationWebSocketMessage {
 

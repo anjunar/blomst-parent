@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.chat;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeName("binary-message")
+@JsonTypeName("chat-binary-message")
 public class BinaryMessage extends AbstractMessage {
 
     private byte[] data;

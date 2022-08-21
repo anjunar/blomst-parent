@@ -2,36 +2,31 @@ import {customViews} from "../../library/simplicity-core/simplicity.js";
 import MatInputContainer from "../../library/simplicity-material/components/form/container/mat-input-container.js";
 import DomInput from "../../library/simplicity-core/directives/dom-input.js";
 import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
+import {broadCaster} from "../socket.js";
 
 class Client extends HTMLElement {
 
     messages = [];
 
     model = {
-        type: "text-message",
         to: [],
         text: ""
     };
 
     initialize() {
-        this.socket.addEventListener("message", (event) => {
-            let data = JSON.parse(event.data);
-            switch (data.type) {
-                case "users" : {
-                }
-                    break;
-                case "status" : {
-                }
-                    break;
-                default : {
-                    this.messages.push(data)
-                }
-            }
-        })
+        let onTextMessage = (data) => {
+            this.messages.push(data)
+        };
+
+        broadCaster.register("chat-text-message", onTextMessage)
+
+        Client.prototype.destroy = () => {
+            broadCaster.unregister("chat-text-message", onTextMessage)
+        }
     }
 
     send() {
-        this.socket.send(JSON.stringify(this.model));
+        broadCaster.fire("chat-text-message", this.model);
         this.messages.push(JSON.parse(JSON.stringify(this.model)));
     }
 

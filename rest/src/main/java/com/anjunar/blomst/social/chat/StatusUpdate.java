@@ -4,7 +4,7 @@ import com.anjunar.blomst.ApplicationWebSocketMessage;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeName("status")
+@JsonTypeName("chat-status")
 public class StatusUpdate extends ApplicationWebSocketMessage {
 
     public enum Status {
