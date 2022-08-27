@@ -38,7 +38,7 @@ export function getAttributes(attributes, observed) {
             if (observed.indexOf(string) > -1) {
                 attributeValues[string] = {
                     name: string,
-                    type: "bind",
+                    type: attribute.startsWith("bind") ? "bind" : "read",
                     value: attributePair[1]
                 }
             }
@@ -59,6 +59,8 @@ export function boundAttributes(attributes, context) {
         for (let attribute of Object.values(attributes)) {
             if (attribute.type === "bind") {
                 attributeValues[attribute.name] = evaluation(attribute.value, context)
+            } else if (attribute.type === "read"){
+                attributeValues[attribute.name] = evaluation(attribute.value, context, null, true)
             } else {
                 attributeValues[attribute.name] = attribute.value
             }

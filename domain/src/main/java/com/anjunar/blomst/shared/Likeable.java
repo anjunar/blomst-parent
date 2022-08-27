@@ -21,6 +21,7 @@ public class Likeable extends AbstractEntity {
     @Audited(targetAuditMode = NOT_AUDITED)
     private final Set<User> likes = new HashSet<>();
 
+    @PostLoad
     public void postLoad() {
         if (views == null) {
             views = 0;

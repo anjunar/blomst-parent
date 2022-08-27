@@ -3,7 +3,8 @@ package com.anjunar.blomst.control.users.user;
 import com.anjunar.blomst.shared.users.user.ImageConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.objectmapper.Mapper;
+import com.anjunar.common.rest.objectmapper.MapperConverter;
+import com.anjunar.common.rest.objectmapper.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.blomst.control.roles.role.RoleForm;
@@ -41,7 +42,7 @@ public class UserForm extends AbstractRestEntity {
     private String password;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
-    @Mapper(ImageConverter.class)
+    @MapperConverter(ImageConverter.class)
     private ImageType picture = new ImageType();
 
     @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
@@ -53,6 +54,7 @@ public class UserForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")
     @Size(min = 1)
     @NotNull
+    @MapperSecurity(rolesAllowed = {"Administrator"})
     private Set<RoleForm> roles = new HashSet<>();
 
     public String getFirstName() {

@@ -163,7 +163,7 @@ public class PageResource {
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
         ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        PageForm page = mapper.map(resource, PageForm.class);
+        Page page = mapper.map(resource, Page.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
                 .build(resource::addLink);

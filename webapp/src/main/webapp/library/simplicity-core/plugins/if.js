@@ -11,9 +11,11 @@ function ifStatement(rawAttributes, context, callback, imported = false) {
     let html;
     let element;
 
-    activeObjectExpression(attributes.if.value, context, comment, (result) => {
-        update(result);
-    })
+    if (attributes.if.type === "bind") {
+        activeObjectExpression(attributes.if.value, context, comment, (result) => {
+            update(result);
+        })
+    }
 
     function update(value) {
         if (value) {

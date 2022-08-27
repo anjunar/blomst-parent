@@ -18,6 +18,8 @@ class MetaInputEditor extends HTMLElement {
             element : this,
             handler : (value) => {
                 this.schema.dirty = value;
+                this.schema.properties.html.dirty = value;
+                this.schema.properties.text.dirty = value;
             }
         })
     }

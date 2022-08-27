@@ -1,17 +1,12 @@
 package com.anjunar.blomst.social.timeline.post;
 
-import com.anjunar.common.rest.objectmapper.Mapper;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.Identity;
-import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.security.IdentityProvider;
 
-import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
@@ -27,7 +22,7 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text")
     private String text;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Source", readOnly = true)

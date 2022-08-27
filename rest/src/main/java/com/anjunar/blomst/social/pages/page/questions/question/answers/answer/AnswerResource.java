@@ -2,6 +2,8 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Editor;
@@ -93,8 +95,11 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
                 .build(resource::addLink);
 
         JsonObject owner = resource.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
+        JsonArray likes = resource.find("likes", JsonArray.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(likes::addLink);
 
         return resource;
     }

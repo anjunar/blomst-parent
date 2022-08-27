@@ -4,14 +4,15 @@ import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
+import jakarta.enterprise.inject.spi.CDI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage", "rawtypes"})
@@ -81,9 +82,9 @@ public class ResourceMapper {
 
                         if (sourcePropertyInstance != null) {
                             switch (sourcePropertyInstance) {
-                                case List<?> list -> initializeList(destinationInstance, propertyDestination, list);
-                                case Set<?> set -> initializeSet(destinationInstance, propertyDestination, set);
-                                case Map map -> initializeMap(destinationInstance, propertyDestination, map);
+                                case List<?> list -> initializeList(destinationInstance, propertySource, propertyDestination, list);
+                                case Set<?> set -> initializeSet(destinationInstance, propertySource, propertyDestination, set);
+                                case Map map -> initializeMap(destinationInstance, propertySource, propertyDestination, map);
                                 default -> initializeBean(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
                             }
                         }
@@ -124,31 +125,32 @@ public class ResourceMapper {
     }
 
     private <S, D> void initializeBean(S source, D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Object sourcePropertyInstance) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Mapper mapperDestinationAnnotation = propertyDestination.getAnnotation(Mapper.class);
+        MapperConverter mapperDestinationAnnotation = propertyDestination.getAnnotation(MapperConverter.class);
         if (mapperDestinationAnnotation == null) {
-            Mapper mapperSourceAnnotation = propertySource.getAnnotation(Mapper.class);
+            MapperConverter mapperSourceAnnotation = propertySource.getAnnotation(MapperConverter.class);
             if (mapperSourceAnnotation == null) {
-                initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                MapperSecurity securityAnnotationDestination = propertyDestination.getAnnotation(MapperSecurity.class);
+                if (securityAnnotationDestination == null) {
+                    MapperSecurity securityAnnotationSource = propertySource.getAnnotation(MapperSecurity.class);
+                    if (securityAnnotationSource == null) {
+                        initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                    } else {
+                        IdentityProvider identityManager = getIdentityManager();
+                        if (hasRole(securityAnnotationSource, identityManager)) {
+                            initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                        }
+                    }
+                } else {
+                    IdentityProvider identityManager = getIdentityManager();
+                    if (hasRole(securityAnnotationDestination, identityManager)) {
+                        initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                    }
+                }
             } else {
                 Class<? extends Converter<?, ?>> converterClass = mapperSourceAnnotation.value();
                 Converter converter = converterClass.getDeclaredConstructor().newInstance();
-                Object sourcePropertyID = idProvider.findID(sourcePropertyInstance);
-                if (sourcePropertyID == null) {
-                    Class<? super Object> aClass = propertyDestination.getType().getRawType();
-                    int modifiers = aClass.getModifiers();
-                    D destinationInstances;
-                    if (Modifier.isAbstract(modifiers)) {
-                        destinationInstances = null;
-                    } else {
-                        destinationInstances = (D) aClass.getDeclaredConstructor().newInstance();
-                    }
-                    Object object = converter.updater(destinationInstances, sourcePropertyInstance);
-                    propertyDestination.accept(destinationInstance, object);
-                } else {
-                    D destinationInstances = (D) newInstanceProvider.execute(sourcePropertyID, propertyDestination.getType().getRawType());
-                    Object object = converter.updater(destinationInstances, sourcePropertyInstance);
-                    propertyDestination.accept(destinationInstance, object);
-                }
+                Object object = converter.updater(sourcePropertyInstance);
+                propertyDestination.accept(destinationInstance, object);
             }
         } else {
             Class<? extends Converter<?, ?>> converterClass = mapperDestinationAnnotation.value();
@@ -156,6 +158,19 @@ public class ResourceMapper {
             Object object = converter.factory(sourcePropertyInstance);
             propertyDestination.accept(destinationInstance, object);
         }
+    }
+
+    private static boolean hasRole(MapperSecurity securityAnnotationSource, IdentityProvider identityManager) {
+        for (String role : securityAnnotationSource.rolesAllowed()) {
+            if (! identityManager.hasRole(role)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static IdentityProvider getIdentityManager() {
+        return CDI.current().select(IdentityProvider.class).get();
     }
 
     private <S, D> void initializeBeanOrEntity(S source, D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Object sourcePropertyInstance) {
@@ -172,7 +187,19 @@ public class ResourceMapper {
         }
     }
 
-    private <D> void initializeList(D destinationInstance, BeanProperty<D, Object> propertyDestination, List<?> list) {
+    private <D, S> void initializeList(D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, List<?> list) {
+        MapperSecurity securityAnnotation = propertySource.getAnnotation(MapperSecurity.class);
+        if (securityAnnotation == null) {
+            initializeListInternal(destinationInstance, propertyDestination, list);
+        } else {
+            IdentityProvider identityManager = getIdentityManager();
+            if (hasRole(securityAnnotation, identityManager)) {
+                initializeListInternal(destinationInstance, propertyDestination, list);
+            }
+        }
+    }
+
+    private <D> void initializeListInternal(D destinationInstance, BeanProperty<D, Object> propertyDestination, List<?> list) {
         Object destinationPropertyInstance = propertyDestination.apply(destinationInstance);
         List destinationList = (List) destinationPropertyInstance;
         destinationList.clear();
@@ -182,7 +209,19 @@ public class ResourceMapper {
         });
     }
 
-    private <D> void initializeMap(D destinationInstance, BeanProperty<D, Object> propertyDestination, Map map) {
+    private <D,S> void initializeMap(D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Map map) {
+        MapperSecurity securityAnnotation = propertySource.getAnnotation(MapperSecurity.class);
+        if (securityAnnotation == null) {
+            initializeMapInternal(destinationInstance, propertyDestination, map);
+        } else {
+            IdentityProvider identityManager = getIdentityManager();
+            if (hasRole(securityAnnotation, identityManager)) {
+                initializeMapInternal(destinationInstance, propertyDestination, map);
+            }
+        }
+    }
+
+    private <D> void initializeMapInternal(D destinationInstance, BeanProperty<D, Object> propertyDestination, Map map) {
         Object destinationPropertyInstance = propertyDestination.apply(destinationInstance);
         Map destinationMap = (Map) destinationPropertyInstance;
         destinationMap.clear();
@@ -193,7 +232,19 @@ public class ResourceMapper {
         });
     }
 
-    private <D> void initializeSet(D destinationInstance, BeanProperty<D, Object> propertyDestination, Set<?> set) {
+    private <D,S> void initializeSet(D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Set<?> set) {
+        MapperSecurity securityAnnotation = propertySource.getAnnotation(MapperSecurity.class);
+        if (securityAnnotation == null) {
+            initializeSetInternal(destinationInstance, propertyDestination, set);
+        } else {
+            IdentityProvider identityManager = getIdentityManager();
+            if (hasRole(securityAnnotation, identityManager)) {
+                initializeSetInternal(destinationInstance, propertyDestination, set);
+            }
+        }
+    }
+
+    private <D> void initializeSetInternal(D destinationInstance, BeanProperty<D, Object> propertyDestination, Set<?> set) {
         Object destinationPropertyInstance = propertyDestination.apply(destinationInstance);
         Set destinationSet = (Set) destinationPropertyInstance;
         destinationSet.clear();

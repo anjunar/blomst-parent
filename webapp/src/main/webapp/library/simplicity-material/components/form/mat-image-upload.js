@@ -11,13 +11,14 @@ class MatImageUpload extends mix(HTMLElement).with(Input) {
     name;
 
     model = {
-        data : "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-        name : ""
+        data: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        name: ""
     }
 
     value;
 
     placeholder = ""
+    disabled = false;
 
     initialize() {
         if (this.name) {
@@ -27,6 +28,12 @@ class MatImageUpload extends mix(HTMLElement).with(Input) {
             if (domForm) {
                 domForm.register(this);
             }
+        }
+    }
+
+    onAreaClick() {
+        if (! this.disabled) {
+            this.input.click()
         }
     }
 
@@ -42,13 +49,15 @@ class MatImageUpload extends mix(HTMLElement).with(Input) {
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case "model" : {
-                if (newValue) {
-                    this.model = newValue
-                }
+                this.model = newValue
             }
                 break
             case "placeholder" : {
                 this.placeholder = newValue;
+            }
+                break
+            case "disabled" : {
+                this.disabled = newValue === "true"
             }
                 break
         }

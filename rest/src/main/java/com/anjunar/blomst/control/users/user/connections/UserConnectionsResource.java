@@ -67,7 +67,7 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
         Table<ConnectionRow> table = new Table<>(resources, count) {};
 
         CategoriesSearch categoriesSearch = new CategoriesSearch();
-        categoriesSearch.setOwner(identity.getUser().getId());
+        categoriesSearch.setOwner(search.getFrom());
         linkTo(methodOn(CategoriesResource.class).list(categoriesSearch))
                 .withRel("categories")
                 .build(table::addLink);

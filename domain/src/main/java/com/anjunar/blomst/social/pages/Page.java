@@ -28,12 +28,8 @@ public class Page extends Likeable {
 
     private String title;
 
-    @Lob
-    private String content;
-
-    @Lob
-    @OracleIndex(type = OracleIndex.Type.TEXT)
-    private String text;
+    @Embedded
+    private Editor editor;
 
     @ManyToOne
     @Audited(targetAuditMode = NOT_AUDITED)
@@ -54,20 +50,12 @@ public class Page extends Likeable {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public Editor getEditor() {
+        return editor;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setEditor(Editor editor) {
+        this.editor = editor;
     }
 
     public User getModifier() {

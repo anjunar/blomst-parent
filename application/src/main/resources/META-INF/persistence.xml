@@ -2,6 +2,7 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="main" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/anjunar</jta-data-source>
+
         <class>com.anjunar.common.ddd.AbstractEntity</class>
 
         <class>com.anjunar.common.filedisk.Image</class>
@@ -16,6 +17,7 @@
         <class>com.anjunar.blomst.shared.Likeable</class>
 
         <class>com.anjunar.blomst.social.pages.Page</class>
+        <class>com.anjunar.blomst.social.pages.Editor</class>
         <class>com.anjunar.blomst.social.pages.page.Question</class>
         <class>com.anjunar.blomst.social.pages.page.Answer</class>
 

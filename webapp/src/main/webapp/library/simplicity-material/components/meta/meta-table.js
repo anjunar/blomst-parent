@@ -26,13 +26,6 @@ class MetaTable extends HTMLElement {
         return Object.values(links).filter((link) => link.method === "GET");
     }
 
-    hrefLink(link) {
-        if (link.type === "table") {
-            return `navigator/table?link=${encodeURIComponent(link.url)}`;
-        }
-        return `navigator/form?link=${encodeURIComponent(link.url)}`;
-    }
-
     onRowClick(event) {
         this.dispatchEvent(new CustomEvent("model", {detail : event.detail}));
     }
@@ -72,6 +65,7 @@ class MetaTable extends HTMLElement {
 
     items = (query, callback) => {
         this.parent(query, (rows, size, schema) => {
+            this.dispatchEvent(new CustomEvent("load", {detail : {rows : rows, size : size, schema : schema}}))
             if (! isEqual(schema, this.schema)) {
                 this.schema = schema;
             }

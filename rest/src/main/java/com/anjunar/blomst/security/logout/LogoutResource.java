@@ -34,10 +34,10 @@ public class LogoutResource {
     @Produces("application/json")
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Create Logout")
-    public LogoutForm logout1() {
+    public LogoutForm logout() {
         LogoutForm resource = new LogoutForm();
 
-        linkTo(methodOn(LogoutResource.class).logout())
+        linkTo(methodOn(LogoutResource.class).doLogout())
                 .build(resource::addLink);
 
         return resource;
@@ -47,7 +47,7 @@ public class LogoutResource {
     @Produces("application/json")
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Do Logout")
-    public LogoutForm logout() {
+    public LogoutForm doLogout() {
 
         identityProvider.logout();
 

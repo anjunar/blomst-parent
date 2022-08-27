@@ -139,7 +139,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
                     .withRel("pages")
                     .build(userSelect::addLink);
 
-            linkTo(methodOn(LogoutResource.class).logout1())
+            linkTo(methodOn(LogoutResource.class).logout())
                     .build(userSelect::addLink);
 
             TimelineSearch timelineSearch = new TimelineSearch();

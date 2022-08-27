@@ -1,10 +1,16 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
+import com.anjunar.blomst.social.sites.SitesResource;
+import com.anjunar.blomst.social.sites.SitesSearch;
+import com.anjunar.blomst.social.sites.site.SiteResource;
+import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
+import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
 import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.Site;
@@ -48,16 +54,19 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Site Connection")
-    public SiteConnectionForm create(@QueryParam("to") UUID to) {
+    public SiteConnectionForm create() {
         SiteConnectionForm form = new SiteConnectionForm();
 
         ResourceMapper mapper = new ResourceMapper();
 
         form.setFrom(mapper.map(identityProvider.getUser(), UserSelect.class));
-        form.setTo(mapper.map(entityManager.find(Site.class, to), SiteForm.class));
 
         linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
                 .build(form::addLink);
+
+        JsonObject to = form.find("to", JsonObject.class);
+        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                .build(to::addLink);
 
         return form;
     }
@@ -98,7 +107,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
         linkTo(methodOn(SiteConnectionResource.class).delete(entity.getId()))
                 .build(form::addLink);
 
-        return null;
+        return form;
     }
 
     @Transactional

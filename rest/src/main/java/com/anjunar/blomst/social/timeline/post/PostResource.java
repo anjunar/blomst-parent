@@ -16,15 +16,18 @@ import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.security.IdentityProvider;
 
+import com.anjunar.common.security.User;
+import com.google.common.collect.Sets;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+import java.util.Set;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
@@ -166,7 +169,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
         ResourceMapper mapper = new ResourceMapper(instanceProvider);
 
-        post.accept(new AbstractPostVisitor<>() {
+        post = post.accept(new AbstractPostVisitor<>() {
             @Override
             public AbstractPost visit(ImagePost post) {
                 return mapper.map(resource, ImagePost.class);
@@ -188,6 +191,12 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
             }
         });
 
+        for (User like : post.getLikes()) {
+            if (! like.equals(identityProvider.getUser())) {
+                throw new WebApplicationException(Response.Status.CONFLICT);
+            }
+        }
+
         entityManager.persist(post);
 
         resource.setId(post.getId());
@@ -206,13 +215,14 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
     public AbstractPostForm update(UUID id, AbstractPostForm resource) {
-
         AbstractPost post = entityManager.find(AbstractPost.class, id);
+        Set<User> rawLikes = Sets.newHashSet(post.getLikes());
+
 
         NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
         ResourceMapper mapper = new ResourceMapper(instanceProvider);
 
-        post.accept(new AbstractPostVisitor<>() {
+        post = post.accept(new AbstractPostVisitor<>() {
             @Override
             public AbstractPost visit(ImagePost post) {
                 return  mapper.map(resource, ImagePost.class);
@@ -239,6 +249,15 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         linkTo(methodOn(PostResource.class).delete(post.getId()))
                 .build(resource::addLink);
 
+        Set<User> likes = Sets.newHashSet(post.getLikes());
+        likes.removeAll(rawLikes);
+
+        for (User like : likes) {
+            if (! like.equals(identityProvider.getUser())) {
+                throw new WebApplicationException(Response.Status.CONFLICT);
+            }
+        }
+
         return resource;
     }
 
@@ -246,6 +265,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
+    @Produces(MediaType.APPLICATION_JSON)
     @LinkDescription("Delete Post")
     public ResponseOk delete(UUID id) {
         AbstractPost userPost = entityManager.getReference(AbstractPost.class, id);

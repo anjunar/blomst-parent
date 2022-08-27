@@ -5,7 +5,10 @@ import jakarta.ejb.Stateful;
 import jakarta.enterprise.inject.Produces;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.hibernate.CallbackException;
+import org.hibernate.Interceptor;
 import org.hibernate.Session;
+import org.hibernate.type.Type;
 
 import javax.sql.DataSource;
 

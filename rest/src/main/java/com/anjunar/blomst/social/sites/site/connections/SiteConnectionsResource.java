@@ -53,6 +53,11 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
             resources.add(form);
         }
 
-        return new Table<>(resources, count) {};
+        Table<SiteConnectionForm> table = new Table<>(resources, count) {};
+
+        linkTo(methodOn(SiteConnectionResource.class).create())
+                .build(table::addLink);
+
+        return table;
     }
 }

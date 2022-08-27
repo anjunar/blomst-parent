@@ -16,6 +16,6 @@ public class WordProvider extends AbstractRestPredicateProvider<String, Page> {
         if (Strings.isNullOrEmpty(value)) {
             return builder.conjunction();
         }
-        return builder.gt(builder.function("contains", Integer.class, root.get(Page_.text), builder.literal(value), builder.literal(1)), 0);
+        return builder.gt(builder.function("contains", Integer.class, root.get(Page_.EDITOR).get(Editor_.TEXT), builder.literal(value), builder.literal(1)), 0);
     }
 }

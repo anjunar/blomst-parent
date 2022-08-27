@@ -8,15 +8,13 @@
     <script type="module">
         import {bootstrap} from "./library/simplicity-material/bootstrap.js";
 
-        // history.pushState(null, null, "navigator/form?link=service");
-
         bootstrap({
             app: "hive/app.js",
             mode : "development",
             library : "library",
             shadowDom : false, // Experimental
             preFetch : false, // Experimental,
-            history : true
+            history : false
         })
 
     </script>

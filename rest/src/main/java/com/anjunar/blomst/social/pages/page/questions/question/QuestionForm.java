@@ -41,7 +41,7 @@ public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
-    private Set<UserSelect> likes = new HashSet<>();
+    private final Set<UserSelect> likes = new HashSet<>();
 
     public UUID getPage() {
         return page;

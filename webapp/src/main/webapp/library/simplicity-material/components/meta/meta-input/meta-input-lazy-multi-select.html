@@ -7,9 +7,9 @@
 <body>
     <template>
         <mat-input-container read:placeholder="schema.title">
-            <dom-lazy-multi-select read:items="domLazySelect(schema)" read:label="domLazySelectLabel(schema)" read:name="property" read:disabled="schema.readOnly">
+            <dom-lazy-select read:items="domLazySelect(schema)" read:label="domLazySelectLabel(schema)" read:name="property" read:disabled="schema.readOnly" multiselect="true">
                 <div let="data">{{{domLazySelectOption(schema, data)}}}</div>
-            </dom-lazy-multi-select>
+            </dom-lazy-select>
         </mat-input-container>
     </template>
 </body>

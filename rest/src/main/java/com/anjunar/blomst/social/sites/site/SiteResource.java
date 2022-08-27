@@ -79,7 +79,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
                     .withRel("connection")
                     .build(form::addLink);
         } catch (NoResultException e) {
-            linkTo(methodOn(SiteConnectionResource.class).create(id))
+            linkTo(methodOn(SiteConnectionResource.class).create())
                     .withRel("connect")
                     .build(form::addLink);
         }

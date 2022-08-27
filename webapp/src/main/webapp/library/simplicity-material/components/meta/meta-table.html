@@ -6,8 +6,6 @@
 </head>
 <body>
 <template>
-    <a bind:for="let [key, link] of schema.links" read:href="hrefLink(link)" style="margin: 5px">{{{link.rel}}}</a>
-
     <mat-table-extension>
         <tsearch>
             <div bind:for="let [key, column] of schema.properties.rows.items.properties">

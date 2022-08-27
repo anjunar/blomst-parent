@@ -7,20 +7,24 @@
 </head>
 <body>
     <template>
-        <div>
-            <p>
-                {{{link}}}
-            </p>
-
-            <a read:for="let link of links(model.$schema.links)" read:href="hrefLink(link)" style="margin: 5px">{{{link.rel}}}</a>
-
-            <div style="width: 600px; margin: auto">
-                <meta-form bind:model="model" bind:onaction="onAction($event)">
-                    <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
-                    <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
-                </meta-form>
-            </div>
-        </div>
+        <mat-drawer-container>
+            <mat-drawer bind:open="open">
+                <ul>
+                    <li read:for="let link of links(model.$schema.links)" >
+                        <a read:href="hrefLink(link)" style="margin: 5px">{{{link.rel}}}</a>
+                    </li>
+                </ul>
+            </mat-drawer>
+            <mat-drawer-content>
+                <div style="width: 600px; margin: auto">
+                    <div>{{{link}}}</div>
+                    <meta-form bind:model="model" bind:onaction="onAction($event)">
+                        <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
+                        <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
+                    </meta-form>
+                </div>
+            </mat-drawer-content>
+        </mat-drawer-container>
     </template>
 </body>
 </html>

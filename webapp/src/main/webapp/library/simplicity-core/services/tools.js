@@ -320,8 +320,10 @@ function isEqualLeft(lhs, rhs) {
         for (let i = 0; i < lhsProperties.length; i++) {
             const lhsProperty = lhsProperties[i];
 
-            if (!isEqual(lhs[lhsProperty], rhs[lhsProperty])) {
-                return false
+            if (lhsProperty !== "$schema") {
+                if (!isEqual(lhs[lhsProperty], rhs[lhsProperty])) {
+                    return false
+                }
             }
         }
 

@@ -53,7 +53,7 @@ class StyleAttributeProcessor {
         this.value = value;
         this.bindOnce = bindOnce;
 
-        let result = name === "bind:style"
+        let result = name === "bind:style" || name === "read:style"
         if (result) {
             this.matched = true;
             this.process();

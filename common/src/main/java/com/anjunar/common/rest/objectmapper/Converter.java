@@ -4,6 +4,6 @@ public interface Converter<E, D> {
 
     D factory(E entity);
 
-    E updater(E entity, D dto);
+    E updater(D dto);
 
 }

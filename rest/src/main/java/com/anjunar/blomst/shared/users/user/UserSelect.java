@@ -2,7 +2,7 @@ package com.anjunar.blomst.shared.users.user;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.objectmapper.Mapper;
+import com.anjunar.common.rest.objectmapper.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
@@ -31,7 +31,7 @@ public class UserSelect extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture", readOnly = true)
-    @Mapper(ImageConverter.class)
+    @MapperConverter(ImageConverter.class)
     private ImageType picture;
 
     @NotNull

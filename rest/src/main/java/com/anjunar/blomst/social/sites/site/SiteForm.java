@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.sites.site;
 import com.anjunar.blomst.shared.users.user.ImageConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.objectmapper.Mapper;
+import com.anjunar.common.rest.objectmapper.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
@@ -19,7 +19,7 @@ public class SiteForm extends AbstractRestEntity {
     private URL homepage;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Image")
-    @Mapper(ImageConverter.class)
+    @MapperConverter(ImageConverter.class)
     private ImageType picture;
 
     public String getName() {

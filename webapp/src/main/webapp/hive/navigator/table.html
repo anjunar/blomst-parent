@@ -1,15 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:bind="http://www.w3.org/1999/XSL/Transform"
->
+<html lang="en" xmlns:bind="http://www.w3.org/1999/XSL/Transform" xmlns:read="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <template>
-    <div>
-        <meta-table bind:items="items" bind:onmodel="onRowClick($event)"></meta-table>
-    </div>
+    <mat-drawer-container>
+        <mat-drawer bind:open="open">
+            <ul>
+                <li bind:for="let [key, link] of schema.links" >
+                    <a read:href="hrefLink(link)" style="margin: 5px">{{{link.rel}}}</a>
+                </li>
+            </ul>
+        </mat-drawer>
+        <mat-drawer-content>
+            <div>
+                <div>{{{link}}}</div>
+                <meta-table bind:items="items" bind:onmodel="onRowClick($event)" bind:onload="onLoad($event)"></meta-table>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
 </template>
 </body>
 </html>

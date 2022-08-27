@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.pages.page;
 
+import com.anjunar.blomst.social.pages.Editor;
 import com.anjunar.common.ddd.OracleIndex;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
@@ -19,12 +20,8 @@ public class Question extends Likeable {
     @OracleIndex(type = OracleIndex.Type.TEXT)
     private String topic;
 
-    @Lob
-    private String html;
-
-    @Lob
-    @OracleIndex(type = OracleIndex.Type.TEXT)
-    private String text;
+    @Embedded
+    private Editor editor;
 
     @ManyToOne
     private User owner;
@@ -35,14 +32,6 @@ public class Question extends Likeable {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private final List<Answer> replies = new ArrayList<>();
 
-    public String getHtml() {
-        return html;
-    }
-
-    public void setHtml(String html) {
-        this.html = html;
-    }
-
     public String getTopic() {
         return topic;
     }
@@ -51,12 +40,12 @@ public class Question extends Likeable {
         this.topic = topic;
     }
 
-    public String getText() {
-        return text;
+    public Editor getEditor() {
+        return editor;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setEditor(Editor editor) {
+        this.editor = editor;
     }
 
     public User getOwner() {

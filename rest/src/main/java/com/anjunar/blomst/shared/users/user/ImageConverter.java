@@ -22,19 +22,16 @@ public class ImageConverter implements Converter<Image, ImageType> {
     }
 
     @Override
-    public Image updater(Image image, ImageType imageType) {
-        if (image == null) {
-            return null;
-        } else {
-            Base64Resource process = FileDiskUtils.extractBase64(imageType.getData());
+    public Image updater(ImageType imageType) {
+        Image image = new Image();
+        Base64Resource process = FileDiskUtils.extractBase64(imageType.getData());
 
-            image.setData(process.getData());
-            image.setType(process.getType());
-            image.setSubType(process.getSubType());
+        image.setData(process.getData());
+        image.setType(process.getType());
+        image.setSubType(process.getSubType());
 
-            image.setName(imageType.getName());
-            image.setLastModified(imageType.getLastModified());
-        }
+        image.setName(imageType.getName());
+        image.setLastModified(imageType.getLastModified());
         return image;
     }
 }

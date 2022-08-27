@@ -12,7 +12,7 @@ import {broadCaster} from "./socket.js";
 class HiveApp extends HTMLElement {
 
     get navigatorLink() {
-        return `navigator/form?link=${encodeURIComponent("service")}`
+        return `#/navigator/form?link=${encodeURIComponent("service")}`
     }
 
     static get routes() {

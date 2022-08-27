@@ -1,10 +1,19 @@
 import {customViews} from "../../library/simplicity-core/simplicity.js";
 import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
 import MetaTable from "../../library/simplicity-material/components/meta/meta-table.js";
+import MatDrawer from "../../library/simplicity-material/components/navigation/mat-drawer.js";
+import MatDrawerContainer from "../../library/simplicity-material/components/navigation/mat-drawer-container.js";
+import MatDrawerContent from "../../library/simplicity-material/components/navigation/mat-drawer-content.js";
 
 class Table extends HTMLElement {
 
     model;
+
+    schema = {
+        links : {}
+    }
+
+    open = true;
 
     items(query, callback) {
         let link = decodeURIComponent(this.queryParams.link);
@@ -21,8 +30,7 @@ class Table extends HTMLElement {
     onRowClick(event) {
         let row = event.detail;
         let link = row.$schema.links.read;
-        history.pushState(null, null, `navigator/form?link=${encodeURIComponent(link.url)}`)
-        window.dispatchEvent(new Event("popstate"))
+        window.location.hash = `/navigator/form?link=${encodeURIComponent(link.url)}`
     }
 
     onAction(link) {
@@ -45,15 +53,19 @@ class Table extends HTMLElement {
             })
     }
 
+    onLoad(event) {
+        this.schema = event.detail.schema;
+    }
+
     get link() {
         return decodeURIComponent(this.queryParams.link);
     }
 
     hrefLink(link) {
         if (link.type === "table") {
-            return `navigator/table?link=${encodeURIComponent(link.url)}`;
+            return `#/navigator/table?link=${encodeURIComponent(link.url)}`;
         }
-        return `navigator/form?link=${encodeURIComponent(link.url)}`;
+        return `#/navigator/form?link=${encodeURIComponent(link.url)}`;
     }
 
     links(links) {
@@ -65,7 +77,7 @@ class Table extends HTMLElement {
     }
 
     static get components() {
-        return [MetaTable];
+        return [MetaTable, MatDrawer, MatDrawerContainer, MatDrawerContent];
     }
 
     static get template() {

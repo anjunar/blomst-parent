@@ -1,16 +1,14 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.common.rest.api.Editor;
+import com.anjunar.common.rest.objectmapper.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.validators.Dom;
-import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,10 +24,11 @@ public class PageForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "Editor")
     @Dom
     @NotNull
-    private Editor content = new Editor();
+    private Editor editor = new Editor();
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
+    @MapperConverter(LanguageConverter.class)
     private Language language;
 
     @NotNull
@@ -44,12 +43,12 @@ public class PageForm extends AbstractLikeableRestEntity {
         this.title = title;
     }
 
-    public Editor getContent() {
-        return content;
+    public Editor getEditor() {
+        return editor;
     }
 
-    public void setContent(Editor content) {
-        this.content = content;
+    public void setEditor(Editor editor) {
+        this.editor = editor;
     }
 
     public Language getLanguage() {
