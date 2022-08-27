@@ -24,7 +24,7 @@ class HiveApp extends HTMLElement {
     }
 
     static get template() {
-        return loader("hive/app.html");
+        return loader("blomst/app.html");
     }
 }
 

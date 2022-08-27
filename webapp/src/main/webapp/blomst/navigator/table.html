@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        app-navigator-table ul {
+            list-style: none;
+        }
+    </style>
 </head>
 <body>
 <template>
@@ -10,13 +15,15 @@
         <mat-drawer bind:open="open">
             <ul>
                 <li bind:for="let [key, link] of schema.links" >
-                    <a read:href="hrefLink(link)" style="margin: 5px">{{{link.rel}}}</a>
+                    <a read:href="hrefLink(link)">
+                        <p>{{{link.rel}}}</p>
+                    </a>
                 </li>
             </ul>
         </mat-drawer>
         <mat-drawer-content>
             <div>
-                <div>{{{link}}}</div>
+                <div style="margin: auto">{{{link}}}</div>
                 <meta-table bind:items="items" bind:onmodel="onRowClick($event)" bind:onload="onLoad($event)"></meta-table>
             </div>
         </mat-drawer-content>

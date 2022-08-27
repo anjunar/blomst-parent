@@ -81,7 +81,7 @@ class Table extends HTMLElement {
     }
 
     static get template() {
-        return loader("hive/navigator/table.html");
+        return loader("blomst/navigator/table.html");
     }
 
 

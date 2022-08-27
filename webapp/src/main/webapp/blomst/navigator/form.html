@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        app-navigator-form ul {
+            list-style: none;
+        }
+    </style>
 </head>
 <body>
     <template>
@@ -11,13 +16,15 @@
             <mat-drawer bind:open="open">
                 <ul>
                     <li read:for="let link of links(model.$schema.links)" >
-                        <a read:href="hrefLink(link)" style="margin: 5px">{{{link.rel}}}</a>
+                        <a read:href="hrefLink(link)">
+                            <p>{{{link.rel}}}</p>
+                        </a>
                     </li>
                 </ul>
             </mat-drawer>
             <mat-drawer-content>
+                <div style="margin: auto">{{{link}}}</div>
                 <div style="width: 600px; margin: auto">
-                    <div>{{{link}}}</div>
                     <meta-form bind:model="model" bind:onaction="onAction($event)">
                         <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
                         <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
