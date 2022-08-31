@@ -2,7 +2,7 @@ package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.control.users.UserConnection;
+import com.anjunar.common.security.UserConnection;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

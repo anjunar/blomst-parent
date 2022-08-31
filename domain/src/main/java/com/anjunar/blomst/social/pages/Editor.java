@@ -3,15 +3,16 @@ package com.anjunar.blomst.social.pages;
 import com.anjunar.common.ddd.OracleIndex;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Lob;
 
 @Embeddable
 public class Editor {
 
-    @Column(name = "html", columnDefinition = "CLOB")
+    @Lob
     private String html;
 
     @OracleIndex(type = OracleIndex.Type.TEXT)
-    @Column(name = "text", columnDefinition = "CLOB")
+    @Lob
     private String text;
 
     public String getHtml() {

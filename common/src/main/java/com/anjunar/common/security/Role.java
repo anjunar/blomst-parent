@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "co_role")
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Role extends AbstractEntity {
 

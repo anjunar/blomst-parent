@@ -34,14 +34,8 @@ public class IdentityService {
         entityManager.remove(user);
     }
 
-    public User findUser(Object primaryKey) {
+    public User findUser(UUID primaryKey) {
         return entityManager.find(User.class, primaryKey);
-    }
-
-    public User findUser(String primaryKey) {
-        return entityManager.createQuery("select u from User u where u.email = :email", User.class)
-                .setParameter("email", primaryKey)
-                .getSingleResult();
     }
 
     public boolean authenticate(User user) {
@@ -100,5 +94,19 @@ public class IdentityService {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public Category findCategory(String name) {
+        try {
+            return entityManager.createQuery("select c from Category c where c.name = :name", Category.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public void saveCategory(Category category) {
+        entityManager.persist(category);
     }
 }

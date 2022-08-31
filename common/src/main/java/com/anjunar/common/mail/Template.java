@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 import java.util.Locale;
 
 @Entity
-@Table(name = "co_template")
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Template extends AbstractEntity {
 

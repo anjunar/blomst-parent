@@ -4,7 +4,7 @@ import com.anjunar.common.filedisk.Base64Resource;
 import com.anjunar.common.filedisk.FileDiskUtils;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.objectmapper.Converter;
+import com.anjunar.common.rest.schemamapper.Converter;
 
 public class ImageConverter implements Converter<Image, ImageType> {
 

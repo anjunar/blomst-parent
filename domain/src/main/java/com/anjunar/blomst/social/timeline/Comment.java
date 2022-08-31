@@ -8,7 +8,6 @@ import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "do_comment")
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Comment extends Likeable {
 

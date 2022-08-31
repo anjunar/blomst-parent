@@ -1,14 +1,18 @@
-package com.anjunar.common.rest.objectmapper;
+package com.anjunar.common.rest.schemamapper;
 
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.rest.schema.schema.JsonObject;
+import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.enterprise.inject.spi.CDI;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +28,12 @@ public class ResourceMapper {
 
     private final IdProvider idProvider;
 
-    public ResourceMapper(NewInstanceProvider newInstanceProvider, IdProvider idProvider) {
+    private final SchemaProvider schemaProvider;
+
+    public ResourceMapper(NewInstanceProvider newInstanceProvider, IdProvider idProvider, SchemaProvider schemaProvider) {
         this.newInstanceProvider = newInstanceProvider;
         this.idProvider = idProvider;
+        this.schemaProvider = schemaProvider;
     }
 
     public ResourceMapper() {
@@ -39,7 +46,31 @@ public class ResourceMapper {
                         throw new RuntimeException(e);
                     }
                 },
-                source -> null);
+                source -> null,
+                (entity, aClass, property) -> {
+                    if (entity.getOwner().equals(getIdentityManager().getUser())) {
+                        return true;
+                    }
+
+                    try {
+                        EntitySchema schemaItem = getEntityManager().createQuery("select s from EntitySchema s where s.property = :property and s.entity = :entity and s.owner = :owner", EntitySchema.class)
+                                .setParameter("property", property)
+                                .setParameter("entity", aClass)
+                                .setParameter("owner", entity.getOwner())
+                                .getSingleResult();
+
+                        UserConnection userConnection = getEntityManager().createQuery("select c from UserConnection c where c.to = :to and c.from = :from", UserConnection.class)
+                                .setParameter("to", getIdentityManager().getUser())
+                                .setParameter("from", entity.getOwner())
+                                .getSingleResult();
+
+                        Set<Category> visibility = schemaItem.getVisibility();
+
+                        return visibility.contains(userConnection.getCategory());
+                    } catch (NoResultException e) {
+                        return false;
+                    }
+                });
     }
 
     public ResourceMapper(NewInstanceProvider newInstanceProvider) {
@@ -50,13 +81,62 @@ public class ResourceMapper {
                         return ((AbstractRestEntity) source).getId();
                     }
                     return null;
-                }
-        );
+                },
+                (entity, aClass, property) -> {
+                    if (entity.getOwner().equals(getIdentityManager().getUser())) {
+                        return true;
+                    }
+
+                    try {
+                        EntitySchema schemaItem = getEntityManager().createQuery("select s from EntitySchema s where s.property = :property and s.entity = :entity and s.owner = :owner", EntitySchema.class)
+                                .setParameter("property", property)
+                                .setParameter("entity", aClass)
+                                .setParameter("owner", entity.getOwner())
+                                .getSingleResult();
+
+                        UserConnection userConnection = getEntityManager().createQuery("select c from UserConnection c where c.to = :to and c.from = :from", UserConnection.class)
+                                .setParameter("to", getIdentityManager().getUser())
+                                .setParameter("from", entity.getOwner())
+                                .getSingleResult();
+
+                        Set<Category> visibility = schemaItem.getVisibility();
+
+                        return visibility.contains(userConnection.getCategory());
+                    } catch (NoResultException e) {
+                        return false;
+                    }
+                });
     }
 
     public <S, D> D map(S source, Class<D> destinationClass) {
         if (destinationClass.isPrimitive() || source.getClass().equals(destinationClass)) {
             return (D) source;
+        }
+
+        if (source instanceof AbstractRestEntity) {
+            JsonObject schema = ((AbstractRestEntity) source).getSchema();
+
+            for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
+                Set<CategoryType> categories = entry.getValue().getCategories();
+
+                try {
+                    EntityManager entityManager = getEntityManager();
+                    EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
+                            .setParameter("owner", getIdentityManager().getUser())
+                            .setParameter("entity", destinationClass)
+                            .setParameter("property", entry.getKey())
+                            .getSingleResult();
+
+                    entitySchema.getVisibility().clear();
+
+                    for (CategoryType category : categories) {
+                        Category categoryEntity = entityManager.find(Category.class, category.getId());
+                        entitySchema.getVisibility().add(categoryEntity);
+                    }
+                } catch (NoResultException e) {
+                    log.info(e.getLocalizedMessage());
+                }
+            }
         }
 
         try {
@@ -68,6 +148,31 @@ public class ResourceMapper {
                 isNew = true;
             }
 
+            if (destinationInstance instanceof AbstractRestEntity) {
+                JsonObject schema = ((AbstractRestEntity) destinationInstance).getSchema();
+
+                for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
+                    try {
+                        Set<CategoryType> categories = entry.getValue().getCategories();
+                        EntityManager entityManager = getEntityManager();
+                        EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
+                                .setParameter("owner", getIdentityManager().getUser())
+                                .setParameter("entity", source.getClass())
+                                .setParameter("property", entry.getKey())
+                                .getSingleResult();
+
+                        for (Category category : entitySchema.getVisibility()) {
+                            CategoryType categoryType = map(category, CategoryType.class);
+                            categories.add(categoryType);
+                        }
+                    } catch (NoResultException e) {
+                        log.info(e.getLocalizedMessage());
+                    }
+                }
+
+
+            }
+
             BeanModel<S> beanModelSource = (BeanModel<S>) BeanIntrospector.create(source.getClass());
             BeanModel<D> beanModelDestination = BeanIntrospector.create(destinationClass);
 
@@ -77,22 +182,27 @@ public class ResourceMapper {
                 if (isNew || dirty) {
                     BeanProperty<D, Object> propertyDestination = (BeanProperty<D, Object>) beanModelDestination.get(propertySource.getKey());
 
-                    if ((propertyDestination != null && ! propertyDestination.isReadOnly()) || propertyDestination != null && propertyDestination.getType().isSubtypeOf(Collection.class)) {
+                    if ((propertyDestination != null && !propertyDestination.isReadOnly()) || propertyDestination != null && propertyDestination.getType().isSubtypeOf(Collection.class)) {
                         Object sourcePropertyInstance = propertySource.apply(source);
 
                         if (sourcePropertyInstance != null) {
                             switch (sourcePropertyInstance) {
-                                case List<?> list -> initializeList(destinationInstance, propertySource, propertyDestination, list);
-                                case Set<?> set -> initializeSet(destinationInstance, propertySource, propertyDestination, set);
-                                case Map map -> initializeMap(destinationInstance, propertySource, propertyDestination, map);
-                                default -> initializeBean(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                                case List<?> list ->
+                                        initializeList(source, destinationInstance, propertySource, propertyDestination, list);
+                                case Set<?> set ->
+                                        initializeSet(source, destinationInstance, propertySource, propertyDestination, set);
+                                case Map map ->
+                                        initializeMap(source, destinationInstance, propertySource, propertyDestination, map);
+                                default ->
+                                        initializeBean(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
                             }
                         }
                     }
                 }
             }
             return destinationInstance;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             log.error(e.getLocalizedMessage());
             throw new RuntimeException(e);
         }
@@ -133,7 +243,15 @@ public class ResourceMapper {
                 if (securityAnnotationDestination == null) {
                     MapperSecurity securityAnnotationSource = propertySource.getAnnotation(MapperSecurity.class);
                     if (securityAnnotationSource == null) {
-                        initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                        MapperSchema schemaAnnotation = propertySource.getAnnotation(MapperSchema.class);
+                        if (schemaAnnotation == null) {
+                            initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                        } else {
+                            boolean execute = schemaProvider.execute((OwnerProvider) source, source.getClass(), propertySource.getKey());
+                            if (execute) {
+                                initializeBeanOrEntity(source, destinationInstance, propertySource, propertyDestination, sourcePropertyInstance);
+                            }
+                        }
                     } else {
                         IdentityProvider identityManager = getIdentityManager();
                         if (hasRole(securityAnnotationSource, identityManager)) {
@@ -162,7 +280,7 @@ public class ResourceMapper {
 
     private static boolean hasRole(MapperSecurity securityAnnotationSource, IdentityProvider identityManager) {
         for (String role : securityAnnotationSource.rolesAllowed()) {
-            if (! identityManager.hasRole(role)) {
+            if (!identityManager.hasRole(role)) {
                 return false;
             }
         }
@@ -171,6 +289,10 @@ public class ResourceMapper {
 
     private static IdentityProvider getIdentityManager() {
         return CDI.current().select(IdentityProvider.class).get();
+    }
+
+    private static EntityManager getEntityManager() {
+        return CDI.current().select(EntityManager.class).get();
     }
 
     private <S, D> void initializeBeanOrEntity(S source, D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Object sourcePropertyInstance) {
@@ -187,10 +309,18 @@ public class ResourceMapper {
         }
     }
 
-    private <D, S> void initializeList(D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, List<?> list) {
+    private <D, S> void initializeList(S source, D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, List<?> list) {
         MapperSecurity securityAnnotation = propertySource.getAnnotation(MapperSecurity.class);
         if (securityAnnotation == null) {
-            initializeListInternal(destinationInstance, propertyDestination, list);
+            MapperSchema schemaAnnotation = propertySource.getAnnotation(MapperSchema.class);
+            if (schemaAnnotation == null) {
+                initializeListInternal(destinationInstance, propertyDestination, list);
+            } else {
+                boolean execute = schemaProvider.execute((OwnerProvider) source, source.getClass(), propertySource.getKey());
+                if (execute) {
+                    initializeListInternal(destinationInstance, propertyDestination, list);
+                }
+            }
         } else {
             IdentityProvider identityManager = getIdentityManager();
             if (hasRole(securityAnnotation, identityManager)) {
@@ -209,10 +339,18 @@ public class ResourceMapper {
         });
     }
 
-    private <D,S> void initializeMap(D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Map map) {
+    private <D, S> void initializeMap(S source, D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Map map) {
         MapperSecurity securityAnnotation = propertySource.getAnnotation(MapperSecurity.class);
         if (securityAnnotation == null) {
-            initializeMapInternal(destinationInstance, propertyDestination, map);
+            MapperSchema schemaAnnotation = propertySource.getAnnotation(MapperSchema.class);
+            if (schemaAnnotation == null) {
+                initializeMapInternal(destinationInstance, propertyDestination, map);
+            } else {
+                boolean execute = schemaProvider.execute((OwnerProvider) source, source.getClass(), propertySource.getKey());
+                if (execute) {
+                    initializeMapInternal(destinationInstance, propertyDestination, map);
+                }
+            }
         } else {
             IdentityProvider identityManager = getIdentityManager();
             if (hasRole(securityAnnotation, identityManager)) {
@@ -232,10 +370,18 @@ public class ResourceMapper {
         });
     }
 
-    private <D,S> void initializeSet(D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Set<?> set) {
+    private <D, S> void initializeSet(S source, D destinationInstance, BeanProperty<S, ?> propertySource, BeanProperty<D, Object> propertyDestination, Set<?> set) {
         MapperSecurity securityAnnotation = propertySource.getAnnotation(MapperSecurity.class);
         if (securityAnnotation == null) {
-            initializeSetInternal(destinationInstance, propertyDestination, set);
+            MapperSchema schemaAnnotation = propertySource.getAnnotation(MapperSchema.class);
+            if (schemaAnnotation == null) {
+                initializeSetInternal(destinationInstance, propertyDestination, set);
+            } else {
+                boolean execute = schemaProvider.execute((OwnerProvider) source, source.getClass(), propertySource.getKey());
+                if (execute) {
+                    initializeSetInternal(destinationInstance, propertyDestination, set);
+                }
+            }
         } else {
             IdentityProvider identityManager = getIdentityManager();
             if (hasRole(securityAnnotation, identityManager)) {

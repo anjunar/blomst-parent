@@ -1,16 +1,12 @@
-package com.anjunar.blomst.control.users.user.connections.categories.category;
+package com.anjunar.common.rest.schema;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.blomst.shared.users.user.UserSelect;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@JsonSchema(widget = JsonNode.Widget.FORM)
-public class CategoryForm extends AbstractRestEntity {
+public class CategoryType extends AbstractRestEntity {
 
     @NotBlank
     @Size(min = 3, max = 80)
@@ -20,10 +16,6 @@ public class CategoryForm extends AbstractRestEntity {
     @Size(max = 255)
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Description")
     private String description;
-
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
-    @NotNull
-    private UserSelect owner;
 
     public String getName() {
         return name;
@@ -40,13 +32,4 @@ public class CategoryForm extends AbstractRestEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public UserSelect getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserSelect owner) {
-        this.owner = owner;
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.anjunar.common.rest.objectmapper;
+package com.anjunar.common.rest.schemamapper;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface MapperConverter {
-
-    Class<? extends Converter<?,?>> value();
+public @interface MapperSecurity {
+    String[] rolesAllowed();
 
 }

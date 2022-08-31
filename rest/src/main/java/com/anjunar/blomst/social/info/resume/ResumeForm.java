@@ -18,7 +18,7 @@ public class ResumeForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
     private UserSelect owner;
 
-    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Items")
+    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Items", visibility = true)
     private final List<ResumeItemForm> items = new ArrayList<>();
 
     public UserSelect getOwner() {

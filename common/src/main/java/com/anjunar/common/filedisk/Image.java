@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "co_image")
 public class Image extends AbstractEntity {
 
     private String name;

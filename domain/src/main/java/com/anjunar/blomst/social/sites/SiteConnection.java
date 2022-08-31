@@ -8,7 +8,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "do_site_connection")
 public class SiteConnection extends AbstractEntity {
 
     @ManyToOne

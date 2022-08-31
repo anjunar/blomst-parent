@@ -4,7 +4,7 @@ import com.anjunar.blomst.social.pages.page.PageResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.ApplicationResource;
 

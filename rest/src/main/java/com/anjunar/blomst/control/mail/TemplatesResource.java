@@ -7,7 +7,7 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

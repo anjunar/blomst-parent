@@ -1,4 +1,4 @@
-package com.anjunar.common.rest.objectmapper;
+package com.anjunar.common.rest.schemamapper;
 
 public interface Converter<E, D> {
 

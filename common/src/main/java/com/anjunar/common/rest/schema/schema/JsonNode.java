@@ -1,10 +1,14 @@
 package com.anjunar.common.rest.schema.schema;
 
+import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.validators.Validator;
+import com.anjunar.common.security.Category;
 import com.fasterxml.jackson.annotation.*;
 import com.anjunar.common.rest.api.Link;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
@@ -92,6 +96,10 @@ public abstract class JsonNode {
     private Boolean readOnly;
 
     private Boolean dirty;
+
+    private Boolean visibility;
+
+    private Set<CategoryType> categories = new HashSet<>();
 
     private final LinkedHashMap<String, Link> links = new LinkedHashMap<>();
 
@@ -181,4 +189,19 @@ public abstract class JsonNode {
         validators.put(name, validator);
     }
 
+    public void setVisibility(Boolean visibility) {
+        this.visibility = visibility;
+    }
+
+    public Boolean getVisibility() {
+        return visibility;
+    }
+
+    public Set<CategoryType> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<CategoryType> categories) {
+        this.categories = categories;
+    }
 }

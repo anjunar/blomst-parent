@@ -2,20 +2,15 @@ package com.anjunar.blomst.social.sites.site.connections.connection;
 
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
-import com.anjunar.blomst.social.sites.site.SiteResource;
-import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
-import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.sites.Site;
 import com.anjunar.blomst.social.sites.SiteConnection;
-import com.anjunar.blomst.social.sites.site.SiteForm;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,7 +20,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+
 import java.util.UUID;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;

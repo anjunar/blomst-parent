@@ -5,7 +5,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.page.PageResource;
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 

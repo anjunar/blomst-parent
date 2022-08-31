@@ -5,9 +5,9 @@ import com.anjunar.blomst.control.users.user.connections.categories.category.Cat
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
-import com.anjunar.blomst.control.users.Category;
+import com.anjunar.common.security.Category;
 
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

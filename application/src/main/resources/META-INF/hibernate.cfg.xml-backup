@@ -30,8 +30,8 @@
         <mapping class="com.anjunar.blomst.social.timeline.LinkPost"/>
         <mapping class="com.anjunar.blomst.social.timeline.SystemPost"/>
 
-        <mapping class="com.anjunar.blomst.control.users.Category"/>
-        <mapping class="com.anjunar.blomst.control.users.UserConnection"/>
+        <mapping class="com.anjunar.common.security.Category"/>
+        <mapping class="com.anjunar.common.security.UserConnection"/>
         <mapping class="com.anjunar.blomst.control.users.ResumeItem"/>
         <mapping class="com.anjunar.blomst.control.users.Resume"/>
 

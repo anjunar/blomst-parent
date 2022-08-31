@@ -2,12 +2,10 @@ package com.anjunar.blomst.social.chat;
 
 import com.anjunar.blomst.ApplicationWebSocketMessage;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import com.anjunar.common.security.User;
 import com.anjunar.common.websocket.OnCloseEvent;
 import com.anjunar.common.websocket.OnMessageEvent;
-import com.anjunar.common.websocket.OnOpenEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.enterprise.context.ApplicationScoped;

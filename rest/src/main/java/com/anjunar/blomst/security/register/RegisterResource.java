@@ -1,6 +1,7 @@
 package com.anjunar.blomst.security.register;
 
 import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
@@ -63,9 +64,10 @@ public class RegisterResource {
 
     @POST
     @Consumes("application/json")
+    @Produces("application/json")
     @Transactional
     @LinkDescription("Do Registration")
-    public Response register(RegisterForm resource) {
+    public ResponseOk register(RegisterForm resource) {
 
         User user = new User();
 
@@ -97,14 +99,14 @@ public class RegisterResource {
         entityManager.persist(user);
 
         Role userRole = entityManager.createQuery("select r from Role r where r.name = :role", Role.class)
-                .setParameter("role", "Guest")
+                .setParameter("role", "User")
                 .getSingleResult();
 
         user.getRoles().add(userRole);
 
         identityProvider.authenticate(user);
 
-        return Response.ok().build();
+        return new ResponseOk();
     }
 
 }

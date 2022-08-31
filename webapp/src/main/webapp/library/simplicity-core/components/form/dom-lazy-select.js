@@ -15,6 +15,7 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
     open = false;
     label = "name";
 
+    placeholder;
     defaultValue = "";
     name;
     disabled = "false";
@@ -45,6 +46,9 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                 this.open = false;
             }
         };
+
+        let input = this.querySelector("input");
+        input.placeholder = this.placeholder;
 
         window.addEventListener("click", listener)
 
@@ -97,14 +101,6 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
         if (input) {
             input.dispatchEvent(new Event("input"));
         }
-    }
-
-    get placeholder() {
-        return this.querySelector("input").placeholder
-    }
-
-    set placeholder(value) {
-        this.querySelector("input").placeholder = value;
     }
 
     inputWidth() {
@@ -299,8 +295,7 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                 }
             } break;
             case "placeholder" : {
-                let input = this.querySelector("input");
-                input.placeholder = newValue;
+                this.placeholder = newValue;
             } break;
             case "items" : {
                 this.items = newValue;

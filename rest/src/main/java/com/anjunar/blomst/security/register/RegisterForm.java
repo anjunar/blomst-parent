@@ -18,25 +18,25 @@ public class RegisterForm implements LinksContainer {
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name")
     private String firstName;
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name")
     private String lastName;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.DATE)
+    @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birth Date")
     private LocalDate birthDate;
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.PASSWORD)
+    @JsonSchema(widget = JsonNode.Widget.PASSWORD, title = "Password")
     private String password;
 
     @JsonSchema(ignore = true)
-    @JsonProperty(value = "$schema", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "$schema")
     private final JsonObject schema = JsonSchemaGenerator.generateObject(RegisterForm.class);
 
     public String getFirstName() {

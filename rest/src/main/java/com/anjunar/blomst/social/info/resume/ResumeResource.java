@@ -1,26 +1,29 @@
 package com.anjunar.blomst.social.info.resume;
 
+import com.anjunar.blomst.control.users.Resume;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
-import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.schema.schema.JsonObject;
+import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.control.users.Resume;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
 import java.util.UUID;
 
-import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("social/info/resume")
@@ -42,6 +45,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
 
     @Path("create")
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public ResumeForm create() {
         ResumeForm form = new ResumeForm();
 

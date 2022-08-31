@@ -3,7 +3,7 @@ package com.anjunar.blomst.control.users.user.connections.categories;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User_;
-import com.anjunar.blomst.control.users.Category;
+import com.anjunar.common.security.Category;
 import com.anjunar.blomst.control.users.Category_;
 
 import jakarta.persistence.EntityManager;

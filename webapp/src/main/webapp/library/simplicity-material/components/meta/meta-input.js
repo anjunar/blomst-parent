@@ -1,5 +1,7 @@
 import {customComponents} from "../../../simplicity-core/simplicity.js";
 import {libraryLoader} from "../../../simplicity-core/processors/loader-processor.js";
+import DomLazySelect from "../../../simplicity-core/components/form/dom-lazy-select.js";
+import MatInputContainer from "../form/container/mat-input-container.js";
 
 class MetaInput extends HTMLElement {
 
@@ -7,6 +9,14 @@ class MetaInput extends HTMLElement {
     schema;
 
     container;
+
+    category(query, callback) {
+        fetch(`service/control/users/user/connections/connection/categories?index=${query.index}&limit=${query.limit}`)
+            .then(response => response.json())
+            .then(response => {
+                callback(response.rows, response.size);
+            })
+    }
 
     load() {
         switch (this.schema.widget) {
@@ -62,7 +72,7 @@ class MetaInput extends HTMLElement {
     }
 
     static get components() {
-        return []
+        return [DomLazySelect, MatInputContainer]
     }
 
     static get template() {

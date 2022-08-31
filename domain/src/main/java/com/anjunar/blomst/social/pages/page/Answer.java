@@ -9,7 +9,6 @@ import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "do_answer")
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Answer extends Likeable {
 

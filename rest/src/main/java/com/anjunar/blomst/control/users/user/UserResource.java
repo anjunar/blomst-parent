@@ -5,8 +5,8 @@ import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
-import com.anjunar.common.rest.objectmapper.NewInstanceProvider;
-import com.anjunar.common.rest.objectmapper.ResourceMapper;
+import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
+import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -22,7 +22,7 @@ import com.anjunar.blomst.ApplicationResource;
 import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.users.Resume;
-import com.anjunar.blomst.control.users.UserConnection;
+import com.anjunar.common.security.UserConnection;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.info.resume.ResumeResource;
@@ -134,7 +134,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
 
         try {
-            Resume resume = service.findResume(identityProvider.getUser());
+            Resume resume = service.findResume(user);
             linkTo(methodOn(ResumeResource.class).read(resume.getId()))
                     .withRel("resume")
                     .build(resource::addLink);

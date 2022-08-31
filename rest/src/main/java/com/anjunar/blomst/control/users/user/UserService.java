@@ -8,7 +8,7 @@ import com.anjunar.common.security.EmailType;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.users.Resume;
-import com.anjunar.blomst.control.users.UserConnection;
+import com.anjunar.common.security.UserConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

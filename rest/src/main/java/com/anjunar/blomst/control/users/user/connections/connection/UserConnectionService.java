@@ -3,7 +3,7 @@ package com.anjunar.blomst.control.users.user.connections.connection;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.notifications.Notification;
-import com.anjunar.blomst.control.users.UserConnection;
+import com.anjunar.common.security.UserConnection;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

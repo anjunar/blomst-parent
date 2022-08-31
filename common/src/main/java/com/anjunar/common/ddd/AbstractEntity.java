@@ -13,6 +13,7 @@ import java.util.UUID;
  */
 @FilterDef(name = "deletedFilter")
 @MappedSuperclass
+@EntityListeners(AbstractEntityListener.class)
 public abstract class AbstractEntity implements Entity {
 
     @Id

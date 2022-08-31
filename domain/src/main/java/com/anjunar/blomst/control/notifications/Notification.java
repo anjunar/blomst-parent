@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Table(name = "do_notification")
 @Entity
 public class Notification extends AbstractEntity {
 

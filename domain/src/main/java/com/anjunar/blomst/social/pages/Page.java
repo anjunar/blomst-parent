@@ -17,7 +17,6 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Entity
 @Audited
-@Table(name = "do_page")
 @AuditOverrides(value = {
         @AuditOverride(forClass = Page.class),
         @AuditOverride(forClass = Likeable.class),

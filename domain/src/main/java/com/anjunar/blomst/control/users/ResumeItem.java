@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 import java.time.Year;
 
 @Entity
-@Table(name = "do_resume_item")
 public class ResumeItem extends AbstractEntity {
 
     @ManyToOne

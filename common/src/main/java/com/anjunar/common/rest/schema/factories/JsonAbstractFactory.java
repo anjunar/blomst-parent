@@ -37,6 +37,9 @@ public abstract class JsonAbstractFactory<J extends JsonNode> {
             if (! jsonSchema.widget().equals(JsonNode.Widget.NO_WIDGET)) {
                 jsonNode.setWidget(jsonSchema.widget());
             }
+            if (jsonSchema.visibility()) {
+                jsonNode.setVisibility(true);
+            }
         }
 
         NotNull notNull = property.getAnnotation(NotNull.class);

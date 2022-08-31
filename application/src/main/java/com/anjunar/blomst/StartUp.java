@@ -2,10 +2,7 @@ package com.anjunar.blomst;
 
 import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.filedisk.Image;
-import com.anjunar.common.security.EmailType;
-import com.anjunar.common.security.IdentityService;
-import com.anjunar.common.security.Role;
-import com.anjunar.common.security.User;
+import com.anjunar.common.security.*;
 import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
@@ -26,10 +23,6 @@ import java.util.Locale;
 
 @ApplicationScoped
 public class StartUp {
-
-    @Inject
-    @OnPersist
-    private Event<User> userEvent;
 
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, IdentityService service) throws SQLException {
@@ -81,7 +74,13 @@ public class StartUp {
                 e.printStackTrace();
             }
 
-            userEvent.fire(patrick);
+            Category category = service.findCategory("Everybody");
+            if (category == null) {
+                category = new Category();
+                category.setName("Everybody");
+                service.saveCategory(category);
+            }
+
         }
 
     }

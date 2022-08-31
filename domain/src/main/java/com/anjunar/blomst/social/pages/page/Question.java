@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "do_question")
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Question extends Likeable {
 

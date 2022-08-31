@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.blomst.shared.system.Language;
-import com.anjunar.common.rest.objectmapper.Converter;
+import com.anjunar.common.rest.schemamapper.Converter;
 
 import java.util.Locale;
 

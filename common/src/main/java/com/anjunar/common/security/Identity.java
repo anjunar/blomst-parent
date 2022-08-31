@@ -6,7 +6,6 @@ import com.anjunar.common.filedisk.Image;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "co_identity")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Identity extends AbstractEntity {
 

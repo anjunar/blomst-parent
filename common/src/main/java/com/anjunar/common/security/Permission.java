@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "co_permission")
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Permission extends AbstractEntity {
 

@@ -16,6 +16,8 @@
 
         <class>com.anjunar.blomst.shared.Likeable</class>
 
+        <class>com.anjunar.common.security.EntitySchema</class>
+
         <class>com.anjunar.blomst.social.pages.Page</class>
         <class>com.anjunar.blomst.social.pages.Editor</class>
         <class>com.anjunar.blomst.social.pages.page.Question</class>
@@ -28,8 +30,8 @@
         <class>com.anjunar.blomst.social.timeline.TextPost</class>
         <class>com.anjunar.blomst.social.timeline.SystemPost</class>
 
-        <class>com.anjunar.blomst.control.users.UserConnection</class>
-        <class>com.anjunar.blomst.control.users.Category</class>
+        <class>com.anjunar.common.security.UserConnection</class>
+        <class>com.anjunar.common.security.Category</class>
         <class>com.anjunar.blomst.control.users.ResumeItem</class>
         <class>com.anjunar.blomst.control.users.Resume</class>
 

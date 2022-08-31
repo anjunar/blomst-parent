@@ -8,8 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
 @Entity(name = "CommunitiesConnection")
-@Table(name = "do_coconnection")
 public class CommunitiesConnection extends AbstractEntity {
 
     @ManyToOne

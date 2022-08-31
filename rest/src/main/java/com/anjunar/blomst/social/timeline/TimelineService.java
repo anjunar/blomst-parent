@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.timeline;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.control.users.UserConnection;
+import com.anjunar.common.security.UserConnection;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
