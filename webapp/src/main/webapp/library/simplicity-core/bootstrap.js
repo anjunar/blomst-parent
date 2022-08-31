@@ -46,10 +46,15 @@ export function mountApp(options) {
                 return false;
             }
 
-/*
             if (options.history) {
                 window.addEventListener("click", (event) => {
-                    let aElement = event.path.find((element) => element.localName === "a" && element.hasAttribute("href"));
+                    let aElement;
+                    if (event.composedPath) {
+                        aElement = event.composedPath().find((element) => element.localName === "a" && element.hasAttribute("href"));
+                    } else {
+                        aElement = event.path.find((element) => element.localName === "a" && element.hasAttribute("href"));
+                    }
+
                     if (aElement) {
                         let url = aElement.getAttribute("href");
                         let routes = app.constructor.routes;
@@ -65,7 +70,6 @@ export function mountApp(options) {
                     return true;
                 })
             }
-*/
         })
 
 }

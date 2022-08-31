@@ -24,6 +24,7 @@ import java.util.List;
 
 public class OracleIndexes {
 
+/*
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, DataSource dataSource) throws SQLException {
 
@@ -71,4 +72,5 @@ public class OracleIndexes {
             }
         }
     }
+*/
 }

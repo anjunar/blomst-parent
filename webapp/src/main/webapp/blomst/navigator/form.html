@@ -23,12 +23,14 @@
                 </ul>
             </mat-drawer>
             <mat-drawer-content>
-                <div style="margin: auto">{{{link}}}</div>
-                <div style="width: 600px; margin: auto">
-                    <meta-form bind:model="model" bind:onaction="onAction($event)">
-                        <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
-                        <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
-                    </meta-form>
+                <div style="height: 100%;">
+                    <div style="margin: 5px">{{{link}}}</div>
+                    <div style="margin: 5px;">
+                        <meta-form bind:model="model" bind:onaction="onAction($event)">
+                            <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
+                            <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
+                        </meta-form>
+                    </div>
                 </div>
             </mat-drawer-content>
         </mat-drawer-container>

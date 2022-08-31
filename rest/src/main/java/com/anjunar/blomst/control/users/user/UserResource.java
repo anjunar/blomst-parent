@@ -132,12 +132,17 @@ public class UserResource implements FormResourceTemplate<UserForm> {
             resource.setPassword(user.getPassword());
         }
 
-/*
-        Resume resume = service.findResume(identityProvider.getUser());
-        linkTo(methodOn(ResumeResource.class).read(resume.getId()))
-                .withRel("resume")
-                .build(resource::addLink);
-*/
+
+        try {
+            Resume resume = service.findResume(identityProvider.getUser());
+            linkTo(methodOn(ResumeResource.class).read(resume.getId()))
+                    .withRel("resume")
+                    .build(resource::addLink);
+        } catch (NoResultException e) {
+            linkTo(methodOn(ResumeResource.class).create())
+                    .withRel("resume")
+                    .build(resource::addLink);
+        }
 
         try {
             UserConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
@@ -187,7 +192,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         SiteConnectionsSearch siteConnectionsSearch = new SiteConnectionsSearch();
         siteConnectionsSearch.setFrom(id);
         linkTo(methodOn(SiteConnectionsResource.class).list(siteConnectionsSearch))
-                .withRel("site-connection")
+                .withRel("site-connections")
                 .build(resource::addLink);
 
         return resource;

@@ -8,12 +8,12 @@
                 <password>sa</password>
             </security>
         </datasource>
-        <datasource jndi-name="java:jboss/datasources/anjunar" pool-name="Anjunar" enabled="true" use-java-context="true">
-            <connection-url>jdbc:oracle:thin:@localhost:1521:orcl</connection-url>
-            <driver>oracle</driver>
+        <datasource jndi-name="java:jboss/datasources/blomst" pool-name="Blomst" enabled="true" use-java-context="true">
+            <connection-url>jdbc:postgresql://localhost:5432/blomst</connection-url>
+            <driver>postgresql</driver>
             <security>
-                <user-name>anjunar</user-name>
-                <password>anjunar</password>
+                <user-name>Anjunar</user-name>
+                <password>Anjunar</password>
             </security>
         </datasource>
         <drivers>

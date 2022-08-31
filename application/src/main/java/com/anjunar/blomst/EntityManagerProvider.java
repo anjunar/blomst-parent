@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @Stateful
 public class EntityManagerProvider {
 
-    @Resource(lookup="java:jboss/datasources/anjunar")
+    @Resource(lookup="java:jboss/datasources/blomst")
     private DataSource dataSource;
 
     @PersistenceContext(unitName = "main")

@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.info.resume;
 
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -15,6 +16,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import java.util.UUID;
 
@@ -36,6 +38,25 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
 
     public ResumeResource() {
         this(null, null);
+    }
+
+    @Path("create")
+    @GET
+    public ResumeForm create() {
+        ResumeForm form = new ResumeForm();
+
+        ResourceMapper mapper = new ResourceMapper();
+
+        form.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
+
+        linkTo(methodOn(ResumeResource.class).save(new ResumeForm()))
+                .build(form::addLink);
+
+        JsonObject site = form.find("site", JsonObject.class);
+        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                .build(site::addLink);
+
+        return form;
     }
 
     @Transactional

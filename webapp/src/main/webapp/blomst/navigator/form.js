@@ -64,13 +64,11 @@ class Table extends HTMLElement {
     links(links) {
         return Object.values(links)
             .filter((link) => link.method === "GET")
-            .sort((lhs, rhs) => lhs.rel.localeCompare(rhs.rel))
     }
 
     actions(links) {
         return Object.values(links)
             .filter((link) => link.method !== "GET")
-            .sort((lhs, rhs) => lhs.rel.localeCompare(rhs.rel))
     }
 
     static get components() {

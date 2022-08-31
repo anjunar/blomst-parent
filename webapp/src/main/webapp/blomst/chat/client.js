@@ -35,7 +35,7 @@ class Client extends HTMLElement {
     }
 
     static get template() {
-        return loader("hive/chat/client.html")
+        return loader("blomst/chat/client.html")
     }
 
 }

@@ -77,7 +77,7 @@ class Users extends HTMLElement {
     }
 
     static get template() {
-        return loader("hive/chat/users.html")
+        return loader("blomst/chat/users.html")
     }
 
 }
