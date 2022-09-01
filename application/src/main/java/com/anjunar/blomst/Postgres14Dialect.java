@@ -8,7 +8,10 @@ import org.hibernate.query.sqm.function.SqmFunctionRegistry;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.spi.TypeConfiguration;
 
+import java.sql.Types;
+
 public class Postgres14Dialect extends PostgreSQLDialect {
+
 
     @Override
     public void initializeFunctionRegistry(QueryEngine queryEngine) {
@@ -19,15 +22,16 @@ public class Postgres14Dialect extends PostgreSQLDialect {
 
         functionRegistry.registerPattern(
                 "levensthein",
-                "UTL_MATCH.EDIT_DISTANCE(?1, ?2)",
+                "levenshtein(?1, ?2)",
                 typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.INTEGER)
         );
 
         functionRegistry.registerPattern(
-                "contains",
-                "contains(?1, ?2, 1)",
-                typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.INTEGER)
+                "distance",
+                "?1 @@ to_tsquery(?2, ?3);",
+                typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.BOOLEAN)
         );
+
 
     }
 }

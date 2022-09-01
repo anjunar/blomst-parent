@@ -1,9 +1,13 @@
 package com.anjunar.common.ddd;
 
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -17,7 +21,6 @@ import java.util.UUID;
 public abstract class AbstractEntity implements Entity {
 
     @Id
-//    @Type(type = "uuid-binary")
     @Column(name = "id", length = 16, unique = true, nullable = false)
     private UUID id = UUID.randomUUID();
 

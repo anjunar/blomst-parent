@@ -2,6 +2,8 @@ package com.anjunar.blomst;
 
 import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.i18n.Translation;
+import com.anjunar.common.i18n.Translations;
 import com.anjunar.common.security.*;
 import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
@@ -74,14 +76,18 @@ public class StartUp {
                 e.printStackTrace();
             }
 
-            Category category = service.findCategory("Everybody");
-            if (category == null) {
-                category = new Category();
-                category.setName("Everybody");
-                service.saveCategory(category);
-            }
-
         }
+
+        Category category = service.findCategory("Everybody");
+        if (category == null) {
+            category = new Category();
+            category.setName(new Translations(
+                    new Translation(Locale.forLanguageTag("de-DE"), "Jeder"),
+                    new Translation(Locale.forLanguageTag("en-DE"), "Everybody")
+            ));
+            service.saveCategory(category);
+        }
+
 
     }
 

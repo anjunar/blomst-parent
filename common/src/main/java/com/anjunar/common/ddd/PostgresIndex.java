@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ METHOD, FIELD })
 @Retention(RUNTIME)
 @Documented
-public @interface OracleIndex {
+public @interface PostgresIndex {
 
     String name() default "";
 

@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.timeline;
 
+import com.anjunar.blomst.social.pages.Editor_;
 import com.google.common.base.Strings;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.Question_;
@@ -18,6 +19,6 @@ public class TextProvider extends AbstractRestPredicateProvider<String, Question
         if (Strings.isNullOrEmpty(value)) {
             return builder.conjunction();
         }
-        return builder.greaterThan(builder.function("contains", Integer.class, root.get(Question_.text), builder.literal("about(" + value + ")")), 0);
+        return builder.greaterThan(builder.function("contains", Integer.class, root.get(Question_.editor).get(Editor_.text), builder.literal("about(" + value + ")")), 0);
     }
 }

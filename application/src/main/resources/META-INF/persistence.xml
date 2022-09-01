@@ -48,6 +48,7 @@
             <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.type.json_format_mapper" value="com.anjunar.blomst.JSONFormatMapper"/>
         </properties>
 
     </persistence-unit>

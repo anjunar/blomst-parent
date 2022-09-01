@@ -1,6 +1,6 @@
 package com.anjunar.blomst;
 
-import com.anjunar.common.ddd.OracleIndex;
+import com.anjunar.common.ddd.PostgresIndex;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -22,9 +22,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public class OracleIndexes {
+/**
+ * CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+ *
+ * CREATE EXTENSION IF NOT EXISTS btree_gin with schema pg_catalog;
+ *
+ * ALTER TABLE page ADD COLUMN document tsvector GENERATED ALWAYS AS (to_tsvector('german', coalesce(text, ''))) STORED;
+ *
+ * CREATE INDEX ts_idx ON page USING gin(text);
+ *
+ * SELECT * FROM page where page.text @@ to_tsquery('german', 'Transzendenz');
+ *
+ * explain analyse
+ *     SELECT * FROM page where page.text @@ to_tsquery('german', 'Transzendenz');
+ */
+public class PostgresIndexes {
 
-/*
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, DataSource dataSource) throws SQLException {
 
@@ -35,7 +48,7 @@ public class OracleIndexes {
 
             for (BeanProperty<?, ?> property : entityModel.getProperties()) {
                 if (property.isDirect()) {
-                    OracleIndex annotation = property.getAnnotation(OracleIndex.class);
+                    PostgresIndex annotation = property.getAnnotation(PostgresIndex.class);
                     if (annotation != null) {
                         Class<?> entityClass = entity.getRawType();
                         Table tableAnnotation = entityClass.getAnnotation(Table.class);
@@ -59,11 +72,12 @@ public class OracleIndexes {
 
                         Connection connection = dataSource.getConnection();
                         Statement readStatement = connection.createStatement();
-                        String queryString = "select * from USER_INDEXES where TABLE_NAME = '" + tableName.toUpperCase() + "' and INDEX_NAME = '" + indexName.toUpperCase() + "'";
+                        String queryString = "select * from pg_indexes where schemaname = 'public' and INDEXNAME = '" + indexName.toLowerCase() + "'";
                         ResultSet execute = readStatement.executeQuery(queryString);
                         if (! execute.next()) {
                             Statement writeStatement = connection.createStatement();
-                            String createIndex = "CREATE INDEX " + indexName + " ON " + tableName + "(" + columnName + ") INDEXTYPE IS CTXSYS.CONTEXT PARAMETERS ('SYNC(ON COMMIT)')";
+                            // CREATE INDEX ts_idx ON page USING gin(text);
+                            String createIndex = "CREATE INDEX " + indexName + " ON " + tableName + " USING gin(" + columnName + ")";
                             writeStatement.executeUpdate(createIndex);
                         }
                         execute.close();
@@ -72,5 +86,4 @@ public class OracleIndexes {
             }
         }
     }
-*/
 }

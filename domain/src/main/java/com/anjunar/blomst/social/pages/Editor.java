@@ -1,18 +1,17 @@
 package com.anjunar.blomst.social.pages;
 
-import com.anjunar.common.ddd.OracleIndex;
+import com.anjunar.common.ddd.PostgresIndex;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Lob;
 
 @Embeddable
 public class Editor {
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String html;
 
-    @OracleIndex(type = OracleIndex.Type.TEXT)
-    @Lob
+    @PostgresIndex(type = PostgresIndex.Type.TEXT)
+    @Column(columnDefinition="TEXT")
     private String text;
 
     public String getHtml() {

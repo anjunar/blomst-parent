@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.blomst.social.pages.Editor;
-import com.anjunar.common.ddd.OracleIndex;
+import com.anjunar.common.ddd.PostgresIndex;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
 import com.anjunar.blomst.social.pages.Page;
@@ -16,7 +16,7 @@ import java.util.List;
 public class Question extends Likeable {
 
     @Lob
-    @OracleIndex(type = OracleIndex.Type.TEXT)
+    @PostgresIndex(type = PostgresIndex.Type.TEXT)
     private String topic;
 
     @Embedded

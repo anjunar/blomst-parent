@@ -1,29 +1,31 @@
 package com.anjunar.common.security;
 
 import com.anjunar.common.ddd.AbstractEntity;
-import com.anjunar.common.security.User;
-import org.hibernate.annotations.Filter;
-
+import com.anjunar.common.i18n.Translations;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Category extends AbstractEntity {
 
-    private String name;
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Translations name;
 
     private String description;
 
     @ManyToOne
     private User owner;
 
-    public String getName() {
+    public Translations getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Translations name) {
         this.name = name;
     }
 

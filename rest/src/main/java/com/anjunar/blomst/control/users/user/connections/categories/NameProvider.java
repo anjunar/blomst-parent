@@ -1,9 +1,9 @@
 package com.anjunar.blomst.control.users.user.connections.categories;
 
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
+import com.anjunar.common.security.Category_;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Category;
-import com.anjunar.blomst.control.users.Category_;
 import org.apache.commons.lang3.StringUtils;
 
 import jakarta.persistence.EntityManager;

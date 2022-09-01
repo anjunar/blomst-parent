@@ -4,8 +4,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+
 import java.time.LocalDate;
 import java.util.UUID;
+
 
 @ApplicationScoped
 public class IdentityService {
@@ -98,7 +100,8 @@ public class IdentityService {
 
     public Category findCategory(String name) {
         try {
-            return entityManager.createQuery("select c from Category c where c.name = :name", Category.class)
+            String sql = "select *, json as json from category c, json_array_elements(c.name -> 'translations') json where json ->> 'text' = :name ;";
+            return (Category) entityManager.createNativeQuery(sql, Category.class)
                     .setParameter("name", name)
                     .getSingleResult();
         } catch (NoResultException e) {

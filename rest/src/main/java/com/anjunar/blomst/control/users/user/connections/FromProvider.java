@@ -2,9 +2,9 @@ package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.UserConnection_;
 import com.anjunar.common.security.User_;
 import com.anjunar.common.security.Category;
-import com.anjunar.blomst.control.users.UserConnection_;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;

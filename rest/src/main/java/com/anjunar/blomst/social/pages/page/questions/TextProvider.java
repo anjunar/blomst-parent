@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.pages.page.questions;
 
+import com.anjunar.blomst.social.pages.Editor_;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.Question_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
@@ -17,6 +18,6 @@ public class TextProvider extends AbstractRestPredicateProvider<String, Question
         if (value == null || value.equals("")) {
             return builder.conjunction();
         }
-        return builder.gt(builder.function("contains", Integer.class, root.get(Question_.text), builder.literal("about(" + value + ")")), 0);
+        return builder.gt(builder.function("contains", Integer.class, root.get(Question_.editor).get(Editor_.text), builder.literal("about(" + value + ")")), 0);
     }
 }

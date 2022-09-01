@@ -62,13 +62,15 @@ public class ApplicationWebSocket {
 
     @OnOpen
     public void onOpen(Session session) {
-        pool.put(session.getUserPrincipal().getName(), session);
+        if (session.getUserPrincipal() != null) {
+            pool.put(session.getUserPrincipal().getName(), session);
 
-        ApplicationWebSocketMessage socketMessage = new ApplicationWebSocketMessage();
-        socketMessage.setSession(session);
-        socketMessage.setPool(pool);
+            ApplicationWebSocketMessage socketMessage = new ApplicationWebSocketMessage();
+            socketMessage.setSession(session);
+            socketMessage.setPool(pool);
 
-        openEvent.fire(socketMessage);
+            openEvent.fire(socketMessage);
+        }
     }
 
     @OnClose

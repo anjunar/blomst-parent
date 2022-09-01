@@ -1,7 +1,6 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.blomst.social.pages.Editor;
-import com.anjunar.common.ddd.OracleIndex;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
 import org.hibernate.annotations.Filter;

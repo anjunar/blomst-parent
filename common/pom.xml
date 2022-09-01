@@ -140,6 +140,18 @@
             <artifactId>jsoup</artifactId>
         </dependency>
 
+<!--
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-60</artifactId>
+        </dependency>
+-->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>com.anjunar</groupId>
             <artifactId>bean-introspector</artifactId>

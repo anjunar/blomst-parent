@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.timeline;
 
-import com.anjunar.common.ddd.OracleIndex;
+import com.anjunar.common.ddd.PostgresIndex;
 import com.anjunar.common.security.Identity;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class AbstractPost extends Likeable {
 
     @Lob
-    @OracleIndex(type = OracleIndex.Type.TEXT)
+    @PostgresIndex(type = PostgresIndex.Type.TEXT)
     private String text;
 
     @ManyToOne
