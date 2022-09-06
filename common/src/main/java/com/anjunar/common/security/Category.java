@@ -1,32 +1,41 @@
 package com.anjunar.common.security;
 
 import com.anjunar.common.ddd.AbstractEntity;
-import com.anjunar.common.i18n.Translations;
+import com.anjunar.common.i18n.I18nType;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.inject.Inject;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Category extends AbstractEntity {
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Translations name;
+    @Type(I18nType.class)
+    @Column(name = "name", columnDefinition = "json")
+    private final Map<Locale, String> i18nName = new HashMap<>();
 
     private String description;
 
     @ManyToOne
     private User owner;
 
-    public Translations getName() {
-        return name;
+    public Map<Locale, String> getI18nName() {
+        return i18nName;
     }
 
-    public void setName(Translations name) {
-        this.name = name;
+    public String getName() {
+        Locale language = getIdentityProvider().getLanguage();
+        return i18nName.get(language);
     }
 
     public String getDescription() {

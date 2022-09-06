@@ -7,7 +7,7 @@ import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,13 +25,17 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
 
     private final SiteConnectionService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public SiteConnectionsResource(SiteConnectionService service) {
+    public SiteConnectionsResource(SiteConnectionService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public SiteConnectionsResource() {
-        this(null);
+        this(null, null);
     }
 
     @Transactional
@@ -44,7 +48,6 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
         final List<SiteConnectionForm> resources = new ArrayList<>();
 
         for (SiteConnection connection : connections) {
-            ResourceMapper mapper = new ResourceMapper();
             SiteConnectionForm form = mapper.map(connection, SiteConnectionForm.class);
 
             linkTo(methodOn(SiteConnectionResource.class).read(connection.getId()))

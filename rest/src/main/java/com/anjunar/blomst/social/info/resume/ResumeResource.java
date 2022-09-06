@@ -7,9 +7,9 @@ import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import com.anjunar.common.security.IdentityProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -33,14 +33,21 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public ResumeResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public ResumeResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public ResumeResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Path("create")
@@ -49,9 +56,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     public ResumeForm create() {
         ResumeForm form = new ResumeForm();
 
-        ResourceMapper mapper = new ResourceMapper();
-
-        form.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(ResumeResource.class).save(new ResumeForm()))
                 .build(form::addLink);
@@ -69,8 +74,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     public ResumeForm read(UUID id) {
         final Resume entity = entityManager.find(Resume.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        ResumeForm form = mapper.map(entity, ResumeForm.class);
+        ResumeForm form = entityMapper.map(entity, ResumeForm.class);
 
         linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
                 .build(form::addLink);
@@ -89,9 +93,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     @Override
     public ResumeForm save(ResumeForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Resume entity = mapper.map(form, Resume.class);
+        Resume entity = restMapper.map(form, Resume.class);
 
         entityManager.persist(entity);
 
@@ -107,9 +109,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     @LinkDescription("Update Resume")
     @Override
     public ResumeForm update(UUID id, ResumeForm form) {
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Resume entity = mapper.map(form, Resume.class);
+        Resume entity = restMapper.map(form, Resume.class);
 
         linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
                 .build(form::addLink);

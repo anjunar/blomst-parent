@@ -2,7 +2,7 @@ package com.anjunar.blomst.shared.users.user;
 
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.schemamapper.MapperConverter;
+import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 

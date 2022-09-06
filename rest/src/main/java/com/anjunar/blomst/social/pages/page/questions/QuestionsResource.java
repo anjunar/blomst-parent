@@ -7,7 +7,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.pages.page.Question;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,13 +25,17 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
 
     private final QuestionsService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public QuestionsResource(QuestionsService service) {
+    public QuestionsResource(QuestionsService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public QuestionsResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -46,7 +50,6 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
         List<QuestionForm> resources = new ArrayList<>();
 
         for (Question question : questions) {
-            ResourceMapper mapper = new ResourceMapper();
             QuestionForm resource = mapper.map(question, QuestionForm.class);
 
             resources.add(resource);

@@ -7,10 +7,8 @@ import com.google.common.reflect.TypeToken;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
+
 import java.util.List;
 
 public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSearch> {

@@ -6,8 +6,8 @@ import com.anjunar.blomst.control.roles.role.RoleForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.shared.users.user.UserSelect;
@@ -39,15 +39,22 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
 
     private final CommunityConnectionService service;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public CommunityConnectionResource(EntityManager entityManager, IdentityProvider identityProvider, CommunityConnectionService service) {
+    public CommunityConnectionResource(EntityManager entityManager, IdentityProvider identityProvider, CommunityConnectionService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
         this.service = service;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public CommunityConnectionResource() {
-        this(null, null, null);
+        this(null, null, null, null,  null);
     }
 
     @Produces("application/json")
@@ -58,12 +65,10 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     public CommunityConnectionForm create(@QueryParam("to") UUID to) {
         CommunityConnectionForm form = new CommunityConnectionForm();
 
-        ResourceMapper mapper = new ResourceMapper();
-
-        form.setTo(mapper.map(entityManager.find(Community.class, to), CommunityForm.class));
+        form.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class));
         form.setStatus(Status.PENDING);
-        form.setRole(mapper.map(service.findUserRole(), RoleForm.class));
-        form.setFrom(mapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setRole(entityMapper.map(service.findUserRole(), RoleForm.class));
+        form.setFrom(entityMapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(CommunityConnectionResource.class).save(new CommunityConnectionForm()))
                 .build(form::addLink);
@@ -78,8 +83,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     public CommunityConnectionForm read(UUID id) {
         CommunitiesConnection entity = entityManager.find(CommunitiesConnection.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        CommunityConnectionForm form = mapper.map(entity, CommunityConnectionForm.class);
+        CommunityConnectionForm form = entityMapper.map(entity, CommunityConnectionForm.class);
 
         linkTo(methodOn(CommunityConnectionResource.class).update(id, new CommunityConnectionForm()))
                 .build(form::addLink);
@@ -99,9 +103,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @Override
     public CommunityConnectionForm save(CommunityConnectionForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        CommunitiesConnection entity = mapper.map(form, CommunitiesConnection.class);
+        CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
 
         entityManager.persist(entity);
 
@@ -120,9 +122,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @Override
     public CommunityConnectionForm update(UUID id, CommunityConnectionForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        CommunitiesConnection entity = mapper.map(form, CommunitiesConnection.class);
+        CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
 
         linkTo(methodOn(CommunityConnectionResource.class).update(entity.getId(), new CommunityConnectionForm()))
                 .build(form::addLink);

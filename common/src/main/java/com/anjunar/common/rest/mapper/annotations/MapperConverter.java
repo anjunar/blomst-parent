@@ -1,4 +1,4 @@
-package com.anjunar.common.rest.schemamapper;
+package com.anjunar.common.rest.mapper.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface MapperConverter {
 
-    Class<? extends Converter<?,?>> value();
+    Class<? extends MapperConverterType<?,?>> value();
 
 }

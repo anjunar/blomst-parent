@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.schemamapper.MapperConverter;
+import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;

@@ -6,7 +6,7 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,13 +24,17 @@ public class CommunitiesResource implements ListResourceTemplate<CommunityForm, 
 
     private final CommunitiesService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public CommunitiesResource(CommunitiesService service) {
+    public CommunitiesResource(CommunitiesService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public CommunitiesResource() {
-        this(null);
+        this(null, null);
     }
 
     @Transactional
@@ -44,7 +48,6 @@ public class CommunitiesResource implements ListResourceTemplate<CommunityForm, 
         final List<CommunityForm> resources = new ArrayList<>();
 
         for (final Community community : communities) {
-            ResourceMapper mapper = new ResourceMapper();
             CommunityForm form = mapper.map(community, CommunityForm.class);
 
             linkTo(methodOn(CommunityResource.class).read(form.getId()))

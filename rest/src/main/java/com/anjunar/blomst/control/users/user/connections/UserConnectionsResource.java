@@ -6,7 +6,7 @@ import com.anjunar.blomst.control.users.user.connections.connection.UserConnecti
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.UserConnection;
 
@@ -26,14 +26,18 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
 
     private final IdentityProvider identity;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public UserConnectionsResource(UserConnectionsService service, IdentityProvider identity) {
+    public UserConnectionsResource(UserConnectionsService service, IdentityProvider identity, ResourceEntityMapper mapper) {
         this.service = service;
         this.identity = identity;
+        this.mapper = mapper;
     }
 
     public UserConnectionsResource() {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override
@@ -49,7 +53,6 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
         List<UserConnection> accepted = service.accepted(search.getFrom());
 
         for (UserConnection connection : connections) {
-            ResourceMapper mapper = new ResourceMapper();
             ConnectionRow form = mapper.map(connection, ConnectionRow.class);
 
             for (UserConnection acceptedConnection : accepted) {

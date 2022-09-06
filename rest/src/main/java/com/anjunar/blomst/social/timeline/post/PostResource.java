@@ -7,8 +7,8 @@ import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.shared.users.user.UserSelect;
@@ -40,14 +40,21 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public PostResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public PostResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public PostResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Produces("application/json")
@@ -73,8 +80,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         resource.setSource(source);
 
-        ResourceMapper mapper = new ResourceMapper();
-        resource.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))
                         .build(resource::addLink);
@@ -92,27 +98,25 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         post.setViews(post.getViews() == null ? 0 : post.getViews() + 1);
 
-        ResourceMapper mapper = new ResourceMapper();
-
         AbstractPostForm resource = post.accept(new AbstractPostVisitor<>() {
             @Override
             public AbstractPostForm visit(ImagePost post) {
-                return mapper.map(post, ImagePostForm.class);
+                return entityMapper.map(post, ImagePostForm.class);
             }
 
             @Override
             public AbstractPostForm visit(LinkPost post) {
-                return mapper.map(post, LinkPostForm.class);
+                return entityMapper.map(post, LinkPostForm.class);
             }
 
             @Override
             public AbstractPostForm visit(TextPost post) {
-                return mapper.map(post, TextPostForm.class);
+                return entityMapper.map(post, TextPostForm.class);
             }
 
             @Override
             public AbstractPostForm visit(SystemPost post) {
-                return mapper.map(post, SystemPostForm.class);
+                return entityMapper.map(post, SystemPostForm.class);
             }
         });
 
@@ -166,28 +170,26 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
             }
         });
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
 
         post = post.accept(new AbstractPostVisitor<>() {
             @Override
             public AbstractPost visit(ImagePost post) {
-                return mapper.map(resource, ImagePost.class);
+                return restMapper.map(resource, ImagePost.class);
             }
 
             @Override
             public AbstractPost visit(LinkPost post) {
-                return mapper.map(resource, LinkPost.class);
+                return restMapper.map(resource, LinkPost.class);
             }
 
             @Override
             public AbstractPost visit(TextPost post) {
-                return mapper.map(resource, TextPost.class);
+                return restMapper.map(resource, TextPost.class);
             }
 
             @Override
             public AbstractPost visit(SystemPost post) {
-                return mapper.map(resource, SystemPost.class);
+                return restMapper.map(resource, SystemPost.class);
             }
         });
 
@@ -218,29 +220,25 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
         Set<User> rawLikes = Sets.newHashSet(post.getLikes());
 
-
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-
         post = post.accept(new AbstractPostVisitor<>() {
             @Override
             public AbstractPost visit(ImagePost post) {
-                return  mapper.map(resource, ImagePost.class);
+                return  restMapper.map(resource, ImagePost.class);
             }
 
             @Override
             public AbstractPost visit(LinkPost post) {
-                return  mapper.map(resource, LinkPost.class);
+                return  restMapper.map(resource, LinkPost.class);
             }
 
             @Override
             public AbstractPost visit(TextPost post) {
-                return  mapper.map(resource, TextPost.class);
+                return  restMapper.map(resource, TextPost.class);
             }
 
             @Override
             public AbstractPost visit(SystemPost post) {
-                return  mapper.map(resource, SystemPost.class);
+                return  restMapper.map(resource, SystemPost.class);
             }
         });
 

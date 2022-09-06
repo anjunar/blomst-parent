@@ -5,8 +5,8 @@ import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -66,16 +66,23 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
     private final UserService service;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public UserResource(EntityManager entityManager, IdentityProvider identityProvider, @Context HttpServletRequest request, UserService service) {
+    public UserResource(EntityManager entityManager, IdentityProvider identityProvider, @Context HttpServletRequest request, UserService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
         this.request = request;
         this.service = service;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public UserResource() {
-        this(null, null, null, null);
+        this(null, null, null, null, null, null);
     }
 
     @Path("confirm")
@@ -125,8 +132,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         User user = entityManager.find(User.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        UserForm resource = mapper.map(user, UserForm.class);
+        UserForm resource = entityMapper.map(user, UserForm.class);
 
         if (identityProvider.hasRole("Administrator") || identityProvider.getUser().equals(user)) {
             resource.setPassword(user.getPassword());
@@ -204,9 +210,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @LinkDescription("Save User")
     public UserForm save(UserForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        User user = mapper.map(resource, User.class);
+        User user = restMapper.map(resource, User.class);
 
         user.setPassword(resource.getPassword());
 
@@ -252,9 +256,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @MethodPredicate(SelfIdentity.class)
     public UserForm update(UUID id, UserForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        User user = mapper.map(resource, User.class);
+        User user = restMapper.map(resource, User.class);
 
         if (identityProvider.hasRole("Administrator") || identityProvider.getUser().equals(user)) {
             user.setPassword(resource.getPassword());

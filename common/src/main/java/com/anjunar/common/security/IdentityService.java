@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.UUID;
 
 
@@ -98,13 +99,13 @@ public class IdentityService {
         }
     }
 
-    public Category findCategory(String name) {
+    public Category findCategory(Locale locale, String name) {
         try {
-            String sql = "select *, json as json from category c, json_array_elements(c.name -> 'translations') json where json ->> 'text' = :name ;";
-            return (Category) entityManager.createNativeQuery(sql, Category.class)
+            return entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
+                    .setParameter("locale", locale)
                     .setParameter("name", name)
                     .getSingleResult();
-        } catch (NoResultException e) {
+        } catch (Exception e) {
             return null;
         }
     }

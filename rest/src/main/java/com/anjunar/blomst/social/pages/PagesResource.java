@@ -4,7 +4,7 @@ import com.anjunar.blomst.social.pages.page.PageResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.ApplicationResource;
 
@@ -25,13 +25,17 @@ public class PagesResource implements ListResourceTemplate<PagesForm, PagesSearc
 
     private final PagesService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public PagesResource(PagesService service) {
+    public PagesResource(PagesService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public PagesResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -45,7 +49,6 @@ public class PagesResource implements ListResourceTemplate<PagesForm, PagesSearc
 
         List<PagesForm> resources = new ArrayList<>();
         for (Page page : pages) {
-            ResourceMapper mapper = new ResourceMapper();
             PagesForm resource = mapper.map(page, PagesForm.class);
 
             linkTo(methodOn(PageResource.class).read(page.getId(), null))

@@ -1,14 +1,9 @@
 package com.anjunar.blomst;
 
-import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.filedisk.Image;
-import com.anjunar.common.i18n.Translation;
-import com.anjunar.common.i18n.Translations;
 import com.anjunar.common.security.*;
-import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
-import jakarta.enterprise.event.Event;
 import jakarta.servlet.ServletContext;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -78,13 +73,11 @@ public class StartUp {
 
         }
 
-        Category category = service.findCategory("Everybody");
+        Category category = service.findCategory(Locale.forLanguageTag("en-DE"), "Everybody");
         if (category == null) {
             category = new Category();
-            category.setName(new Translations(
-                    new Translation(Locale.forLanguageTag("de-DE"), "Jeder"),
-                    new Translation(Locale.forLanguageTag("en-DE"), "Everybody")
-            ));
+            category.getI18nName().put(Locale.forLanguageTag("de-DE"), "Jeder");
+            category.getI18nName().put(Locale.forLanguageTag("en-DE"), "Everybody");
             service.saveCategory(category);
         }
 

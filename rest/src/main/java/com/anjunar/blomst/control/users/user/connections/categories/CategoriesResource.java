@@ -5,9 +5,9 @@ import com.anjunar.blomst.control.users.user.connections.categories.category.Cat
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.Category;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,13 +24,17 @@ public class CategoriesResource implements ListResourceTemplate<CategoryForm, Ca
 
     private final CategoriesService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public CategoriesResource(CategoriesService service) {
+    public CategoriesResource(CategoriesService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public CategoriesResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -44,7 +48,6 @@ public class CategoriesResource implements ListResourceTemplate<CategoryForm, Ca
         final List<CategoryForm> resources = new ArrayList<>();
 
         for (Category category : categories) {
-            ResourceMapper mapper = new ResourceMapper();
             CategoryForm form = mapper.map(category, CategoryForm.class);
 
             linkTo(methodOn(CategoryResource.class).read(form.getId()))

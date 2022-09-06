@@ -9,8 +9,8 @@ import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -39,14 +39,21 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public AnswerResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public AnswerResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public AnswerResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Produces("application/json")
@@ -57,10 +64,8 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     public AnswerForm create(@QueryParam("topic") UUID uuid) {
         AnswerForm resource = new AnswerForm();
 
-        ResourceMapper mapper = new ResourceMapper();
-
         resource.setTopic(uuid);
-        resource.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
         resource.setEditor(new Editor());
         resource.setViews(0);
 
@@ -86,8 +91,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
 
         Answer answer = entityManager.find(Answer.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        AnswerForm resource = mapper.map(answer, AnswerForm.class);
+        AnswerForm resource = entityMapper.map(answer, AnswerForm.class);
 
         linkTo(methodOn(AnswerResource.class).update(answer.getId(), new AnswerForm()))
                 .build(resource::addLink);
@@ -110,9 +114,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @LinkDescription("Save Answer")
     public AnswerForm save(AnswerForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Answer answer = mapper.map(resource, Answer.class);
+        Answer answer = restMapper.map(resource, Answer.class);
 
         entityManager.persist(answer);
 
@@ -134,9 +136,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @MethodPredicate(AnswerOwnerPredicate.class)
     public AnswerForm update(UUID id, AnswerForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Answer answer = mapper.map(resource, Answer.class);
+        Answer answer = restMapper.map(resource, Answer.class);
 
         linkTo(methodOn(AnswerResource.class).update(answer.getId(), new AnswerForm()))
                 .build(resource::addLink);

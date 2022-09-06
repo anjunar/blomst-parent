@@ -8,8 +8,8 @@ import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -39,14 +39,21 @@ public class PageResource {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public PageResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public PageResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public PageResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Produces("application/json")
@@ -92,8 +99,7 @@ public class PageResource {
 
         Page page = auditReader.find(Page.class, id, revision);
 
-        ResourceMapper mapper = new ResourceMapper();
-        PageForm pageForm = mapper.map(page, PageForm.class);
+        PageForm pageForm = entityMapper.map(page, PageForm.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
                 .build(pageForm::addLink);
@@ -137,9 +143,7 @@ public class PageResource {
     @LinkDescription("Save Page")
     public PageForm save(PageForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Page page = mapper.map(resource, Page.class);
+        Page page = restMapper.map(resource, Page.class);
 
         entityManager.persist(page);
 
@@ -161,9 +165,7 @@ public class PageResource {
     @LinkDescription("Update Page")
     public PageForm update(@QueryParam("id") UUID id, PageForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Page page = mapper.map(resource, Page.class);
+        Page page = restMapper.map(resource, Page.class);
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
                 .build(resource::addLink);

@@ -6,8 +6,8 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -40,14 +40,21 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public CommentResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public CommentResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper mapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = mapper;
+        this.restMapper = restMapper;
     }
 
     public CommentResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Produces("application/json")
@@ -63,9 +70,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         resource.setPost(post);
         resource.setParent(parent);
 
-        ResourceMapper mapper = new ResourceMapper();
-
-        resource.setOwner(mapper.map(user, UserSelect.class));
+        resource.setOwner(entityMapper.map(user, UserSelect.class));
 
         linkTo(methodOn(CommentResource.class).save(new CommentForm()))
                 .build(resource::addLink);
@@ -85,9 +90,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
         Comment comment = entityManager.find(Comment.class, id);
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        CommentForm resource = mapper.map(comment, CommentForm.class);
+        CommentForm resource = entityMapper.map(comment, CommentForm.class);
 
         linkTo(methodOn(CommentResource.class).update(comment.getId(), new CommentForm()))
                 .build(resource::addLink);
@@ -117,9 +120,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @LinkDescription("Save Comment")
     public CommentForm save(CommentForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Comment comment = mapper.map(resource, Comment.class);
+        Comment comment = restMapper.map(resource, Comment.class);
 
         for (User like : comment.getLikes()) {
             if (! like.equals(identityProvider.getUser())) {
@@ -148,9 +149,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         Comment rawComment = entityManager.find(Comment.class, id);
         Set<User> rawLikes = Sets.newHashSet(rawComment.getLikes());
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Comment comment = mapper.map(resource, Comment.class);
+        Comment comment = restMapper.map(resource, Comment.class);
 
         Set<User> likes = Sets.newHashSet(comment.getLikes());
         likes.removeAll(rawLikes);

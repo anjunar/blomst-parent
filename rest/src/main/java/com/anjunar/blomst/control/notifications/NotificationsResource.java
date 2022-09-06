@@ -5,7 +5,7 @@ import com.anjunar.blomst.control.notifications.notification.NotificationResourc
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.IdentityProvider;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -27,14 +27,18 @@ public class NotificationsResource implements ListResourceTemplate<NotificationF
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public NotificationsResource(NotificationsService service, IdentityProvider identityProvider) {
+    public NotificationsResource(NotificationsService service, IdentityProvider identityProvider, ResourceEntityMapper mapper) {
         this.service = service;
         this.identityProvider = identityProvider;
+        this.mapper = mapper;
     }
 
     public NotificationsResource() {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override
@@ -51,7 +55,6 @@ public class NotificationsResource implements ListResourceTemplate<NotificationF
         final List<NotificationForm> resources = new ArrayList<>();
 
         for (Notification notification : notifications) {
-            ResourceMapper mapper = new ResourceMapper();
             NotificationForm form = mapper.map(notification, NotificationForm.class);
 
             linkTo(methodOn(NotificationResource.class).read(notification.getId()))

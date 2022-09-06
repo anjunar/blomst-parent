@@ -5,7 +5,7 @@ import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.An
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.social.pages.page.Answer;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -28,13 +28,17 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
 
     private final AnswersService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public AnswersResource(AnswersService service) {
+    public AnswersResource(AnswersService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public AnswersResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -49,7 +53,6 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
         List<AnswerForm> resources = new ArrayList<>();
 
         for (Answer answer : replies) {
-            ResourceMapper mapper = new ResourceMapper();
             AnswerForm resource = mapper.map(answer, AnswerForm.class);
 
             resources.add(resource);

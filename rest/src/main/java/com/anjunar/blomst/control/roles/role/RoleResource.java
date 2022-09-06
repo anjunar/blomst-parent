@@ -3,8 +3,8 @@ package com.anjunar.blomst.control.roles.role;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.Role;
 
@@ -28,14 +28,21 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public RoleResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public RoleResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public RoleResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Produces("application/json")
@@ -59,8 +66,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
 
         Role role = entityManager.find(Role.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        RoleForm resource = mapper.map(role, RoleForm.class);
+        RoleForm resource = entityMapper.map(role, RoleForm.class);
 
         linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
                 .build(resource::addLink);
@@ -77,9 +83,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @LinkDescription("Save Role")
     public RoleForm save(RoleForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Role role = mapper.map(form, Role.class);
+        Role role = restMapper.map(form, Role.class);
 
         entityManager.persist(role);
         form.setId(role.getId());
@@ -98,9 +102,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @LinkDescription("Update Role")
     public RoleForm update(UUID id, RoleForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Role role = mapper.map(form, Role.class);
+        Role role = restMapper.map(form, Role.class);
 
         linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
                 .build(form::addLink);

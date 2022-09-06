@@ -18,6 +18,6 @@ public class NameProvider extends AbstractRestPredicateProvider<String, Category
         if (StringUtils.isAllEmpty(value)) {
             return builder.conjunction();
         }
-        return builder.like(builder.lower(root.get(Category_.NAME)), value.toLowerCase() + "%");
+        return builder.like(builder.lower(builder.function("jsonPathAsText", String.class, root.get(Category_.i18nName), builder.literal(identityProvider.getLanguage()))), value.toLowerCase() + "%");
     }
 }

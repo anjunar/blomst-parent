@@ -5,8 +5,8 @@ import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionResource;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -38,15 +38,22 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
 
     private final SiteService service;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public SiteResource(EntityManager entityManager, IdentityProvider identityProvider, SiteService service) {
+    public SiteResource(EntityManager entityManager, IdentityProvider identityProvider, SiteService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
         this.service = service;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public SiteResource() {
-        this(null, null, null);
+        this(null, null, null, null, null);
     }
 
     @Produces("application/json")
@@ -70,8 +77,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     public SiteForm read(UUID id) {
         final Site entity = entityManager.find(Site.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        SiteForm form = mapper.map(entity, SiteForm.class);
+        SiteForm form = entityMapper.map(entity, SiteForm.class);
 
         try {
             SiteConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
@@ -109,9 +115,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @LinkDescription("Save Site")
     @Override
     public SiteForm save(SiteForm form) {
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Site entity = mapper.map(form, Site.class);
+        Site entity = restMapper.map(form, Site.class);
 
         entityManager.persist(entity);
 
@@ -130,9 +134,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @Override
     public SiteForm update(UUID id, SiteForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Site entity = mapper.map(form, Site.class);
+        Site entity = restMapper.map(form, Site.class);
 
         linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
                 .build(form::addLink);

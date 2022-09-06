@@ -6,7 +6,7 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,13 +24,17 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
 
     private final SitesService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public SitesResource(SitesService service) {
+    public SitesResource(SitesService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public SitesResource() {
-        this(null);
+        this(null, null);
     }
 
     @Transactional
@@ -43,7 +47,6 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
         final List<SiteForm> resources = new ArrayList<>();
 
         for (Site site : sites) {
-            ResourceMapper mapper = new ResourceMapper();
             SiteForm form = mapper.map(site, SiteForm.class);
 
             linkTo(methodOn(SiteResource.class).read(site.getId()))

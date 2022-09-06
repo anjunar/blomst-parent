@@ -8,8 +8,8 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
@@ -36,14 +36,21 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public QuestionResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public QuestionResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public QuestionResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @Transactional
@@ -58,8 +65,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         resource.setPage(page);
         resource.setCreated(LocalDateTime.now());
 
-        ResourceMapper mapper = new ResourceMapper();
-        resource.setOwner(mapper.map(identityProvider.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
 
         linkTo(methodOn(QuestionResource.class).save(new QuestionForm()))
                 .build(resource::addLink);
@@ -73,8 +79,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     public QuestionForm read(@QueryParam("id") UUID uuid) {
         Question question = entityManager.find(Question.class, uuid);
 
-        ResourceMapper mapper = new ResourceMapper();
-        QuestionForm resource = mapper.map(question, QuestionForm.class);
+        QuestionForm resource = entityMapper.map(question, QuestionForm.class);
 
         linkTo(methodOn(QuestionResource.class).update(question.getId(), new QuestionForm()))
                 .build(resource::addLink);
@@ -109,9 +114,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
             throw new NotAuthorizedException("Not Allowed");
         }
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Question question = mapper.map(resource, Question.class);
+        Question question = restMapper.map(resource, Question.class);
 
         entityManager.persist(question);
 
@@ -132,9 +135,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @LinkDescription("Update Question")
     public QuestionForm update(UUID id, QuestionForm resource) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Question question = mapper.map(resource, Question.class);
+        Question question = restMapper.map(resource, Question.class);
 
         linkTo(methodOn(QuestionResource.class).update(question.getId(), new QuestionForm()))
                 .build(resource::addLink);

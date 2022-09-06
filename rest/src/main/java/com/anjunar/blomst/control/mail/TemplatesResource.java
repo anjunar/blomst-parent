@@ -7,7 +7,7 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,13 +24,16 @@ public class TemplatesResource implements ListResourceTemplate<TemplateForm, Tem
 
     private final TemplatesService service;
 
+    private final ResourceEntityMapper mapper;
+
     @Inject
-    public TemplatesResource(TemplatesService service) {
+    public TemplatesResource(TemplatesService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public TemplatesResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -46,7 +49,6 @@ public class TemplatesResource implements ListResourceTemplate<TemplateForm, Tem
 
         for (Template template : templates) {
 
-            ResourceMapper mapper = new ResourceMapper();
             TemplateForm resource = mapper.map(template, TemplateForm.class);
 
             linkTo(methodOn(TemplateResource.class).read(template.getId()))

@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.timeline;
 
 import com.anjunar.blomst.social.timeline.post.*;
 import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.shared.users.UserSelectResource;
@@ -28,13 +28,17 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
 
     private final TimelineService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public TimelineResource(TimelineService service) {
+    public TimelineResource(TimelineService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public TimelineResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -52,8 +56,6 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
         long count = service.count(search);
 
         List<AbstractPostForm> resources = new ArrayList<>();
-
-        ResourceMapper mapper = new ResourceMapper();
 
         for (AbstractPost post : posts) {
 

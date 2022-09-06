@@ -1,11 +1,11 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.blomst.shared.system.Language;
-import com.anjunar.common.rest.schemamapper.Converter;
+import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 
 import java.util.Locale;
 
-public class LanguageConverter implements Converter<Locale, Language> {
+public class LanguageConverter implements MapperConverterType<Locale, Language> {
 
     @Override
     public Language factory(Locale locale) {

@@ -2,7 +2,7 @@ package com.anjunar.blomst.social.chat;
 
 import com.anjunar.blomst.ApplicationWebSocketMessage;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.User;
 import com.anjunar.common.websocket.OnCloseEvent;
 import com.anjunar.common.websocket.OnMessageEvent;
@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.websocket.Session;
 
@@ -23,12 +24,23 @@ public class ChatResourceStream {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final ResourceEntityMapper mapper;
+
+
     static {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
+    @Inject
+    public ChatResourceStream(ResourceEntityMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public ChatResourceStream() {
+        this(null);
+    }
+
     public void onMessage(@Observes @OnMessageEvent TextMessage message, EntityManager entityManager) throws IOException {
-        ResourceMapper mapper = new ResourceMapper();
 
         User from = entityManager.find(User.class, UUID.fromString(message.getSession().getUserPrincipal().getName()));
 
@@ -46,7 +58,6 @@ public class ChatResourceStream {
     public void onOpen(@Observes @OnMessageEvent UsersRead message, EntityManager entityManager) throws IOException {
         User loggedInUser = entityManager.find(User.class, UUID.fromString(message.getSession().getUserPrincipal().getName()));
 
-        ResourceMapper mapper = new ResourceMapper();
 
         List<User> online = entityManager
                 .createQuery("select c.to from UserConnection c where c.from.id = :id", User.class)
@@ -76,8 +87,6 @@ public class ChatResourceStream {
 
     public void onClose(@Observes @OnCloseEvent ApplicationWebSocketMessage message, EntityManager entityManager) throws IOException {
         User loggedInUser = entityManager.find(User.class, UUID.fromString(message.getSession().getUserPrincipal().getName()));
-
-        ResourceMapper mapper = new ResourceMapper();
 
         List<User> online = entityManager
                 .createQuery("select c.to from UserConnection c where c.from.id = :id", User.class)

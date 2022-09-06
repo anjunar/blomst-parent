@@ -1,4 +1,4 @@
-package com.anjunar.common.rest.schemamapper;
+package com.anjunar.common.rest.mapper.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

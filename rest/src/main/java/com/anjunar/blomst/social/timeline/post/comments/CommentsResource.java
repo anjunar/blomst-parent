@@ -7,7 +7,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.timeline.Comment;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,13 +25,17 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
 
     private final CommentsService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public CommentsResource(CommentsService service) {
+    public CommentsResource(CommentsService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public CommentsResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -46,7 +50,6 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
         List<CommentForm> resources = new ArrayList<>();
 
         for (Comment comment : comments) {
-            ResourceMapper mapper = new ResourceMapper();
             CommentForm resource = mapper.map(comment, CommentForm.class);
 
             resources.add(resource);

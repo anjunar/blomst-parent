@@ -1,5 +1,6 @@
 package com.anjunar.common.ddd;
 
+import com.anjunar.common.security.IdentityProvider;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
@@ -32,6 +33,8 @@ public abstract class AbstractEntity implements Entity {
     private LocalDateTime modified;
 
     private boolean deleted;
+    @Transient
+    private IdentityProvider identityProvider;
 
     @PreUpdate
     private void postUpdate() {
@@ -83,5 +86,13 @@ public abstract class AbstractEntity implements Entity {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public void setIdentityProvider(IdentityProvider identityProvider) {
+        this.identityProvider = identityProvider;
+    }
+
+    public IdentityProvider getIdentityProvider() {
+        return identityProvider;
     }
 }

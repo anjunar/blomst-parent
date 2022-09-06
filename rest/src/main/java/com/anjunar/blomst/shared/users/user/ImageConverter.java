@@ -4,9 +4,9 @@ import com.anjunar.common.filedisk.Base64Resource;
 import com.anjunar.common.filedisk.FileDiskUtils;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.schemamapper.Converter;
+import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 
-public class ImageConverter implements Converter<Image, ImageType> {
+public class ImageConverter implements MapperConverterType<Image, ImageType> {
 
     @Override
     public ImageType factory(Image harddiskFile) {

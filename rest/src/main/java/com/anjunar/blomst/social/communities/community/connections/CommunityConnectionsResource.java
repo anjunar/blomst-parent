@@ -7,7 +7,7 @@ import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -25,13 +25,17 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
 
     private final CommunityConnectionsService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public CommunityConnectionsResource(CommunityConnectionsService service) {
+    public CommunityConnectionsResource(CommunityConnectionsService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public CommunityConnectionsResource() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -43,7 +47,6 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
         final List<CommunityConnectionForm> resources = new ArrayList<>();
 
         for (CommunitiesConnection entity : connections) {
-            ResourceMapper mapper = new ResourceMapper();
             CommunityConnectionForm form = mapper.map(entity, CommunityConnectionForm.class);
 
             linkTo(methodOn(CommunityConnectionResource.class).read(entity.getId()))

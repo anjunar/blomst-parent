@@ -25,7 +25,7 @@ import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 
@@ -47,14 +47,17 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
     private final EntityManager entityManager;
 
+    private final ResourceEntityMapper mapper;
+
     @Inject
-    public ApplicationResource(IdentityProvider identityProvider, EntityManager entityManager) {
+    public ApplicationResource(IdentityProvider identityProvider, EntityManager entityManager, ResourceEntityMapper mapper) {
         this.identityProvider = identityProvider;
         this.entityManager = entityManager;
+        this.mapper = mapper;
     }
 
     public ApplicationResource() {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override
@@ -127,7 +130,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
         if (identityProvider.isLoggedIn()) {
 
-            ResourceMapper mapper = new ResourceMapper();
             UserSelect userSelect = mapper.map(identityProvider.getUser(), UserSelect.class);
 
             PagesSearch search = new PagesSearch();

@@ -5,7 +5,7 @@ import com.anjunar.blomst.control.users.user.UserResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.User;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -24,13 +24,17 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
 
     private final UsersService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public UsersResource(UsersService service) {
+    public UsersResource(UsersService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public UsersResource() {
-        this(null);
+        this(null, null);
     }
 
     @Transactional
@@ -40,11 +44,10 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
 
         List<User> users = service.find(search);
         long count = service.count(search);
-        ResourceMapper objectMapper = new ResourceMapper();
 
         List<UserForm> resources = new ArrayList<>();
         for (User user : users) {
-            UserForm resource = objectMapper.map(user, UserForm.class);
+            UserForm resource = mapper.map(user, UserForm.class);
             resources.add(resource);
 
             linkTo(methodOn(UserResource.class).read(user.getId()))

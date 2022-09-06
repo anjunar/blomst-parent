@@ -4,7 +4,7 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.User;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -21,13 +21,17 @@ public class UserSelectResource implements ListResourceTemplate<UserSelect, User
 
     private final UserSelectService service;
 
+    private final ResourceEntityMapper mapper;
+
+
     @Inject
-    public UserSelectResource(UserSelectService service) {
+    public UserSelectResource(UserSelectService service, ResourceEntityMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public UserSelectResource() {
-        this(null);
+        this(null, null);
     }
 
     @Transactional
@@ -41,7 +45,6 @@ public class UserSelectResource implements ListResourceTemplate<UserSelect, User
 
         List<UserSelect> resources = new ArrayList<>();
         for (User user : users) {
-            ResourceMapper mapper = new ResourceMapper();
             UserSelect resource = mapper.map(user, UserSelect.class);
             resources.add(resource);
         }

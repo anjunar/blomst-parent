@@ -1,14 +1,11 @@
 package com.anjunar.blomst;
 
 
-import org.hibernate.dialect.Oracle12cDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.query.spi.QueryEngine;
 import org.hibernate.query.sqm.function.SqmFunctionRegistry;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.spi.TypeConfiguration;
-
-import java.sql.Types;
 
 public class Postgres14Dialect extends PostgreSQLDialect {
 
@@ -25,6 +22,19 @@ public class Postgres14Dialect extends PostgreSQLDialect {
                 "levenshtein(?1, ?2)",
                 typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.INTEGER)
         );
+
+        functionRegistry.registerPattern(
+                "jsonPathAsJson",
+                "?1 -> ?2",
+                typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.STRING)
+        );
+
+        functionRegistry.registerPattern(
+                "jsonPathAsText",
+                "?1 ->> ?2",
+                typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.STRING)
+        );
+
 
         functionRegistry.registerPattern(
                 "distance",

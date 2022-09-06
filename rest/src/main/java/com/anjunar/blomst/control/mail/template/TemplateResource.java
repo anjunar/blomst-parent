@@ -5,8 +5,8 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schemamapper.NewInstanceProvider;
-import com.anjunar.common.rest.schemamapper.ResourceMapper;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.ApplicationResource;
@@ -32,14 +32,21 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
 
     private final IdentityProvider identityProvider;
 
+    private final ResourceEntityMapper entityMapper;
+
+    private final ResourceRestMapper restMapper;
+
+
     @Inject
-    public TemplateResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public TemplateResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
         this.identityProvider = identityProvider;
+        this.entityMapper = entityMapper;
+        this.restMapper = restMapper;
     }
 
     public TemplateResource() {
-        this(null, null);
+        this(null, null, null, null);
     }
 
     @GET
@@ -70,8 +77,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
 
         Template template = entityManager.find(Template.class, id);
 
-        ResourceMapper mapper = new ResourceMapper();
-        TemplateForm resource = mapper.map(template, TemplateForm.class);
+        TemplateForm resource = entityMapper.map(template, TemplateForm.class);
 
         linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
                 .build(resource::addLink);
@@ -91,9 +97,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @LinkDescription("Save Template")
     public TemplateForm save(TemplateForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        TemplateForm template = mapper.map(form, TemplateForm.class);
+        Template template = restMapper.map(form, Template.class);
 
         entityManager.persist(template);
 
@@ -113,9 +117,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @LinkDescription("Update Template")
     public TemplateForm update(UUID id, TemplateForm form) {
 
-        NewInstanceProvider instanceProvider = (uuid, sourceClass) -> entityManager.find(sourceClass, uuid);
-        ResourceMapper mapper = new ResourceMapper(instanceProvider);
-        Template template = mapper.map(form, Template.class);
+        Template template = restMapper.map(form, Template.class);
 
         linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
                 .build(form::addLink);
