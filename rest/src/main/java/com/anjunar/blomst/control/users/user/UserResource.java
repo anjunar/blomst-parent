@@ -175,8 +175,10 @@ public class UserResource implements FormResourceTemplate<UserForm> {
                 .build(resource::addLink);
 
         JsonArray roles = resource.find("roles", JsonArray.class);
-        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
-                .build(roles::addLink);
+        if (roles != null) {
+            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                    .build(roles::addLink);
+        }
         linkTo(methodOn(LoginResource.class).runAs(id))
                 .build(resource::addLink);
         linkTo(methodOn(ApplicationResource.class).validate(null))

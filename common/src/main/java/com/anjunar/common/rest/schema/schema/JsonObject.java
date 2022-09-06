@@ -20,6 +20,10 @@ public class JsonObject extends JsonNode {
 
     private Integer maxProperties;
 
+    public void remove(String key) {
+        properties.remove(key);
+    }
+
     public <J extends JsonNode> J find(String name, Class<J> type) {
         for (Map.Entry<String, JsonNode> entry : properties.entrySet()) {
             if (entry.getKey().equals(name)) {

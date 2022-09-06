@@ -1,5 +1,6 @@
 package com.anjunar.common.rest;
 
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -19,13 +20,24 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
 
     @Override
     public Response toResponse(RuntimeException exception) {
-        String confidentialMarkerText = "CONFIDENTIAL";
-        Marker confidentialMarker = MarkerFactory.getMarker(confidentialMarkerText);
-        log.error(confidentialMarker, exception.getMessage(), exception);
-        Map<String, String> map = new HashMap<>();
-        map.put("exception", exception.getClass().getName());
-        map.put("message", exception.getMessage());
-        return Response.status(500).entity(map).type(MediaType.APPLICATION_JSON_TYPE).build();
+        switch (exception) {
+            case WebApplicationException webApplicationException -> {
+                Map<String, String> map = new HashMap<>();
+                map.put("exception", exception.getClass().getName());
+                map.put("message", exception.getMessage());
+                int status = webApplicationException.getResponse().getStatus();
+                return Response.status(status).entity(map).type(MediaType.APPLICATION_JSON_TYPE).build();
+            }
+            default -> {
+                String confidentialMarkerText = "CONFIDENTIAL";
+                Marker confidentialMarker = MarkerFactory.getMarker(confidentialMarkerText);
+                log.error(confidentialMarker, exception.getMessage(), exception);
+                Map<String, String> map = new HashMap<>();
+                map.put("exception", exception.getClass().getName());
+                map.put("message", exception.getMessage());
+                return Response.status(500).entity(map).type(MediaType.APPLICATION_JSON_TYPE).build();
+            }
+        }
     }
 
 }

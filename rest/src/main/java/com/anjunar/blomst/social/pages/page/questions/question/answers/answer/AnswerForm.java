@@ -3,15 +3,10 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.common.security.User;
 import com.anjunar.common.validators.Dom;
-import com.anjunar.blomst.social.pages.page.Answer;
-import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 
-import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 

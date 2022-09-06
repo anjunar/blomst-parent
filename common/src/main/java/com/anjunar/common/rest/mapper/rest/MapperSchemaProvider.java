@@ -2,8 +2,7 @@ package com.anjunar.common.rest.mapper.rest;
 
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.mapper.annotations.MapperSchema;
-import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.inject.Inject;
@@ -38,7 +37,7 @@ public class MapperSchemaProvider implements SecurityProvider{
     }
 
     public <S extends AbstractRestEntity, D extends AbstractRestEntity> boolean visibility(D destination, BeanProperty<S, ?> property) {
-        return property.getAnnotation(MapperSchema.class) != null;
+        return property.getAnnotation(MapperVisibility.class) != null;
     }
 
     public boolean isAllowedWithSchema(OwnerProvider entity, String property, Class<?> aClass) {
