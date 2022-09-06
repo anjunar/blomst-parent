@@ -12,6 +12,7 @@ import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.Category;
 import com.anjunar.common.security.EntitySchema;
 import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -50,9 +51,15 @@ public class ResourceRestMapper {
     }
 
     public <S extends AbstractRestEntity, D extends AbstractEntity> D map(S source, Class<D> destinationClass) {
-        D destination = entityManager.find(destinationClass, source.getId());
+        UUID id = source.getId();
+        D destination;
+        if (id == null) {
+            destination = getNewInstance(destinationClass);
+        } else {
+            destination = entityManager.find(destinationClass, id);
+        }
 
-        saveSchema(source, destinationClass);
+        saveSchema(source, destination);
 
         BeanModel<S> sourceModel = (BeanModel<S>) BeanIntrospector.create(source.getClass());
         BeanModel<D> destinationModel = BeanIntrospector.create(destinationClass);
@@ -201,30 +208,38 @@ public class ResourceRestMapper {
         }
     }
 
-    private <S extends AbstractRestEntity, D extends AbstractEntity> void saveSchema(S source, Class<D> destinationClass) {
-        JsonObject schema = source.getSchema();
-        for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
-            if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
-                Set<CategoryType> categories = entry.getValue().getCategories();
-                try {
-                    EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
-                            .setParameter("owner", identityProvider.getUser())
-                            .setParameter("entity", source.getClass())
-                            .setParameter("property", entry.getKey())
-                            .getSingleResult();
+    private <S extends AbstractRestEntity, D extends AbstractEntity> void saveSchema(S source, D destination) {
+        if (destination instanceof OwnerProvider) {
+            if (identityProvider.getUser().equals(((OwnerProvider) destination).getOwner())) {
+                JsonObject schema = source.getSchema();
+                for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
+                    if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
+                        Set<CategoryType> categories = entry.getValue().getCategories();
+                        try {
+                            EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
+                                    .setParameter("owner", identityProvider.getUser())
+                                    .setParameter("entity", source.getClass())
+                                    .setParameter("property", entry.getKey())
+                                    .getSingleResult();
 
-                    entitySchema.getVisibility().clear();
+                            entitySchema.getVisibility().clear();
 
-                    for (CategoryType category : categories) {
-                        Category categoryEntity = entityManager.find(Category.class, category.getId());
-                        entitySchema.getVisibility().add(categoryEntity);
+                            for (CategoryType category : categories) {
+                                Category categoryEntity = entityManager.find(Category.class, category.getId());
+                                entitySchema.getVisibility().add(categoryEntity);
+                            }
+                        } catch (NoResultException e) {
+                            EntitySchema schemaItem = new EntitySchema();
+                            schemaItem.setEntity(source.getClass());
+                            schemaItem.setOwner(identityProvider.getUser());
+                            schemaItem.setProperty(entry.getKey());
+                            for (CategoryType category : categories) {
+                                Category categoryEntity = entityManager.find(Category.class, category.getId());
+                                schemaItem.getVisibility().add(categoryEntity);
+                            }
+                            entityManager.persist(schemaItem);
+                        }
                     }
-                } catch (NoResultException e) {
-                    EntitySchema schemaItem = new EntitySchema();
-                    schemaItem.setEntity(source.getClass());
-                    schemaItem.setOwner(identityProvider.getUser());
-                    schemaItem.setProperty(entry.getKey());
-                    entityManager.persist(schemaItem);
                 }
             }
         }

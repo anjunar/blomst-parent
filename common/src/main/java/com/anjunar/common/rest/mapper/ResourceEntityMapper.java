@@ -66,7 +66,9 @@ public class ResourceEntityMapper {
     public <S extends AbstractEntity, D extends AbstractRestEntity> D map(S source, Class<D> destinationClass) {
         D destination = getNewInstance(destinationClass);
 
-        loadSchema(source, destination);
+        if (source instanceof OwnerProvider) {
+            loadSchema((OwnerProvider) source, destination);
+        }
 
         BeanModel<S> sourceModel = (BeanModel<S>) BeanIntrospector.create(source.getClass());
         BeanModel<D> destinationModel = BeanIntrospector.create(destinationClass);
@@ -205,31 +207,35 @@ public class ResourceEntityMapper {
     }
 
 
-    private <S extends AbstractEntity, D extends AbstractRestEntity> void loadSchema(S source, D destination) {
-        JsonObject schema = destination.getSchema();
-        for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
-            try {
-                if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
-                    Set<CategoryType> categories = entry.getValue().getCategories();
-                    EntityManager entityManager = entityManager();
-                    EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
-                            .setParameter("owner", identityProvider().getUser())
-                            .setParameter("entity", destination.getClass())
-                            .setParameter("property", entry.getKey())
-                            .getSingleResult();
+    private <S extends AbstractEntity, D extends AbstractRestEntity> void loadSchema(OwnerProvider source, D destination) {
+        if (identityProvider.getUser().equals(source.getOwner())) {
+            JsonObject schema = destination.getSchema();
+            for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
+                try {
+                    if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
+                        Set<CategoryType> categories = entry.getValue().getCategories();
+                        EntityManager entityManager = entityManager();
+                        EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
+                                .setParameter("owner", source.getOwner())
+                                .setParameter("entity", destination.getClass())
+                                .setParameter("property", entry.getKey())
+                                .getSingleResult();
 
-                    for (Category category : entitySchema.getVisibility()) {
-                        CategoryType categoryType = map(category, CategoryType.class);
-                        categories.add(categoryType);
+                        for (Category category : entitySchema.getVisibility()) {
+                            CategoryType categoryType = map(category, CategoryType.class);
+                            categories.add(categoryType);
+                        }
                     }
+                } catch (NoResultException e) {
+                    EntitySchema schemaItem = new EntitySchema();
+                    schemaItem.setEntity(destination.getClass());
+                    schemaItem.setOwner(identityProvider.getUser());
+                    schemaItem.setProperty(entry.getKey());
+                    entityManager.persist(schemaItem);
                 }
-            } catch (NoResultException e) {
-                EntitySchema schemaItem = new EntitySchema();
-                schemaItem.setEntity(destination.getClass());
-                schemaItem.setOwner(identityProvider.getUser());
-                schemaItem.setProperty(entry.getKey());
-                entityManager.persist(schemaItem);
             }
+        } else {
+
         }
     }
 

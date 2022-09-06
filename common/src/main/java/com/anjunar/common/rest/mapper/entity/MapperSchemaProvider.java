@@ -2,6 +2,7 @@ package com.anjunar.common.rest.mapper.entity;
 
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
+import com.anjunar.common.rest.mapper.annotations.MapperSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -9,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 
+import java.util.Locale;
 import java.util.Set;
 
 public class MapperSchemaProvider implements SecurityProvider {
@@ -31,14 +33,13 @@ public class MapperSchemaProvider implements SecurityProvider {
     public <S extends AbstractEntity, D extends AbstractRestEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
         boolean isAllowed = true;
         if (visibility(destination, destinationProperty) && source instanceof OwnerProvider) {
-            isAllowed = isAllowedWithSchema((OwnerProvider) source, sourceProperty.getKey(), source.getClass());
+            isAllowed = isAllowedWithSchema((OwnerProvider) source, sourceProperty.getKey(), destination.getClass());
         }
         return isAllowed;
     }
 
     public <S extends AbstractRestEntity, D extends AbstractRestEntity> boolean visibility(D destination, BeanProperty<S, ?> property) {
-        JsonNode jsonNode = destination.getSchema().getProperties().get(property.getKey());
-        return jsonNode.getVisibility() != null && jsonNode.getVisibility();
+        return property.getAnnotation(MapperSchema.class) != null;
     }
 
     public boolean isAllowedWithSchema(OwnerProvider entity, String property, Class<?> aClass) {
@@ -52,6 +53,15 @@ public class MapperSchemaProvider implements SecurityProvider {
                     .setParameter("entity", aClass)
                     .setParameter("owner", entity.getOwner())
                     .getSingleResult();
+
+            Category category = entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
+                    .setParameter("locale", Locale.forLanguageTag("en-DE"))
+                    .setParameter("name", "Everybody")
+                    .getSingleResult();
+
+            if (schemaItem.getVisibility().contains(category)) {
+                return true;
+            }
 
             UserConnection userConnection = entityManager.createQuery("select c from UserConnection c where c.to = :to and c.from = :from", UserConnection.class)
                     .setParameter("to", identityProvider.getUser())

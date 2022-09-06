@@ -255,12 +255,14 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                             let find = self.model.find(model => isEqual(model, target));
                             let indexOf = self.model.indexOf(find)
                             self.model.splice(indexOf, 1)
+                            self.oringinalModel.splice(indexOf, 1)
                         } else {
                             self.model = null
                         }
                     } else {
                         if (self.multiSelect) {
                             self.model.push(receiver);
+                            self.oringinalModel.push(receiver);
                         } else {
                             self.model = receiver;
                         }
@@ -290,6 +292,7 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
             case "model" : {
                 if (newValue instanceof Array) {
                     this.model = newValue.map(model => this.proxyFactory(model, this));
+                    this.oringinalModel = newValue;
                 } else {
                     this.model = this.proxyFactory(newValue, this);
                 }
