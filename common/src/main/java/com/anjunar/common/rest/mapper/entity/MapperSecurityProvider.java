@@ -2,6 +2,7 @@ package com.anjunar.common.rest.mapper.entity;
 
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -21,7 +22,7 @@ public class MapperSecurityProvider implements SecurityProvider {
     }
 
     @Override
-    public <S extends AbstractEntity, D extends AbstractRestEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
+    public <S, D extends AbstractSchemaEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
         MapperSecurity security = destinationProperty.getAnnotation(MapperSecurity.class);
         if (security == null) {
             return true;

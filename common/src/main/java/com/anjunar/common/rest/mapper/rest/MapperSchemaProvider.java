@@ -2,6 +2,7 @@ package com.anjunar.common.rest.mapper.rest;
 
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -28,7 +29,7 @@ public class MapperSchemaProvider implements SecurityProvider{
     }
 
     @Override
-    public <S extends AbstractRestEntity, D extends AbstractEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
+    public <S extends AbstractSchemaEntity, D> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
         boolean isAllowed = true;
         if (visibility(source, sourceProperty) && source instanceof OwnerProvider) {
             isAllowed = isAllowedWithSchema((OwnerProvider) source, destinationProperty.getKey(), destination.getClass());
@@ -36,7 +37,7 @@ public class MapperSchemaProvider implements SecurityProvider{
         return isAllowed;
     }
 
-    public <S extends AbstractRestEntity, D extends AbstractRestEntity> boolean visibility(D destination, BeanProperty<S, ?> property) {
+    public <S extends AbstractSchemaEntity, D extends AbstractSchemaEntity> boolean visibility(D destination, BeanProperty<S, ?> property) {
         return property.getAnnotation(MapperVisibility.class) != null;
     }
 

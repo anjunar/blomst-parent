@@ -1,5 +1,6 @@
 package com.anjunar.blomst.control.users.user;
 
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.anjunar.common.rest.schema.JsonSchemaGenerator;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -11,17 +12,13 @@ import com.anjunar.common.security.IdentityProvider;
 import jakarta.persistence.EntityManager;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
-public class EmailForm {
+public class EmailForm extends AbstractSchemaEntity {
 
     @JsonSchema(widget = JsonNode.Widget.EMAIL, title = "Email")
     private String value;
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Confirmed", readOnly = true)
     private boolean confirmed;
-
-    @JsonProperty("$schema")
-    @JsonSchema(ignore = true)
-    private final JsonObject schema = JsonSchemaGenerator.generateObject(EmailForm.class);
 
     public String getValue() {
         return value;
@@ -39,20 +36,5 @@ public class EmailForm {
         this.confirmed = confirmed;
     }
 
-    public JsonObject getSchema() {
-        return schema;
-    }
-
-    public static EmailForm factory(EmailType entity) {
-        EmailForm form = new EmailForm();
-        form.setValue(entity.getValue());
-        form.setConfirmed(entity.isConfirmed());
-        return form;
-    }
-
-    public static EmailType updater(EmailForm resource, EmailType entity, EntityManager entityManager, IdentityProvider identityProvider) {
-        entity.setValue(resource.getValue());
-        return entity;
-    }
 
 }

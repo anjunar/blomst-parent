@@ -28,11 +28,14 @@ public class TransactionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
+            long start = System.currentTimeMillis();
             transaction.begin();
 
             filterChain.doFilter(servletRequest, servletResponse);
 
             transaction.commit();
+            long end = System.currentTimeMillis();
+            log.info("Request timing: " + Math.round( end- start) + "ms") ;
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException |
                  HeuristicRollbackException e) {
             log.error(e.getLocalizedMessage(), e);
