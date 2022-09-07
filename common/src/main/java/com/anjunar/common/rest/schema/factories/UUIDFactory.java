@@ -14,7 +14,7 @@ public class UUIDFactory extends JsonAbstractFactory<JsonString> {
     }
 
     @Override
-    public JsonString build(TypeToken<?> typeToken) {
+    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         JsonString jsonString = new JsonString();
         jsonString.setFormat(JsonString.Format.UUID);
         return jsonString;

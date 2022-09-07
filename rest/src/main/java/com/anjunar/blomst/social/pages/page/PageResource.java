@@ -63,6 +63,7 @@ public class PageResource {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Page")
+    @Transactional
     public PageForm create() {
 
         PageForm pageForm = new PageForm();

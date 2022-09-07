@@ -22,7 +22,7 @@ public class LocalDateTimeFactory extends JsonAbstractFactory<JsonString> {
     }
 
     @Override
-    public JsonString build(TypeToken<?> typeToken) {
+    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         JsonString jsonString = new JsonString();
         jsonString.setFormat(JsonString.Format.DATE_TIME);
         return jsonString;

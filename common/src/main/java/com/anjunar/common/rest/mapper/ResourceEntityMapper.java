@@ -4,6 +4,8 @@ import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
+import com.anjunar.common.rest.mapper.annotations.MapperMapProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperProjection;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -66,7 +68,11 @@ public class ResourceEntityMapper {
         return entityManager;
     }
 
-    public <S extends AbstractEntity, D extends AbstractRestEntity> D map(S source, Class<D> destinationClass) {
+    public <S extends AbstractEntity, D extends AbstractRestEntity, V> D map(S source, Class<D> destinationClass) {
+        return map(source, destinationClass, null);
+    }
+
+    public <S extends AbstractEntity, D extends AbstractRestEntity, V> D map(S source, Class<D> destinationClass, Class<V> projection) {
         D destination = getNewInstance(destinationClass);
 
         if (source instanceof OwnerProvider ownerProvider) {
@@ -81,16 +87,23 @@ public class ResourceEntityMapper {
 
         BeanModel<S> sourceModel = (BeanModel<S>) BeanIntrospector.create(source.getClass());
         BeanModel<D> destinationModel = BeanIntrospector.create(destinationClass);
+        BeanModel<V> projectionModel;
+        if (projection != null && projection != void.class) {
+            projectionModel = BeanIntrospector.create(projection);
+        } else {
+            projectionModel = (BeanModel<V>) destinationModel;
+        }
 
         for (BeanProperty<S, ?> sourceProperty : sourceModel.getProperties()) {
             BeanProperty<D, Object> destinationProperty = (BeanProperty<D, Object>) destinationModel.get(sourceProperty.getKey());
+            BeanProperty<V, ?> projectionProperty = projectionModel.get(sourceProperty.getKey());
 
             if (Objects.nonNull(destinationProperty)) {
                 Object sourcePropertyInstance = sourceProperty.apply(source);
                 Object destinationPropertyInstance = destinationProperty.apply(destination);
 
                 if (Objects.nonNull(sourcePropertyInstance)) {
-                    if (securityProviders.stream().allMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty))) {
+                    if (securityProviders.stream().allMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty)) && Objects.nonNull(projectionProperty)) {
                         switch (sourcePropertyInstance) {
                             case Collection<?> collection -> processCollection(
                                     (Collection<Object>) sourcePropertyInstance,
@@ -136,7 +149,13 @@ public class ResourceEntityMapper {
                 if (UUID.class.isAssignableFrom(destinationPropertyType)) {
                     destinationProperty.accept(destination, entity.getId());
                 } else {
-                    AbstractRestEntity restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationPropertyType);
+                    MapperProjection mapperProjection = destinationProperty.getAnnotation(MapperProjection.class);
+                    AbstractRestEntity restEntity;
+                    if (mapperProjection == null) {
+                        restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationPropertyType, null);
+                    } else {
+                        restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationPropertyType, mapperProjection.value());
+                    }
                     destinationProperty.accept(destination, restEntity);
                 }
             } else {
@@ -174,13 +193,21 @@ public class ResourceEntityMapper {
                 .resolveType(Map.class.getTypeParameters()[1])
                 .getRawType();
 
+        MapperMapProjection mapProjection = destinationProperty.getAnnotation(MapperMapProjection.class);
+        Class<?> keyProjection = void.class;
+        Class<?> valueProjection = void.class;
+        if (mapProjection != null) {
+            keyProjection = mapProjection.key();
+            valueProjection = mapProjection.value();
+        }
+
         for (Map.Entry<Object, Object> entry : sourcePropertyInstance.entrySet()) {
             if (AbstractEntity.class.isAssignableFrom(sourceMapKeyType)) {
                 AbstractEntity entity = (AbstractEntity) entry.getKey();
-                AbstractRestEntity restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationMapKeyType);
+                AbstractRestEntity restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationMapKeyType, keyProjection);
                 if (AbstractEntity.class.isAssignableFrom(sourceMapValueType)) {
                     AbstractEntity entity2 = (AbstractEntity) entry.getValue();
-                    AbstractRestEntity restEntity2 = map(entity2, (Class<? extends AbstractRestEntity>) destinationMapValueType);
+                    AbstractRestEntity restEntity2 = map(entity2, (Class<? extends AbstractRestEntity>) destinationMapValueType, valueProjection);
                     destinationPropertyInstance.put(restEntity, restEntity2);
                 } else {
                     destinationPropertyInstance.put(restEntity, entry.getValue());
@@ -209,7 +236,13 @@ public class ResourceEntityMapper {
         for (Object element : sourcePropertyInstance) {
             if (AbstractEntity.class.isAssignableFrom(sourceCollectionType)) {
                 AbstractEntity entity = (AbstractEntity) element;
-                AbstractRestEntity restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationCollectionType);
+                MapperProjection mapperProjection = destinationProperty.getAnnotation(MapperProjection.class);
+                AbstractRestEntity restEntity;
+                if (mapperProjection == null) {
+                    restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationCollectionType, null);
+                } else {
+                    restEntity = map(entity, (Class<? extends AbstractRestEntity>) destinationCollectionType, mapperProjection.value());
+                }
                 destinationPropertyInstance.add(restEntity);
             } else {
                 destinationPropertyInstance.add(element);
@@ -232,7 +265,7 @@ public class ResourceEntityMapper {
                             .getSingleResult();
 
                     for (Category category : entitySchema.getVisibility()) {
-                        CategoryType categoryType = map(category, CategoryType.class);
+                        CategoryType categoryType = map(category, CategoryType.class, null);
                         categories.add(categoryType);
                     }
                 }

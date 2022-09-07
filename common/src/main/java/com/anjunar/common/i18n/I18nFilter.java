@@ -24,11 +24,13 @@ public class I18nFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+/*
         if (identityProvider.getUser() == null) {
             servletResponse.setLocale(Locale.forLanguageTag("en-DE"));
         } else {
             servletResponse.setLocale(identityProvider.getUser().getLanguage());
         }
+*/
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

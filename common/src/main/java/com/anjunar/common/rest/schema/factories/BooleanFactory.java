@@ -12,7 +12,7 @@ public class BooleanFactory extends JsonAbstractFactory<JsonBoolean> {
     }
 
     @Override
-    public JsonBoolean build(TypeToken<?> typeToken) {
+    public JsonBoolean build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         return new JsonBoolean();
     }
 

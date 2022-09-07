@@ -1,8 +1,10 @@
 package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.control.users.user.connections.categories.category.CategoryForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
+import com.anjunar.common.rest.mapper.annotations.MapperProjection;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +17,7 @@ public class ConnectionRow extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
+    @MapperProjection(UserSelect.class)
     private UserForm to;
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted", readOnly = true)

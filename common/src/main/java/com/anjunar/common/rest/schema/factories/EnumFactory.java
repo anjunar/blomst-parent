@@ -16,7 +16,7 @@ public class EnumFactory extends JsonAbstractFactory<JsonEnum> {
     }
 
     @Override
-    public JsonEnum build(TypeToken<?> typeToken) {
+    public JsonEnum build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         Enum[] enumConstants = (Enum[]) typeToken.getRawType().getEnumConstants();
         JsonEnum jsonEnum = new JsonEnum();
         for (Enum enumConstant : enumConstants) {

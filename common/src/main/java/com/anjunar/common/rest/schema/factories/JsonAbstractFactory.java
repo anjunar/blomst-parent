@@ -13,10 +13,10 @@ public abstract class JsonAbstractFactory<J extends JsonNode> {
 
     public abstract boolean test(TypeToken<?> typeToken);
 
-    public abstract J build(TypeToken<?> typeToken);
+    public abstract J build(TypeToken<?> typeToken, BeanProperty<?, ?> property);
 
     public J buildWithAnnotation(BeanProperty<?, ?> property) {
-        J jsonNode = build(property.getType());
+        J jsonNode = build(property.getType(), property);
         JsonSchema jsonSchema = property.getAnnotation(JsonSchema.class);
         if (jsonSchema != null) {
             if (jsonSchema.readOnly()) {

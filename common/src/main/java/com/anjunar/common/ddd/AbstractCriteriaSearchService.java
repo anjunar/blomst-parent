@@ -3,13 +3,20 @@ package com.anjunar.common.ddd;
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestSearch;
 import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.introspector.bean.BeanIntrospector;
+import com.anjunar.introspector.bean.BeanModel;
+import com.anjunar.introspector.bean.BeanProperty;
 import com.google.common.reflect.TypeToken;
-
+import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSearch> {
 
@@ -39,6 +46,21 @@ public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSea
     }
 
     public List<E> find(S search) {
+        return find(search, null);
+    }
+
+    public List<E> find(S search, Class<?> projectionClass) {
+        EntityGraph<E> entityGraph;
+        if (Objects.nonNull(projectionClass)) {
+            entityGraph = entityManager.createEntityGraph(getEntityClass());
+            BeanModel<?> beanModel = BeanIntrospector.create(projectionClass);
+            for (BeanProperty<?, ?> property : beanModel.getProperties()) {
+                entityGraph.addAttributeNodes(property.getKey());
+            }
+        }  else {
+            entityGraph = null;
+        }
+
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> query = builder.createQuery(getEntityClass());
         Root<E> root = query.from(getEntityClass());
@@ -59,7 +81,15 @@ public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSea
         } else {
             typedQuery.setMaxResults(search.getLimit());
         }
-        return typedQuery.getResultList();
+
+        if (Objects.nonNull(entityGraph)) {
+            typedQuery.setHint("jakarta.persistence.loadgraph", entityGraph);
+            return typedQuery.getResultList();
+        } else {
+            return typedQuery.getResultList();
+        }
+
+
     }
 
     public long count(S search) {

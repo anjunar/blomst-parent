@@ -91,6 +91,15 @@ public class IdentityProvider implements Serializable {
         return false;
     }
 
+    public boolean hasRole(String[] roles) {
+        for (String role : roles) {
+            if (hasRole(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Transactional
     public boolean hasPermission(String value, String method) {
         if (isLoggedIn()) {

@@ -19,9 +19,8 @@ public class CollectionFactory extends JsonAbstractFactory<JsonArray> {
     }
 
     @Override
-    public JsonArray build(TypeToken<?> typeToken) {
-        TypeToken<?> collectionType = typeToken.resolveType(Collection.class.getTypeParameters()[0]);
-        return generateArray(collectionType);
+    public JsonArray build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
+        return generateArray(property);
     }
 
     @Override

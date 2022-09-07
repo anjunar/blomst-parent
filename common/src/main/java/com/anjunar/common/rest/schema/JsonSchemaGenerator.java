@@ -1,21 +1,32 @@
 package com.anjunar.common.rest.schema;
 
+import com.anjunar.common.rest.mapper.annotations.MapperProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.factories.JsonAbstractFactory;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
+import com.anjunar.common.security.IdentityProvider;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
 import com.anjunar.introspector.type.TypeResolver;
 import com.anjunar.introspector.type.resolved.ResolvedType;
+import jakarta.enterprise.inject.spi.CDI;
+
+import java.util.Collection;
+import java.util.Objects;
 
 @SuppressWarnings("UnstableApiUsage")
 public class JsonSchemaGenerator {
 
     public static <E> JsonObject generateObject(Class<E> aClass) {
+        return generateObject(aClass, null);
+    }
+
+    public static <E> JsonObject generateObject(Class<E> aClass, Class<?> projectionClass) {
         ResolvedType<E> resolvedType = TypeResolver.resolve(aClass);
         JsonObject jsonObject = new JsonObject();
 
@@ -33,16 +44,27 @@ public class JsonSchemaGenerator {
         }
 
         BeanModel<E> beanModel = BeanIntrospector.create(aClass);
+        BeanModel<?> projectionModel;
+        if (Objects.nonNull(projectionClass)) {
+            projectionModel = BeanIntrospector.create(projectionClass);
+        } else {
+            projectionModel = beanModel;
+        }
+
         for (BeanProperty<E, ?> property : beanModel.getProperties()) {
             JsonSchema jsonSchema = property.getAnnotation(JsonSchema.class);
-            if (jsonSchema == null || ! jsonSchema.ignore()) {
-                TypeToken<?> type = property.getType();
-                for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {
-                    if (factory.test(type)) {
-                        JsonNode jsonNode = factory.buildWithAnnotation(property);
-                        jsonNode.setName(property.getKey());
-                        jsonObject.getProperties().put(property.getKey(), jsonNode);
-                        break;
+            if (jsonSchema == null || !jsonSchema.ignore()) {
+                BeanProperty<?, ?> projectionProperty = projectionModel.get(property.getKey());
+                if (Objects.nonNull(projectionProperty)) {
+                    MapperSecurity mapperSecurity = property.getAnnotation(MapperSecurity.class);
+                    if (Objects.nonNull(mapperSecurity)) {
+                        String[] rolesAllowed = mapperSecurity.rolesAllowed();
+                        IdentityProvider identityProvider = CDI.current().select(IdentityProvider.class).get();
+                        if (identityProvider.hasRole(rolesAllowed)) {
+                            process(jsonObject, property);
+                        }
+                    } else {
+                        process(jsonObject, property);
                     }
                 }
             }
@@ -50,11 +72,24 @@ public class JsonSchemaGenerator {
         return jsonObject;
     }
 
-    public static JsonArray generateArray(TypeToken<?> type) {
+    private static <E> void process(JsonObject jsonObject, BeanProperty<E, ?> property) {
+        TypeToken<?> type = property.getType();
+        for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {
+            if (factory.test(type)) {
+                JsonNode jsonNode = factory.buildWithAnnotation(property);
+                jsonNode.setName(property.getKey());
+                jsonObject.getProperties().put(property.getKey(), jsonNode);
+                break;
+            }
+        }
+    }
+
+    public static JsonArray generateArray(BeanProperty<?,?> property) {
+        TypeToken<?> type = property.getType().resolveType(Collection.class.getTypeParameters()[0]);
         JsonArray jsonArray = new JsonArray();
         for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {
             if (factory.test(type)) {
-                JsonNode jsonNode = factory.build(type);
+                JsonNode jsonNode = factory.build(type, property);
                 jsonArray.setItems(jsonNode);
                 break;
             }

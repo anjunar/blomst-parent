@@ -41,26 +41,29 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("User Table")
     public Table<UserForm> list(UsersSearch search) {
-
-        List<User> users = service.find(search);
         long count = service.count(search);
 
-        List<UserForm> resources = new ArrayList<>();
-        for (User user : users) {
-            UserForm resource = mapper.map(user, UserForm.class);
-            resources.add(resource);
-
-            linkTo(methodOn(UserResource.class).read(user.getId()))
-                    .build(resource::addLink);
-        }
-
+        List<UserForm> resources = getUserForms(search, null);
         Table<UserForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(UserResource.class).create())
                 .build(table::addLink);
 
         return table;
+    }
 
+    private List<UserForm> getUserForms(UsersSearch search, Class<?> projectionClass) {
+        List<User> users = service.find(search, projectionClass);
+
+        List<UserForm> resources = new ArrayList<>();
+        for (User user : users) {
+            UserForm resource = mapper.map(user, UserForm.class, projectionClass);
+            resources.add(resource);
+
+            linkTo(methodOn(UserResource.class).read(user.getId()))
+                    .build(resource::addLink);
+        }
+        return resources;
     }
 
 }

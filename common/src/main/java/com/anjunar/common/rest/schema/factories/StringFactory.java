@@ -21,7 +21,7 @@ public class StringFactory extends JsonAbstractFactory<JsonString> {
     }
 
     @Override
-    public JsonString build(TypeToken<?> typeToken) {
+    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         return new JsonString();
     }
 

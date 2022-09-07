@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.schema.schema.JsonNumber;
 
@@ -11,7 +12,7 @@ public class DoubleFactory extends NumericFactory<JsonNumber> {
     }
 
     @Override
-    public JsonNumber build(TypeToken<?> typeToken) {
+    public JsonNumber build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         return new JsonNumber();
     }
 

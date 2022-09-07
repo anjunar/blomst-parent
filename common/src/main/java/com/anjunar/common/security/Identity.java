@@ -11,7 +11,7 @@ public class Identity extends AbstractEntity {
 
     private boolean enabled;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Image picture;
 
     public boolean isEnabled() {

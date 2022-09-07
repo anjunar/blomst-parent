@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.schema.schema.JsonInteger;
 
@@ -11,7 +12,7 @@ public class LongFactory extends NumericFactory<JsonInteger> {
     }
 
     @Override
-    public JsonInteger build(TypeToken<?> typeToken) {
+    public JsonInteger build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
         return new JsonInteger();
     }
 

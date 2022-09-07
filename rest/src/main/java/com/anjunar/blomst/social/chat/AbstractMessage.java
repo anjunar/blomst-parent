@@ -20,7 +20,6 @@ public class AbstractMessage extends ApplicationWebSocketMessage {
     private Set<UUID> to;
 
     private UserForm from;
-
     public Set<UUID> getTo() {
         return to;
     }
