@@ -1,4 +1,4 @@
-package com.anjunar.blomst.control.mail;
+package com.anjunar.blomst.system.mail;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.mail.Template;

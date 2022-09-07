@@ -25,13 +25,13 @@ public class Postgres14Dialect extends PostgreSQLDialect {
 
         functionRegistry.registerPattern(
                 "jsonPathAsJson",
-                "?1 -> ?2",
+                "?1::json -> ?2",
                 typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.STRING)
         );
 
         functionRegistry.registerPattern(
                 "jsonPathAsText",
-                "?1 ->> ?2",
+                "?1::json ->> ?2",
                 typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.STRING)
         );
 

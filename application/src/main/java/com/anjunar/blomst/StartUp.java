@@ -1,7 +1,10 @@
 package com.anjunar.blomst;
 
 import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.i18n.Language;
 import com.anjunar.common.security.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.apache.commons.io.IOUtils;
 
 import jakarta.servlet.ServletContext;
@@ -16,13 +19,14 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 
 @ApplicationScoped
 public class StartUp {
 
     @Transactional
-    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, IdentityService service) throws SQLException {
+    public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, IdentityService service, EntityManager entityManager) throws SQLException {
 
         LocalDate birthdate = LocalDate.of(1980, 4, 1);
         User patrick = service.findUser("Patrick", "Bittner", birthdate);
@@ -73,15 +77,39 @@ public class StartUp {
 
         }
 
-        Category category = service.findCategory(Locale.forLanguageTag("en-DE"), "Everybody");
+        Category category;
+        try {
+            category = entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
+                    .setParameter("locale", Locale.forLanguageTag("en-DE"))
+                    .setParameter("name", "Everybody")
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            category = null;
+        }
+
         if (category == null) {
             category = new Category();
             category.getI18nName().put(Locale.forLanguageTag("de-DE"), "Jeder");
             category.getI18nName().put(Locale.forLanguageTag("en-DE"), "Everybody");
-            service.saveCategory(category);
+            entityManager.persist(category);
         }
 
+        List<Language> languages = entityManager.createQuery("select l from Language l", Language.class)
+                .getResultList();
 
+        if (languages.isEmpty()) {
+            Language german = new Language();
+            german.setLocale(Locale.forLanguageTag("de-DE"));
+            german.getI18nName().put(Locale.forLanguageTag("de-DE"), "Deutsch");
+            german.getI18nName().put(Locale.forLanguageTag("en-DE"), "German");
+            entityManager.persist(german);
+
+            Language english = new Language();
+            english.setLocale(Locale.forLanguageTag("en-DE"));
+            english.getI18nName().put(Locale.forLanguageTag("de-DE"), "Englisch");
+            english.getI18nName().put(Locale.forLanguageTag("en-DE"), "English");
+            entityManager.persist(english);
+        }
     }
 
 }

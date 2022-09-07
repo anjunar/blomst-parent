@@ -4,6 +4,7 @@ import com.anjunar.blomst.control.users.Resume;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
+import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -76,14 +77,18 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
 
         ResumeForm form = entityMapper.map(entity, ResumeForm.class);
 
-        linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
-                .build(form::addLink);
-        linkTo(methodOn(ResumeResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        if (entity.getOwner().equals(identityProvider.getUser())) {
+            linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
+                    .build(form::addLink);
+            linkTo(methodOn(ResumeResource.class).delete(entity.getId()))
+                    .build(form::addLink);
+        }
 
         JsonObject site = form.find("site", JsonObject.class);
-        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
-                .build(site::addLink);
+        if (site != null) {
+            linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                    .build(site::addLink);
+        }
 
         return form;
     }
@@ -92,7 +97,6 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     @LinkDescription("Save Resume")
     @Override
     public ResumeForm save(ResumeForm form) {
-
         Resume entity = restMapper.map(form, Resume.class);
 
         entityManager.persist(entity);

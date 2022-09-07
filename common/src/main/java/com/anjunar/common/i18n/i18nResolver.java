@@ -49,12 +49,4 @@ public class i18nResolver implements Serializable {
         response.setLocale(event.getUser().getLanguage());
     }
 
-    public void onResponse(@Observes ServletResponse response) {
-        if (identity.getUser() == null) {
-            response.setLocale(Locale.forLanguageTag("en-DE"));
-        } else {
-            response.setLocale(identity.getUser().getLanguage());
-        }
-    }
-
 }

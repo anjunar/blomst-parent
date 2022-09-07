@@ -56,7 +56,8 @@ public abstract class JsonNode {
         LAZY_MULTI_SELECT("lazy-multi-select"),
         LAZY_SELECT("lazy-select"),
         TEXTAREA("textarea"),
-        EDITOR("editor");
+        EDITOR("editor"),
+        JSON("json");
 
         final String value;
 

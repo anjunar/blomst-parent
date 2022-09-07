@@ -1,6 +1,8 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.blomst.social.pages.page.PageResource;
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
@@ -60,8 +62,7 @@ public class PagesResource implements ListResourceTemplate<PagesForm, PagesSearc
         Table<PagesForm> table = new Table<>(resources, count) {};
 
         JsonObject language = table.find("language", JsonObject.class);
-        linkTo(methodOn(ApplicationResource.class).language())
-                .withRel("list")
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
         linkTo(methodOn(PageResource.class).create())

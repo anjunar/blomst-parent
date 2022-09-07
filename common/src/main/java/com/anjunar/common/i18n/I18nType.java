@@ -10,12 +10,11 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
+import org.jooq.util.postgres.PGobject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Locale;
 import java.util.Map;
 
@@ -58,6 +57,12 @@ public class I18nType implements UserType<Map> {
     public void nullSafeSet(PreparedStatement st, Map value, int index, SharedSessionContractImplementor session) throws SQLException {
         try {
             String string = objectMapper.writeValueAsString(value);
+/*
+            PGobject jsonObject = new PGobject();
+            jsonObject.setType("json");
+            jsonObject.setValue(string);
+            st.setObject(index, jsonObject);
+*/
             st.setString(index, string);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

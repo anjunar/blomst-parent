@@ -1,4 +1,4 @@
-package com.anjunar.blomst.control.mail.template;
+package com.anjunar.blomst.system.mail.template;
 
 import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.common.rest.api.AbstractRestEntity;

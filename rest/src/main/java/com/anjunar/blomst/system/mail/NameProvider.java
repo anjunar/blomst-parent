@@ -1,4 +1,4 @@
-package com.anjunar.blomst.control.mail;
+package com.anjunar.blomst.system.mail;
 
 import com.google.common.base.Strings;
 import com.anjunar.common.mail.Template_;

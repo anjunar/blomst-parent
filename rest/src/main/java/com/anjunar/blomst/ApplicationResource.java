@@ -1,10 +1,11 @@
 package com.anjunar.blomst;
 
+import com.anjunar.blomst.system.SystemResource;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ValidationResource;
-import com.anjunar.blomst.control.mail.TemplatesResource;
-import com.anjunar.blomst.control.mail.TemplatesSearch;
+import com.anjunar.blomst.system.mail.TemplatesResource;
+import com.anjunar.blomst.system.mail.TemplatesSearch;
 import com.anjunar.blomst.control.notifications.NotificationsResource;
 import com.anjunar.blomst.control.notifications.NotificationsSearch;
 import com.anjunar.blomst.control.roles.RolesResource;
@@ -95,35 +96,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
     }
 
     @GET
-    @Transactional
-    @Path("lang")
-    public ResponseOk language(@QueryParam("lang") Locale locale) {
-
-        identityProvider.setLanguage(locale);
-
-        return new ResponseOk();
-    }
-
-    @GET
-    @Path("language")
-    @Produces("application/json")
-    public Table<Language> language() {
-        List<Language> resources = new ArrayList<>();
-
-        Language german = new Language();
-        german.setLanguage("Deutsch");
-        german.setLocale(Locale.forLanguageTag("de-DE"));
-        resources.add(german);
-
-        Language english = new Language();
-        english.setLanguage("English");
-        english.setLocale(Locale.forLanguageTag("en-DE"));
-        resources.add(english);
-
-        return new Table<>(resources, resources.size()) {};
-    }
-
-    @GET
     @Produces("application/json")
     @Transactional
     public UserSelect service() {
@@ -136,7 +108,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             Language language = new Language();
             language.setLocale(identityProvider.getLanguage());
             search.setLanguage(language);
-
             linkTo(methodOn(PagesResource.class).list(search))
                     .withRel("pages")
                     .build(userSelect::addLink);
@@ -157,10 +128,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
                     .withRel("roles")
                     .build(userSelect::addLink);
 
-            linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
-                    .withRel("templates")
-                    .build(userSelect::addLink);
-
             NotificationsSearch notificationsSearch = new NotificationsSearch();
             notificationsSearch.setOwner(identityProvider.getUser().getId());
             linkTo(methodOn(NotificationsResource.class).list(notificationsSearch))
@@ -175,6 +142,10 @@ public class ApplicationResource implements ValidationResource<UserForm> {
                     .withRel("sites")
                     .build(userSelect::addLink);
 
+            linkTo(methodOn(SystemResource.class).info())
+                    .withRel("system")
+                    .build(userSelect::addLink);
+
             return userSelect;
         } else {
             UserSelect userSelect = new UserSelect();
@@ -182,7 +153,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
             linkTo(methodOn(LoginResource.class).login())
                     .build(userSelect::addLink);
-
 
             linkTo(methodOn(RegisterResource.class).register())
                     .build(userSelect::addLink);

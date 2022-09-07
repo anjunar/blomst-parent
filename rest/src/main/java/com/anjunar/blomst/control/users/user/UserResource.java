@@ -11,7 +11,7 @@ import com.google.common.collect.Sets;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
-import com.anjunar.common.rest.SelfIdentity;
+import com.anjunar.common.rest.MyOwnIdentity;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.schema.schema.JsonArray;
@@ -255,7 +255,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update User")
-    @MethodPredicate(SelfIdentity.class)
+    @MethodPredicate(MyOwnIdentity.class)
     public UserForm update(UUID id, UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
@@ -277,7 +277,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Override
     @Transactional
     @RolesAllowed({"Administrator", "User"})
-    @MethodPredicate(SelfIdentity.class)
+    @MethodPredicate(MyOwnIdentity.class)
     @LinkDescription("Delete User")
     public ResponseOk delete(UUID id) {
         User user = entityManager.find(User.class, id);

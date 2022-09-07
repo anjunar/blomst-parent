@@ -99,18 +99,4 @@ public class IdentityService {
         }
     }
 
-    public Category findCategory(Locale locale, String name) {
-        try {
-            return entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
-                    .setParameter("locale", locale)
-                    .setParameter("name", name)
-                    .getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public void saveCategory(Category category) {
-        entityManager.persist(category);
-    }
 }

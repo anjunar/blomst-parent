@@ -9,6 +9,8 @@
 
         <class>com.anjunar.common.mail.Template</class>
 
+        <class>com.anjunar.common.i18n.Language</class>
+
         <class>com.anjunar.common.security.Permission</class>
         <class>com.anjunar.common.security.Role</class>
         <class>com.anjunar.common.security.Identity</class>

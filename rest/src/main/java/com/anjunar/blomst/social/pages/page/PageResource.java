@@ -6,6 +6,8 @@ import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -73,8 +75,7 @@ public class PageResource {
                 .build(likes::addLink);
 
         JsonObject language = pageForm.find("language", JsonObject.class);
-        linkTo(methodOn(ApplicationResource.class).language())
-                .withRel("list")
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
         JsonObject modifier = pageForm.find("modifier", JsonObject.class);
@@ -108,8 +109,7 @@ public class PageResource {
 
 
         JsonObject language = pageForm.find("language", JsonObject.class);
-        linkTo(methodOn(ApplicationResource.class).language())
-                .withRel("list")
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
         JsonArray likes = pageForm.find("likes", JsonArray.class);

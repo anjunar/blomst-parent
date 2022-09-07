@@ -1,7 +1,7 @@
-package com.anjunar.blomst.control.mail;
+package com.anjunar.blomst.system.mail;
 
-import com.anjunar.blomst.control.mail.template.TemplateForm;
-import com.anjunar.blomst.control.mail.template.TemplateResource;
+import com.anjunar.blomst.system.mail.template.TemplateForm;
+import com.anjunar.blomst.system.mail.template.TemplateResource;
 import com.anjunar.common.mail.Template;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
-@Path("mail/templates")
+@Path("system/mail/templates")
 @ApplicationScoped
 public class TemplatesResource implements ListResourceTemplate<TemplateForm, TemplatesSearch> {
 

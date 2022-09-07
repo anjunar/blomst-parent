@@ -1,5 +1,7 @@
-package com.anjunar.blomst.control.mail.template;
+package com.anjunar.blomst.system.mail.template;
 
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.mail.Template;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Editor;
@@ -24,7 +26,7 @@ import java.util.UUID;
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
-@Path("mail/templates/template")
+@Path("system/mail/templates/template")
 @ApplicationScoped
 public class TemplateResource implements FormResourceTemplate<TemplateForm> {
 
@@ -62,8 +64,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
         linkTo(methodOn(TemplateResource.class).save(new TemplateForm()))
                 .build(resource::addLink);
         JsonObject language = resource.find("language", JsonObject.class);
-        linkTo(methodOn(ApplicationResource.class).language())
-                .withRel("list")
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
         return resource;
@@ -84,8 +85,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
         linkTo(methodOn(TemplateResource.class).delete(template.getId()))
                 .build(resource::addLink);
         JsonObject language = resource.find("language", JsonObject.class);
-        linkTo(methodOn(ApplicationResource.class).language())
-                .withRel("list")
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
         return resource;

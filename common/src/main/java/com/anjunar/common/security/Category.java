@@ -21,7 +21,7 @@ import java.util.Map;
 public class Category extends AbstractEntity {
 
     @Type(I18nType.class)
-    @Column(name = "name", columnDefinition = "json")
+    @Column(name = "name")
     private final Map<Locale, String> i18nName = new HashMap<>();
 
     private String description;

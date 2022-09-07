@@ -28,6 +28,7 @@ class MetaInput extends HTMLElement {
             case "textarea" : return import("./meta-input/meta-input-textarea.js");
             case "repeat" : return import("./meta-input/meta-input-repeat.js");
             case "select" : return import("./meta-input/meta-input-select.js");
+            case "json" : return import("./meta-input/meta-input-json.js");
             default : return import("./meta-input/meta-input-input.js");
         }
     }
