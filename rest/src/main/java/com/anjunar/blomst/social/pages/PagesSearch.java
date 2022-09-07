@@ -1,12 +1,12 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
-import com.anjunar.blomst.shared.system.Language;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PagesSearch extends AbstractLikeableSearch {
 
@@ -20,7 +20,7 @@ public class PagesSearch extends AbstractLikeableSearch {
     private String text;
 
     @RestPredicate(LanguageProvider.class)
-    private Language language;
+    private Locale language;
 
     public List<String> getSort() {
         return sort;
@@ -46,11 +46,11 @@ public class PagesSearch extends AbstractLikeableSearch {
         this.text = text;
     }
 
-    public Language getLanguage() {
+    public Locale getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(Locale language) {
         this.language = language;
     }
 }

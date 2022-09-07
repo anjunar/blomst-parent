@@ -1,9 +1,9 @@
 package com.anjunar.blomst.control.users.user.connections.categories.category;
 
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class CategoryForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
     @NotNull
-    private UserSelect owner;
+    private UserForm owner;
 
     public String getName() {
         return name;
@@ -41,11 +41,11 @@ public class CategoryForm extends AbstractRestEntity {
         this.description = description;
     }
 
-    public UserSelect getOwner() {
+    public UserForm getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UserForm owner) {
         this.owner = owner;
     }
 

@@ -1,10 +1,9 @@
 package com.anjunar.blomst.social.pages.page.history;
 
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.blomst.social.pages.Page;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 
 public class PageHistoryForm extends AbstractRestEntity {
 
@@ -21,7 +20,7 @@ public class PageHistoryForm extends AbstractRestEntity {
     private Number revision;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modifier")
-    private UserSelect modifier;
+    private UserForm modifier;
 
     public String getTitle() {
         return title;
@@ -55,11 +54,11 @@ public class PageHistoryForm extends AbstractRestEntity {
         this.revision = revision;
     }
 
-    public UserSelect getModifier() {
+    public UserForm getModifier() {
         return modifier;
     }
 
-    public void setModifier(UserSelect modifier) {
+    public void setModifier(UserForm modifier) {
         this.modifier = modifier;
     }
 

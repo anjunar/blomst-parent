@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -9,7 +10,6 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -59,7 +59,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public SiteConnectionForm create() {
         SiteConnectionForm form = new SiteConnectionForm();
 
-        form.setFrom(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setFrom(entityMapper.map(identityProvider.getUser(), UserForm.class));
 
         linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
                 .build(form::addLink);

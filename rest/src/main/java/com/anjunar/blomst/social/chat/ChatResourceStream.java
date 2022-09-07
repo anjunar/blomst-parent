@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.chat;
 
 import com.anjunar.blomst.ApplicationWebSocketMessage;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.User;
 import com.anjunar.common.websocket.OnCloseEvent;
@@ -44,7 +44,7 @@ public class ChatResourceStream {
 
         User from = entityManager.find(User.class, UUID.fromString(message.getSession().getUserPrincipal().getName()));
 
-        message.setFrom(mapper.map(from, UserSelect.class));
+        message.setFrom(mapper.map(from, UserForm.class));
 
         for (UUID uuid : message.getTo()) {
             if (message.getPool().containsKey(uuid.toString())) {
@@ -67,9 +67,9 @@ public class ChatResourceStream {
                 .filter((user) -> message.getPool().containsKey(user.getId().toString()))
                 .toList();
 
-        List<UserSelect> userSelects = new ArrayList<>();
+        List<UserForm> userSelects = new ArrayList<>();
         for (User user : online) {
-            userSelects.add(mapper.map(user, UserSelect.class));
+            userSelects.add(mapper.map(user, UserForm.class));
         }
 
         UsersUpdate usersUpdate = new UsersUpdate();
@@ -80,7 +80,7 @@ public class ChatResourceStream {
             Session onlineSession = message.getPool().get(user.getId().toString());
             StatusUpdate  statusUpdate = new StatusUpdate();
             statusUpdate.setStatus(StatusUpdate.Status.ONLINE);
-            statusUpdate.setUser(mapper.map(loggedInUser, UserSelect.class));
+            statusUpdate.setUser(mapper.map(loggedInUser, UserForm.class));
             onlineSession.getBasicRemote().sendText(objectMapper.writeValueAsString(statusUpdate));
         }
     }
@@ -100,7 +100,7 @@ public class ChatResourceStream {
             Session onlineSession = message.getPool().get(user.getId().toString());
             StatusUpdate  statusUpdate = new StatusUpdate();
             statusUpdate.setStatus(StatusUpdate.Status.OFFLINE);
-            statusUpdate.setUser(mapper.map(loggedInUser, UserSelect.class));
+            statusUpdate.setUser(mapper.map(loggedInUser, UserForm.class));
             onlineSession.getBasicRemote().sendText(objectMapper.writeValueAsString(statusUpdate));
         }
     }

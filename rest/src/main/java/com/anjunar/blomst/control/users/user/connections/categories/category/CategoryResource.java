@@ -1,5 +1,9 @@
 package com.anjunar.blomst.control.users.user.connections.categories.category;
 
+import com.anjunar.blomst.control.users.UsersResource;
+import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.control.users.user.UserResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -7,9 +11,6 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.shared.users.UserSelectResource;
-import com.anjunar.blomst.shared.users.UserSelectSearch;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.security.Category;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -58,13 +59,13 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     public CategoryForm create() {
         CategoryForm form = new CategoryForm();
 
-        form.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
 
         linkTo(methodOn(CategoryResource.class).save(new CategoryForm()))
                 .build(form::addLink);
 
         JsonObject owner = form.find("owner", JsonObject.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .build(owner::addLink);
 
         return form;
@@ -86,7 +87,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
                 .build(form::addLink);
 
         JsonObject owner = form.find("owner", JsonObject.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .build(owner::addLink);
 
         return form;

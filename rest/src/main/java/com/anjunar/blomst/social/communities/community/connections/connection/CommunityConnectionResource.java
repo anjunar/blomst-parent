@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.communities.community.connections.connection;
 import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.roles.role.RoleForm;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -10,7 +11,6 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.communities.Status;
@@ -68,7 +68,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         form.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class));
         form.setStatus(Status.PENDING);
         form.setRole(entityMapper.map(service.findUserRole(), RoleForm.class));
-        form.setFrom(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setFrom(entityMapper.map(identityProvider.getUser(), UserForm.class));
 
         linkTo(methodOn(CommunityConnectionResource.class).save(new CommunityConnectionForm()))
                 .build(form::addLink);

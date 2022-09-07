@@ -1,5 +1,7 @@
 package com.anjunar.blomst.system;
 
+import com.anjunar.blomst.control.roles.RolesResource;
+import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.blomst.system.mail.TemplatesResource;
@@ -35,6 +37,11 @@ public class SystemResource {
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .withRel("languages")
                 .build(systemForm::addLink);
+
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .withRel("roles")
+                .build(systemForm::addLink);
+
 
         return systemForm;
     }

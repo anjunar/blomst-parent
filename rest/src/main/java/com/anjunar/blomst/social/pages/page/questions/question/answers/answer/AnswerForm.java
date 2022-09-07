@@ -1,13 +1,13 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
+import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.users.user.UserSelect;
-
 import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
@@ -23,7 +23,7 @@ public class AnswerForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
-    private UserSelect owner;
+    private UserForm owner;
 
     public Editor getEditor() {
         return editor;
@@ -41,11 +41,11 @@ public class AnswerForm extends AbstractLikeableRestEntity {
         this.topic = topic;
     }
 
-    public UserSelect getOwner() {
+    public UserForm getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UserForm owner) {
         this.owner = owner;
     }
 

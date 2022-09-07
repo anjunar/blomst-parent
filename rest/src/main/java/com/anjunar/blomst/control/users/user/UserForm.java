@@ -1,6 +1,6 @@
 package com.anjunar.blomst.control.users.user;
 
-import com.anjunar.blomst.shared.users.user.ImageConverter;
+import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
@@ -13,14 +13,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @NaturalId
 @JsonSchema(widget = JsonNode.Widget.FORM)
-public class UserForm extends AbstractRestEntity {
+public class UserForm extends AbstractRestEntity implements UserSelect {
 
     @NotBlank
     @Size(min = 3, max = 80)
@@ -39,6 +36,7 @@ public class UserForm extends AbstractRestEntity {
     @NotBlank
     @Size(min = 3, max = 80)
     @JsonSchema(widget = JsonNode.Widget.PASSWORD, title = "Password")
+    @MapperSecurity(rolesAllowed = {"Administrator"})
     private String password;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
@@ -49,7 +47,11 @@ public class UserForm extends AbstractRestEntity {
     private List<EmailForm> emails = new ArrayList<>();
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Enabled")
+    @MapperSecurity(rolesAllowed = {"Administrator"})
     private boolean enabled;
+
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "language")
+    private Locale language;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")
     @Size(min = 1)
@@ -57,18 +59,22 @@ public class UserForm extends AbstractRestEntity {
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private Set<RoleForm> roles = new HashSet<>();
 
+    @Override
     public String getFirstName() {
         return firstName;
     }
 
+    @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
 
+    @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -111,6 +117,14 @@ public class UserForm extends AbstractRestEntity {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Locale getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Locale language) {
+        this.language = language;
     }
 
     public Set<RoleForm> getRoles() {

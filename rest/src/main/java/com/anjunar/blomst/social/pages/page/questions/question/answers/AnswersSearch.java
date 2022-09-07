@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers;
 
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
@@ -25,7 +25,7 @@ public class AnswersSearch extends AbstractLikeableSearch {
     private String editor;
 
     @RestPredicate(UserProvider.class)
-    private UserSelect owner;
+    private UserForm owner;
 
     public List<String> getSort() {
         return sort;
@@ -51,11 +51,11 @@ public class AnswersSearch extends AbstractLikeableSearch {
         this.editor = editor;
     }
 
-    public UserSelect getOwner() {
+    public UserForm getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UserForm owner) {
         this.owner = owner;
     }
 

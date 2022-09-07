@@ -1,7 +1,7 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.connections.categories.category.CategoryForm;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -12,7 +12,7 @@ public class UserConnectionForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "From", readOnly = true)
-    private UserSelect from;
+    private UserForm from;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Category")
     private CategoryForm category;
@@ -22,13 +22,13 @@ public class UserConnectionForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
-    private UserSelect to;
+    private UserForm to;
 
-    public UserSelect getFrom() {
+    public UserForm getFrom() {
         return from;
     }
 
-    public void setFrom(UserSelect from) {
+    public void setFrom(UserForm from) {
         this.from = from;
     }
 
@@ -48,11 +48,11 @@ public class UserConnectionForm extends AbstractRestEntity {
         this.accepted = accepted;
     }
 
-    public UserSelect getTo() {
+    public UserForm getTo() {
         return to;
     }
 
-    public void setTo(UserSelect to) {
+    public void setTo(UserForm to) {
         this.to = to;
     }
 

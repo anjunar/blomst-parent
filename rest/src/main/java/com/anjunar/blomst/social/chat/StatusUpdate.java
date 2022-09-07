@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.chat;
 
 import com.anjunar.blomst.ApplicationWebSocketMessage;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("chat-status")
@@ -16,7 +16,7 @@ public class StatusUpdate extends ApplicationWebSocketMessage {
 
     private Status status;
 
-    private UserSelect user;
+    private UserForm user;
 
     public Status getStatus() {
         return status;
@@ -26,11 +26,11 @@ public class StatusUpdate extends ApplicationWebSocketMessage {
         this.status = status;
     }
 
-    public UserSelect getUser() {
+    public UserForm getUser() {
         return user;
     }
 
-    public void setUser(UserSelect user) {
+    public void setUser(UserForm user) {
         this.user = user;
     }
 }

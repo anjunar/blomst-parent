@@ -2,6 +2,7 @@ package com.anjunar.blomst.social.timeline.post;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
@@ -11,7 +12,6 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.security.IdentityProvider;
@@ -80,7 +80,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         resource.setSource(source);
 
-        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))
                         .build(resource::addLink);

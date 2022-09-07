@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.chat;
 
 import com.anjunar.blomst.ApplicationWebSocketMessage;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,7 +19,7 @@ public class AbstractMessage extends ApplicationWebSocketMessage {
 
     private Set<UUID> to;
 
-    private UserSelect from;
+    private UserForm from;
 
     public Set<UUID> getTo() {
         return to;
@@ -29,11 +29,11 @@ public class AbstractMessage extends ApplicationWebSocketMessage {
         this.to = to;
     }
 
-    public UserSelect getFrom() {
+    public UserForm getFrom() {
         return from;
     }
 
-    public void setFrom(UserSelect from) {
+    public void setFrom(UserForm from) {
         this.from = from;
     }
 }

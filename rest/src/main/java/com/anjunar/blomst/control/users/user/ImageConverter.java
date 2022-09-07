@@ -1,4 +1,4 @@
-package com.anjunar.blomst.shared.users.user;
+package com.anjunar.blomst.control.users.user;
 
 import com.anjunar.common.filedisk.Base64Resource;
 import com.anjunar.common.filedisk.FileDiskUtils;

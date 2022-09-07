@@ -2,6 +2,7 @@ package com.anjunar.blomst.social.pages.page.questions.question;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -14,7 +15,6 @@ import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.pages.page.Question;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -65,7 +65,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         resource.setPage(page);
         resource.setCreated(LocalDateTime.now());
 
-        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
 
         linkTo(methodOn(QuestionResource.class).save(new QuestionForm()))
                 .build(resource::addLink);
@@ -109,11 +109,6 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @LinkDescription("Save Question")
     public QuestionForm save(QuestionForm resource) {
 
-        UserSelect owner = resource.getOwner();
-        if (!owner.getId().equals(identityProvider.getUser().getId())) {
-            throw new NotAuthorizedException("Not Allowed");
-        }
-
         Question question = restMapper.map(resource, Question.class);
 
         entityManager.persist(question);
@@ -134,6 +129,11 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
     public QuestionForm update(UUID id, QuestionForm resource) {
+
+        UserForm owner = resource.getOwner();
+        if (!owner.getId().equals(identityProvider.getUser().getId())) {
+            throw new NotAuthorizedException("Not Allowed");
+        }
 
         Question question = restMapper.map(resource, Question.class);
 

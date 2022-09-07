@@ -2,8 +2,7 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.shared.users.UserSelectResource;
-import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Editor;
@@ -15,7 +14,6 @@ import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.blomst.social.pages.page.Answer;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -65,7 +63,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
         AnswerForm resource = new AnswerForm();
 
         resource.setTopic(uuid);
-        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
         resource.setEditor(new Editor());
         resource.setViews(0);
 
@@ -99,10 +97,10 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
                 .build(resource::addLink);
 
         JsonObject owner = resource.find("owner", JsonObject.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .build(owner::addLink);
         JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .build(likes::addLink);
 
         return resource;

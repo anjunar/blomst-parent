@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.sites.site;
 
-import com.anjunar.blomst.shared.users.user.ImageConverter;
+import com.anjunar.blomst.control.users.user.ImageConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;

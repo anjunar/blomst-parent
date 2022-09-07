@@ -1,15 +1,15 @@
 package com.anjunar.blomst.social.pages.page.questions.question;
 
+import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.users.user.UserSelect;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -32,11 +32,11 @@ public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
-    private UserSelect owner;
+    private UserForm owner;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
-    private final Set<UserSelect> likes = new HashSet<>();
+    private final Set<UserForm> likes = new HashSet<>();
 
     public UUID getPage() {
         return page;
@@ -62,15 +62,15 @@ public class QuestionForm extends AbstractLikeableRestEntity {
         this.editor = editor;
     }
 
-    public UserSelect getOwner() {
+    public UserForm getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UserForm owner) {
         this.owner = owner;
     }
 
-    public Set<UserSelect> getLikes() {
+    public Set<UserForm> getLikes() {
         return likes;
     }
 

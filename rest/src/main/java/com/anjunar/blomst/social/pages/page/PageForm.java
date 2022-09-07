@@ -1,14 +1,12 @@
 package com.anjunar.blomst.social.pages.page;
 
+import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.system.Language;
-import com.anjunar.blomst.shared.users.user.UserSelect;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,7 +16,7 @@ public class PageForm extends AbstractLikeableRestEntity {
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Title",naming = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Title", naming = true)
     private String title;
 
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "Editor")
@@ -28,12 +26,11 @@ public class PageForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
-    @MapperConverter(LanguageConverter.class)
-    private Language language;
+    private LanguageForm language;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modifier")
-    private UserSelect modifier;
+    private UserForm modifier;
 
     public String getTitle() {
         return title;
@@ -51,19 +48,19 @@ public class PageForm extends AbstractLikeableRestEntity {
         this.editor = editor;
     }
 
-    public Language getLanguage() {
+    public LanguageForm getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(LanguageForm language) {
         this.language = language;
     }
 
-    public UserSelect getModifier() {
+    public UserForm getModifier() {
         return modifier;
     }
 
-    public void setModifier(UserSelect modifier) {
+    public void setModifier(UserForm modifier) {
         this.modifier = modifier;
     }
 

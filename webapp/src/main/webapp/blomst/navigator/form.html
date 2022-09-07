@@ -23,7 +23,7 @@
                 </ul>
             </mat-drawer>
             <mat-drawer-content>
-                <div style="height: 100%;">
+                <div style="height: 100%; overflow-x: hidden; overflow-y: auto">
                     <div style="margin: 5px">{{{link}}}</div>
                     <div style="margin: 5px;">
                         <meta-form bind:model="model" bind:onaction="onAction($event)">

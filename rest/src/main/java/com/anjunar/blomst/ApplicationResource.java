@@ -1,23 +1,11 @@
 package com.anjunar.blomst;
 
-import com.anjunar.blomst.system.SystemResource;
-import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.api.Table;
-import com.anjunar.common.rest.api.ValidationResource;
-import com.anjunar.blomst.system.mail.TemplatesResource;
-import com.anjunar.blomst.system.mail.TemplatesSearch;
-import com.anjunar.blomst.control.notifications.NotificationsResource;
-import com.anjunar.blomst.control.notifications.NotificationsSearch;
-import com.anjunar.blomst.control.roles.RolesResource;
-import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.logout.LogoutResource;
 import com.anjunar.blomst.security.register.RegisterResource;
-import com.anjunar.blomst.shared.system.Language;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.CommunitiesResource;
 import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.pages.PagesResource;
@@ -26,20 +14,20 @@ import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
+import com.anjunar.blomst.system.SystemResource;
+import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.api.ValidationResource;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
-
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
-import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
+import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("/")
 public class ApplicationResource implements ValidationResource<UserForm> {
@@ -98,21 +86,16 @@ public class ApplicationResource implements ValidationResource<UserForm> {
     @GET
     @Produces("application/json")
     @Transactional
-    public UserSelect service() {
+    public UserForm service() {
 
         if (identityProvider.isLoggedIn()) {
 
-            UserSelect userSelect = mapper.map(identityProvider.getUser(), UserSelect.class);
+            UserForm userSelect = mapper.map(identityProvider.getUser(), UserForm.class);
 
             PagesSearch search = new PagesSearch();
-            Language language = new Language();
-            language.setLocale(identityProvider.getLanguage());
-            search.setLanguage(language);
+            search.setLanguage(identityProvider.getLanguage());
             linkTo(methodOn(PagesResource.class).list(search))
                     .withRel("pages")
-                    .build(userSelect::addLink);
-
-            linkTo(methodOn(LogoutResource.class).logout())
                     .build(userSelect::addLink);
 
             TimelineSearch timelineSearch = new TimelineSearch();
@@ -122,16 +105,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
             linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                     .withRel("users")
-                    .build(userSelect::addLink);
-
-            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
-                    .withRel("roles")
-                    .build(userSelect::addLink);
-
-            NotificationsSearch notificationsSearch = new NotificationsSearch();
-            notificationsSearch.setOwner(identityProvider.getUser().getId());
-            linkTo(methodOn(NotificationsResource.class).list(notificationsSearch))
-                    .withRel("notifications")
                     .build(userSelect::addLink);
 
             linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
@@ -146,9 +119,12 @@ public class ApplicationResource implements ValidationResource<UserForm> {
                     .withRel("system")
                     .build(userSelect::addLink);
 
+            linkTo(methodOn(LogoutResource.class).logout())
+                    .build(userSelect::addLink);
+
             return userSelect;
         } else {
-            UserSelect userSelect = new UserSelect();
+            UserForm userSelect = new UserForm();
             userSelect.setLanguage(identityProvider.getLanguage());
 
             linkTo(methodOn(LoginResource.class).login())

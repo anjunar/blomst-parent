@@ -1,10 +1,9 @@
 package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.blomst.control.users.Resume;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
-import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -57,7 +56,7 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     public ResumeForm create() {
         ResumeForm form = new ResumeForm();
 
-        form.setOwner(entityMapper.map(identityProvider.getUser(), UserSelect.class));
+        form.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
 
         linkTo(methodOn(ResumeResource.class).save(new ResumeForm()))
                 .build(form::addLink);

@@ -1,6 +1,6 @@
 package com.anjunar.blomst.system.mail.template;
 
-import com.anjunar.blomst.shared.system.Language;
+import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -20,7 +20,7 @@ public class TemplateForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
-    private Language language;
+    private LanguageForm language;
 
     @NotNull
     @Dom
@@ -35,11 +35,11 @@ public class TemplateForm extends AbstractRestEntity {
         this.name = name;
     }
 
-    public Language getLanguage() {
+    public LanguageForm getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(LanguageForm language) {
         this.language = language;
     }
 

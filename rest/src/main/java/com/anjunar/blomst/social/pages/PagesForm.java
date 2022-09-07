@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages;
 
-import com.anjunar.blomst.shared.system.Language;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -22,11 +22,11 @@ public class PagesForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
-    private Language language;
+    private LanguageForm language;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modfier")
-    private UserSelect modifier;
+    private UserForm modifier;
 
     public String getTitle() {
         return title;
@@ -44,19 +44,19 @@ public class PagesForm extends AbstractRestEntity {
         this.text = text;
     }
 
-    public Language getLanguage() {
+    public LanguageForm getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(LanguageForm language) {
         this.language = language;
     }
 
-    public UserSelect getModifier() {
+    public UserForm getModifier() {
         return modifier;
     }
 
-    public void setModifier(UserSelect modifier) {
+    public void setModifier(UserForm modifier) {
         this.modifier = modifier;
     }
 

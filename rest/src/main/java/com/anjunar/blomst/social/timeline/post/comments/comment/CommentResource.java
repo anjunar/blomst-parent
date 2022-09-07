@@ -2,6 +2,7 @@ package com.anjunar.blomst.social.timeline.post.comments.comment;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -14,7 +15,6 @@ import com.anjunar.common.security.IdentityProvider;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.Comment;
 
 import com.google.common.collect.Sets;
@@ -70,7 +70,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         resource.setPost(post);
         resource.setParent(parent);
 
-        resource.setOwner(entityMapper.map(user, UserSelect.class));
+        resource.setOwner(entityMapper.map(user, UserForm.class));
 
         linkTo(methodOn(CommentResource.class).save(new CommentForm()))
                 .build(resource::addLink);

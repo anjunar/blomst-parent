@@ -1,11 +1,11 @@
 package com.anjunar.blomst.social.timeline.post;
 
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.users.user.UserSelect;
 
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
     private String text;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
-    private UserSelect owner;
+    private UserForm owner;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Source", readOnly = true)
     private UUID source;
@@ -38,11 +38,11 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
         this.text = text;
     }
 
-    public UserSelect getOwner() {
+    public UserForm getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UserForm owner) {
         this.owner = owner;
     }
 

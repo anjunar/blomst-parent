@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.communities.community.connections.connection;
 
 import com.anjunar.blomst.control.roles.role.RoleForm;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.social.communities.Status;
 import com.anjunar.blomst.social.communities.community.CommunityForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
@@ -12,7 +12,7 @@ import com.anjunar.common.rest.schema.schema.JsonNode;
 public class CommunityConnectionForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "From", readOnly = true)
-    private UserSelect from;
+    private UserForm from;
 
     @JsonSchema(widget = JsonNode.Widget.SELECT, title = "Status")
     private Status status;
@@ -23,11 +23,11 @@ public class CommunityConnectionForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
     private CommunityForm to;
 
-    public UserSelect getFrom() {
+    public UserForm getFrom() {
         return from;
     }
 
-    public void setFrom(UserSelect from) {
+    public void setFrom(UserForm from) {
         this.from = from;
     }
 
