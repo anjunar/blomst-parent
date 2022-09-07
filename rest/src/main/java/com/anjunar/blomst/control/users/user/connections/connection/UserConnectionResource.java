@@ -52,7 +52,6 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         this(null, null, null, null, null);
     }
 
-    @Transactional
     @Produces("application/json")
     @GET
     @Path("create")
@@ -77,7 +76,6 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Connection")
     public UserConnectionForm read(UUID id) {
@@ -109,7 +107,6 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Connection")
     public UserConnectionForm save(UserConnectionForm form) {
@@ -135,7 +132,6 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Connection")
     public UserConnectionForm update(UUID id, UserConnectionForm form) {
@@ -152,7 +148,6 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Connection")
     public ResponseOk delete(UUID id) {

@@ -37,7 +37,6 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
         this(null, null);
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Table Site")
     @Override

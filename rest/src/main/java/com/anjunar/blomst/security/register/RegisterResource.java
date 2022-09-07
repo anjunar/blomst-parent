@@ -65,7 +65,6 @@ public class RegisterResource {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    @Transactional
     @LinkDescription("Do Registration")
     public ResponseOk register(RegisterForm resource) {
 

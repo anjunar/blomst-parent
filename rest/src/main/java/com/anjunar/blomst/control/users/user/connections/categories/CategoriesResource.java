@@ -40,7 +40,6 @@ public class CategoriesResource implements ListResourceTemplate<CategoryForm, Ca
     @Override
     @LinkDescription("Table Category")
     @RolesAllowed({"Administrator", "User"})
-    @Transactional
     public Table<CategoryForm> list(CategoriesSearch search) {
 
         final long count = service.count(search);

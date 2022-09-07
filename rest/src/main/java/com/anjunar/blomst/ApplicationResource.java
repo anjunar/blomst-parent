@@ -85,7 +85,6 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
     @GET
     @Produces("application/json")
-    @Transactional
     public UserForm service() {
 
         if (identityProvider.isLoggedIn()) {

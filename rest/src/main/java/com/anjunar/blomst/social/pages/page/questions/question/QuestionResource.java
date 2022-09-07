@@ -53,7 +53,6 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         this(null, null, null, null);
     }
 
-    @Transactional
     @Produces("application/json")
     @GET
     @Path("create")
@@ -73,7 +72,6 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         return resource;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Question")
     public QuestionForm read(@QueryParam("id") UUID uuid) {
@@ -104,7 +102,6 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Question")
     public QuestionForm save(QuestionForm resource) {
@@ -124,7 +121,6 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
@@ -146,7 +142,6 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Delete Question")

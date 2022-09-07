@@ -52,7 +52,6 @@ public class CustomRememberMeIdentityStore implements RememberMeIdentityStore {
     }
 
     @Override
-    @Transactional
     public String generateLoginToken(CallerPrincipal callerPrincipal, Set<String> groups) {
         User user = identity.findUser(UUID.fromString(callerPrincipal.getName()));
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -62,7 +61,6 @@ public class CustomRememberMeIdentityStore implements RememberMeIdentityStore {
     }
 
     @Override
-    @Transactional
     public void removeLoginToken(String token) {
         User user = identity.findUserByToken(token);
         user.setToken("");

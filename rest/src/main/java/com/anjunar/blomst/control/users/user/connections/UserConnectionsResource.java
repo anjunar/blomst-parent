@@ -41,7 +41,6 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Table Connection")
     public Table<ConnectionRow> list(UserConnectionsSearch search) {

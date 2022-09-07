@@ -82,7 +82,6 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Answer")
     public AnswerForm read(UUID id) {
@@ -107,7 +106,6 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Answer")
     public AnswerForm save(AnswerForm resource) {
@@ -128,7 +126,6 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Answer")
     @MethodPredicate(AnswerOwnerPredicate.class)
@@ -145,7 +142,6 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Answer")
     @MethodPredicate(AnswerOwnerPredicate.class)

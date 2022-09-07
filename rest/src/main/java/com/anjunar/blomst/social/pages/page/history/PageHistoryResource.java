@@ -42,7 +42,6 @@ public class PageHistoryResource implements ListResourceTemplate<PageHistoryForm
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
-    @Transactional
     @LinkDescription("Table Page History")
     public Table<PageHistoryForm> list(PageHistorySearch search) {
 

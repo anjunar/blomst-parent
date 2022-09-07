@@ -39,7 +39,6 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
     }
 
     @Override
-    @Transactional
     @LinkDescription("Table Community Connection")
     public Table<CommunityConnectionForm> list(CommunityConnectionsSearch search) {
         final long count = service.count(search);

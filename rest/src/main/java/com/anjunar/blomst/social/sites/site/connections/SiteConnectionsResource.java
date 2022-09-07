@@ -38,7 +38,6 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
         this(null, null);
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Table Site Connection")
     @Override

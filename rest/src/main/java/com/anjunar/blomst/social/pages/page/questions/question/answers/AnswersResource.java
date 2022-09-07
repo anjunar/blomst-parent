@@ -43,7 +43,6 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
-    @Transactional
     @LinkDescription("Table Answer")
     public Table<AnswerForm> list(AnswersSearch search) {
 

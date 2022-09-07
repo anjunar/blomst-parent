@@ -37,7 +37,6 @@ public class TemplatesResource implements ListResourceTemplate<TemplateForm, Tem
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Table Template")
     public Table<TemplateForm> list(TemplatesSearch search) {

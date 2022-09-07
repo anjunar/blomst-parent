@@ -76,7 +76,6 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Community Connection")
     @Override
@@ -97,7 +96,6 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community Connection")
     @Override
@@ -116,7 +114,6 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community Connection")
     @Override
@@ -132,7 +129,6 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Community Connection")
     @Override

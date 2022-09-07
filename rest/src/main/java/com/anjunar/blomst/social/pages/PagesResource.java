@@ -43,7 +43,6 @@ public class PagesResource implements ListResourceTemplate<PagesForm, PagesSearc
     @Override
     @LinkDescription("Table Pages")
     @RolesAllowed({"Administrator", "User", "Guest"})
-    @Transactional
     public Table<PagesForm> list(PagesSearch search) {
 
         long count = service.count(search);

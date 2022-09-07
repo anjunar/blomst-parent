@@ -37,7 +37,6 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
         this(null, null);
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("User Table")
     public Table<UserForm> list(UsersSearch search) {

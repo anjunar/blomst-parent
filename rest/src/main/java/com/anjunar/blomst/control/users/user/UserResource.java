@@ -89,7 +89,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @GET
     @RolesAllowed({"Administrator", "User"})
     @Produces("application/json")
-    @Transactional
     @LinkDescription("Confirm Email")
     public ResponseOk confirm(@QueryParam("id") UUID id, @QueryParam("hash") String hash) {
         User user = entityManager.find(User.class, id);
@@ -104,7 +103,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);
     }
 
-    @Transactional
     @Produces("application/json")
     @GET
     @Path("create")
@@ -125,7 +123,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read User")
     public UserForm read(UUID id) {
@@ -207,7 +204,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Save User")
     public UserForm save(UserForm resource) {
@@ -252,7 +248,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update User")
     @MethodPredicate(MyOwnIdentity.class)
@@ -275,7 +270,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(MyOwnIdentity.class)
     @LinkDescription("Delete User")

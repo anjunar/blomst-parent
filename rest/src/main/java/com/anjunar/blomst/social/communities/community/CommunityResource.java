@@ -69,7 +69,6 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Community")
     @Override
@@ -110,7 +109,6 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Community")
     @Override
@@ -132,7 +130,6 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update Community")
     @Override
@@ -153,7 +150,6 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         throw new WebApplicationException(Response.Status.FORBIDDEN);
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Delete Community")
     @Override

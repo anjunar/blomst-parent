@@ -42,7 +42,6 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Table Post")
     public Table<AbstractPostForm> list(TimelineSearch search) {

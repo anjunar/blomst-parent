@@ -89,7 +89,6 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Post")
     public AbstractPostForm read(UUID id) {
@@ -143,7 +142,6 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
     public AbstractPostForm save(AbstractPostForm resource) {
@@ -212,7 +210,6 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
@@ -260,7 +257,6 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @Produces(MediaType.APPLICATION_JSON)

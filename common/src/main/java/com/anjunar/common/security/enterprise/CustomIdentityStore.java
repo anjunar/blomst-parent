@@ -32,7 +32,6 @@ public class CustomIdentityStore implements IdentityStore {
     }
 
     @Override
-    @Transactional
     public CredentialValidationResult validate(Credential credential) {
         CivilCredential civilCredential = (CivilCredential) credential;
 

@@ -83,7 +83,6 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Comment")
     public CommentForm read(UUID id) {
@@ -115,7 +114,6 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Comment")
     public CommentForm save(CommentForm resource) {
@@ -141,7 +139,6 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerCommentIdentity.class)
     @LinkDescription("Update Comment")
@@ -169,7 +166,6 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerCommentIdentity.class)
     @LinkDescription("Delete Comment")

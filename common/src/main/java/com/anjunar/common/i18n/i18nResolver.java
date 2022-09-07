@@ -33,7 +33,6 @@ public class i18nResolver implements Serializable {
         this(null, null, null);
     }
 
-    @Transactional
     public void setLocale(Locale locale) {
         response.setLocale(locale);
         if (identity.getUser() != null) {

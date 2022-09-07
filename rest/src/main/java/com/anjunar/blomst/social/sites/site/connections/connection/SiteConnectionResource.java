@@ -71,7 +71,6 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Site Connection")
     @Override
@@ -89,7 +88,6 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Site Connection")
     @Override
@@ -107,7 +105,6 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site Connection")
     @Override
@@ -123,7 +120,6 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Site Connection")
     @Override

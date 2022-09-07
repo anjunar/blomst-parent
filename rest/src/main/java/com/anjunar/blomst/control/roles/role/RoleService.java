@@ -21,17 +21,14 @@ public class RoleService {
         this(null);
     }
 
-    @Transactional
     public void saveRole(Object entity) {
         entityManager.persist(entity);
     }
 
-    @Transactional
     public Role updateRole(Role entity) {
         return entityManager.merge(entity);
     }
 
-    @Transactional
     public void delete(Object entity) {
         entityManager.remove(entity);
     }

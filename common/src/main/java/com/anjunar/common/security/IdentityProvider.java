@@ -79,7 +79,6 @@ public class IdentityProvider implements Serializable {
         return service.findUser(firstName, lastName, birthDate);
     }
 
-    @Transactional
     public boolean hasRole(String role) {
         User user = service.findUser(getUser().getId());
         Set<Role> roles = user.getRoles();

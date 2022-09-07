@@ -39,7 +39,6 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Table Question")
     public Table<QuestionForm> list(QuestionsSearch search) {

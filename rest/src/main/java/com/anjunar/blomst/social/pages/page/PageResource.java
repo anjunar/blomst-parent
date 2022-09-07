@@ -63,7 +63,6 @@ public class PageResource {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Page")
-    @Transactional
     public PageForm create() {
 
         PageForm pageForm = new PageForm();
@@ -86,7 +85,6 @@ public class PageResource {
         return pageForm;
     }
 
-    @Transactional
     @Produces("application/json")
     @GET
     @RolesAllowed({"Administrator", "User", "Guest"})
@@ -136,7 +134,6 @@ public class PageResource {
         return pageForm;
     }
 
-    @Transactional
     @Consumes("application/json")
     @Produces("application/json")
     @POST
@@ -158,7 +155,6 @@ public class PageResource {
         return resource;
     }
 
-    @Transactional
     @Consumes("application/json")
     @Produces("application/json")
     @PUT
@@ -176,7 +172,6 @@ public class PageResource {
         return resource;
     }
 
-    @Transactional
     @DELETE
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Page")

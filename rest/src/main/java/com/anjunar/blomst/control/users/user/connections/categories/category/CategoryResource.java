@@ -50,7 +50,6 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
         this(null, null, null, null);
     }
 
-    @Transactional
     @Produces("application/json")
     @GET
     @Path("create")
@@ -72,7 +71,6 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Category")
     public CategoryForm read(UUID id) {
@@ -94,7 +92,6 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Category")
     public CategoryForm save(CategoryForm form) {
@@ -112,7 +109,6 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Category")
     public CategoryForm update(UUID id, CategoryForm form) {
@@ -128,7 +124,6 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Category")
     public ResponseOk delete(UUID id) {

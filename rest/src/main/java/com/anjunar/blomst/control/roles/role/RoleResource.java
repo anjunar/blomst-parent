@@ -78,7 +78,6 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Save Role")
     public RoleForm save(RoleForm form) {
@@ -97,7 +96,6 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Update Role")
     public RoleForm update(UUID id, RoleForm form) {
@@ -113,7 +111,6 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Delete Role")
     public ResponseOk delete(UUID id) {

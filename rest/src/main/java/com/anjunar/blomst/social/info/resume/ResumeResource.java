@@ -68,7 +68,6 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
         return form;
     }
 
-    @Transactional
     @LinkDescription("Read Resume")
     @Override
     public ResumeForm read(UUID id) {
@@ -92,7 +91,6 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
         return form;
     }
 
-    @Transactional
     @LinkDescription("Save Resume")
     @Override
     public ResumeForm save(ResumeForm form) {
@@ -108,7 +106,6 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
         return form;
     }
 
-    @Transactional
     @LinkDescription("Update Resume")
     @Override
     public ResumeForm update(UUID id, ResumeForm form) {
@@ -122,7 +119,6 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
         return form;
     }
 
-    @Transactional
     @LinkDescription("Delete Resume")
     @Override
     public ResponseOk delete(UUID id) {

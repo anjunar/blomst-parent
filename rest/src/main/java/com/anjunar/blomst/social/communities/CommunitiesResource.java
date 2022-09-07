@@ -37,7 +37,6 @@ public class CommunitiesResource implements ListResourceTemplate<CommunityForm, 
         this(null, null);
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Table Communities")
     @Override

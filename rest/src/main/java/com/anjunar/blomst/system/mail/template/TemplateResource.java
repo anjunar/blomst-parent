@@ -71,7 +71,6 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Read Template")
     public TemplateForm read(UUID id) {
@@ -92,7 +91,6 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Save Template")
     public TemplateForm save(TemplateForm form) {
@@ -112,7 +110,6 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Update Template")
     public TemplateForm update(UUID id, TemplateForm form) {
@@ -128,7 +125,6 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     }
 
     @Override
-    @Transactional
     @RolesAllowed("Administrator")
     @LinkDescription("Delete Template")
     public ResponseOk delete(UUID id) {

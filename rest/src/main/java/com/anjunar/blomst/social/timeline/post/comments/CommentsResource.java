@@ -39,7 +39,6 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
     }
 
     @Override
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Table Comment")
     public Table<CommentForm> list(CommentsSearch search) {

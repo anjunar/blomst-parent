@@ -25,7 +25,6 @@ public class LanguageResource {
     }
 
     @GET
-    @Transactional
     @Path("lang")
     public ResponseOk language(@QueryParam("lang") Locale locale) {
 

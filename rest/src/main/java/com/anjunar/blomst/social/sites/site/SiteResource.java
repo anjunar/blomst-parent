@@ -70,7 +70,6 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Site")
     @Override
@@ -110,7 +109,6 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Site")
     @Override
@@ -128,7 +126,6 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update Site")
     @Override
@@ -145,7 +142,6 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         return form;
     }
 
-    @Transactional
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Delete Site")
     @Override
