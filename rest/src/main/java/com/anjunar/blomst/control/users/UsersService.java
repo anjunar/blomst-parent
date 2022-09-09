@@ -1,6 +1,6 @@
 package com.anjunar.blomst.control.users;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.User;
 
@@ -12,8 +12,8 @@ import jakarta.persistence.EntityManager;
 public class UsersService extends AbstractCriteriaSearchService<User, UsersSearch> {
 
     @Inject
-    public UsersService(EntityManager entityManager, IdentityProvider identityProvider) {
-        super(entityManager, identityProvider);
+    public UsersService(EntityManager entityManager, IdentityManager identityManager) {
+        super(entityManager, identityManager);
     }
 
     public UsersService() {

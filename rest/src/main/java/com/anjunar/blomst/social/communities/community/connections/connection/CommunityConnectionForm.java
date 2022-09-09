@@ -6,7 +6,7 @@ import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.Status;
 import com.anjunar.blomst.social.communities.community.CommunityForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.mapper.annotations.MapperProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
@@ -14,7 +14,7 @@ import com.anjunar.common.rest.schema.schema.JsonNode;
 public class CommunityConnectionForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "From", readOnly = true)
-    @MapperProjection(UserSelect.class)
+    @MapperView(UserSelect.class)
     private UserForm from;
 
     @JsonSchema(widget = JsonNode.Widget.SELECT, title = "Status")

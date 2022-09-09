@@ -1,6 +1,6 @@
 package com.anjunar.common.rest.search.provider;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.ddd.AbstractEntity_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class GenericInIdsProvider<E extends AbstractEntity> extends AbstractRestPredicateProvider<List<UUID>, E> {
     @Override
-    public Predicate build(List<UUID> value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<E> root, CriteriaQuery<?> query) {
+    public Predicate build(List<UUID> value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<E> root, CriteriaQuery<?> query) {
         if (value == null) {
             return builder.disjunction();
         }

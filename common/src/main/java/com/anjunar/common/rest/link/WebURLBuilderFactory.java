@@ -1,6 +1,6 @@
 package com.anjunar.common.rest.link;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.Proxy;
 import javassist.util.proxy.ProxyFactory;
@@ -27,8 +27,8 @@ public class WebURLBuilderFactory {
         return CDI.current().select(EntityManager.class).get();
     }
 
-    private static IdentityProvider identity() {
-        return CDI.current().select(IdentityProvider.class).get();
+    private static IdentityManager identity() {
+        return CDI.current().select(IdentityManager.class).get();
     }
 
     public static WebURLBuilder linkTo(Object invocation) {

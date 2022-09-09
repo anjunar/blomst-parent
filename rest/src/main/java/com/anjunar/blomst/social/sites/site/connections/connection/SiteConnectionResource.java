@@ -9,14 +9,13 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -32,7 +31,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final ResourceEntityMapper entityMapper;
 
@@ -40,9 +39,9 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
 
 
     @Inject
-    public SiteConnectionResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public SiteConnectionResource(EntityManager entityManager, IdentityManager identityManager, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
     }
@@ -59,7 +58,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public SiteConnectionForm create() {
         SiteConnectionForm form = new SiteConnectionForm();
 
-        form.setFrom(entityMapper.map(identityProvider.getUser(), UserForm.class));
+        form.setFrom(entityMapper.map(identityManager.getUser(), UserForm.class));
 
         linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
                 .build(form::addLink);

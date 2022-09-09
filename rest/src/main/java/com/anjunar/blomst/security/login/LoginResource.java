@@ -4,7 +4,7 @@ import com.anjunar.blomst.ApplicationResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.LoginResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
@@ -20,11 +20,11 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 @RequestScoped
 public class LoginResource implements LoginResourceTemplate<LoginForm> {
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public LoginResource(IdentityProvider identityProvider) {
-        this.identityProvider = identityProvider;
+    public LoginResource(IdentityManager identityManager) {
+        this.identityManager = identityManager;
     }
 
     public LoginResource() {
@@ -53,9 +53,9 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @LinkDescription("Do Login")
     public ResponseOk login(LoginForm resource) {
 
-        User user = identityProvider.findUser(resource.getFirstname(), resource.getLastname(), resource.getBirthday());
+        User user = identityManager.findUser(resource.getFirstname(), resource.getLastname(), resource.getBirthday());
 
-        if (identityProvider.authenticate(user)) {
+        if (identityManager.authenticate(user)) {
             linkTo(methodOn(ApplicationResource.class).service())
                     .withRel("redirect")
                     .build(resource::addLink);
@@ -72,11 +72,11 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @RolesAllowed({"Administrator"})
     @LinkDescription("Run As")
     public ResponseOk runAs(@QueryParam("id") UUID id) {
-        User authenticate = identityProvider.findUser(id);
+        User authenticate = identityManager.findUser(id);
 
-        identityProvider.logout();
+        identityManager.logout();
 
-        identityProvider.authenticate(authenticate);
+        identityManager.authenticate(authenticate);
 
         return new ResponseOk();
     }

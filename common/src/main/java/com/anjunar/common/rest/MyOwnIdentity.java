@@ -1,24 +1,24 @@
 package com.anjunar.common.rest;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import jakarta.persistence.EntityManager;
 
 import java.util.UUID;
 
 public class MyOwnIdentity {
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final EntityManager entityManager;
 
-    public MyOwnIdentity(IdentityProvider identityProvider, EntityManager entityManager) {
-        this.identityProvider = identityProvider;
+    public MyOwnIdentity(IdentityManager identityManager, EntityManager entityManager) {
+        this.identityManager = identityManager;
         this.entityManager = entityManager;
     }
 
     public boolean apply(UUID id) {
-        if (!identityProvider.hasRole("Administrator")) {
-            return id.equals(identityProvider.getUser().getId());
+        if (!identityManager.hasRole("Administrator")) {
+            return id.equals(identityManager.getUser().getId());
         }
         return true;
     }

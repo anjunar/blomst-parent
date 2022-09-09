@@ -3,7 +3,7 @@ package com.anjunar.common.rest.link;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Link;
 import com.anjunar.common.rest.api.ListResourceTemplate;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -38,7 +38,7 @@ public class JaxRSInvocation {
     private final ParamConverterProvider converterProvider;
     private final UriBuilder uriBuilder;
     private final EntityManager entityManager;
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private String rel;
     private String httpMethod;
@@ -55,7 +55,7 @@ public class JaxRSInvocation {
                            ParamConverterProvider converterProvider,
                            UriBuilder uriBuilder,
                            EntityManager entityManager,
-                           IdentityProvider identityProvider) {
+                           IdentityManager identityManager) {
         this.converterProvider = converterProvider;
         this.uriBuilder = uriBuilder;
         this.method = resolvedMethod;
@@ -63,7 +63,7 @@ public class JaxRSInvocation {
 
         rel = resolvedMethod.getName();
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
 
         final Path classPath = resolvedMethod.getEnclosingType().getAnnotation(Path.class);
         final Path methodPath = method.getAnnotation(Path.class);
@@ -162,7 +162,7 @@ public class JaxRSInvocation {
 
     public boolean hasRoles(String[] roles) {
         for (String role : roles) {
-            if (identityProvider.hasRole(role)) {
+            if (identityManager.hasRole(role)) {
                 return true;
             }
         }
@@ -202,8 +202,8 @@ public class JaxRSInvocation {
                     Class<?> resolverCLass = methodPredicate.value();
 
                     try {
-                        Constructor<?> constructor = resolverCLass.getDeclaredConstructor(IdentityProvider.class, EntityManager.class);
-                        Object resolverInstance = constructor.newInstance(identityProvider, entityManager);
+                        Constructor<?> constructor = resolverCLass.getDeclaredConstructor(IdentityManager.class, EntityManager.class);
+                        Object resolverInstance = constructor.newInstance(identityManager, entityManager);
 
                         ResolvedType<?> resolvedType = TypeResolver.resolve(resolverCLass);
                         ResolvedMethod<Object> resolvedMethod = (ResolvedMethod<Object>) resolvedType.getMethods().get(0);

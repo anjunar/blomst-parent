@@ -1,15 +1,14 @@
 package com.anjunar.common.i18n;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.enterprise.LoggedInEvent;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
+
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -20,10 +19,10 @@ public class i18nResolver implements Serializable {
 
     private final HttpServletResponse response;
 
-    private final IdentityProvider identity;
+    private final IdentityManager identity;
 
     @Inject
-    public i18nResolver(HttpServletRequest request, HttpServletResponse response, IdentityProvider identity) {
+    public i18nResolver(HttpServletRequest request, HttpServletResponse response, IdentityManager identity) {
         this.request = request;
         this.response = response;
         this.identity = identity;

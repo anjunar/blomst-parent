@@ -5,14 +5,14 @@ import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 import com.anjunar.common.rest.mapper.annotations.MapperMapProjection;
-import com.anjunar.common.rest.mapper.annotations.MapperProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.Category;
 import com.anjunar.common.security.EntitySchema;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
@@ -34,15 +34,15 @@ public class ResourceEntityMapper {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceEntityMapper.class);
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final EntityManager entityManager;
 
     private final Instance<SecurityProvider> securityProviders;
 
     @Inject
-    public ResourceEntityMapper(IdentityProvider identityProvider, EntityManager entityManager, Instance<SecurityProvider> securityProviders) {
-        this.identityProvider = identityProvider;
+    public ResourceEntityMapper(IdentityManager identityManager, EntityManager entityManager, Instance<SecurityProvider> securityProviders) {
+        this.identityManager = identityManager;
         this.entityManager = entityManager;
         this.securityProviders = securityProviders;
     }
@@ -60,8 +60,8 @@ public class ResourceEntityMapper {
         }
     }
 
-    public IdentityProvider identityProvider() {
-        return identityProvider;
+    public IdentityManager identityProvider() {
+        return identityManager;
     }
 
     public EntityManager entityManager() {
@@ -76,7 +76,7 @@ public class ResourceEntityMapper {
         D destination = getNewInstance(destinationClass);
 
         if (source instanceof OwnerProvider ownerProvider) {
-            if (identityProvider.getUser().equals(ownerProvider.getOwner())) {
+            if (identityManager.getUser().equals(ownerProvider.getOwner())) {
                 loadSchema((OwnerProvider) source, destination);
             } else {
                 for (Map.Entry<String, JsonNode> entry : destination.getSchema().getProperties().entrySet()) {
@@ -152,12 +152,12 @@ public class ResourceEntityMapper {
                         destinationProperty.accept(destination, entity);
                     }
                 } else {
-                    MapperProjection mapperProjection = destinationProperty.getAnnotation(MapperProjection.class);
+                    MapperView mapperView = destinationProperty.getAnnotation(MapperView.class);
                     AbstractSchemaEntity restEntity;
-                    if (mapperProjection == null) {
+                    if (mapperView == null) {
                         restEntity = map(sourcePropertyInstance, (Class<? extends AbstractSchemaEntity>) destinationPropertyType, null);
                     } else {
-                        restEntity = map(sourcePropertyInstance, (Class<? extends AbstractSchemaEntity>) destinationPropertyType, mapperProjection.value());
+                        restEntity = map(sourcePropertyInstance, (Class<? extends AbstractSchemaEntity>) destinationPropertyType, mapperView.value());
                     }
                     destinationProperty.accept(destination, restEntity);
                 }
@@ -237,12 +237,12 @@ public class ResourceEntityMapper {
             if (sourceCollectionType.equals(destinationCollectionType)) {
                 destinationPropertyInstance.add(element);
             } else {
-                MapperProjection mapperProjection = destinationProperty.getAnnotation(MapperProjection.class);
+                MapperView mapperView = destinationProperty.getAnnotation(MapperView.class);
                 AbstractSchemaEntity restEntity;
-                if (mapperProjection == null) {
+                if (mapperView == null) {
                     restEntity = map(element, (Class<? extends AbstractSchemaEntity>) destinationCollectionType, null);
                 } else {
-                    restEntity = map(element, (Class<? extends AbstractSchemaEntity>) destinationCollectionType, mapperProjection.value());
+                    restEntity = map(element, (Class<? extends AbstractSchemaEntity>) destinationCollectionType, mapperView.value());
                 }
                 destinationPropertyInstance.add(restEntity);
             }
@@ -271,7 +271,7 @@ public class ResourceEntityMapper {
             } catch (NoResultException e) {
                 EntitySchema schemaItem = new EntitySchema();
                 schemaItem.setEntity(destination.getClass());
-                schemaItem.setOwner(identityProvider.getUser());
+                schemaItem.setOwner(identityManager.getUser());
                 schemaItem.setProperty(entry.getKey());
                 entityManager.persist(schemaItem);
             }

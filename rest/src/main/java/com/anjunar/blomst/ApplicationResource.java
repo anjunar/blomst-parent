@@ -18,12 +18,11 @@ import com.anjunar.blomst.system.SystemResource;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.ValidationResource;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
@@ -32,15 +31,15 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 @Path("/")
 public class ApplicationResource implements ValidationResource<UserForm> {
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final EntityManager entityManager;
 
     private final ResourceEntityMapper mapper;
 
     @Inject
-    public ApplicationResource(IdentityProvider identityProvider, EntityManager entityManager, ResourceEntityMapper mapper) {
-        this.identityProvider = identityProvider;
+    public ApplicationResource(IdentityManager identityManager, EntityManager entityManager, ResourceEntityMapper mapper) {
+        this.identityManager = identityManager;
         this.entityManager = entityManager;
         this.mapper = mapper;
     }
@@ -87,12 +86,12 @@ public class ApplicationResource implements ValidationResource<UserForm> {
     @Produces("application/json")
     public UserForm service() {
 
-        if (identityProvider.isLoggedIn()) {
+        if (identityManager.isLoggedIn()) {
 
-            UserForm userSelect = mapper.map(identityProvider.getUser(), UserForm.class);
+            UserForm userSelect = mapper.map(identityManager.getUser(), UserForm.class);
 
             PagesSearch search = new PagesSearch();
-            search.setLanguage(identityProvider.getLanguage());
+            search.setLanguage(identityManager.getLanguage());
             linkTo(methodOn(PagesResource.class).list(search))
                     .withRel("pages")
                     .build(userSelect::addLink);
@@ -124,7 +123,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             return userSelect;
         } else {
             UserForm userSelect = new UserForm();
-            userSelect.setLanguage(identityProvider.getLanguage());
+            userSelect.setLanguage(identityManager.getLanguage());
 
             linkTo(methodOn(LoginResource.class).login())
                     .build(userSelect::addLink);

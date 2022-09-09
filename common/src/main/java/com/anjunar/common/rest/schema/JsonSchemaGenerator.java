@@ -1,13 +1,12 @@
 package com.anjunar.common.rest.schema;
 
-import com.anjunar.common.rest.mapper.annotations.MapperProjection;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.factories.JsonAbstractFactory;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
@@ -59,8 +58,8 @@ public class JsonSchemaGenerator {
                     MapperSecurity mapperSecurity = property.getAnnotation(MapperSecurity.class);
                     if (Objects.nonNull(mapperSecurity)) {
                         String[] rolesAllowed = mapperSecurity.rolesAllowed();
-                        IdentityProvider identityProvider = CDI.current().select(IdentityProvider.class).get();
-                        if (identityProvider.hasRole(rolesAllowed)) {
+                        IdentityManager identityManager = CDI.current().select(IdentityManager.class).get();
+                        if (identityManager.hasRole(rolesAllowed)) {
                             process(jsonObject, property);
                         }
                     } else {

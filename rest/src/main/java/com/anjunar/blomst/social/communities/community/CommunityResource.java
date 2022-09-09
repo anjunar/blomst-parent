@@ -9,7 +9,7 @@ import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.timeline.TimelineResource;
@@ -20,7 +20,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import java.util.UUID;
@@ -33,7 +32,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final CommunityService service;
 
@@ -43,9 +42,9 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
 
 
     @Inject
-    public CommunityResource(EntityManager entityManager, IdentityProvider identity, CommunityService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public CommunityResource(EntityManager entityManager, IdentityManager identity, CommunityService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identity;
+        this.identityManager = identity;
         this.service = service;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
@@ -78,7 +77,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         CommunityForm form = entityMapper.map(community, CommunityForm.class);
 
         try {
-            CommunitiesConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
+            CommunitiesConnection connection = service.findConnection(identityManager.getUser().getId(), id);
             linkTo(methodOn(CommunityConnectionResource.class).read(connection.getId()))
                     .withRel("connection")
                     .build(form::addLink);

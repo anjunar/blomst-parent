@@ -14,7 +14,7 @@ import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 
 import com.anjunar.common.security.User;
 import com.google.common.collect.Sets;
@@ -22,7 +22,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -38,7 +37,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final ResourceEntityMapper entityMapper;
 
@@ -46,9 +45,9 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
 
     @Inject
-    public PostResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public PostResource(EntityManager entityManager, IdentityManager identityManager, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
     }
@@ -80,7 +79,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         resource.setSource(source);
 
-        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserForm.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))
                         .build(resource::addLink);
@@ -192,7 +191,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         });
 
         for (User like : post.getLikes()) {
-            if (! like.equals(identityProvider.getUser())) {
+            if (! like.equals(identityManager.getUser())) {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }
@@ -248,7 +247,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         likes.removeAll(rawLikes);
 
         for (User like : likes) {
-            if (! like.equals(identityProvider.getUser())) {
+            if (! like.equals(identityManager.getUser())) {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }

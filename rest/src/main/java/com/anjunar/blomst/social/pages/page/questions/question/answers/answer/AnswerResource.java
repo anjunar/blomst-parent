@@ -12,14 +12,13 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.pages.page.Answer;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -35,7 +34,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final ResourceEntityMapper entityMapper;
 
@@ -43,9 +42,9 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
 
 
     @Inject
-    public AnswerResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public AnswerResource(EntityManager entityManager, IdentityManager identityManager, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
     }
@@ -63,7 +62,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
         AnswerForm resource = new AnswerForm();
 
         resource.setTopic(uuid);
-        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserForm.class));
         resource.setEditor(new Editor());
         resource.setViews(0);
 

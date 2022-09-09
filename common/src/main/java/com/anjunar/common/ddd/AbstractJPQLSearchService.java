@@ -1,7 +1,7 @@
 package com.anjunar.common.ddd;
 
 import com.anjunar.common.rest.search.AbstractRestSearch;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.google.common.reflect.TypeToken;
 
 import jakarta.persistence.EntityManager;
@@ -15,11 +15,11 @@ public abstract class AbstractJPQLSearchService<E, S extends AbstractRestSearch>
 
     protected final EntityManager entityManager;
 
-    protected final IdentityProvider identityProvider;
+    protected final IdentityManager identityManager;
 
-    public AbstractJPQLSearchService(EntityManager entityManager, IdentityProvider identityProvider) {
+    public AbstractJPQLSearchService(EntityManager entityManager, IdentityManager identityManager) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
     }
 
     public Class<E> getEntityClass() {

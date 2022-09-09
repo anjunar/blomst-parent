@@ -1,6 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
-import com.anjunar.common.rest.mapper.annotations.MapperProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -18,9 +18,9 @@ public class BeanFactory extends JsonAbstractFactory<JsonObject> {
 
     @Override
     public JsonObject build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
-        MapperProjection mapperProjection = property.getAnnotation(MapperProjection.class);
-        if (Objects.nonNull(mapperProjection)) {
-            return generateObject(typeToken.getRawType(), mapperProjection.value());
+        MapperView mapperView = property.getAnnotation(MapperView.class);
+        if (Objects.nonNull(mapperView)) {
+            return generateObject(typeToken.getRawType(), mapperView.value());
         }
         return generateObject(typeToken.getRawType(), null);
     }

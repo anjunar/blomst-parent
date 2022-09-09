@@ -7,12 +7,11 @@ import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.UserConnection;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,13 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
 
     private final UserConnectionsService service;
 
-    private final IdentityProvider identity;
+    private final IdentityManager identity;
 
     private final ResourceEntityMapper mapper;
 
 
     @Inject
-    public UserConnectionsResource(UserConnectionsService service, IdentityProvider identity, ResourceEntityMapper mapper) {
+    public UserConnectionsResource(UserConnectionsService service, IdentityManager identity, ResourceEntityMapper mapper) {
         this.service = service;
         this.identity = identity;
         this.mapper = mapper;

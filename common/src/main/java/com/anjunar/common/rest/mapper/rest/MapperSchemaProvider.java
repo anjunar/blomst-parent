@@ -1,7 +1,5 @@
 package com.anjunar.common.rest.mapper.rest;
 
-import com.anjunar.common.ddd.AbstractEntity;
-import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.security.*;
@@ -14,13 +12,13 @@ import java.util.Set;
 
 public class MapperSchemaProvider implements SecurityProvider{
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final EntityManager entityManager;
 
     @Inject
-    public MapperSchemaProvider(IdentityProvider identityProvider, EntityManager entityManager) {
-        this.identityProvider = identityProvider;
+    public MapperSchemaProvider(IdentityManager identityManager, EntityManager entityManager) {
+        this.identityManager = identityManager;
         this.entityManager = entityManager;
     }
 
@@ -42,7 +40,7 @@ public class MapperSchemaProvider implements SecurityProvider{
     }
 
     public boolean isAllowedWithSchema(OwnerProvider entity, String property, Class<?> aClass) {
-        if (entity.getOwner().equals(identityProvider.getUser())) {
+        if (entity.getOwner().equals(identityManager.getUser())) {
             return true;
         }
 
@@ -54,7 +52,7 @@ public class MapperSchemaProvider implements SecurityProvider{
                     .getSingleResult();
 
             UserConnection userConnection = entityManager.createQuery("select c from UserConnection c where c.to = :to and c.from = :from", UserConnection.class)
-                    .setParameter("to", identityProvider.getUser())
+                    .setParameter("to", identityManager.getUser())
                     .setParameter("from", entity.getOwner())
                     .getSingleResult();
 

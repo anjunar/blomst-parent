@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.communities.community;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.communities.Community;
@@ -17,12 +17,12 @@ public class CommunityService {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public CommunityService(EntityManager entityManager, IdentityProvider identityProvider) {
+    public CommunityService(EntityManager entityManager, IdentityManager identityManager) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
     }
 
     public CommunityService() {
@@ -31,7 +31,7 @@ public class CommunityService {
 
     public void addAdministrator(Community entity) {
         CommunitiesConnection connection = new CommunitiesConnection();
-        connection.setFrom(identityProvider.getUser());
+        connection.setFrom(identityManager.getUser());
         connection.setTo(entity);
         connection.setStatus(Status.OK);
 
@@ -46,7 +46,7 @@ public class CommunityService {
     public boolean hasRole(String name, UUID community) {
         try {
             CommunitiesConnection connection = entityManager.createQuery("select c from CommunitiesConnection c where c.from = :from and c.to.id = :to", CommunitiesConnection.class)
-                    .setParameter("from", identityProvider.getUser())
+                    .setParameter("from", identityManager.getUser())
                     .setParameter("to", community)
                     .getSingleResult();
 

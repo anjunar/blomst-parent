@@ -1,6 +1,6 @@
 package com.anjunar.common.rest.search;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.google.common.collect.Iterables;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
@@ -52,7 +52,7 @@ public class RestSearch {
     public static <X, Q extends AbstractRestSearch> Predicate predicate(
             Class<Q> queryClass,
             Q search,
-            IdentityProvider identityProvider,
+            IdentityManager identityManager,
             EntityManager entityManager,
             CriteriaBuilder builder,
             Root<X> root,
@@ -68,7 +68,7 @@ public class RestSearch {
                     Class<? extends AbstractRestPredicateProvider> providerClass = annotation.value();
                     try {
                         AbstractRestPredicateProvider provider = providerClass.newInstance();
-                        return provider.build(value, identityProvider, entityManager, builder, root, query);
+                        return provider.build(value, identityManager, entityManager, builder, root, query);
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }

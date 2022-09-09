@@ -11,7 +11,7 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
@@ -22,7 +22,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -38,7 +37,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final ResourceEntityMapper entityMapper;
 
@@ -46,9 +45,9 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
 
     @Inject
-    public CommentResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper mapper, ResourceRestMapper restMapper) {
+    public CommentResource(EntityManager entityManager, IdentityManager identityManager, ResourceEntityMapper mapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.entityMapper = mapper;
         this.restMapper = restMapper;
     }
@@ -65,7 +64,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     public CommentForm create(@QueryParam("post") UUID post, @QueryParam("parent") UUID parent) {
         CommentForm resource = new CommentForm();
 
-        User user = identityProvider.getUser();
+        User user = identityManager.getUser();
 
         resource.setPost(post);
         resource.setParent(parent);
@@ -121,7 +120,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         Comment comment = restMapper.map(resource, Comment.class);
 
         for (User like : comment.getLikes()) {
-            if (! like.equals(identityProvider.getUser())) {
+            if (! like.equals(identityManager.getUser())) {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }
@@ -152,7 +151,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         likes.removeAll(rawLikes);
 
         for (User like : likes) {
-            if (! like.equals(identityProvider.getUser())) {
+            if (! like.equals(identityManager.getUser())) {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }

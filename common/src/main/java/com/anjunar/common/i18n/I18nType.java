@@ -1,16 +1,11 @@
 package com.anjunar.common.i18n;
 
-import com.anjunar.common.security.IdentityProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
-import jakarta.enterprise.inject.spi.CDI;
-import org.hibernate.ScrollableResults;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
-import org.jooq.util.postgres.PGobject;
 
 import java.io.IOException;
 import java.io.Serializable;

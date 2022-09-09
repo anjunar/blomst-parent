@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.sites.site.connections;
 
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.sites.SiteConnection;
 import com.anjunar.blomst.social.sites.SiteConnection_;
 import com.anjunar.blomst.social.sites.Site_;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class ToProvider extends AbstractRestPredicateProvider<UUID, SiteConnection> {
     @Override
-    public Predicate build(UUID value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<SiteConnection> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<SiteConnection> root, CriteriaQuery<?> query) {
         if (value == null) {
             return builder.conjunction();
         }

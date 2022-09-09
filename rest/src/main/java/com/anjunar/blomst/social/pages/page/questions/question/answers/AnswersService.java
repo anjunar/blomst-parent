@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers;
 
 import com.anjunar.blomst.social.pages.page.Answer;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,8 +12,8 @@ import jakarta.persistence.EntityManager;
 public class AnswersService extends AbstractCriteriaSearchService<Answer, AnswersSearch> {
 
     @Inject
-    public AnswersService(EntityManager entityManager, IdentityProvider identityProvider) {
-        super(entityManager, identityProvider);
+    public AnswersService(EntityManager entityManager, IdentityManager identityManager) {
+        super(entityManager, identityManager);
     }
 
     public AnswersService() {

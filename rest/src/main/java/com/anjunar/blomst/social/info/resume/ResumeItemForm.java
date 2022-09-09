@@ -4,11 +4,7 @@ import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.IdentityProvider;
-import com.anjunar.blomst.control.users.ResumeItem;
-import com.anjunar.blomst.social.sites.Site;
 
-import jakarta.persistence.EntityManager;
 import java.time.Year;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)

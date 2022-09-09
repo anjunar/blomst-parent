@@ -1,6 +1,6 @@
 package com.anjunar.common.security.enterprise;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
 import io.jsonwebtoken.Jwts;
@@ -22,10 +22,10 @@ import java.util.UUID;
 @ApplicationScoped
 public class CustomRememberMeIdentityStore implements RememberMeIdentityStore {
 
-    private final IdentityProvider identity;
+    private final IdentityManager identity;
 
     @Inject
-    public CustomRememberMeIdentityStore(IdentityProvider identity) {
+    public CustomRememberMeIdentityStore(IdentityManager identity) {
         this.identity = identity;
     }
 

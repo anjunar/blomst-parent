@@ -1,6 +1,6 @@
 package com.anjunar.common.security.enterprise;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
 
@@ -10,19 +10,19 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStore;
-import jakarta.transaction.Transactional;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @ApplicationScoped
 public class CustomIdentityStore implements IdentityStore {
 
-    private final IdentityProvider identity;
+    private final IdentityManager identity;
 
     private final Event<LoggedInEvent> event;
 
     @Inject
-    public CustomIdentityStore(IdentityProvider identity, Event<LoggedInEvent> event) {
+    public CustomIdentityStore(IdentityManager identity, Event<LoggedInEvent> event) {
         this.identity = identity;
         this.event = event;
     }

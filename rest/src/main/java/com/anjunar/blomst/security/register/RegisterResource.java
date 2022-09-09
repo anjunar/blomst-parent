@@ -3,7 +3,7 @@ package com.anjunar.blomst.security.register;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.ApplicationResource;
@@ -15,9 +15,8 @@ import org.slf4j.LoggerFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Response;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -35,12 +34,12 @@ public class RegisterResource {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public RegisterResource(EntityManager entityManager, IdentityProvider identityProvider) {
+    public RegisterResource(EntityManager entityManager, IdentityManager identityManager) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
     }
 
     public RegisterResource() {
@@ -103,7 +102,7 @@ public class RegisterResource {
 
         user.getRoles().add(userRole);
 
-        identityProvider.authenticate(user);
+        identityManager.authenticate(user);
 
         return new ResponseOk();
     }

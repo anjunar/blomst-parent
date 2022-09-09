@@ -10,7 +10,7 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.communities.Status;
@@ -20,7 +20,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -35,7 +34,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final CommunityConnectionService service;
 
@@ -45,9 +44,9 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
 
 
     @Inject
-    public CommunityConnectionResource(EntityManager entityManager, IdentityProvider identityProvider, CommunityConnectionService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public CommunityConnectionResource(EntityManager entityManager, IdentityManager identityManager, CommunityConnectionService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.service = service;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
@@ -68,7 +67,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         form.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class));
         form.setStatus(Status.PENDING);
         form.setRole(entityMapper.map(service.findUserRole(), RoleForm.class));
-        form.setFrom(entityMapper.map(identityProvider.getUser(), UserForm.class));
+        form.setFrom(entityMapper.map(identityManager.getUser(), UserForm.class));
 
         linkTo(methodOn(CommunityConnectionResource.class).save(new CommunityConnectionForm()))
                 .build(form::addLink);

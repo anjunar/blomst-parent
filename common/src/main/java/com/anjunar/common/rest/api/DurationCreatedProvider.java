@@ -2,7 +2,7 @@ package com.anjunar.common.rest.api;
 
 import com.anjunar.common.ddd.AbstractEntity_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.ddd.AbstractEntity;
 
 import jakarta.persistence.EntityManager;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 public class DurationCreatedProvider extends AbstractRestPredicateProvider<DateTimeDuration, AbstractEntity> {
     @Override
-    public Predicate build(DateTimeDuration value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<AbstractEntity> root, CriteriaQuery<?> query) {
+    public Predicate build(DateTimeDuration value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<AbstractEntity> root, CriteriaQuery<?> query) {
         if (value == null || value.getFrom() == null || value.getTo() == null) {
             return builder.conjunction();
         }

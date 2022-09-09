@@ -16,7 +16,7 @@ import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.security.EmailType;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.ApplicationResource;
 import com.anjunar.blomst.control.roles.RolesResource;
@@ -40,7 +40,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import java.io.IOException;
@@ -60,7 +59,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final HttpServletRequest request;
 
@@ -72,9 +71,9 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
 
     @Inject
-    public UserResource(EntityManager entityManager, IdentityProvider identityProvider, @Context HttpServletRequest request, UserService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public UserResource(EntityManager entityManager, IdentityManager identityManager, @Context HttpServletRequest request, UserService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.request = request;
         this.service = service;
         this.entityMapper = entityMapper;
@@ -131,7 +130,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         UserForm resource = entityMapper.map(user, UserForm.class);
 
-        if (identityProvider.hasRole("Administrator") || identityProvider.getUser().equals(user)) {
+        if (identityManager.hasRole("Administrator") || identityManager.getUser().equals(user)) {
             resource.setPassword(user.getPassword());
         }
 
@@ -148,12 +147,12 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         }
 
         try {
-            UserConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
+            UserConnection connection = service.findConnection(identityManager.getUser().getId(), id);
             linkTo(methodOn(UserConnectionResource.class).read(connection.getId()))
                     .withRel("connection")
                     .build(resource::addLink);
         } catch (NoResultException e) {
-            if (! identityProvider.getUser().getId().equals(id)) {
+            if (! identityManager.getUser().getId().equals(id)) {
                 linkTo(methodOn(UserConnectionResource.class).create(id))
                         .withRel("connect")
                         .build(resource::addLink);
@@ -255,7 +254,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         User user = restMapper.map(resource, User.class);
 
-        if (identityProvider.hasRole("Administrator") || identityProvider.getUser().equals(user)) {
+        if (identityManager.hasRole("Administrator") || identityManager.getUser().equals(user)) {
             user.setPassword(resource.getPassword());
         }
 

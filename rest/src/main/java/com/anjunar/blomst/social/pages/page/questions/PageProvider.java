@@ -4,7 +4,7 @@ import com.anjunar.blomst.social.pages.Page_;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.Question_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class PageProvider extends AbstractRestPredicateProvider<UUID, Question> {
     @Override
-    public Predicate build(UUID value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<Question> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Question> root, CriteriaQuery<?> query) {
         if (value == null) {
             return builder.conjunction();
         }

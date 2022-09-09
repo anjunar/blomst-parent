@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class UserProvider extends AbstractRestPredicateProvider<UUID, Role> {
     @Override
-    public Predicate build(UUID value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<Role> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Role> root, CriteriaQuery<?> query) {
         if (value == null) {
             return builder.conjunction();
         }

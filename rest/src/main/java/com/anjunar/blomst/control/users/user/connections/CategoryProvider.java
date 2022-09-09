@@ -2,7 +2,7 @@ package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.Category_;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.UserConnection;
 
 import com.anjunar.common.security.UserConnection_;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class CategoryProvider extends AbstractRestPredicateProvider<UUID, UserConnection> {
     @Override
-    public Predicate build(UUID value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<UserConnection> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<UserConnection> root, CriteriaQuery<?> query) {
         if (value == null) {
             return builder.conjunction();
         }

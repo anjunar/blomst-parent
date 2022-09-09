@@ -1,7 +1,7 @@
 package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.UserConnection;
 
 import jakarta.inject.Inject;
@@ -12,8 +12,8 @@ import java.util.UUID;
 public class UserConnectionsService extends AbstractCriteriaSearchService<UserConnection, UserConnectionsSearch> {
 
     @Inject
-    public UserConnectionsService(EntityManager entityManager, IdentityProvider identityProvider) {
-        super(entityManager, identityProvider);
+    public UserConnectionsService(EntityManager entityManager, IdentityManager identityManager) {
+        super(entityManager, identityManager);
     }
 
     public UserConnectionsService() {

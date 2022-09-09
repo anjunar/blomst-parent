@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.communities.community.connections;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,8 +12,8 @@ import jakarta.persistence.EntityManager;
 public class CommunityConnectionsService extends AbstractCriteriaSearchService<CommunitiesConnection, CommunityConnectionsSearch> {
 
     @Inject
-    public CommunityConnectionsService(EntityManager entityManager, IdentityProvider identityProvider) {
-        super(entityManager, identityProvider);
+    public CommunityConnectionsService(EntityManager entityManager, IdentityManager identityManager) {
+        super(entityManager, identityManager);
     }
 
     public CommunityConnectionsService() {

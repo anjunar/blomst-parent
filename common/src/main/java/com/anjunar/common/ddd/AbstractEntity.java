@@ -1,13 +1,9 @@
 package com.anjunar.common.ddd;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -34,7 +30,7 @@ public abstract class AbstractEntity implements Entity {
 
     private boolean deleted;
     @Transient
-    private IdentityProvider identityProvider;
+    private IdentityManager identityManager;
 
     @PreUpdate
     private void postUpdate() {
@@ -88,11 +84,11 @@ public abstract class AbstractEntity implements Entity {
         return id != null ? id.hashCode() : 0;
     }
 
-    public void setIdentityProvider(IdentityProvider identityProvider) {
-        this.identityProvider = identityProvider;
+    public void setIdentityProvider(IdentityManager identityManager) {
+        this.identityManager = identityManager;
     }
 
-    public IdentityProvider getIdentityProvider() {
-        return identityProvider;
+    public IdentityManager getIdentityProvider() {
+        return identityManager;
     }
 }

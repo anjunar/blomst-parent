@@ -1,6 +1,6 @@
 package com.anjunar.common.rest;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.introspector.type.TypeResolver;
 import com.anjunar.introspector.type.resolved.ResolvedMethod;
 import com.anjunar.introspector.type.resolved.ResolvedType;
@@ -21,11 +21,11 @@ public class SecurityInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityInterceptor.class);
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public SecurityInterceptor(IdentityProvider identityProvider) {
-        this.identityProvider = identityProvider;
+    public SecurityInterceptor(IdentityManager identityManager) {
+        this.identityManager = identityManager;
     }
 
     public SecurityInterceptor() {
@@ -44,8 +44,8 @@ public class SecurityInterceptor {
             Class<?> resolverCLass = methodPredicate.value();
 
             try {
-                Constructor<?> constructor = resolverCLass.getDeclaredConstructor(IdentityProvider.class);
-                Object resolverInstance = constructor.newInstance(identityProvider);
+                Constructor<?> constructor = resolverCLass.getDeclaredConstructor(IdentityManager.class);
+                Object resolverInstance = constructor.newInstance(identityManager);
 
                 ResolvedType<?> resolvedType = TypeResolver.resolve(resolverCLass);
                 ResolvedMethod<Object> resolvedMethod = (ResolvedMethod<Object>) resolvedType.getMethods().get(0);

@@ -3,14 +3,8 @@ package com.anjunar.common.security;
 import com.anjunar.common.security.enterprise.Authenticator;
 import com.anjunar.common.security.enterprise.CivilCredential;
 import com.anjunar.common.i18n.i18nResolver;
-import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.rest.api.Link;
-import com.anjunar.common.rest.api.LinkType;
-import com.anjunar.jsr339.Operation;
-import com.anjunar.jsr339.Resource;
 import com.anjunar.jsr339.cdi.JaxRSExtension;
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.AuthenticationStatus;
@@ -22,10 +16,9 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @SessionScoped
-public class IdentityProvider implements Serializable {
+public class IdentityManager implements Serializable {
 
     private final IdentityService service;
 
@@ -36,14 +29,14 @@ public class IdentityProvider implements Serializable {
     private final i18nResolver resolver;
 
     @Inject
-    public IdentityProvider(IdentityService service, JaxRSExtension extension, Authenticator authenticator, i18nResolver resolver) {
+    public IdentityManager(IdentityService service, JaxRSExtension extension, Authenticator authenticator, i18nResolver resolver) {
         this.service = service;
         this.extension = extension;
         this.authenticator = authenticator;
         this.resolver = resolver;
     }
 
-    public IdentityProvider() {
+    public IdentityManager() {
         this(null, null, null, null);
     }
 

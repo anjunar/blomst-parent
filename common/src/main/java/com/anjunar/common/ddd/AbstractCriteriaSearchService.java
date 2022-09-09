@@ -2,7 +2,7 @@ package com.anjunar.common.ddd;
 
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestSearch;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -22,11 +22,11 @@ public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSea
 
     protected final EntityManager entityManager;
 
-    protected final IdentityProvider identityProvider;
+    protected final IdentityManager identityManager;
 
-    public AbstractCriteriaSearchService(EntityManager entityManager, IdentityProvider identityProvider) {
+    public AbstractCriteriaSearchService(EntityManager entityManager, IdentityManager identityManager) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
     }
 
     public Class<E> getEntityClass() {
@@ -37,8 +37,8 @@ public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSea
         return (Class<S>) TypeToken.of(getClass()).resolveType(AbstractCriteriaSearchService.class.getTypeParameters()[1]).getRawType();
     }
 
-    public IdentityProvider identity() {
-        return identityProvider;
+    public IdentityManager identity() {
+        return identityManager;
     }
 
     public Predicate filter(CriteriaBuilder builder, Root<E> root, CriteriaQuery<?> query) {
@@ -67,7 +67,7 @@ public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSea
         query.select(root)
                 .where(builder.and(
                         filter(builder, root, query),
-                        RestSearch.predicate(getSearchClass(), search, identityProvider, entityManager, builder, root, query)
+                        RestSearch.predicate(getSearchClass(), search, identityManager, entityManager, builder, root, query)
                 ))
                 .orderBy(RestSearch.sort(getSearchClass(), search, entityManager, builder, root));
         TypedQuery<E> typedQuery = entityManager.createQuery(query);
@@ -99,7 +99,7 @@ public abstract class AbstractCriteriaSearchService<E, S extends AbstractRestSea
         query.select(builder.count(root))
                 .where(builder.and(
                         filter(builder, root, query),
-                        RestSearch.predicate(getSearchClass(), search, identityProvider, entityManager, builder, root, query)
+                        RestSearch.predicate(getSearchClass(), search, identityManager, entityManager, builder, root, query)
                 ));
         TypedQuery<Long> typedQuery = entityManager.createQuery(query);
         return typedQuery.getSingleResult();

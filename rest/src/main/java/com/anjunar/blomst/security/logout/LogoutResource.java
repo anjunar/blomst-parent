@@ -1,7 +1,7 @@
 package com.anjunar.blomst.security.logout;
 
 import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.ApplicationResource;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -19,11 +19,11 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 @ApplicationScoped
 public class LogoutResource {
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public LogoutResource(IdentityProvider identityProvider) {
-        this.identityProvider = identityProvider;
+    public LogoutResource(IdentityManager identityManager) {
+        this.identityManager = identityManager;
     }
 
     public LogoutResource() {
@@ -49,7 +49,7 @@ public class LogoutResource {
     @LinkDescription("Do Logout")
     public LogoutForm doLogout() {
 
-        identityProvider.logout();
+        identityManager.logout();
 
         LogoutForm resource = new LogoutForm();
 

@@ -1,29 +1,15 @@
 package com.anjunar.blomst.social.timeline.post;
 
-import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.blomst.social.timeline.LinkPost;
 import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.security.IdentityProvider;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.io.IOException;
-import java.net.URI;
+
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class LinkPostForm extends AbstractPostForm {
 

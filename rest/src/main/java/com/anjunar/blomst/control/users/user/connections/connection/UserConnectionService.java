@@ -1,6 +1,6 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.notifications.Notification;
 import com.anjunar.common.security.UserConnection;
@@ -18,12 +18,12 @@ public class UserConnectionService {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public UserConnectionService(EntityManager entityManager, IdentityProvider identityProvider) {
+    public UserConnectionService(EntityManager entityManager, IdentityManager identityManager) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
     }
 
     public UserConnectionService() {
@@ -39,7 +39,7 @@ public class UserConnectionService {
         notification.setSource(fromUser);
         notification.setAcknowledge(false);
 
-        ResourceBundle bundle = ResourceBundle.getBundle("com.anjunar.blomst.i18nMessages", identityProvider.getLanguage());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.anjunar.blomst.i18nMessages", identityManager.getLanguage());
         String template = bundle.getString("com.anjunar.blomst.control.users.user.connections.connection.UserConnectionService.createNotification");
         String format = MessageFormat.format(template, fromUser.getFirstName(), fromUser.getLastName());
         notification.setText(format);

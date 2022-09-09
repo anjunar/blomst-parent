@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.communities.community.connections.connection;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,12 +12,12 @@ public class CommunityConnectionService {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public CommunityConnectionService(EntityManager entityManager, IdentityProvider identityProvider) {
+    public CommunityConnectionService(EntityManager entityManager, IdentityManager identityManager) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
     }
 
     public CommunityConnectionService() {

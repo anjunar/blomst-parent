@@ -1,7 +1,7 @@
 package com.anjunar.blomst.control.users.user.connections.categories;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Category;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,8 +12,8 @@ import jakarta.persistence.EntityManager;
 public class CategoriesService extends AbstractCriteriaSearchService<Category, CategoriesSearch> {
 
     @Inject
-    public CategoriesService(EntityManager entityManager, IdentityProvider identityProvider) {
-        super(entityManager, identityProvider);
+    public CategoriesService(EntityManager entityManager, IdentityManager identityManager) {
+        super(entityManager, identityManager);
     }
 
     public CategoriesService() {

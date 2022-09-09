@@ -5,7 +5,7 @@ import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.mapper.annotations.MapperProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
@@ -32,7 +32,7 @@ public class PageForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modifier")
-    @MapperProjection(UserSelect.class)
+    @MapperView(UserSelect.class)
     private UserForm modifier;
 
     public String getTitle() {

@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -13,7 +13,7 @@ import java.util.Locale;
 
 public class LanguageProvider extends AbstractRestPredicateProvider<Locale, Page> {
     @Override
-    public Predicate build(Locale value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<Page> root, CriteriaQuery<?> query) {
+    public Predicate build(Locale value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Page> root, CriteriaQuery<?> query) {
         if (value == null) {
             return builder.conjunction();
         }

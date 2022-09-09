@@ -2,10 +2,6 @@ package com.anjunar.blomst.social.timeline.post;
 
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.blomst.social.timeline.SystemPost;
-import com.anjunar.common.security.IdentityProvider;
-
-import jakarta.persistence.EntityManager;
 
 public class SystemPostForm extends AbstractPostForm{
 

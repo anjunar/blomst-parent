@@ -9,7 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD, METHOD})
 @Retention(RUNTIME)
-public @interface MapperProjection {
+public @interface MapperView {
 
     Class<?> value() default void.class;
 

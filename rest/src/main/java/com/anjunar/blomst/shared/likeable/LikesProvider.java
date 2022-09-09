@@ -4,7 +4,7 @@ import com.anjunar.common.security.User_;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.shared.Likeable_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 
 import jakarta.persistence.EntityManager;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class LikesProvider extends AbstractRestPredicateProvider<Set<UUID>, Question> {
     @Override
-    public Predicate build(Set<UUID> value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<Question> root, CriteriaQuery<?> query) {
+    public Predicate build(Set<UUID> value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Question> root, CriteriaQuery<?> query) {
         if (value != null && value.size() > 0) {
             Set<UUID> users = new HashSet<>();
             for (UUID userSelect : value) {

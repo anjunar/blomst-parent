@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
-import com.anjunar.common.rest.mapper.annotations.MapperProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
@@ -27,7 +27,7 @@ public class AnswersSearch extends AbstractLikeableSearch {
     private String editor;
 
     @RestPredicate(UserProvider.class)
-    @MapperProjection(UserSelect.class)
+    @MapperView(UserSelect.class)
     private UserForm owner;
 
     public List<String> getSort() {

@@ -1,6 +1,6 @@
 package com.anjunar.common.i18n;
 
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -11,11 +11,11 @@ import java.util.Locale;
 @WebFilter("/service/*")
 public class I18nFilter implements Filter {
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @Inject
-    public I18nFilter(IdentityProvider identityProvider) {
-        this.identityProvider = identityProvider;
+    public I18nFilter(IdentityManager identityManager) {
+        this.identityManager = identityManager;
     }
 
     public I18nFilter() {
@@ -24,10 +24,10 @@ public class I18nFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        if (identityProvider.getUser() == null) {
+        if (identityManager.getUser() == null) {
             servletResponse.setLocale(Locale.forLanguageTag("en-DE"));
         } else {
-            servletResponse.setLocale(identityProvider.getUser().getLanguage());
+            servletResponse.setLocale(identityManager.getUser().getLanguage());
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

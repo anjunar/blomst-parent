@@ -11,7 +11,7 @@ import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.sites.Site;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
@@ -20,7 +20,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -34,7 +33,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final SiteService service;
 
@@ -44,9 +43,9 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
 
 
     @Inject
-    public SiteResource(EntityManager entityManager, IdentityProvider identityProvider, SiteService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public SiteResource(EntityManager entityManager, IdentityManager identityManager, SiteService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.service = service;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
@@ -79,7 +78,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         SiteForm form = entityMapper.map(entity, SiteForm.class);
 
         try {
-            SiteConnection connection = service.findConnection(identityProvider.getUser().getId(), id);
+            SiteConnection connection = service.findConnection(identityManager.getUser().getId(), id);
             linkTo(methodOn(SiteConnectionResource.class).read(connection.getId()))
                     .withRel("connection")
                     .build(form::addLink);

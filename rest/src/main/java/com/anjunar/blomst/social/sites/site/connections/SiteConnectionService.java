@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.sites.site.connections;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,8 +12,8 @@ import jakarta.persistence.EntityManager;
 public class SiteConnectionService extends AbstractCriteriaSearchService<SiteConnection, SiteConnectionsSearch> {
 
     @Inject
-    public SiteConnectionService(EntityManager entityManager, IdentityProvider identityProvider) {
-        super(entityManager, identityProvider);
+    public SiteConnectionService(EntityManager entityManager, IdentityManager identityManager) {
+        super(entityManager, identityManager);
     }
 
     public SiteConnectionService() {

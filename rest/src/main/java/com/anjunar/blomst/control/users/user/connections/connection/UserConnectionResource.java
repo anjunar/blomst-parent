@@ -7,7 +7,7 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import com.anjunar.common.security.UserConnection;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
@@ -17,7 +17,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import java.util.UUID;
 
@@ -30,7 +29,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final UserConnectionService service;
 
@@ -40,9 +39,9 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
 
     @Inject
-    public UserConnectionResource(EntityManager entityManager, IdentityProvider identityProvider, UserConnectionService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public UserConnectionResource(EntityManager entityManager, IdentityManager identityManager, UserConnectionService service, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.service = service;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
@@ -62,7 +61,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         UserConnectionForm form = new UserConnectionForm();
 
 
-        form.setFrom(entityMapper.map(identityProvider.getUser(), UserForm.class));
+        form.setFrom(entityMapper.map(identityManager.getUser(), UserForm.class));
         form.setTo(entityMapper.map(entityManager.find(User.class, to), UserForm.class));
 
         linkTo(methodOn(UserConnectionResource.class).save(new UserConnectionForm()))
@@ -112,7 +111,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     public UserConnectionForm save(UserConnectionForm form) {
 
         UserConnection from = restMapper.map(form, UserConnection.class);
-        from.setFrom(identityProvider.getUser());
+        from.setFrom(identityManager.getUser());
         entityManager.persist(from);
 
         UserConnection to = new UserConnection();
@@ -154,7 +153,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
         UserConnection entity = entityManager.find(UserConnection.class, id);
 
-        if (entity.getFrom().equals(identityProvider.getUser())) {
+        if (entity.getFrom().equals(identityManager.getUser())) {
             entityManager.remove(entity);
         } else {
             throw new WebApplicationException(Status.FORBIDDEN);

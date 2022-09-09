@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.timeline.post.comments;
 import com.anjunar.blomst.social.timeline.Comment;
 import com.anjunar.blomst.social.timeline.Comment_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -13,7 +13,7 @@ import jakarta.persistence.criteria.Root;
 
 public class TextProvider extends AbstractRestPredicateProvider<String, Comment> {
     @Override
-    public Predicate build(String value, IdentityProvider identityProvider, EntityManager entityManager, CriteriaBuilder builder, Root<Comment> root, CriteriaQuery<?> query) {
+    public Predicate build(String value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Comment> root, CriteriaQuery<?> query) {
         if (value == null || value.equals("")) {
             return builder.conjunction();
         }

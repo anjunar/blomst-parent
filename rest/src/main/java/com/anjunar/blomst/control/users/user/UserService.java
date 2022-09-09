@@ -5,7 +5,7 @@ import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.mail.Email;
 import com.anjunar.common.mail.Template;
 import com.anjunar.common.security.EmailType;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.control.users.Resume;
 import com.anjunar.common.security.UserConnection;
@@ -29,16 +29,16 @@ public class UserService {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     @OnPersist
     private final Event<User> userEvent;
 
     @Inject
-    public UserService(Email email, EntityManager entityManager, IdentityProvider identityProvider, Event<User> userEvent) {
+    public UserService(Email email, EntityManager entityManager, IdentityManager identityManager, Event<User> userEvent) {
         this.email = email;
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.userEvent = userEvent;
     }
 
@@ -66,7 +66,7 @@ public class UserService {
                 try {
                     template = entityManager.createQuery("select t from Template t where t.name = :name and t.language = :language", Template.class)
                             .setParameter("name", "Email Confirmation")
-                            .setParameter("language", identityProvider.getLanguage())
+                            .setParameter("language", identityManager.getLanguage())
                             .getSingleResult();
 
                     Random rnd = new Random();

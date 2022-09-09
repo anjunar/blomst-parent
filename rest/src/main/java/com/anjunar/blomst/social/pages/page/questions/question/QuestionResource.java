@@ -13,14 +13,13 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.IdentityProvider;
+import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.pages.page.Question;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,7 +33,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
 
     private final EntityManager entityManager;
 
-    private final IdentityProvider identityProvider;
+    private final IdentityManager identityManager;
 
     private final ResourceEntityMapper entityMapper;
 
@@ -42,9 +41,9 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
 
 
     @Inject
-    public QuestionResource(EntityManager entityManager, IdentityProvider identityProvider, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public QuestionResource(EntityManager entityManager, IdentityManager identityManager, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
         this.entityManager = entityManager;
-        this.identityProvider = identityProvider;
+        this.identityManager = identityManager;
         this.entityMapper = entityMapper;
         this.restMapper = restMapper;
     }
@@ -64,7 +63,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         resource.setPage(page);
         resource.setCreated(LocalDateTime.now());
 
-        resource.setOwner(entityMapper.map(identityProvider.getUser(), UserForm.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserForm.class));
 
         linkTo(methodOn(QuestionResource.class).save(new QuestionForm()))
                 .build(resource::addLink);
@@ -127,7 +126,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     public QuestionForm update(UUID id, QuestionForm resource) {
 
         UserForm owner = resource.getOwner();
-        if (!owner.getId().equals(identityProvider.getUser().getId())) {
+        if (!owner.getId().equals(identityManager.getUser().getId())) {
             throw new NotAuthorizedException("Not Allowed");
         }
 
