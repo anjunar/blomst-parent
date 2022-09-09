@@ -85,6 +85,12 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
         this.load();
     }
 
+    row(row, index, length) {
+        row.rowIndex = index;
+        row.rowLength = length;
+        return row;
+    }
+
     onRowClick(event, row) {
         this.model = row;
         this.dispatchEvent(new CustomEvent("model", {detail : row}))

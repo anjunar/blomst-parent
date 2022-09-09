@@ -71,6 +71,24 @@ class MetaTable extends HTMLElement {
             }
             window.setTimeout(() => {
                 callback(rows, size)
+                let table = this.querySelector("table");
+                for (const [property, value] of Object.entries(this.schema.properties.rows.items.properties)) {
+                    for (const column of table.columns) {
+                        if (column.path === property) {
+                            switch (value.widget) {
+                                case "datetime-local" : {
+                                    column.search = {from : "", to : ""}
+                                } break;
+                                case "date" : {
+                                    column.search = {from : "", to : ""}
+                                } break;
+                                default : {
+                                    column.search = "";
+                                }
+                            }
+                        }
+                    }
+                }
             })
         })
     }
