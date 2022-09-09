@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.timeline.post;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
+import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -24,11 +25,13 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text")
     private String text;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
+    @JsonSchemaReadOnly
     @MapperView(UserSelect.class)
     private UserForm owner;
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Source", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Source")
+    @JsonSchemaReadOnly
     private UUID source;
 
     public abstract <E> E accept(AbstractPostFormVisitor<E> visitor);

@@ -26,7 +26,5 @@ public @interface JsonSchema {
 
     boolean ignore() default false;
 
-    boolean readOnly() default false;
-
     boolean visibility() default false;
 }

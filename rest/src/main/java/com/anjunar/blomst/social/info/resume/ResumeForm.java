@@ -6,6 +6,7 @@ import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ import java.util.List;
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class ResumeForm extends AbstractRestEntity {
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
+    @JsonSchemaReadOnly
     @MapperView(UserSelect.class)
     private UserForm owner;
 

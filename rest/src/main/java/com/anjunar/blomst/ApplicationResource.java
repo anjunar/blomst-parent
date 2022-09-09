@@ -3,6 +3,7 @@ package com.anjunar.blomst;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.logout.LogoutResource;
 import com.anjunar.blomst.security.register.RegisterResource;
@@ -88,7 +89,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
         if (identityManager.isLoggedIn()) {
 
-            UserForm userSelect = mapper.map(identityManager.getUser(), UserForm.class);
+            UserForm userSelect = mapper.map(identityManager.getUser(), UserForm.class, UserSelect.class);
 
             PagesSearch search = new PagesSearch();
             search.setLanguage(identityManager.getLanguage());

@@ -5,6 +5,7 @@ import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,7 +28,8 @@ public class CommentForm extends AbstractLikeableRestEntity {
     private UUID parent;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
+    @JsonSchemaReadOnly
     @MapperView(UserSelect.class)
     private UserForm owner;
 

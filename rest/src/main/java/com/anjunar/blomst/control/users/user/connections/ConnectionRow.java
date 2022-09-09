@@ -6,6 +6,7 @@ import com.anjunar.blomst.control.users.user.connections.categories.category.Cat
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,11 +17,13 @@ public class ConnectionRow extends AbstractRestEntity {
     private CategoryForm category;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
+    @JsonSchemaReadOnly
     @MapperView(UserSelect.class)
     private UserForm to;
 
-    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted")
+    @JsonSchemaReadOnly
     private boolean accepted;
 
     public CategoryForm getCategory() {
