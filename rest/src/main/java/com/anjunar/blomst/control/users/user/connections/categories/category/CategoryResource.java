@@ -3,6 +3,9 @@ package com.anjunar.blomst.control.users.user.connections.categories.category;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -56,13 +59,13 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     public CategoryForm create() {
         CategoryForm form = new CategoryForm();
 
-        form.setOwner(entityMapper.map(identityManager.getUser(), UserForm.class));
+        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(CategoryResource.class).save(new CategoryForm()))
                 .build(form::addLink);
 
         JsonObject owner = form.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         return form;
@@ -83,7 +86,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
                 .build(form::addLink);
 
         JsonObject owner = form.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         return form;

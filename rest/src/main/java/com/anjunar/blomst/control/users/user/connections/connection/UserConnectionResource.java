@@ -1,6 +1,7 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -61,8 +62,8 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         UserConnectionForm form = new UserConnectionForm();
 
 
-        form.setFrom(entityMapper.map(identityManager.getUser(), UserForm.class));
-        form.setTo(entityMapper.map(entityManager.find(User.class, to), UserForm.class));
+        form.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        form.setTo(entityMapper.map(entityManager.find(User.class, to), UserSelect.class));
 
         linkTo(methodOn(UserConnectionResource.class).save(new UserConnectionForm()))
                 .build(form::addLink);
@@ -82,8 +83,8 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
         UserConnectionForm form = entityMapper.map(entity, UserConnectionForm.class);
 
-        form.setFrom(entityMapper.map(entity.getFrom(), UserForm.class));
-        form.setTo(entityMapper.map(entity.getTo(), UserForm.class));
+        form.setFrom(entityMapper.map(entity.getFrom(), UserSelect.class));
+        form.setTo(entityMapper.map(entity.getTo(), UserSelect.class));
 
         UserConnection acceptedConnection = service.accepted(entity.getFrom().getId(), entity.getTo().getId());
         if (acceptedConnection != null) {

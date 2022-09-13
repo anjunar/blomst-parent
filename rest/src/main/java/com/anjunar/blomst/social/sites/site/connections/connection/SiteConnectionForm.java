@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
@@ -12,17 +12,16 @@ import com.anjunar.common.rest.schema.schema.JsonNode;
 public class SiteConnectionForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "From")
-    @MapperView(UserSelect.class)
-    private UserForm from;
+    private UserSelect from;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
     private SiteForm to;
 
-    public UserForm getFrom() {
+    public UserSelect getFrom() {
         return from;
     }
 
-    public void setFrom(UserForm from) {
+    public void setFrom(UserSelect from) {
         this.from = from;
     }
 

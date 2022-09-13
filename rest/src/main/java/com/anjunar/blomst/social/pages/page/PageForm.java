@@ -1,8 +1,8 @@
 package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
@@ -32,8 +32,7 @@ public class PageForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modifier")
-    @MapperView(UserSelect.class)
-    private UserForm modifier;
+    private UserSelect modifier;
 
     public String getTitle() {
         return title;
@@ -59,11 +58,11 @@ public class PageForm extends AbstractLikeableRestEntity {
         this.language = language;
     }
 
-    public UserForm getModifier() {
+    public UserSelect getModifier() {
         return modifier;
     }
 
-    public void setModifier(UserForm modifier) {
+    public void setModifier(UserSelect modifier) {
         this.modifier = modifier;
     }
 

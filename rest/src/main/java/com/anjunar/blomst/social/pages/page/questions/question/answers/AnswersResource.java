@@ -2,6 +2,8 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.AnswerForm;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.AnswerResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -66,7 +68,7 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
                 .build(table::addLink);
 
         JsonObject owner = table.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         return table;

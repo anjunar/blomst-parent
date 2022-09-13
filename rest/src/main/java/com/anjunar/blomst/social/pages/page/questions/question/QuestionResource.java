@@ -3,6 +3,9 @@ package com.anjunar.blomst.social.pages.page.questions.question;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -63,7 +66,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         resource.setPage(page);
         resource.setCreated(LocalDateTime.now());
 
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserForm.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(QuestionResource.class).save(new QuestionForm()))
                 .build(resource::addLink);
@@ -90,11 +93,11 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
                 .build(resource::addLink);
 
         JsonObject owner = resource.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
         return resource;
@@ -125,7 +128,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @LinkDescription("Update Question")
     public QuestionForm update(UUID id, QuestionForm resource) {
 
-        UserForm owner = resource.getOwner();
+        UserSelect owner = resource.getOwner();
         if (!owner.getId().equals(identityManager.getUser().getId())) {
             throw new NotAuthorizedException("Not Allowed");
         }

@@ -2,7 +2,6 @@ package com.anjunar.blomst.control.users.user;
 
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
@@ -11,8 +10,7 @@ public class EmailForm extends AbstractSchemaEntity {
     @JsonSchema(widget = JsonNode.Widget.EMAIL, title = "Email")
     private String value;
 
-    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Confirmed")
-    @JsonSchemaReadOnly
+    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Confirmed", readOnly = true)
     private boolean confirmed;
 
     public String getValue() {

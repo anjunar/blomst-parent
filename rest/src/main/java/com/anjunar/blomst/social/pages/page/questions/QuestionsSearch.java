@@ -1,8 +1,8 @@
 package com.anjunar.blomst.social.pages.page.questions;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
@@ -31,8 +31,7 @@ public class QuestionsSearch extends AbstractLikeableSearch {
     private String editor;
 
     @RestPredicate(OwnerProvider.class)
-    @MapperView(UserSelect.class)
-    private UserForm owner;
+    private UserSelect owner;
 
     public List<String> getSort() {
         return sort;
@@ -66,11 +65,11 @@ public class QuestionsSearch extends AbstractLikeableSearch {
         this.editor = editor;
     }
 
-    public UserForm getOwner() {
+    public UserSelect getOwner() {
         return owner;
     }
 
-    public void setOwner(UserForm owner) {
+    public void setOwner(UserSelect owner) {
         this.owner = owner;
     }
 }

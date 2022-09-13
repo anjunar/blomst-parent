@@ -2,6 +2,8 @@ package com.anjunar.blomst.social.timeline;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.social.timeline.post.*;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -90,11 +92,11 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
         Table<AbstractPostForm> table = new Table<>(resources, count) {};
 
         JsonArray likes = table.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
         JsonObject owner = table.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         if (search.getSource().size() == 1) {

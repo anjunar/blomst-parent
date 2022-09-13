@@ -1,7 +1,7 @@
 package com.anjunar.blomst;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.anjunar.common.rest.api.Link;
@@ -11,17 +11,16 @@ import com.anjunar.common.rest.schema.schema.JsonObject;
 
 public class ApplicationForm implements LinksContainer {
 
-    @MapperView(UserSelect.class)
-    private UserForm user;
+    private UserSelect user;
 
     @JsonProperty(value = "$schema", access = JsonProperty.Access.READ_ONLY)
     private final JsonObject schema = JsonSchemaGenerator.generateObject(ApplicationForm.class);
 
-    public UserForm getUser() {
+    public UserSelect getUser() {
         return user;
     }
 
-    public void setUser(UserForm user) {
+    public void setUser(UserSelect user) {
         this.user = user;
     }
 

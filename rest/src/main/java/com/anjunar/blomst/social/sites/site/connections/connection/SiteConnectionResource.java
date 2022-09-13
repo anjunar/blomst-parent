@@ -1,6 +1,7 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -58,7 +59,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public SiteConnectionForm create() {
         SiteConnectionForm form = new SiteConnectionForm();
 
-        form.setFrom(entityMapper.map(identityManager.getUser(), UserForm.class));
+        form.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
                 .build(form::addLink);

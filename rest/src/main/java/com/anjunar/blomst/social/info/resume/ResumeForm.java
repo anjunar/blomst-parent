@@ -1,12 +1,11 @@
 package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
 import java.util.ArrayList;
@@ -15,20 +14,18 @@ import java.util.List;
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class ResumeForm extends AbstractRestEntity {
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
-    @JsonSchemaReadOnly
-    @MapperView(UserSelect.class)
-    private UserForm owner;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Items", visibility = true)
     @MapperVisibility
     private final List<ResumeItemForm> items = new ArrayList<>();
 
-    public UserForm getOwner() {
+    public UserSelect getOwner() {
         return owner;
     }
 
-    public void setOwner(UserForm owner) {
+    public void setOwner(UserSelect owner) {
         this.owner = owner;
     }
 

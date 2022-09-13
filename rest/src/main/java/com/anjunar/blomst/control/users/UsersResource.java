@@ -17,7 +17,6 @@ import com.anjunar.common.security.User;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,40 +47,31 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
     public Table<UserForm> list(UsersSearch search) {
         long count = service.count(search);
 
-        List<UserForm> resources = getUserForms(search, null);
+        List<User> users = service.find(search);
+
+        List<UserForm> resources = new ArrayList<>();
+        for (User user : users) {
+            UserForm resource = mapper.map(user, UserForm.class);
+            resources.add(resource);
+
+            linkTo(methodOn(UserResource.class).read(user.getId()))
+                    .build(resource::addLink);
+        }
+
         Table<UserForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(UserResource.class).create())
                 .build(table::addLink);
 
         JsonArray roles = table.find("roles", JsonArray.class);
-        if (roles != null) {
-            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
-                    .build(roles::addLink);
-        }
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .build(roles::addLink);
 
         JsonObject language = table.find("language", JsonObject.class);
-        if (language != null) {
-            linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
-                    .build(language::addLink);
-
-        }
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
+                .build(language::addLink);
 
         return table;
-    }
-
-    private List<UserForm> getUserForms(UsersSearch search, Class<?> projectionClass) {
-        List<User> users = service.find(search, projectionClass);
-
-        List<UserForm> resources = new ArrayList<>();
-        for (User user : users) {
-            UserForm resource = mapper.map(user, UserForm.class, projectionClass);
-            resources.add(resource);
-
-            linkTo(methodOn(UserResource.class).read(user.getId()))
-                    .build(resource::addLink);
-        }
-        return resources;
     }
 
 }

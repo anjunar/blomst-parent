@@ -1,15 +1,12 @@
 package com.anjunar.common.rest.schema.factories;
 
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.validators.NotNullValidator;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.introspector.bean.BeanProperty;
 
 import jakarta.validation.constraints.NotNull;
-
-import java.util.Objects;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class JsonAbstractFactory<J extends JsonNode> {
@@ -40,11 +37,9 @@ public abstract class JsonAbstractFactory<J extends JsonNode> {
             if (jsonSchema.visibility()) {
                 jsonNode.setVisibility(true);
             }
-        }
-
-        JsonSchemaReadOnly readOnly = property.getAnnotation(JsonSchemaReadOnly.class);
-        if (Objects.nonNull(readOnly)) {
-            jsonNode.setReadOnly(true);
+            if (jsonSchema.readOnly()) {
+                jsonNode.setReadOnly(true);
+            }
         }
 
         NotNull notNull = property.getAnnotation(NotNull.class);

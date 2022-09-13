@@ -1,12 +1,11 @@
 package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.control.users.user.connections.categories.category.CategoryForm;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.annotations.JsonSchemaReadOnly;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,13 +16,10 @@ public class ConnectionRow extends AbstractRestEntity {
     private CategoryForm category;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
-    @JsonSchemaReadOnly
-    @MapperView(UserSelect.class)
-    private UserForm to;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
+    private UserSelect to;
 
-    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted")
-    @JsonSchemaReadOnly
+    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted", readOnly = true)
     private boolean accepted;
 
     public CategoryForm getCategory() {
@@ -34,11 +30,11 @@ public class ConnectionRow extends AbstractRestEntity {
         this.category = category;
     }
 
-    public UserForm getTo() {
+    public UserSelect getTo() {
         return to;
     }
 
-    public void setTo(UserForm to) {
+    public void setTo(UserSelect to) {
         this.to = to;
     }
 

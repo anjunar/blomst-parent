@@ -3,6 +3,9 @@ package com.anjunar.blomst.social.timeline.post;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
@@ -79,7 +82,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         resource.setSource(source);
 
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserForm.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))
                         .build(resource::addLink);
@@ -124,11 +127,11 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
                 .build(resource::addLink);
 
         JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
         JsonObject owner = resource.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         CommentsSearch search = new CommentsSearch();

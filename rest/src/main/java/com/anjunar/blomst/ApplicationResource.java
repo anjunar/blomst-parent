@@ -3,10 +3,10 @@ package com.anjunar.blomst;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.logout.LogoutResource;
 import com.anjunar.blomst.security.register.RegisterResource;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.CommunitiesResource;
 import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.pages.PagesResource;
@@ -86,11 +86,11 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
     @GET
     @Produces("application/json")
-    public UserForm service() {
+    public UserSelect service() {
 
         if (identityManager.isLoggedIn()) {
 
-            UserForm userSelect = mapper.map(identityManager.getUser(), UserForm.class, UserSelect.class);
+            UserSelect userSelect = mapper.map(identityManager.getUser(), UserSelect.class);
 
             PagesSearch search = new PagesSearch();
             userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
@@ -124,7 +124,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
             return userSelect;
         } else {
-            UserForm userSelect = new UserForm();
+            UserSelect userSelect = new UserSelect();
             userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
 
             linkTo(methodOn(LoginResource.class).login())

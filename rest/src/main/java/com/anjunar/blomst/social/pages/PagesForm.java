@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
@@ -28,8 +28,7 @@ public class PagesForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modfier")
-    @MapperView(UserSelect.class)
-    private UserForm modifier;
+    private UserSelect modifier;
 
     public String getTitle() {
         return title;
@@ -55,11 +54,11 @@ public class PagesForm extends AbstractRestEntity {
         this.language = language;
     }
 
-    public UserForm getModifier() {
+    public UserSelect getModifier() {
         return modifier;
     }
 
-    public void setModifier(UserForm modifier) {
+    public void setModifier(UserSelect modifier) {
         this.modifier = modifier;
     }
 

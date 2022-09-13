@@ -1,8 +1,8 @@
 package com.anjunar.blomst.social.pages.page.questions.question;
 
 import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserSelect;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -34,12 +34,11 @@ public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
-    @MapperView(UserSelect.class)
-    private UserForm owner;
+    private UserSelect owner;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
-    private final Set<UserForm> likes = new HashSet<>();
+    private final Set<UserSelect> likes = new HashSet<>();
 
     public UUID getPage() {
         return page;
@@ -65,15 +64,15 @@ public class QuestionForm extends AbstractLikeableRestEntity {
         this.editor = editor;
     }
 
-    public UserForm getOwner() {
+    public UserSelect getOwner() {
         return owner;
     }
 
-    public void setOwner(UserForm owner) {
+    public void setOwner(UserSelect owner) {
         this.owner = owner;
     }
 
-    public Set<UserForm> getLikes() {
+    public Set<UserSelect> getLikes() {
         return likes;
     }
 

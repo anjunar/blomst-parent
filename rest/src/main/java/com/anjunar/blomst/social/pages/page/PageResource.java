@@ -2,6 +2,8 @@ package com.anjunar.blomst.social.pages.page;
 
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
@@ -69,7 +71,7 @@ public class PageResource {
                 .build(pageForm::addLink);
 
         JsonArray likes = pageForm.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
         JsonObject language = pageForm.find("language", JsonObject.class);
@@ -77,7 +79,7 @@ public class PageResource {
                 .build(language::addLink);
 
         JsonObject modifier = pageForm.find("modifier", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(modifier::addLink);
 
         return pageForm;
@@ -110,11 +112,11 @@ public class PageResource {
                 .build(language::addLink);
 
         JsonArray likes = pageForm.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
         JsonObject modifier = pageForm.find("modifier", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(modifier::addLink);
 
         QuestionsSearch search = new QuestionsSearch();

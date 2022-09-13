@@ -3,6 +3,9 @@ package com.anjunar.blomst.social.timeline.post.comments.comment;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -69,13 +72,13 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         resource.setPost(post);
         resource.setParent(parent);
 
-        resource.setOwner(entityMapper.map(user, UserForm.class));
+        resource.setOwner(entityMapper.map(user, UserSelect.class));
 
         linkTo(methodOn(CommentResource.class).save(new CommentForm()))
                 .build(resource::addLink);
 
         JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
         return resource;
@@ -103,10 +106,10 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
 
         JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
         JsonObject owner = resource.find("owner", JsonObject.class);
-        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
         return resource;
