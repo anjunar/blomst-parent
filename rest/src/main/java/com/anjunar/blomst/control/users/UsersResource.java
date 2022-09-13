@@ -55,12 +55,17 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
                 .build(table::addLink);
 
         JsonArray roles = table.find("roles", JsonArray.class);
-        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
-                .build(roles::addLink);
+        if (roles != null) {
+            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                    .build(roles::addLink);
+        }
 
         JsonObject language = table.find("language", JsonObject.class);
-        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
-                .build(language::addLink);
+        if (language != null) {
+            linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
+                    .build(language::addLink);
+
+        }
 
         return table;
     }

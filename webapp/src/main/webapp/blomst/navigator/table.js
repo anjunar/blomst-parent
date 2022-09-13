@@ -37,6 +37,12 @@ class Table extends HTMLElement {
             }
         }
 
+        if (query.sort) {
+            for (const element of query.sort) {
+                url.searchParams.append("sort", element)
+            }
+        }
+
         fetch(url.toString())
             .then(response => response.json())
             .then((response) => {

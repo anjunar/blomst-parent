@@ -38,7 +38,7 @@
             <td bind:for="let td of configuration(columns, false, true); let index = index">
                 <div style="display: flex; align-items: center;">
                     <div bind:onclick="showConfiguration()">
-                        <strong>
+                        <strong style="line-height: 24px">
                             <slot selector="thead tr td *" bind:index="td.index"></slot>
                         </strong>
                     </div>
