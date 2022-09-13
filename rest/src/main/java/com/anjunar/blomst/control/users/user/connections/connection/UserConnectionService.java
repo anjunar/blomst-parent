@@ -39,7 +39,7 @@ public class UserConnectionService {
         notification.setSource(fromUser);
         notification.setAcknowledge(false);
 
-        ResourceBundle bundle = ResourceBundle.getBundle("com.anjunar.blomst.i18nMessages", identityManager.getLanguage());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.anjunar.blomst.i18nMessages", identityManager.getLanguage().getLocale());
         String template = bundle.getString("com.anjunar.blomst.control.users.user.connections.connection.UserConnectionService.createNotification");
         String format = MessageFormat.format(template, fromUser.getFirstName(), fromUser.getLastName());
         notification.setText(format);

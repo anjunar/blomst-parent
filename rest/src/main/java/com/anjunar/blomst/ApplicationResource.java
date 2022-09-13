@@ -16,6 +16,7 @@ import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.blomst.system.SystemResource;
+import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.ValidationResource;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -92,7 +93,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             UserForm userSelect = mapper.map(identityManager.getUser(), UserForm.class, UserSelect.class);
 
             PagesSearch search = new PagesSearch();
-            search.setLanguage(identityManager.getLanguage());
+            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
             linkTo(methodOn(PagesResource.class).list(search))
                     .withRel("pages")
                     .build(userSelect::addLink);
@@ -124,7 +125,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             return userSelect;
         } else {
             UserForm userSelect = new UserForm();
-            userSelect.setLanguage(identityManager.getLanguage());
+            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
 
             linkTo(methodOn(LoginResource.class).login())
                     .build(userSelect::addLink);

@@ -1,18 +1,21 @@
 package com.anjunar.common.rest.schema;
 
+import com.anjunar.common.rest.link.WebURLBuilderFactory;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.annotations.JsonSchemaLink;
 import com.anjunar.common.rest.schema.factories.JsonAbstractFactory;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
-import com.google.common.reflect.TypeToken;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
 import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedMethod;
 import com.anjunar.introspector.type.resolved.ResolvedType;
+import com.google.common.reflect.TypeToken;
 import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.Collection;
@@ -83,7 +86,7 @@ public class JsonSchemaGenerator {
         }
     }
 
-    public static JsonArray generateArray(BeanProperty<?,?> property) {
+    public static JsonArray generateArray(BeanProperty<?, ?> property) {
         TypeToken<?> type = property.getType().resolveType(Collection.class.getTypeParameters()[0]);
         JsonArray jsonArray = new JsonArray();
         for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {

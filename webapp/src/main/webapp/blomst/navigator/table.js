@@ -20,6 +20,23 @@ class Table extends HTMLElement {
         let url = new URL(link, `${window.location.protocol}//${window.location.host}/app/`);
         url.searchParams.set("index", query.index);
         url.searchParams.set("limit", query.limit);
+
+        for (const [key, value] of Object.entries(query.filter)) {
+            if (value instanceof Array) {
+                for (const element of value) {
+                    url.searchParams.append(key, element.id)
+                }
+            } else if (value instanceof Object) {
+                if (value.from && value.to) {
+                    url.searchParams.set(key, `from${value.from}to${value.to}`)
+                } else {
+                    url.searchParams.set(key, value.id)
+                }
+            } else {
+                url.searchParams.set(key, value);
+            }
+        }
+
         fetch(url.toString())
             .then(response => response.json())
             .then((response) => {

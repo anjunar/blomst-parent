@@ -1,6 +1,7 @@
-package com.anjunar.common.rest.api;
+package com.anjunar.common.rest.api.provider;
 
 import com.anjunar.common.ddd.AbstractEntity_;
+import com.anjunar.common.rest.api.DateTimeDuration;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.ddd.AbstractEntity;

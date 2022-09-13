@@ -15,7 +15,7 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
     open = false;
     label = "name";
 
-    placeholder;
+    placeholder = "";
     defaultValue = "";
     name;
     disabled = "false";
@@ -228,6 +228,16 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                 this.open = true;
                 this.showSelected = false;
                 this.window = data.map(item => this.proxyFactory(item, this));
+                let viewport = this.queryUpwards((element) => element.localName === "viewport");
+
+                let height = 14 + 39 + data.length * 42;
+                let selectBoundingClientRect = this.getBoundingClientRect();
+                let viewPortBoundingClientRect = viewport.getBoundingClientRect();
+                if (selectBoundingClientRect.top + height > viewPortBoundingClientRect.top + viewPortBoundingClientRect.height) {
+                    let overlay = this.querySelector("div.overlay");
+                    overlay.style.top = "initial"
+                    overlay.style.bottom = "24px"
+                }
             })
         }
     }
@@ -259,6 +269,8 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                         } else {
                             self.model = null
                         }
+                        self.dispatchEvent(new CustomEvent("model"))
+                        self.dispatchEvent(new CustomEvent("input"));
                     } else {
                         if (self.multiSelect) {
                             self.model.push(receiver);
@@ -290,11 +302,13 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case "model" : {
-                if (newValue instanceof Array) {
-                    this.model = newValue.map(model => this.proxyFactory(model, this));
-                    this.oringinalModel = newValue;
-                } else {
-                    this.model = this.proxyFactory(newValue, this);
+                if (newValue) {
+                    if (newValue instanceof Array) {
+                        this.model = newValue.map(model => this.proxyFactory(model, this));
+                        this.oringinalModel = newValue;
+                    } else {
+                        this.model = this.proxyFactory(newValue, this);
+                    }
                 }
             } break;
             case "placeholder" : {

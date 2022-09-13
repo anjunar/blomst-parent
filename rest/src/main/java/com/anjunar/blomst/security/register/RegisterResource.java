@@ -1,6 +1,7 @@
 package com.anjunar.blomst.security.register;
 
 import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.i18n.Language;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.security.IdentityManager;
@@ -67,13 +68,17 @@ public class RegisterResource {
     @LinkDescription("Do Registration")
     public ResponseOk register(RegisterForm resource) {
 
+        Language language = entityManager.createQuery("select l from Language l where l.locale = :locale", Language.class)
+                .setParameter("locale", Locale.forLanguageTag("en-DE"))
+                .getSingleResult();
+
         User user = new User();
 
         user.setFirstName(resource.getFirstName());
         user.setLastName(resource.getLastName());
         user.setBirthDate(resource.getBirthDate());
         user.setPassword(resource.getPassword());
-        user.setLanguage(Locale.forLanguageTag("en-DE"));
+        user.setLanguage(language);
         user.setEnabled(true);
 
         try {

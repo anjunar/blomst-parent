@@ -6,9 +6,9 @@
 </head>
 <body>
 <template>
-    <div style="display: flex">
-        <input is="dom-input" read:type="schema.widget" bind:model="model.search.from" step="1" bind:onmodel="onModel()">
-        <input is="dom-input" read:type="schema.widget" bind:model="model.search.to" step="1" bind:onmodel="onModel()">
+    <div style="display: flex; width: 100%">
+        <input is="dom-input" read:type="schema.widget" bind:model="model.search.from" step="1" bind:onmodel="onModel()" style="flex: 1" autocomplete="off">
+        <input is="dom-input" read:type="schema.widget" bind:model="model.search.to" step="1" bind:onmodel="onModel()" style="flex: 1" autocomplete="off">
     </div>
 </template>
 </body>

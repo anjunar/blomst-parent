@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DurationConverter implements ParamConverter<DateTimeDuration> {
+public class DateTimeDurationConverter implements ParamConverter<DateTimeDuration> {
 
     Pattern pattern = Pattern.compile("from(.*)to(.*)");
 

@@ -1,5 +1,6 @@
 package com.anjunar.blomst.jaxrs;
 
+import com.anjunar.common.rest.api.DateDuration;
 import com.anjunar.common.rest.api.DateTimeDuration;
 
 import jakarta.ws.rs.ext.ParamConverter;
@@ -17,7 +18,10 @@ public class CustomParamConverterProvider implements ParamConverterProvider {
             return (ParamConverter<T>) new LocalParamConverter();
         }
         if (rawType.equals(DateTimeDuration.class)) {
-            return (ParamConverter<T>) new DurationConverter();
+            return (ParamConverter<T>) new DateTimeDurationConverter();
+        }
+        if (rawType.equals(DateDuration.class)) {
+            return (ParamConverter<T>) new DateDurationConverter();
         }
         return null;
     }

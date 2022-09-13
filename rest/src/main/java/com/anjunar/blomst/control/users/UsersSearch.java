@@ -1,5 +1,6 @@
 package com.anjunar.blomst.control.users;
 
+import com.anjunar.common.rest.api.DateDuration;
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
@@ -7,6 +8,8 @@ import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import jakarta.ws.rs.QueryParam;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class UsersSearch extends AbstractRestSearch {
 
@@ -21,6 +24,22 @@ public class UsersSearch extends AbstractRestSearch {
     @RestPredicate(LastNameProvider.class)
     @QueryParam("lastName")
     private String lastName;
+
+    @RestPredicate(BirthDateProvider.class)
+    @QueryParam("birthDate")
+    private DateDuration birthDate;
+
+    @RestPredicate(EmailProvider.class)
+    @QueryParam("emails")
+    private String emails;
+
+    @RestPredicate(LanguageProvider.class)
+    @QueryParam("language")
+    private UUID language;
+
+    @RestPredicate(RolesProvider.class)
+    @QueryParam("roles")
+    private Set<UUID> roles;
 
     public List<String> getSort() {
         return sort;
@@ -46,4 +65,35 @@ public class UsersSearch extends AbstractRestSearch {
         this.lastName = lastName;
     }
 
+    public DateDuration getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(DateDuration birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getEmails() {
+        return emails;
+    }
+
+    public void setEmails(String emails) {
+        this.emails = emails;
+    }
+
+    public UUID getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(UUID language) {
+        this.language = language;
+    }
+
+    public Set<UUID> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UUID> roles) {
+        this.roles = roles;
+    }
 }

@@ -5,8 +5,11 @@ import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.google.common.collect.Sets;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -130,10 +133,26 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         UserForm resource = entityMapper.map(user, UserForm.class);
 
-        if (identityManager.hasRole("Administrator") || identityManager.getUser().equals(user)) {
-            resource.setPassword(user.getPassword());
+        linkTo(methodOn(UserResource.class).update(id, null))
+                .build(resource::addLink);
+        linkTo(methodOn(UserResource.class).delete(id))
+                .build(resource::addLink);
+
+        JsonArray roles = resource.find("roles", JsonArray.class);
+        if (roles != null) {
+            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                    .build(roles::addLink);
+        }
+        JsonObject language = resource.find("language", JsonObject.class);
+        if (language != null) {
+            linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
+                    .build(language::addLink);
         }
 
+        linkTo(methodOn(LoginResource.class).runAs(id))
+                .build(resource::addLink);
+        linkTo(methodOn(ApplicationResource.class).validate(null))
+                .build(resource::addLink);
 
         try {
             Resume resume = service.findResume(user);
@@ -165,21 +184,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
                 .withRel("timeline")
                 .build(resource::addLink);
 
-        linkTo(methodOn(UserResource.class).update(id, null))
-                .build(resource::addLink);
-        linkTo(methodOn(UserResource.class).delete(id))
-                .build(resource::addLink);
-
-        JsonArray roles = resource.find("roles", JsonArray.class);
-        if (roles != null) {
-            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
-                    .build(roles::addLink);
-        }
-        linkTo(methodOn(LoginResource.class).runAs(id))
-                .build(resource::addLink);
-        linkTo(methodOn(ApplicationResource.class).validate(null))
-                .build(resource::addLink);
-
         UserConnectionsSearch userConnectionsSearch = new UserConnectionsSearch();
         userConnectionsSearch.setFrom(id);
         userConnectionsSearch.setTo(user.getId());
@@ -208,8 +212,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     public UserForm save(UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
-
-        user.setPassword(resource.getPassword());
 
         service.confirmationEmail(user, request);
 
@@ -253,10 +255,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     public UserForm update(UUID id, UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
-
-        if (identityManager.hasRole("Administrator") || identityManager.getUser().equals(user)) {
-            user.setPassword(resource.getPassword());
-        }
 
         service.confirmationEmail(user, request);
 

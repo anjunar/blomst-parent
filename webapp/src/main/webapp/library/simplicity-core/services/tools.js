@@ -394,7 +394,7 @@ export function generateDomProxy(node) {
                     }
                 }
                 if (appManager.mode === "development") {
-                    console.log("latency : " + Math.round(performance.now() - start) + "ms")
+                    console.log("latency : " + Math.round(performance.now() - start) + "ms" + " " + property)
                 }
             }
         })

@@ -1,5 +1,6 @@
 package com.anjunar.common.security;
 
+import com.anjunar.common.i18n.Language;
 import org.hibernate.annotations.Filter;
 
 import jakarta.persistence.*;
@@ -23,7 +24,8 @@ public class User extends Identity {
     @ElementCollection
     private final List<EmailType> emails = new ArrayList<>();
 
-    private Locale language = Locale.ENGLISH;
+    @ManyToOne
+    private Language language;
 
     private String token;
 
@@ -74,11 +76,11 @@ public class User extends Identity {
         return emails;
     }
 
-    public Locale getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
-    public void setLanguage(Locale language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 

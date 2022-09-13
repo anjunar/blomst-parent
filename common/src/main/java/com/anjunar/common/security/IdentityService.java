@@ -1,5 +1,6 @@
 package com.anjunar.common.security;
 
+import com.anjunar.common.i18n.Language;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -99,4 +100,9 @@ public class IdentityService {
         }
     }
 
+    public Language findLanguage(Locale locale) {
+        return entityManager.createQuery("select l from Language l where l.locale = :locale", Language.class)
+                .setParameter("locale", locale)
+                .getSingleResult();
+    }
 }

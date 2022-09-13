@@ -4,6 +4,7 @@ import MetaFilterCheckbox from "./meta-table-filter/meta-filter-checkbox.js";
 import MetaFilterLazySelect from "./meta-table-filter/meta-filter-lazy-select.js";
 import MetaFilterDatetime from "./meta-table-filter/meta-filter-datetime.js";
 import MetaFilterInput from "./meta-table-filter/meta-filter-input.js";
+import MetaFilterLazyMultiSelect from "./meta-table-filter/meta-filter-lazy-multi-select.js";
 
 class MetaTableFilter extends HTMLElement {
 
@@ -18,6 +19,8 @@ class MetaTableFilter extends HTMLElement {
                 return MetaFilterCheckbox
             case "lazy-select" :
                 return MetaFilterLazySelect
+            case "lazy-multi-select" :
+                return MetaFilterLazyMultiSelect
             case "datetime-local" :
                 return MetaFilterDatetime
             case "date" :
@@ -33,7 +36,7 @@ class MetaTableFilter extends HTMLElement {
         component.schema = this.schema;
         component.model = this.model;
         component.addEventListener("model", () => {
-            this.dispatchEvent(new CustomEvent("model"))
+            this.dispatchEvent(new CustomEvent("model"));
         })
         this.container.appendChild(component);
     }

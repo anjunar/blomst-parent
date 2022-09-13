@@ -27,7 +27,7 @@ public class I18nFilter implements Filter {
         if (identityManager.getUser() == null) {
             servletResponse.setLocale(Locale.forLanguageTag("en-DE"));
         } else {
-            servletResponse.setLocale(identityManager.getUser().getLanguage());
+            servletResponse.setLocale(identityManager.getUser().getLanguage().getLocale());
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

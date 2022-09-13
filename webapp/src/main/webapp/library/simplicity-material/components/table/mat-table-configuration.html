@@ -16,12 +16,12 @@
                 <tr>
                     <td>
                         <div let="tr">
-                            <slot bind:source="table" selector="thead tr td *" bind:index="tr.index"></slot>
+                            <slot read:source="table" selector="thead tr td *" read:index="tr.index"></slot>
                         </div>
                     </td>
                     <td read:if="table.extension">
                         <div let="tr" style="background-color: var(--main-dark1-color)">
-                            <slot bind:source="table.extension" selector="tsearch mat-table-search > *" bind:implicit="tr" bind:index="tr.index"></slot>
+                            <slot read:source="table.extension" selector="tsearch mat-table-search > *" read:implicit="tr" read:index="tr.index"></slot>
                         </div>
                     </td>
                     <td>
@@ -31,8 +31,8 @@
                     </td>
                     <td>
                         <div let="tr">
-                            <button type="button" class="material-icons" translate="no" bind:onclick="left($event, tr.rowIndex)" bind:disabled="tr.rowIndex === 0">chevron_left</button>
-                            <button type="button" class="material-icons" translate="no" bind:onclick="right($event, tr.rowIndex)" bind:disabled="tr.rowIndex === tr.rowLength - 1">chevron_right</button>
+                            <button type="button" class="material-icons" translate="no" bind:onclick="left($event, tr.rowIndex)" read:disabled="tr.rowIndex === 0">chevron_left</button>
+                            <button type="button" class="material-icons" translate="no" bind:onclick="right($event, tr.rowIndex)" read:disabled="tr.rowIndex === tr.rowLength - 1">chevron_right</button>
                         </div>
                     </td>
                 </tr>

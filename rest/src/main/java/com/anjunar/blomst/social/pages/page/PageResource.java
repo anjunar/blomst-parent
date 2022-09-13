@@ -124,7 +124,7 @@ public class PageResource {
                 .build(pageForm::addLink);
 
         PageHistorySearch historySearch = new PageHistorySearch();
-        historySearch.setId(id);
+        historySearch.setId(id.toString());
         linkTo(methodOn(PageHistoryResource.class).list(historySearch))
                 .withRel("history")
                 .build(pageForm::addLink);

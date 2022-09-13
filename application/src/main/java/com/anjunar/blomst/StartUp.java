@@ -28,6 +28,40 @@ public class StartUp {
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) ServletContext init, IdentityService service, EntityManager entityManager) throws SQLException {
 
+        Language german = null;
+        try {
+            german = entityManager.createQuery("select l from Language l where l.locale = :locale", Language.class)
+                    .setParameter("locale", Locale.forLanguageTag("de-DE"))
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            german = null;
+        }
+
+        if (german == null) {
+            german = new Language();
+            german.setLocale(Locale.forLanguageTag("de-DE"));
+            german.getI18nName().put(Locale.forLanguageTag("de-DE"), "Deutsch");
+            german.getI18nName().put(Locale.forLanguageTag("en-DE"), "German");
+            entityManager.persist(german);
+        }
+
+        Language english = null;
+        try {
+            english = entityManager.createQuery("select l from Language l where l.locale = :locale", Language.class)
+                    .setParameter("locale", Locale.forLanguageTag("en-DE"))
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            english = null;
+        }
+
+        if (english == null) {
+            english = new Language();
+            english.setLocale(Locale.forLanguageTag("en-DE"));
+            english.getI18nName().put(Locale.forLanguageTag("de-DE"), "Englisch");
+            english.getI18nName().put(Locale.forLanguageTag("en-DE"), "English");
+            entityManager.persist(english);
+        }
+
         LocalDate birthdate = LocalDate.of(1980, 4, 1);
         User patrick = service.findUser("Patrick", "Bittner", birthdate);
 
@@ -53,7 +87,7 @@ public class StartUp {
             EmailType emailType = new EmailType();
             emailType.setValue("patrick.bittner@hamburg.de");
             patrick.getEmails().add(emailType);
-            patrick.setLanguage(Locale.forLanguageTag("en-DE"));
+            patrick.setLanguage(english);
             patrick.getRoles().add(administratorRole);
             service.saveUser(patrick);
 
@@ -94,22 +128,6 @@ public class StartUp {
             entityManager.persist(category);
         }
 
-        List<Language> languages = entityManager.createQuery("select l from Language l", Language.class)
-                .getResultList();
-
-        if (languages.isEmpty()) {
-            Language german = new Language();
-            german.setLocale(Locale.forLanguageTag("de-DE"));
-            german.getI18nName().put(Locale.forLanguageTag("de-DE"), "Deutsch");
-            german.getI18nName().put(Locale.forLanguageTag("en-DE"), "German");
-            entityManager.persist(german);
-
-            Language english = new Language();
-            english.setLocale(Locale.forLanguageTag("en-DE"));
-            english.getI18nName().put(Locale.forLanguageTag("de-DE"), "Englisch");
-            english.getI18nName().put(Locale.forLanguageTag("en-DE"), "English");
-            entityManager.persist(english);
-        }
     }
 
 }

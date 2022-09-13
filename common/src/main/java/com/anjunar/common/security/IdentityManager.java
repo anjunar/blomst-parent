@@ -1,5 +1,6 @@
 package com.anjunar.common.security;
 
+import com.anjunar.common.i18n.Language;
 import com.anjunar.common.security.enterprise.Authenticator;
 import com.anjunar.common.security.enterprise.CivilCredential;
 import com.anjunar.common.i18n.i18nResolver;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,12 +75,15 @@ public class IdentityManager implements Serializable {
     }
 
     public boolean hasRole(String role) {
-        User user = service.findUser(getUser().getId());
-        Set<Role> roles = user.getRoles();
-        for (Role group : roles) {
-            if (group.getName().equals(role)) {
-                return true;
+        User user = getUser();
+        if (Objects.nonNull(user)) {
+            Set<Role> roles = user.getRoles();
+            for (Role group : roles) {
+                if (group.getName().equals(role)) {
+                    return true;
+                }
             }
+            return false;
         }
         return false;
     }
@@ -109,8 +114,8 @@ public class IdentityManager implements Serializable {
         return false;
     }
 
-    public Locale getLanguage() {
-        return resolver.getLocale();
+    public Language getLanguage() {
+        return service.findLanguage(resolver.getLocale());
     }
 
     public void setLanguage(Locale language) {

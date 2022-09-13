@@ -227,6 +227,10 @@ export function membraneFactory(instance, parent = []) {
         return instance;
     }
     if (instance instanceof Object) {
+        let newVar = membraneCache.get(instance);
+        if (newVar) {
+            return newVar;
+        }
         let root = parent[0].proxy;
         let path = parent.map(object => object.property).join(".");
         let proxy = new Proxy(instance, {
@@ -280,7 +284,7 @@ export function membraneFactory(instance, parent = []) {
 
                 let start = performance.now();
 
-                if (value.isProxy) {
+                if (value && value.isProxy) {
                     value = value.resolve;
                 }
 
@@ -299,7 +303,7 @@ export function membraneFactory(instance, parent = []) {
                 }
 
                 if (appManager.mode === "development") {
-                    console.log("latency : " + Math.round(performance.now() - start) + "ms")
+                    console.log("latency : " + Math.round(performance.now() - start) + "ms" + " " + path + "." + p)
                 }
 
                 return result;

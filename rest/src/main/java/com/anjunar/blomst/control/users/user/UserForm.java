@@ -1,11 +1,15 @@
 package com.anjunar.blomst.control.users.user;
 
+import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.role.RoleForm;
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
+import com.anjunar.common.rest.schema.annotations.JsonSchemaLink;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,12 +36,6 @@ public class UserForm extends AbstractRestEntity implements UserSelect {
     @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate")
     private LocalDate birthDate;
 
-    @NotBlank
-    @Size(min = 3, max = 80)
-    @JsonSchema(widget = JsonNode.Widget.PASSWORD, title = "Password")
-    @MapperSecurity(rolesAllowed = {"Administrator"})
-    private String password;
-
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
     @MapperConverter(ImageConverter.class)
     private ImageType picture = new ImageType();
@@ -49,13 +47,15 @@ public class UserForm extends AbstractRestEntity implements UserSelect {
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private boolean enabled;
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "language")
-    private Locale language;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
+    @JsonSchemaLink(resource = LanguagesResource.class, method = "list")
+    private LanguageForm language;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")
     @Size(min = 1)
     @NotNull
     @MapperSecurity(rolesAllowed = {"Administrator"})
+    @JsonSchemaLink(resource = RolesResource.class, method = "list")
     private Set<RoleForm> roles = new HashSet<>();
 
     @Override
@@ -86,14 +86,6 @@ public class UserForm extends AbstractRestEntity implements UserSelect {
         this.birthDate = birthDate;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public ImageType getPicture() {
         return picture;
     }
@@ -118,11 +110,11 @@ public class UserForm extends AbstractRestEntity implements UserSelect {
         this.enabled = enabled;
     }
 
-    public Locale getLanguage() {
+    public LanguageForm getLanguage() {
         return language;
     }
 
-    public void setLanguage(Locale language) {
+    public void setLanguage(LanguageForm language) {
         this.language = language;
     }
 

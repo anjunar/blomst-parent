@@ -1,11 +1,17 @@
 package com.anjunar.blomst.control.users;
 
+import com.anjunar.blomst.control.roles.RolesResource;
+import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.UserResource;
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.User;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -47,6 +53,14 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
 
         linkTo(methodOn(UserResource.class).create())
                 .build(table::addLink);
+
+        JsonArray roles = table.find("roles", JsonArray.class);
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .build(roles::addLink);
+
+        JsonObject language = table.find("language", JsonObject.class);
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
+                .build(language::addLink);
 
         return table;
     }

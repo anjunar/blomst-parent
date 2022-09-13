@@ -4,6 +4,8 @@ import com.anjunar.common.security.IdentityManager;
 import org.hibernate.annotations.FilterDef;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,7 +20,8 @@ import java.util.UUID;
 public abstract class AbstractEntity implements Entity {
 
     @Id
-    @Column(name = "id", length = 16, unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id = UUID.randomUUID();
 
     @Version

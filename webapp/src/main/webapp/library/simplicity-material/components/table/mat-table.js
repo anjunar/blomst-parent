@@ -86,8 +86,8 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
     }
 
     row(row, index, length) {
-        row.rowIndex = index;
-        row.rowLength = length;
+        row.resolve.rowIndex = index;
+        row.resolve.rowLength = length;
         return row;
     }
 
@@ -139,9 +139,9 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
                     return search.length > 0;
                 }
                 if (search instanceof Object) {
-                    return search.from && search.to
+                    return (search.from && search.to) || search.id
                 }
-                return column.search.length > 0 || Number.isInteger(column.search)
+                return column.search && (column.search.length > 0 || Number.isInteger(column.search))
             })
             .reduce((previous, current) => {
                 let path = current.path;
