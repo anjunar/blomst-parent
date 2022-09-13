@@ -14,10 +14,10 @@
                         <meta-form read:model="element" style="width: 100%">
                             <meta-input read:for="let [key, model] of element.$schema.properties" read:property="key" read:schema="model"></meta-input>
                         </meta-form>
-                        <button type="button" read:if="schema.readOnly" bind:onclick="removeItem(element)" style="height: 36px" class="material-icons">delete</button>
+                        <button type="button" read:if="! schema.readOnly" bind:onclick="removeItem(element)" style="height: 36px" class="material-icons">delete</button>
                     </div>
                 </div>
-                <button read:if="schema.readOnly" type="button" bind:onclick="addItem()" class="material-icons">add</button>
+                <button read:if="! schema.readOnly" type="button" bind:onclick="addItem()" class="material-icons">add</button>
             </div>
         </div>
     </template>

@@ -1,26 +1,26 @@
 package com.anjunar.blomst.control.users.user;
 
-import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.role.RoleForm;
-import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.annotations.JsonSchemaLink;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @NaturalId
 @JsonSchema(widget = JsonNode.Widget.FORM)
-public class UserForm extends AbstractRestEntity implements UserSelect {
+public class UserForm extends AbstractRestEntity {
 
     @NotBlank
     @Size(min = 3, max = 80)
@@ -48,32 +48,26 @@ public class UserForm extends AbstractRestEntity implements UserSelect {
     private boolean enabled;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
-    @JsonSchemaLink(resource = LanguagesResource.class, method = "list")
     private LanguageForm language;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")
     @Size(min = 1)
     @NotNull
     @MapperSecurity(rolesAllowed = {"Administrator"})
-    @JsonSchemaLink(resource = RolesResource.class, method = "list")
     private Set<RoleForm> roles = new HashSet<>();
 
-    @Override
     public String getFirstName() {
         return firstName;
     }
 
-    @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @Override
     public String getLastName() {
         return lastName;
     }
 
-    @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

@@ -32,6 +32,8 @@ public class JsonObject extends JsonNode {
                     return result;
                 }
             }
+        }
+        for (Map.Entry<String, JsonNode> entry : properties.entrySet()) {
             if (entry.getValue() instanceof JsonObject) {
                 JsonObject jsonObject = (JsonObject) entry.getValue();
                 JsonNode result = jsonObject.find(name, type);
@@ -51,6 +53,7 @@ public class JsonObject extends JsonNode {
                 }
             }
         }
+
         return null;
     }
 
