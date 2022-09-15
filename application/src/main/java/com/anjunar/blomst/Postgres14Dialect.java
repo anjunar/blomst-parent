@@ -38,7 +38,7 @@ public class Postgres14Dialect extends PostgreSQLDialect {
 
         functionRegistry.registerPattern(
                 "distance",
-                "?1 @@ to_tsquery(?2, ?3);",
+                "to_tsvector(?1) @@ to_tsquery(?2)",
                 typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.BOOLEAN)
         );
 

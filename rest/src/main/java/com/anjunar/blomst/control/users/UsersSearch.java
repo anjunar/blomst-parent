@@ -1,10 +1,10 @@
 package com.anjunar.blomst.control.users;
 
 import com.anjunar.common.rest.api.DateDuration;
+import com.anjunar.common.rest.search.provider.*;
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
-import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import jakarta.ws.rs.QueryParam;
 import java.util.List;
@@ -17,15 +17,15 @@ public class UsersSearch extends AbstractRestSearch {
     @QueryParam("sort")
     private List<String> sort;
 
-    @RestPredicate(FirstNameProvider.class)
+    @RestPredicate(GenericLikeProvider.class)
     @QueryParam("firstName")
     private String firstName;
 
-    @RestPredicate(LastNameProvider.class)
+    @RestPredicate(GenericLikeProvider.class)
     @QueryParam("lastName")
     private String lastName;
 
-    @RestPredicate(BirthDateProvider.class)
+    @RestPredicate(GenericDurationDateProvider.class)
     @QueryParam("birthDate")
     private DateDuration birthDate;
 
@@ -33,11 +33,11 @@ public class UsersSearch extends AbstractRestSearch {
     @QueryParam("emails")
     private String emails;
 
-    @RestPredicate(LanguageProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("language")
     private UUID language;
 
-    @RestPredicate(RolesProvider.class)
+    @RestPredicate(GenericOneToManyProvider.class)
     @QueryParam("roles")
     private Set<UUID> roles;
 

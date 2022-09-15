@@ -4,6 +4,7 @@ import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
@@ -67,6 +68,8 @@ public class PageResource {
 
         PageForm pageForm = new PageForm();
 
+        pageForm.setModifier(entityMapper.map(identityManager.getUser(), UserSelect.class));
+
         linkTo(methodOn(PageResource.class).save(new PageForm()))
                 .build(pageForm::addLink);
 
@@ -78,10 +81,6 @@ public class PageResource {
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
-        JsonObject modifier = pageForm.find("modifier", JsonObject.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(modifier::addLink);
-
         return pageForm;
     }
 
@@ -91,13 +90,7 @@ public class PageResource {
     @LinkDescription("Read Page")
     public PageForm read(@QueryParam("id") UUID id, @QueryParam("revision") Integer revision) {
 
-        AuditReader auditReader = AuditReaderFactory.get(entityManager);
-
-        if (revision == null) {
-            revision = (Integer) auditReader.getRevisionNumberForDate(new Date(Long.MAX_VALUE));
-        }
-
-        Page page = auditReader.find(Page.class, id, revision);
+        Page page = entityManager.find(Page.class, id);
 
         PageForm pageForm = entityMapper.map(page, PageForm.class);
 
@@ -143,6 +136,8 @@ public class PageResource {
 
         Page page = restMapper.map(resource, Page.class);
 
+        page.setModifier(identityManager.getUser());
+
         entityManager.persist(page);
 
         resource.setId(page.getId());
@@ -163,6 +158,8 @@ public class PageResource {
     public PageForm update(@QueryParam("id") UUID id, PageForm resource) {
 
         Page page = restMapper.map(resource, Page.class);
+
+        page.setModifier(identityManager.getUser());
 
         linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
                 .build(resource::addLink);

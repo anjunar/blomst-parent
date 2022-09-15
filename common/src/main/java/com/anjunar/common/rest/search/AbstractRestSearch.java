@@ -1,10 +1,9 @@
 package com.anjunar.common.rest.search;
 
 import com.anjunar.common.rest.api.DateTimeDuration;
-import com.anjunar.common.rest.api.provider.DurationCreatedProvider;
-import com.anjunar.common.rest.api.provider.DurationModifiedProvider;
+import com.anjunar.common.rest.search.provider.GenericDurationDateTimeProvider;
 
-import com.anjunar.common.rest.api.provider.IdProvider;
+import com.anjunar.common.rest.search.provider.GenericIdProvider;
 import jakarta.ws.rs.QueryParam;
 
 public abstract class AbstractRestSearch {
@@ -16,15 +15,15 @@ public abstract class AbstractRestSearch {
     private Integer limit;
 
     @QueryParam("id")
-    @RestPredicate(IdProvider.class)
+    @RestPredicate(GenericIdProvider.class)
     private String id;
 
     @QueryParam("created")
-    @RestPredicate(DurationCreatedProvider.class)
+    @RestPredicate(GenericDurationDateTimeProvider.class)
     private DateTimeDuration created;
 
     @QueryParam("modified")
-    @RestPredicate(DurationModifiedProvider.class)
+    @RestPredicate(GenericDurationDateTimeProvider.class)
     private DateTimeDuration modified;
 
     public String getId() {

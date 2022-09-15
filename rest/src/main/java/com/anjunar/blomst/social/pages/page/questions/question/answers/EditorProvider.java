@@ -6,6 +6,7 @@ import com.anjunar.blomst.social.pages.page.Answer_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityManager;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -14,7 +15,7 @@ import jakarta.persistence.criteria.Root;
 
 public class EditorProvider extends AbstractRestPredicateProvider<String, Answer> {
     @Override
-    public Predicate build(String value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Answer> root, CriteriaQuery<?> query) {
+    public Predicate build(String value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Answer> root, CriteriaQuery<?> query, BeanProperty<?, ?> property) {
         if (value == null || value.equals("")) {
             return builder.conjunction();
         }

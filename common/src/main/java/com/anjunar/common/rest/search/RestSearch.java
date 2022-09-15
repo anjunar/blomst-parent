@@ -68,7 +68,7 @@ public class RestSearch {
                     Class<? extends AbstractRestPredicateProvider> providerClass = annotation.value();
                     try {
                         AbstractRestPredicateProvider provider = providerClass.newInstance();
-                        return provider.build(value, identityManager, entityManager, builder, root, query);
+                        return provider.build(value, identityManager, entityManager, builder, root, query, beanProperty);
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }

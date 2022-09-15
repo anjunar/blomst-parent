@@ -3,24 +3,36 @@ package com.anjunar.blomst.social.pages;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericLikeProvider;
+import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
+import com.anjunar.common.rest.search.provider.GenericTextProvider;
+import jakarta.ws.rs.QueryParam;
 
 import java.util.List;
-import java.util.Locale;
+import java.util.UUID;
 
 public class PagesSearch extends AbstractLikeableSearch {
 
+    @QueryParam("sort")
     @RestSort(GenericSortProvider.class)
     private List<String> sort;
 
-    @RestPredicate(TitleProvider.class)
+    @QueryParam("title")
+    @RestPredicate(GenericLikeProvider.class)
     private String title;
 
-    @RestPredicate(WordProvider.class)
-    private String text;
+    @QueryParam("editor")
+    @RestPredicate(GenericTextProvider.class)
+    private String editor;
 
-    @RestPredicate(LanguageProvider.class)
-    private Locale language;
+    @QueryParam("language")
+    @RestPredicate(GenericManyToOneProvider.class)
+    private UUID language;
+
+    @QueryParam("modifier")
+    @RestPredicate(GenericManyToOneProvider.class)
+    private UUID modifier;
 
     public List<String> getSort() {
         return sort;
@@ -38,19 +50,27 @@ public class PagesSearch extends AbstractLikeableSearch {
         this.title = title;
     }
 
-    public String getText() {
-        return text;
+    public String getEditor() {
+        return editor;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
 
-    public Locale getLanguage() {
+    public UUID getLanguage() {
         return language;
     }
 
-    public void setLanguage(Locale language) {
+    public void setLanguage(UUID language) {
         this.language = language;
+    }
+
+    public UUID getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(UUID modifier) {
+        this.modifier = modifier;
     }
 }

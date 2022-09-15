@@ -52,6 +52,10 @@ public class ResourceRestMapper {
     }
 
     public <S extends AbstractSchemaEntity, D> D map(S source, Class<D> destinationClass) {
+        return map(source, destinationClass, false);
+    }
+
+    public <S extends AbstractSchemaEntity, D> D map(S source, Class<D> destinationClass, boolean isDirty) {
         D destination;
         if (source instanceof AbstractRestEntity restEntity) {
             UUID id = restEntity.getId();
@@ -82,7 +86,7 @@ public class ResourceRestMapper {
                 Object sourcePropertyInstance = sourceProperty.apply(source);
                 Object destinationPropertyInstance = destinationProperty.apply(destination);
 
-                if (Objects.nonNull(sourcePropertyInstance) && isDirty(source, sourceProperty)) {
+                if (Objects.nonNull(sourcePropertyInstance) && (isDirty(source, sourceProperty) || isDirty)) {
                     if (securityProviders.stream().anyMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty))) {
                         switch (sourcePropertyInstance) {
                             case Collection<?> collection -> processCollection(
@@ -98,6 +102,7 @@ public class ResourceRestMapper {
                                     destinationProperty
                             );
                             default -> processBean(
+                                    source,
                                     sourcePropertyInstance,
                                     sourceProperty,
                                     destinationPropertyInstance,
@@ -122,17 +127,20 @@ public class ResourceRestMapper {
         }
     }
 
-    private <S extends AbstractSchemaEntity, D> void processBean(Object sourcePropertyInstance,
-                                                                                      BeanProperty<S, ?> sourceProperty,
-                                                                                      Object destinationPropertyInstance,
-                                                                                      BeanProperty<D, Object> destinationProperty, D destination) {
+    private <S extends AbstractSchemaEntity, D> void processBean(S source,
+                                                                 Object sourcePropertyInstance,
+                                                                 BeanProperty<S, ?> sourceProperty,
+                                                                 Object destinationPropertyInstance,
+                                                                 BeanProperty<D, Object> destinationProperty, D destination) {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
         MapperConverter mapperConverter = sourceProperty.getAnnotation(MapperConverter.class);
         if (mapperConverter == null) {
             if (sourcePropertyType.equals(destinationPropertyType)) {
-                destinationProperty.accept(destination, sourcePropertyInstance);
+                if (!destinationProperty.isReadOnly()) {
+                    destinationProperty.accept(destination, sourcePropertyInstance);
+                }
             } else {
                 if (UUID.class.isAssignableFrom(sourcePropertyType)) {
                     UUID uuid = (UUID) sourcePropertyInstance;
@@ -140,7 +148,7 @@ public class ResourceRestMapper {
                     destinationProperty.accept(destination, entity);
                 } else {
                     AbstractSchemaEntity entity = (AbstractSchemaEntity) sourcePropertyInstance;
-                    Object restEntity = map(entity, (Class<?>) destinationPropertyType);
+                    Object restEntity = map(entity, (Class<?>) destinationPropertyType, isDirty(source, sourceProperty));
                     destinationProperty.accept(destination, restEntity);
                 }
             }
@@ -152,9 +160,9 @@ public class ResourceRestMapper {
     }
 
     private <S extends AbstractSchemaEntity, D> void processMap(Map<Object, Object> sourcePropertyInstance,
-                                                                                     BeanProperty<S, ?> sourceProperty,
-                                                                                     Map<Object, Object> destinationPropertyInstance,
-                                                                                     BeanProperty<D, Object> destinationProperty) {
+                                                                BeanProperty<S, ?> sourceProperty,
+                                                                Map<Object, Object> destinationPropertyInstance,
+                                                                BeanProperty<D, Object> destinationProperty) {
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
                 .resolveType(Map.class.getTypeParameters()[0])
@@ -180,12 +188,12 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
                 AbstractSchemaEntity restKeyEntity = (AbstractSchemaEntity) entry.getKey();
-                Object keyEntity = map(restKeyEntity, (Class<?>) destinationMapKeyType);
+                Object keyEntity = map(restKeyEntity, (Class<?>) destinationMapKeyType, false);
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(keyEntity, entry.getValue());
                 } else {
                     AbstractSchemaEntity restValueEntity = (AbstractSchemaEntity) entry.getValue();
-                    Object valueEntity = map(restValueEntity, (Class<?>) destinationMapValueType);
+                    Object valueEntity = map(restValueEntity, (Class<?>) destinationMapValueType, false);
                     destinationPropertyInstance.put(keyEntity, valueEntity);
                 }
             }
@@ -193,9 +201,9 @@ public class ResourceRestMapper {
     }
 
     private <S extends AbstractSchemaEntity, D> void processCollection(Collection<Object> sourcePropertyInstance,
-                                                                                            BeanProperty<S, ?> sourceProperty,
-                                                                                            Collection<Object> destinationPropertyInstance,
-                                                                                            BeanProperty<D, Object> destinationProperty) {
+                                                                       BeanProperty<S, ?> sourceProperty,
+                                                                       Collection<Object> destinationPropertyInstance,
+                                                                       BeanProperty<D, Object> destinationProperty) {
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
                 .resolveType(Collection.class.getTypeParameters()[0])
@@ -213,7 +221,7 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.add(element);
             } else {
                 AbstractSchemaEntity restEntity = (AbstractSchemaEntity) element;
-                Object entity = map(restEntity, (Class<?>) destinationCollectionType);
+                Object entity = map(restEntity, (Class<?>) destinationCollectionType, false);
                 destinationPropertyInstance.add(entity);
             }
         }

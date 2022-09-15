@@ -2,7 +2,7 @@ import {customComponents} from "../../../simplicity-core/simplicity.js";
 import {libraryLoader} from "../../../simplicity-core/processors/loader-processor.js";
 import MetaFilterCheckbox from "./meta-table-filter/meta-filter-checkbox.js";
 import MetaFilterLazySelect from "./meta-table-filter/meta-filter-lazy-select.js";
-import MetaFilterDatetime from "./meta-table-filter/meta-filter-datetime.js";
+import MetaFilterDuration from "./meta-table-filter/meta-filter-duration.js";
 import MetaFilterInput from "./meta-table-filter/meta-filter-input.js";
 import MetaFilterLazyMultiSelect from "./meta-table-filter/meta-filter-lazy-multi-select.js";
 
@@ -22,9 +22,11 @@ class MetaTableFilter extends HTMLElement {
             case "lazy-multi-select" :
                 return MetaFilterLazyMultiSelect
             case "datetime-local" :
-                return MetaFilterDatetime
+                return MetaFilterDuration
             case "date" :
-                return MetaFilterDatetime
+                return MetaFilterDuration
+            case "number" :
+                return MetaFilterDuration
             default :
                 return MetaFilterInput
         }

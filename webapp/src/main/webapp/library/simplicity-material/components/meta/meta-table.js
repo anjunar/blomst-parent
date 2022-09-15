@@ -94,6 +94,9 @@ class MetaTable extends HTMLElement {
                                 case "date" : {
                                     resovled.search = resovled.search || {from : "", to : ""}
                                 } break;
+                                case "number" : {
+                                    resovled.search = resovled.search || {from : "", to : ""}
+                                } break;
                                 default : {
                                     resovled.search = resovled.search || "";
                                 }

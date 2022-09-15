@@ -3,7 +3,7 @@ import {libraryLoader} from "../../../../simplicity-core/processors/loader-proce
 import MatInputContainer from "../../form/container/mat-input-container.js";
 import DomInput from "../../../../simplicity-core/directives/dom-input.js";
 
-class MetaFilterDatetime extends HTMLElement {
+class MetaFilterDuration extends HTMLElement {
 
     schema;
     model;
@@ -51,9 +51,9 @@ class MetaFilterDatetime extends HTMLElement {
     }
 
     static get template() {
-        return libraryLoader("simplicity-material/components/meta/meta-table-filter/meta-filter-datetime.html")
+        return libraryLoader("simplicity-material/components/meta/meta-table-filter/meta-filter-duration.html")
     }
 
 }
 
-export default customComponents.define("meta-filter-datetime", MetaFilterDatetime);
+export default customComponents.define("meta-filter-duration", MetaFilterDuration);

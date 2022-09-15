@@ -31,7 +31,7 @@ public class PageForm extends AbstractLikeableRestEntity {
     private LanguageForm language;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modifier")
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Modifier", readOnly = true)
     private UserSelect modifier;
 
     public String getTitle() {

@@ -4,6 +4,7 @@ import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Identity_;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 public class SourceProvider extends AbstractRestPredicateProvider<Set<UUID>, AbstractPost> {
     @Override
-    public Predicate build(Set<UUID> value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<AbstractPost> root, CriteriaQuery<?> query) {
+    public Predicate build(Set<UUID> value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<AbstractPost> root, CriteriaQuery<?> query, BeanProperty<?, ?> property) {
         if (value == null || value.size() == 0) {
             return builder.conjunction();
         }

@@ -6,6 +6,7 @@ import com.anjunar.common.security.UserConnection_;
 import com.anjunar.common.security.User_;
 import com.anjunar.common.security.UserConnection;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 public class ToProvider extends AbstractRestPredicateProvider<UUID, UserConnection> {
     @Override
-    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<UserConnection> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<UserConnection> root, CriteriaQuery<?> query, BeanProperty<?, ?> property) {
         if (value == null) {
             return builder.conjunction();
         }

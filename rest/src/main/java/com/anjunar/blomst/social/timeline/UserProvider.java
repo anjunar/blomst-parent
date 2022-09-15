@@ -6,6 +6,7 @@ import com.anjunar.common.security.User_;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.Question_;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 public class UserProvider extends AbstractRestPredicateProvider<UUID, Question> {
     @Override
-    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Question> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Question> root, CriteriaQuery<?> query, BeanProperty<?, ?> property) {
         if (value == null) {
             return builder.conjunction();
         }

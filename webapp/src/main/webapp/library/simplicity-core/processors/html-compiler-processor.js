@@ -227,12 +227,10 @@ export function membraneFactory(instance, parent = []) {
         return instance;
     }
     if (instance instanceof Object) {
-/*
         let newVar = membraneCache.get(instance);
         if (newVar) {
             return newVar;
         }
-*/
         let root = parent[0].proxy;
         let path = parent.map(object => object.property).join(".");
         let proxy = new Proxy(instance, {

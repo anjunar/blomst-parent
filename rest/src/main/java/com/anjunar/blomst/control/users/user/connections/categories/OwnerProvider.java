@@ -6,6 +6,7 @@ import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User_;
 import com.anjunar.common.security.Category;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 public class OwnerProvider extends AbstractRestPredicateProvider<UUID, Category> {
     @Override
-    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Category> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Category> root, CriteriaQuery<?> query, BeanProperty<?, ?> property) {
         if (value == null) {
             return builder.conjunction();
         }

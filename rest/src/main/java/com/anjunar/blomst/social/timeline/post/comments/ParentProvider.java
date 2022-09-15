@@ -5,6 +5,7 @@ import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.timeline.Comment;
 import com.anjunar.blomst.social.timeline.Comment_;
 
+import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class ParentProvider extends AbstractRestPredicateProvider<UUID, Comment> {
 
     @Override
-    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Comment> root, CriteriaQuery<?> query) {
+    public Predicate build(UUID value, IdentityManager identityManager, EntityManager entityManager, CriteriaBuilder builder, Root<Comment> root, CriteriaQuery<?> query, BeanProperty<?, ?> property) {
         if (value == null) {
             return builder.conjunction();
         }

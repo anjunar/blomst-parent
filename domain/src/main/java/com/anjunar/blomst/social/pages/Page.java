@@ -1,6 +1,7 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.common.ddd.AbstractEntity;
+import com.anjunar.common.i18n.Language;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
 import org.hibernate.annotations.Filter;
@@ -36,7 +37,8 @@ public class Page extends Likeable {
     private User modifier;
 
 //    @Audited(targetAuditMode = NOT_AUDITED)
-    private Locale language;
+    @ManyToOne
+    private Language language;
 
     @OneToMany()
 //    @Audited(targetAuditMode = NOT_AUDITED)
@@ -66,11 +68,11 @@ public class Page extends Likeable {
         this.modifier = modifier;
     }
 
-    public Locale getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
-    public void setLanguage(Locale language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 

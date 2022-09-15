@@ -3,6 +3,7 @@ package com.anjunar.blomst.jaxrs;
 import com.anjunar.common.rest.api.DateDuration;
 import com.anjunar.common.rest.api.DateTimeDuration;
 
+import com.anjunar.common.rest.api.LongIntervall;
 import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
@@ -22,6 +23,9 @@ public class CustomParamConverterProvider implements ParamConverterProvider {
         }
         if (rawType.equals(DateDuration.class)) {
             return (ParamConverter<T>) new DateDurationConverter();
+        }
+        if (rawType.equals(LongIntervall.class)) {
+            return (ParamConverter<T>) new NumberIntervallConverter();
         }
         return null;
     }
