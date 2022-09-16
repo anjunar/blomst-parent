@@ -4,6 +4,7 @@ import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
+import com.anjunar.common.rest.mapper.annotations.MapperWrite;
 import com.anjunar.common.rest.mapper.rest.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -261,6 +262,10 @@ public class ResourceRestMapper {
     }
 
     private static <S> Boolean isDirty(S source, BeanProperty<S, ?> propertySource) {
+        MapperWrite mapperWrite = propertySource.getAnnotation(MapperWrite.class);
+        if (Objects.nonNull(mapperWrite)) {
+            return true;
+        }
         Boolean dirty = false;
         if (source instanceof AbstractSchemaEntity schemaEntity) {
             JsonNode jsonNode = schemaEntity.getSchema().getProperties().get(propertySource.getKey());

@@ -3,8 +3,10 @@ package com.anjunar.blomst.social.pages.page.questions.question;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.page.PageForm;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
+import com.anjunar.common.rest.mapper.annotations.MapperWrite;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
@@ -20,12 +22,13 @@ import java.util.UUID;
 public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Page Id")
-    private UUID page;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Page", readOnly = true)
+    @MapperWrite
+    private PageForm page;
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Question")
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Question", naming = true)
     private String topic;
 
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "Editor")
@@ -33,18 +36,19 @@ public class QuestionForm extends AbstractLikeableRestEntity {
     private Editor editor = new Editor();
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @MapperWrite
     private UserSelect owner;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
     private final Set<UserSelect> likes = new HashSet<>();
 
-    public UUID getPage() {
+    public PageForm getPage() {
         return page;
     }
 
-    public void setPage(UUID page) {
+    public void setPage(PageForm page) {
         this.page = page;
     }
 

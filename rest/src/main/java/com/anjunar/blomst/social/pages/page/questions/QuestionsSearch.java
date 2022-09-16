@@ -1,13 +1,13 @@
 package com.anjunar.blomst.social.pages.page.questions;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
-import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericLikeProvider;
+import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
+import com.anjunar.common.rest.search.provider.GenericTextProvider;
 import jakarta.ws.rs.QueryParam;
 import java.util.List;
 import java.util.UUID;
@@ -19,19 +19,20 @@ public class QuestionsSearch extends AbstractLikeableSearch {
     private List<String> sort;
 
     @QueryParam("page")
-    @RestPredicate(PageProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     private UUID page;
 
     @QueryParam("topic")
-    @RestPredicate(TopicProvider.class)
-    private String topic;
+    @RestPredicate(GenericLikeProvider.class)
+    private String question;
 
     @QueryParam("editor")
-    @RestPredicate(TextProvider.class)
+    @RestPredicate(GenericTextProvider.class)
     private String editor;
 
-    @RestPredicate(OwnerProvider.class)
-    private UserSelect owner;
+    @QueryParam("owner")
+    @RestPredicate(GenericManyToOneProvider.class)
+    private UUID owner;
 
     public List<String> getSort() {
         return sort;
@@ -49,12 +50,12 @@ public class QuestionsSearch extends AbstractLikeableSearch {
         this.page = page;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getEditor() {
@@ -65,11 +66,11 @@ public class QuestionsSearch extends AbstractLikeableSearch {
         this.editor = editor;
     }
 
-    public UserSelect getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 }

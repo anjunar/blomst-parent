@@ -1,16 +1,15 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.page.Question;
+import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
+import com.anjunar.common.rest.mapper.annotations.MapperWrite;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.UUID;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class AnswerForm extends AbstractLikeableRestEntity {
@@ -20,11 +19,13 @@ public class AnswerForm extends AbstractLikeableRestEntity {
     private Editor editor;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Topic Id")
-    private UUID topic;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Question", readOnly = true)
+    @MapperWrite
+    private QuestionForm question;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner")
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @MapperWrite
     private UserSelect owner;
 
     public Editor getEditor() {
@@ -35,12 +36,12 @@ public class AnswerForm extends AbstractLikeableRestEntity {
         this.editor = editor;
     }
 
-    public UUID getTopic() {
-        return topic;
+    public QuestionForm getQuestion() {
+        return question;
     }
 
-    public void setTopic(UUID topic) {
-        this.topic = topic;
+    public void setQuestion(QuestionForm question) {
+        this.question = question;
     }
 
     public UserSelect getOwner() {

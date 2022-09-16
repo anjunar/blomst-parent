@@ -1,22 +1,22 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
+import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.AnswerForm;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.answer.AnswerResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.blomst.social.pages.page.Answer;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +64,20 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
 
         Table<AnswerForm> table = new Table<>(resources, count) {};
 
-        linkTo(methodOn(AnswerResource.class).create(search.getTopic()))
+        linkTo(methodOn(AnswerResource.class).create(search.getQuestion()))
                 .build(table::addLink);
+
+        JsonArray likes = table.find("likes", JsonArray.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(likes::addLink);
 
         JsonObject owner = table.find("owner", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
+
+        JsonObject question = table.find("question", JsonObject.class);
+        linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
+                .build(question::addLink);
 
         return table;
     }

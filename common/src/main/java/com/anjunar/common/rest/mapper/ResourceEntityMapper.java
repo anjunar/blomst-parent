@@ -4,7 +4,7 @@ import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
-import com.anjunar.common.rest.mapper.annotations.MapperMapProjection;
+import com.anjunar.common.rest.mapper.annotations.MapperMapView;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
@@ -194,7 +194,7 @@ public class ResourceEntityMapper {
                 .resolveType(Map.class.getTypeParameters()[1])
                 .getRawType();
 
-        MapperMapProjection mapProjection = destinationProperty.getAnnotation(MapperMapProjection.class);
+        MapperMapView mapProjection = destinationProperty.getAnnotation(MapperMapView.class);
         Class<?> keyProjection = void.class;
         Class<?> valueProjection = void.class;
         if (mapProjection != null) {

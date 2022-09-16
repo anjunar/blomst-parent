@@ -1,13 +1,13 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
+import com.anjunar.common.rest.search.provider.GenericTextProvider;
 import jakarta.ws.rs.QueryParam;
 import java.util.List;
 import java.util.UUID;
@@ -18,16 +18,17 @@ public class AnswersSearch extends AbstractLikeableSearch {
     @RestSort(GenericSortProvider.class)
     private List<String> sort;
 
-    @QueryParam("topic")
-    @RestPredicate(TopicProvider.class)
-    private UUID topic;
+    @QueryParam("question")
+    @RestPredicate(GenericManyToOneProvider.class)
+    private UUID question;
 
     @QueryParam("editor")
-    @RestPredicate(EditorProvider.class)
+    @RestPredicate(GenericTextProvider.class)
     private String editor;
 
-    @RestPredicate(UserProvider.class)
-    private UserSelect owner;
+    @QueryParam("owner")
+    @RestPredicate(GenericManyToOneProvider.class)
+    private UUID owner;
 
     public List<String> getSort() {
         return sort;
@@ -37,12 +38,12 @@ public class AnswersSearch extends AbstractLikeableSearch {
         this.sort = sort;
     }
 
-    public UUID getTopic() {
-        return topic;
+    public UUID getQuestion() {
+        return question;
     }
 
-    public void setTopic(UUID topic) {
-        this.topic = topic;
+    public void setQuestion(UUID question) {
+        this.question = question;
     }
 
     public String getEditor() {
@@ -53,11 +54,11 @@ public class AnswersSearch extends AbstractLikeableSearch {
         this.editor = editor;
     }
 
-    public UserSelect getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
-    public void setOwner(UserSelect owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 

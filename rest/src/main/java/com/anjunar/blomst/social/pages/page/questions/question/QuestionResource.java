@@ -1,11 +1,10 @@
 package com.anjunar.blomst.social.pages.page.questions.question;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.Page;
+import com.anjunar.blomst.social.pages.page.PageForm;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -63,7 +62,9 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     public QuestionForm create(@QueryParam("page") UUID page) {
         QuestionForm resource = new QuestionForm();
 
-        resource.setPage(page);
+        Page pageEntity = entityManager.find(Page.class, page);
+
+        resource.setPage(entityMapper.map(pageEntity, PageForm.class));
         resource.setCreated(LocalDateTime.now());
 
         resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
@@ -87,7 +88,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
                 .build(resource::addLink);
 
         AnswersSearch search = new AnswersSearch();
-        search.setTopic(uuid);
+        search.setQuestion(uuid);
         linkTo(methodOn(AnswersResource.class).list(search))
                 .withRel("answers")
                 .build(resource::addLink);

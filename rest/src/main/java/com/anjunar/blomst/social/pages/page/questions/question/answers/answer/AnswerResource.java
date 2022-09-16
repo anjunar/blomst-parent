@@ -1,11 +1,10 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.page.Question;
+import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Editor;
@@ -64,7 +63,9 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     public AnswerForm create(@QueryParam("topic") UUID uuid) {
         AnswerForm resource = new AnswerForm();
 
-        resource.setTopic(uuid);
+        Question question = entityManager.find(Question.class, uuid);
+
+        resource.setQuestion(entityMapper.map(question, QuestionForm.class));
         resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
         resource.setEditor(new Editor());
         resource.setViews(0);

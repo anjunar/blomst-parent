@@ -1,5 +1,9 @@
 package com.anjunar.blomst.social.pages.page.questions;
 
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.social.pages.PagesResource;
+import com.anjunar.blomst.social.pages.PagesSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -8,6 +12,8 @@ import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.pages.page.Question;
 
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -62,6 +68,18 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
 
         linkTo(methodOn(QuestionResource.class).create(search.getPage()))
                 .build(table::addLink);
+
+        JsonArray likes = table.find("likes", JsonArray.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(likes::addLink);
+
+        JsonObject page = table.find("page", JsonObject.class);
+        linkTo(methodOn(PagesResource.class).list(new PagesSearch()))
+                .build(page::addLink);
+
+        JsonObject owner = table.find("owner", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(owner::addLink);
 
         return table;
     }
