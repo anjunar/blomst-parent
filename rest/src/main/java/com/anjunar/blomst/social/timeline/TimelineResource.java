@@ -92,19 +92,25 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
 
         Table<AbstractPostForm> table = new Table<>(resources, count) {};
 
+        UUID to;
         if (search.getSource().size() == 1) {
-            linkTo(methodOn(PostResource.class).create("text", identityManager.getUser().getId()))
-                    .withRel("create-text")
-                    .build(table::addLink);
-
-            linkTo(methodOn(PostResource.class).create("image", identityManager.getUser().getId()))
-                    .withRel("create-image")
-                    .build(table::addLink);
-
-            linkTo(methodOn(PostResource.class).create("link", identityManager.getUser().getId()))
-                    .withRel("create-link")
-                    .build(table::addLink);
+            to = search.getSource().iterator().next();
+        } else {
+            to = identityManager.getUser().getId();
         }
+
+        linkTo(methodOn(PostResource.class).create("text", to))
+                .withRel("create-text")
+                .build(table::addLink);
+
+        linkTo(methodOn(PostResource.class).create("image", to))
+                .withRel("create-image")
+                .build(table::addLink);
+
+        linkTo(methodOn(PostResource.class).create("link", to))
+                .withRel("create-link")
+                .build(table::addLink);
+
 
         JsonArray likes = table.find("likes", JsonArray.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))

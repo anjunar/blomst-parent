@@ -14,6 +14,7 @@ public abstract class Identity extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Image picture;
 
+    @Transient
     public abstract String getName();
 
     public boolean isEnabled() {

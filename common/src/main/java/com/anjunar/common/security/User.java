@@ -29,7 +29,7 @@ public class User extends Identity {
     @ElementCollection
     private final List<EmailType> emails = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Language language;
 
     private String token;

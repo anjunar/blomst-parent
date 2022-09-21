@@ -1,6 +1,7 @@
 package com.anjunar.blomst.social.timeline;
 
 import com.anjunar.common.ddd.PostgresIndex;
+import com.anjunar.common.i18n.Detector;
 import com.anjunar.common.security.Identity;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
@@ -15,10 +16,6 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractPost extends Likeable {
-
-    private final static LanguageDetector detector = LanguageDetectorBuilder
-            .fromAllLanguages()
-            .build();
 
     @PostgresIndex(type = PostgresIndex.Type.TEXT)
     @Column(columnDefinition="TEXT")
@@ -38,8 +35,7 @@ public abstract class AbstractPost extends Likeable {
     @PrePersist
     @PreUpdate
     private void prePersist() {
-        Language detectedLanguage = detector.detectLanguageOf(text);
-        language = detectedLanguage.name().toLowerCase();
+        language = Detector.detectLanguageOf(text);
     }
 
     public abstract <E> E accept(AbstractPostVisitor<E> visitor);

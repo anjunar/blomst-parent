@@ -1,5 +1,9 @@
 package com.anjunar.blomst.social.sites.site.connections;
 
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.social.sites.SitesResource;
+import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionForm;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -8,6 +12,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -59,6 +64,14 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
 
         linkTo(methodOn(SiteConnectionResource.class).create())
                 .build(table::addLink);
+
+        JsonObject from = table.find("from", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(from::addLink);
+
+        JsonObject to = table.find("to", JsonObject.class);
+        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                .build(to::addLink);
 
         return table;
     }
