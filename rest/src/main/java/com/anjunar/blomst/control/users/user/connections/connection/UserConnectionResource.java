@@ -1,6 +1,8 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -19,6 +21,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.*;
+
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
@@ -57,13 +61,15 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Connection")
-    public UserConnectionForm create(@QueryParam("to") UUID to) {
+    public UserConnectionForm create(@QueryParam("to") UUID toId) {
 
         UserConnectionForm form = new UserConnectionForm();
 
-
         form.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
-        form.setTo(entityMapper.map(entityManager.find(User.class, to), UserSelect.class));
+
+        if (Objects.nonNull(toId)) {
+            form.setTo(entityMapper.map(entityManager.find(User.class, toId), UserSelect.class));
+        }
 
         linkTo(methodOn(UserConnectionResource.class).save(new UserConnectionForm()))
                 .build(form::addLink);
@@ -71,6 +77,10 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         JsonObject category = form.find("category", JsonObject.class);
         linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
                 .build(category::addLink);
+
+        JsonObject to = form.find("to", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(to::addLink);
 
         return form;
     }

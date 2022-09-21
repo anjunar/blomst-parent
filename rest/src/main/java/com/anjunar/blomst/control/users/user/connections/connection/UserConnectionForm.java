@@ -26,7 +26,7 @@ public class UserConnectionForm extends AbstractRestEntity {
     private boolean accepted;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
     @MapperWrite
     private UserSelect to;
 

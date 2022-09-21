@@ -71,13 +71,11 @@ public class UserConnectionsResource implements ListResourceTemplate<UserConnect
 
         Table<UserConnectionForm> table = new Table<>(resources, count) {};
 
-        CategoriesSearch categoriesSearch = new CategoriesSearch();
-        categoriesSearch.setOwner(search.getFrom());
-        linkTo(methodOn(CategoriesResource.class).list(categoriesSearch))
+        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
                 .withRel("categories")
                 .build(table::addLink);
 
-        linkTo(methodOn(UserConnectionResource.class).create(search.getTo()))
+        linkTo(methodOn(UserConnectionResource.class).create(null))
                 .build(table::addLink);
 
         JsonObject from = table.find("from", JsonObject.class);
