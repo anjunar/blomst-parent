@@ -10,6 +10,7 @@ class MetaTableFilter extends HTMLElement {
 
     schema;
     model;
+    name;
 
     container;
 
@@ -37,6 +38,7 @@ class MetaTableFilter extends HTMLElement {
         let component = new result();
         component.schema = this.schema;
         component.model = this.model;
+        component.name = this.name;
         component.addEventListener("model", () => {
             this.dispatchEvent(new CustomEvent("model"));
         })
@@ -52,6 +54,11 @@ class MetaTableFilter extends HTMLElement {
             case "model" : {
                 this.model = newValue;
             }
+                break;
+            case "name" : {
+                this.name = newValue;
+            }
+                break;
         }
     }
 
@@ -61,8 +68,11 @@ class MetaTableFilter extends HTMLElement {
                 name: "schema",
                 binding: "input"
             }, {
-                name : "model",
-                binding : "two-way"
+                name: "model",
+                binding: "two-way"
+            }, {
+                name: "name",
+                binding: "input"
             }
         ]
     }

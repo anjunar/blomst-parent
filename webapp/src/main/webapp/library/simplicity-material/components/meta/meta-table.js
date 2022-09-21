@@ -70,41 +70,11 @@ class MetaTable extends HTMLElement {
     items = (query, callback) => {
         this.parent(query, (rows, size, schema) => {
             this.dispatchEvent(new CustomEvent("load", {detail : {rows : rows, size : size, schema : schema}}))
-            if (! isEqual(schema, this.schema)) {
+            if (! isEqual(schema, this.schema.resolve)) {
                 this.schema = schema;
             }
             window.setTimeout(() => {
                 callback(rows, size)
-
-                let table = this.querySelector("table");
-                for (const [property, value] of Object.entries(this.schema.properties.rows.items.properties)) {
-                    for (const column of table.columns) {
-                        if (column.path === property) {
-                            let resovled = column.resolve;
-                            switch (value.widget) {
-                                case "lazy-select" : {
-                                    resovled.search = resovled.search || undefined
-                                } break;
-                                case "lazy-multi-select" : {
-                                    resovled.search = resovled.search || []
-                                } break;
-                                case "datetime-local" : {
-                                    resovled.search = resovled.search || {from : "", to : ""}
-                                } break;
-                                case "date" : {
-                                    resovled.search = resovled.search || {from : "", to : ""}
-                                } break;
-                                case "number" : {
-                                    resovled.search = resovled.search || {from : "", to : ""}
-                                } break;
-                                default : {
-                                    resovled.search = resovled.search || "";
-                                }
-                            }
-                        }
-                    }
-                }
-
             })
         })
     }

@@ -1,6 +1,5 @@
 import {customComponents} from "../../../../simplicity-core/simplicity.js";
 import {libraryLoader} from "../../../../simplicity-core/processors/loader-processor.js";
-import MatInputContainer from "../../form/container/mat-input-container.js";
 import DomInput from "../../../../simplicity-core/directives/dom-input.js";
 
 class MetaFilterDuration extends HTMLElement {
@@ -10,16 +9,6 @@ class MetaFilterDuration extends HTMLElement {
 
     onModel() {
         this.dispatchEvent(new CustomEvent("model"))
-    }
-
-    preInitialize() {
-        let element = this.model[this.name];
-        if (!element) {
-            this.model[this.name] = {
-                from : undefined,
-                to : undefined
-            }
-        }
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -40,14 +29,14 @@ class MetaFilterDuration extends HTMLElement {
                 name: "schema",
                 binding: "input"
             }, {
-                name : "model",
-                binding : "input"
+                name: "model",
+                binding: "input"
             }
         ]
     }
 
     static get components() {
-        return [MatInputContainer, DomInput]
+        return [DomInput]
     }
 
     static get template() {

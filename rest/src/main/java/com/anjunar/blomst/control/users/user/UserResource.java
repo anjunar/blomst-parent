@@ -186,7 +186,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         UserConnectionsSearch userConnectionsSearch = new UserConnectionsSearch();
         userConnectionsSearch.setFrom(id);
-        userConnectionsSearch.setTo(user.getId());
         linkTo(methodOn(UserConnectionsResource.class).list(userConnectionsSearch))
                 .withRel("user-connections")
                 .build(resource::addLink);

@@ -1,6 +1,7 @@
 package com.anjunar.common.security;
 
 import com.anjunar.common.ddd.AbstractEntity;
+import jakarta.persistence.FetchType;
 import org.hibernate.annotations.Filter;
 
 import jakarta.persistence.Entity;
@@ -10,13 +11,13 @@ import jakarta.persistence.ManyToOne;
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class UserConnection extends AbstractEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User from;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User to;
 
     public User getFrom() {

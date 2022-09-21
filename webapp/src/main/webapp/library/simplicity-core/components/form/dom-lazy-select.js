@@ -233,10 +233,13 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                 let height = 14 + 39 + data.length * 42;
                 let selectBoundingClientRect = this.getBoundingClientRect();
                 let viewPortBoundingClientRect = viewport.getBoundingClientRect();
+                let overlay = this.querySelector("div.overlay");
                 if (selectBoundingClientRect.top + height > viewPortBoundingClientRect.top + viewPortBoundingClientRect.height) {
-                    let overlay = this.querySelector("div.overlay");
                     overlay.style.top = "initial"
                     overlay.style.bottom = "24px"
+                } else {
+                    overlay.style.top = "14px";
+                    overlay.style.bottom = "initial";
                 }
             })
         }

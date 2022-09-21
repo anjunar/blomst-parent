@@ -6,6 +6,9 @@ import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+
+import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class AbstractEntityListener {
@@ -31,7 +34,14 @@ public class AbstractEntityListener {
 
     @PrePersist
     private void onPersist(AbstractEntity entity) {
+        entity.setCreated(LocalDateTime.now());
+        entity.setModified(LocalDateTime.now());
         onPersist.fire(entity);
+    }
+
+    @PreUpdate
+    private void onMerge(AbstractEntity entity) {
+        entity.setModified(LocalDateTime.now());
     }
 
 }

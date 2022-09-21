@@ -2,11 +2,15 @@ package com.anjunar.blomst.control.users.user.connections;
 
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
+import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionForm;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.UserConnection;
 
@@ -19,7 +23,7 @@ import java.util.List;
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("control/users/user/connections")
-public class UserConnectionsResource implements ListResourceTemplate<ConnectionRow, UserConnectionsSearch> {
+public class UserConnectionsResource implements ListResourceTemplate<UserConnectionForm, UserConnectionsSearch> {
 
     private final UserConnectionsService service;
 
@@ -42,16 +46,16 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Table Connection")
-    public Table<ConnectionRow> list(UserConnectionsSearch search) {
+    public Table<UserConnectionForm> list(UserConnectionsSearch search) {
 
         final long count = service.count(search);
         final List<UserConnection> connections = service.find(search);
-        final List<ConnectionRow> resources = new ArrayList<>();
+        final List<UserConnectionForm> resources = new ArrayList<>();
 
         List<UserConnection> accepted = service.accepted(search.getFrom());
 
         for (UserConnection connection : connections) {
-            ConnectionRow form = mapper.map(connection, ConnectionRow.class);
+            UserConnectionForm form = mapper.map(connection, UserConnectionForm.class);
 
             for (UserConnection acceptedConnection : accepted) {
                 if (acceptedConnection.getFrom().equals(connection.getTo())) {
@@ -65,7 +69,7 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
             resources.add(form);
         }
 
-        Table<ConnectionRow> table = new Table<>(resources, count) {};
+        Table<UserConnectionForm> table = new Table<>(resources, count) {};
 
         CategoriesSearch categoriesSearch = new CategoriesSearch();
         categoriesSearch.setOwner(search.getFrom());
@@ -75,6 +79,16 @@ public class UserConnectionsResource implements ListResourceTemplate<ConnectionR
 
         linkTo(methodOn(UserConnectionResource.class).create(search.getTo()))
                 .build(table::addLink);
+
+        JsonObject from = table.find("from", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(from::addLink);
+        JsonObject category = table.find("category", JsonObject.class);
+        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+                .build(category::addLink);
+        JsonObject to = table.find("to", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(to::addLink);
 
         return table;
     }

@@ -21,6 +21,11 @@ public class User extends Identity {
 
     private String password;
 
+    @Override
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
     @ElementCollection
     private final List<EmailType> emails = new ArrayList<>();
 

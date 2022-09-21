@@ -1,5 +1,9 @@
 package com.anjunar.blomst.social.timeline.post.comments;
 
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.social.timeline.TimelineResource;
+import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.blomst.social.timeline.post.comments.comment.CommentForm;
 import com.anjunar.blomst.social.timeline.post.comments.comment.CommentResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -8,6 +12,8 @@ import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.blomst.social.timeline.Comment;
 
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -61,6 +67,22 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
 
         linkTo(methodOn(CommentResource.class).create(search.getPost(), search.getParent()))
                 .build(table::addLink);
+
+        JsonArray likes = table.find("likes", JsonArray.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(likes::addLink);
+
+        JsonObject post = table.find("post", JsonObject.class);
+        linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
+                .build(post::addLink);
+
+        JsonObject parent = table.find("parent", JsonObject.class);
+        linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
+                .build(parent::addLink);
+
+        JsonObject owner = table.find("owner", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(owner::addLink);
 
         return table;
     }

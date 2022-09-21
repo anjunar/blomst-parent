@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.validators.SizeValidator;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.schema.schema.JsonArray;
@@ -19,13 +20,13 @@ public class CollectionFactory extends JsonAbstractFactory<JsonArray> {
     }
 
     @Override
-    public JsonArray build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
-        return generateArray(property);
+    public JsonArray build(TypeToken<?> typeToken, BeanProperty<?, ?> property, JsonContext context) {
+        return generateArray(property, context);
     }
 
     @Override
-    public JsonArray buildWithAnnotation(BeanProperty<?, ?> property) {
-        JsonArray jsonArray = super.buildWithAnnotation(property);
+    public JsonArray buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        JsonArray jsonArray = super.buildWithAnnotation(property, context);
 
         Size size = property.getAnnotation(Size.class);
         if (size != null) {

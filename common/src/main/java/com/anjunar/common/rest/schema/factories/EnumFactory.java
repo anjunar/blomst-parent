@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.google.common.reflect.TypeToken;
 import com.anjunar.common.rest.schema.schema.JsonEnum;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -16,7 +17,7 @@ public class EnumFactory extends JsonAbstractFactory<JsonEnum> {
     }
 
     @Override
-    public JsonEnum build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
+    public JsonEnum build(TypeToken<?> typeToken, BeanProperty<?, ?> property, JsonContext context) {
         Enum[] enumConstants = (Enum[]) typeToken.getRawType().getEnumConstants();
         JsonEnum jsonEnum = new JsonEnum();
         for (Enum enumConstant : enumConstants) {
@@ -33,8 +34,8 @@ public class EnumFactory extends JsonAbstractFactory<JsonEnum> {
     }
 
     @Override
-    public JsonEnum buildWithAnnotation(BeanProperty<?, ?> property) {
-        JsonEnum jsonEnum = super.buildWithAnnotation(property);
+    public JsonEnum buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        JsonEnum jsonEnum = super.buildWithAnnotation(property, context);
         return jsonEnum;
     }
 

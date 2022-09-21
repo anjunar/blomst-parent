@@ -3,8 +3,11 @@ package com.anjunar.blomst.social.timeline;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericManyToManyProvider;
+import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
+import com.anjunar.common.rest.search.provider.GenericTextProvider;
 import jakarta.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Set;
@@ -21,11 +24,11 @@ public class TimelineSearch extends AbstractLikeableSearch {
     private String text;
 
     @QueryParam("owner")
-    @RestPredicate(UserProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     private UUID owner;
 
     @QueryParam("source")
-    @RestPredicate(SourceProvider.class)
+    @RestPredicate(GenericManyToManyProvider.class)
     private Set<UUID> source;
 
     public List<String> getSort() {

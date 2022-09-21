@@ -14,16 +14,16 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
-public class UserSelect extends AbstractRestEntity {
+public class UserSelect extends IdentitySelect {
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true, readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", readOnly = true)
     private String firstName;
 
     @Size(min = 3, max = 80)
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true, readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", readOnly = true)
     private String lastName;
 
     @NotNull
@@ -31,12 +31,7 @@ public class UserSelect extends AbstractRestEntity {
     private LocalDate birthDate;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture", readOnly = true)
-    @MapperConverter(ImageConverter.class)
-    private ImageType picture;
-
-    @NotNull
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Language", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language", readOnly = true)
     private LanguageForm language;
 
     public String getFirstName() {
@@ -61,14 +56,6 @@ public class UserSelect extends AbstractRestEntity {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public ImageType getPicture() {
-        return picture;
-    }
-
-    public void setPicture(ImageType picture) {
-        this.picture = picture;
     }
 
     public LanguageForm getLanguage() {

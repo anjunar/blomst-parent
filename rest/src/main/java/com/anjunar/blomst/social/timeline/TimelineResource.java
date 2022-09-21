@@ -1,7 +1,5 @@
 package com.anjunar.blomst.social.timeline;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.social.timeline.post.*;
@@ -12,10 +10,10 @@ import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 
+import com.anjunar.common.security.IdentityManager;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +30,18 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
 
     private final ResourceEntityMapper mapper;
 
+    private final IdentityManager identityManager;
+
 
     @Inject
-    public TimelineResource(TimelineService service, ResourceEntityMapper mapper) {
+    public TimelineResource(TimelineService service, ResourceEntityMapper mapper, IdentityManager identityManager) {
         this.service = service;
         this.mapper = mapper;
+        this.identityManager = identityManager;
     }
 
     public TimelineResource() {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override
@@ -91,6 +92,20 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
 
         Table<AbstractPostForm> table = new Table<>(resources, count) {};
 
+        if (search.getSource().size() == 1) {
+            linkTo(methodOn(PostResource.class).create("text", identityManager.getUser().getId()))
+                    .withRel("create-text")
+                    .build(table::addLink);
+
+            linkTo(methodOn(PostResource.class).create("image", identityManager.getUser().getId()))
+                    .withRel("create-image")
+                    .build(table::addLink);
+
+            linkTo(methodOn(PostResource.class).create("link", identityManager.getUser().getId()))
+                    .withRel("create-link")
+                    .build(table::addLink);
+        }
+
         JsonArray likes = table.find("likes", JsonArray.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
@@ -99,19 +114,9 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
-        if (search.getSource().size() == 1) {
-            linkTo(methodOn(PostResource.class).create("text", search.getSource().iterator().next()))
-                    .withRel("create-text")
-                    .build(table::addLink);
-
-            linkTo(methodOn(PostResource.class).create("image", search.getSource().iterator().next()))
-                    .withRel("create-image")
-                    .build(table::addLink);
-
-            linkTo(methodOn(PostResource.class).create("link", search.getSource().iterator().next()))
-                    .withRel("create-link")
-                    .build(table::addLink);
-        }
+        JsonObject source = table.find("source", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(source::addLink);
 
         return table;
     }

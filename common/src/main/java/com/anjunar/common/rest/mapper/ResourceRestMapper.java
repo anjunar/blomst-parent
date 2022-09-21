@@ -53,10 +53,10 @@ public class ResourceRestMapper {
     }
 
     public <S extends AbstractSchemaEntity, D> D map(S source, Class<D> destinationClass) {
-        return map(source, destinationClass, false);
+        return map(source, destinationClass, false, false);
     }
 
-    public <S extends AbstractSchemaEntity, D> D map(S source, Class<D> destinationClass, boolean isDirty) {
+    public <S extends AbstractSchemaEntity, D> D map(S source, Class<D> destinationClass, boolean isDirty, boolean loadOnly) {
         D destination;
         if (source instanceof AbstractRestEntity restEntity) {
             UUID id = restEntity.getId();
@@ -75,6 +75,10 @@ public class ResourceRestMapper {
             } else {
                 throw new WebApplicationException(Response.Status.FORBIDDEN);
             }
+        }
+
+        if (loadOnly) {
+            return destination;
         }
 
         BeanModel<S> sourceModel = (BeanModel<S>) BeanIntrospector.create(source.getClass());
@@ -136,6 +140,7 @@ public class ResourceRestMapper {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
+        MapperWrite mapperWrite = sourceProperty.getAnnotation(MapperWrite.class);
         MapperConverter mapperConverter = sourceProperty.getAnnotation(MapperConverter.class);
         if (mapperConverter == null) {
             if (sourcePropertyType.equals(destinationPropertyType)) {
@@ -149,7 +154,7 @@ public class ResourceRestMapper {
                     destinationProperty.accept(destination, entity);
                 } else {
                     AbstractSchemaEntity entity = (AbstractSchemaEntity) sourcePropertyInstance;
-                    Object restEntity = map(entity, (Class<?>) destinationPropertyType, isDirty(source, sourceProperty));
+                    Object restEntity = map(entity, (Class<?>) destinationPropertyType, isDirty(source, sourceProperty), mapperWrite != null);
                     destinationProperty.accept(destination, restEntity);
                 }
             }
@@ -164,6 +169,8 @@ public class ResourceRestMapper {
                                                                 BeanProperty<S, ?> sourceProperty,
                                                                 Map<Object, Object> destinationPropertyInstance,
                                                                 BeanProperty<D, Object> destinationProperty) {
+        MapperWrite mapperWrite = sourceProperty.getAnnotation(MapperWrite.class);
+
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
                 .resolveType(Map.class.getTypeParameters()[0])
@@ -189,12 +196,12 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
                 AbstractSchemaEntity restKeyEntity = (AbstractSchemaEntity) entry.getKey();
-                Object keyEntity = map(restKeyEntity, (Class<?>) destinationMapKeyType, false);
+                Object keyEntity = map(restKeyEntity, (Class<?>) destinationMapKeyType, false, mapperWrite != null);
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(keyEntity, entry.getValue());
                 } else {
                     AbstractSchemaEntity restValueEntity = (AbstractSchemaEntity) entry.getValue();
-                    Object valueEntity = map(restValueEntity, (Class<?>) destinationMapValueType, false);
+                    Object valueEntity = map(restValueEntity, (Class<?>) destinationMapValueType, false, mapperWrite != null);
                     destinationPropertyInstance.put(keyEntity, valueEntity);
                 }
             }
@@ -205,6 +212,8 @@ public class ResourceRestMapper {
                                                                        BeanProperty<S, ?> sourceProperty,
                                                                        Collection<Object> destinationPropertyInstance,
                                                                        BeanProperty<D, Object> destinationProperty) {
+        MapperWrite mapperWrite = sourceProperty.getAnnotation(MapperWrite.class);
+
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
                 .resolveType(Collection.class.getTypeParameters()[0])
@@ -222,7 +231,7 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.add(element);
             } else {
                 AbstractSchemaEntity restEntity = (AbstractSchemaEntity) element;
-                Object entity = map(restEntity, (Class<?>) destinationCollectionType, false);
+                Object entity = map(restEntity, (Class<?>) destinationCollectionType, false, mapperWrite != null);
                 destinationPropertyInstance.add(entity);
             }
         }

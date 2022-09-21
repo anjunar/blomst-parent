@@ -6,6 +6,8 @@ import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.timeline.AbstractPost;
+import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -64,13 +66,16 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Create Comment")
-    public CommentForm create(@QueryParam("post") UUID post, @QueryParam("parent") UUID parent) {
+    public CommentForm create(@QueryParam("post") UUID postId, @QueryParam("parent") UUID commentId) {
         CommentForm resource = new CommentForm();
 
         User user = identityManager.getUser();
 
-        resource.setPost(post);
-        resource.setParent(parent);
+        AbstractPost post = entityManager.find(AbstractPost.class, postId);
+        Comment parent = entityManager.find(Comment.class, commentId);
+
+        resource.setPost(entityMapper.map(post, AbstractPostForm.class));
+        resource.setParent(entityMapper.map(parent, CommentForm.class));
 
         resource.setOwner(entityMapper.map(user, UserSelect.class));
 
@@ -99,7 +104,8 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
                 .build(resource::addLink);
 
         CommentsSearch search = new CommentsSearch();
-        search.setParent(id);
+        search.setParent(comment.getId());
+        search.setPost(comment.getPost().getId());
         linkTo(methodOn(CommentsResource.class).list(search))
                 .withRel("comments")
                 .build(resource::addLink);

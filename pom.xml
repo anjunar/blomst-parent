@@ -233,13 +233,12 @@
 
             <!--=========================================== 3rd Party Libraries =====================================-->
 
-<!--
             <dependency>
-                <groupId>com.vladmihalcea</groupId>
-                <artifactId>hibernate-types-60</artifactId>
-                <version>2.18.0</version>
+                <groupId>com.github.pemistahl</groupId>
+                <artifactId>lingua</artifactId>
+                <version>1.2.2</version>
             </dependency>
--->
+
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq</artifactId>

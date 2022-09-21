@@ -1,9 +1,9 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
+import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
+import com.anjunar.common.rest.mapper.annotations.MapperWrite;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
@@ -11,23 +11,25 @@ import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class CommentForm extends AbstractLikeableRestEntity {
 
     @Size(max = 1000)
-    @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text")
+    @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text", naming = true)
     private String text;
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Post Id")
-    private UUID post;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Post")
+    @MapperWrite
+    private AbstractPostForm post;
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Parent Comment Id")
-    private UUID parent;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Parent Comment", readOnly = true, cycle = true)
+    @MapperWrite
+    private CommentForm parent;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @MapperWrite
     private UserSelect owner;
 
     @NotNull
@@ -42,19 +44,19 @@ public class CommentForm extends AbstractLikeableRestEntity {
         this.text = text;
     }
 
-    public UUID getPost() {
+    public AbstractPostForm getPost() {
         return post;
     }
 
-    public void setPost(UUID post) {
+    public void setPost(AbstractPostForm post) {
         this.post = post;
     }
 
-    public UUID getParent() {
+    public CommentForm getParent() {
         return parent;
     }
 
-    public void setParent(UUID parent) {
+    public void setParent(CommentForm parent) {
         this.parent = parent;
     }
 

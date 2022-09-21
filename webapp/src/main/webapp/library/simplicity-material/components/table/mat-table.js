@@ -40,13 +40,37 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
                     let tableSearch = tableSearches[i];
                     let colAttribute = tableSearch.path;
                     let sortable = tableSearch.sortable;
-                    columns.push({
+
+                    let column = {
                         index: i,
                         visible: true,
                         sort: sortable ? "none" : null,
                         path: colAttribute,
                         search : ""
-                    });
+                    };
+                    columns.push(column);
+
+                    switch (tableSearch.schema.widget) {
+                        case "lazy-select" : {
+                            column.search = column.search || undefined
+                        } break;
+                        case "lazy-multi-select" : {
+                            column.search = column.search || []
+                        } break;
+                        case "datetime-local" : {
+                            column.search = column.search || {from : "", to : ""}
+                        } break;
+                        case "date" : {
+                            column.search = column.search || {from : "", to : ""}
+                        } break;
+                        case "number" : {
+                            column.search = column.search || {from : "", to : ""}
+                        } break;
+                        default : {
+                            column.search = column.search || "";
+                        }
+                    }
+
                 }
                 this.columns = columns;
             } else {

@@ -27,6 +27,7 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Page extends Likeable {
 
+    @Column(columnDefinition="TEXT")
     private String title;
 
     @Embedded

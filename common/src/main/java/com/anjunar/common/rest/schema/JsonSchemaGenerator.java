@@ -1,9 +1,7 @@
 package com.anjunar.common.rest.schema;
 
-import com.anjunar.common.rest.link.WebURLBuilderFactory;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
-import com.anjunar.common.rest.schema.annotations.JsonSchemaLink;
 import com.anjunar.common.rest.schema.factories.JsonAbstractFactory;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -13,7 +11,6 @@ import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
 import com.anjunar.introspector.type.TypeResolver;
-import com.anjunar.introspector.type.resolved.ResolvedMethod;
 import com.anjunar.introspector.type.resolved.ResolvedType;
 import com.google.common.reflect.TypeToken;
 import jakarta.enterprise.inject.spi.CDI;
@@ -25,10 +22,10 @@ import java.util.Objects;
 public class JsonSchemaGenerator {
 
     public static <E> JsonObject generateObject(Class<E> aClass) {
-        return generateObject(aClass, null);
+        return generateObject(aClass, null, new JsonContext());
     }
 
-    public static <E> JsonObject generateObject(Class<E> aClass, Class<?> projectionClass) {
+    public static <E> JsonObject generateObject(Class<E> aClass, Class<?> projectionClass, JsonContext context) {
         ResolvedType<E> resolvedType = TypeResolver.resolve(aClass);
         JsonObject jsonObject = new JsonObject();
 
@@ -55,7 +52,7 @@ public class JsonSchemaGenerator {
 
         for (BeanProperty<E, ?> property : beanModel.getProperties()) {
             JsonSchema jsonSchema = property.getAnnotation(JsonSchema.class);
-            if (jsonSchema == null || !jsonSchema.ignore()) {
+            if (jsonSchema == null || ! jsonSchema.ignore()) {
                 BeanProperty<?, ?> projectionProperty = projectionModel.get(property.getKey());
                 if (Objects.nonNull(projectionProperty)) {
                     MapperSecurity mapperSecurity = property.getAnnotation(MapperSecurity.class);
@@ -63,10 +60,10 @@ public class JsonSchemaGenerator {
                         String[] rolesAllowed = mapperSecurity.rolesAllowed();
                         IdentityManager identityManager = CDI.current().select(IdentityManager.class).get();
                         if (identityManager.hasRole(rolesAllowed)) {
-                            process(jsonObject, property);
+                            process(jsonObject, property, context);
                         }
                     } else {
-                        process(jsonObject, property);
+                        process(jsonObject, property, context);
                     }
                 }
             }
@@ -74,24 +71,28 @@ public class JsonSchemaGenerator {
         return jsonObject;
     }
 
-    private static <E> void process(JsonObject jsonObject, BeanProperty<E, ?> property) {
-        TypeToken<?> type = property.getType();
-        for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {
-            if (factory.test(type)) {
-                JsonNode jsonNode = factory.buildWithAnnotation(property);
-                jsonNode.setName(property.getKey());
-                jsonObject.getProperties().put(property.getKey(), jsonNode);
-                break;
+    private static <E> void process(JsonObject jsonObject, BeanProperty<E, ?> property, JsonContext context) {
+        JsonSchema jsonSchema = property.getAnnotation(JsonSchema.class);
+        if (! Objects.nonNull(jsonSchema) || ! jsonSchema.cycle() || ! context.getProperties().contains(property)) {
+            context.getProperties().add(property);
+
+            TypeToken<?> type = property.getType();
+            for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {
+                if (factory.test(type)) {
+                    JsonNode jsonNode = factory.buildWithAnnotation(property, context);
+                    jsonObject.getProperties().put(property.getKey(), jsonNode);
+                    break;
+                }
             }
         }
     }
 
-    public static JsonArray generateArray(BeanProperty<?, ?> property) {
+    public static JsonArray generateArray(BeanProperty<?, ?> property, JsonContext context) {
         TypeToken<?> type = property.getType().resolveType(Collection.class.getTypeParameters()[0]);
         JsonArray jsonArray = new JsonArray();
         for (JsonAbstractFactory<?> factory : JsonRegistry.factories) {
             if (factory.test(type)) {
-                JsonNode jsonNode = factory.build(type, property);
+                JsonNode jsonNode = factory.build(type, property, context);
                 jsonArray.setItems(jsonNode);
                 break;
             }

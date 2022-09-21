@@ -1,5 +1,8 @@
 package com.anjunar.blomst.social.timeline.post;
 
+import com.anjunar.blomst.social.timeline.ImagePost;
+import com.anjunar.blomst.social.timeline.LinkPost;
+import com.anjunar.common.rest.mapper.annotations.MapperPolymorphism;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.api.ImageType;
@@ -11,6 +14,7 @@ import jakarta.validation.constraints.Size;
 
 import java.net.URL;
 
+@MapperPolymorphism(LinkPost.class)
 public class LinkPostForm extends AbstractPostForm {
 
     private final static Logger log = LoggerFactory.getLogger(LinkPostForm.class);

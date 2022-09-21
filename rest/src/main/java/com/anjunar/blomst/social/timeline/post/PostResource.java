@@ -5,6 +5,7 @@ import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
@@ -17,6 +18,7 @@ import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
+import com.anjunar.common.security.Identity;
 import com.anjunar.common.security.IdentityManager;
 
 import com.anjunar.common.security.User;
@@ -80,8 +82,8 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
             } break;
         }
 
-        resource.setSource(source);
-
+        Identity identity = entityManager.find(Identity.class, source);
+        resource.setSource(entityMapper.map(identity, IdentitySelect.class));
         resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))

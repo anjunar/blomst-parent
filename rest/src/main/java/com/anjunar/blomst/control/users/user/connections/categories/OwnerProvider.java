@@ -20,6 +20,6 @@ public class OwnerProvider extends AbstractRestPredicateProvider<UUID, Category>
         if (value == null) {
             return builder.conjunction();
         }
-        return builder.equal(root.get(Category_.OWNER).get(User_.ID), value);
+        return builder.or(builder.equal(root.get(Category_.OWNER).get(User_.ID), value), builder.isNull(root.get(Category_.OWNER)));
     }
 }

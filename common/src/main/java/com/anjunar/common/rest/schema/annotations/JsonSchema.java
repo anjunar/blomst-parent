@@ -29,4 +29,6 @@ public @interface JsonSchema {
     boolean ignore() default false;
 
     boolean visibility() default false;
+
+    boolean cycle() default false;
 }

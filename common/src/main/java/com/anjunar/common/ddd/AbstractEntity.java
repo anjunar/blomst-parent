@@ -35,17 +35,6 @@ public abstract class AbstractEntity implements Entity {
     @Transient
     private IdentityManager identityManager;
 
-    @PreUpdate
-    private void postUpdate() {
-        modified = LocalDateTime.now();
-    }
-
-    @PrePersist
-    private void postCreate() {
-        modified = LocalDateTime.now();
-        created = LocalDateTime.now();
-    }
-
     public UUID getId() {
         return id;
     }
@@ -60,6 +49,14 @@ public abstract class AbstractEntity implements Entity {
 
     public LocalDateTime getModified() {
         return modified;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
     }
 
     public boolean isDeleted() {

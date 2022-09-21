@@ -3,6 +3,7 @@ package com.anjunar.blomst.control.users.user.connections;
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import jakarta.ws.rs.QueryParam;
@@ -15,14 +16,15 @@ public class UserConnectionsSearch extends AbstractRestSearch {
     @QueryParam("sort")
     private List<String> sort;
 
-    @RestPredicate(FromProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("from")
     private UUID from;
 
-    @RestPredicate(CategoryProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("category")
     private UUID category;
 
+    @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("to")
     private UUID to;
 

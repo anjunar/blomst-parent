@@ -2,10 +2,7 @@ package com.anjunar.common.rest.mapper;
 
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
-import com.anjunar.common.rest.mapper.annotations.MapperConverter;
-import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
-import com.anjunar.common.rest.mapper.annotations.MapperMapView;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
+import com.anjunar.common.rest.mapper.annotations.*;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -17,11 +14,13 @@ import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,13 +50,37 @@ public class ResourceEntityMapper {
         this(null, null, null);
     }
 
-    static <D> D getNewInstance(Class<D> destinationClass) {
+    static <S, D> D getNewInstance(Class<D> destinationClass) {
         try {
             return destinationClass.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static <S, D> D getNewInstance(S source, Class<D> destinationClass) {
+        BeanModel<D> destinationModel = BeanIntrospector.create(destinationClass);
+        JsonSubTypes jsonSubTypes = destinationModel.getAnnotation(JsonSubTypes.class);
+        if (Objects.nonNull(jsonSubTypes)) {
+            JsonSubTypes.Type[] types = jsonSubTypes.value();
+            for (JsonSubTypes.Type type : types) {
+                Class<?> value = type.value();
+                BeanModel<?> typeModel = BeanIntrospector.create(value);
+                MapperPolymorphism polymorphism = typeModel.getAnnotation(MapperPolymorphism.class);
+                if (polymorphism.value().equals(getObjectFromProxy(source))) {
+                    return (D) getNewInstance(value);
+                }
+            }
+        }
+        return getNewInstance(destinationClass);
+    }
+
+    static Class<?> getObjectFromProxy(Object object) {
+        if (object instanceof HibernateProxy proxy) {
+            return proxy.getHibernateLazyInitializer().getImplementation().getClass();
+        }
+        return object.getClass();
     }
 
     public IdentityManager identityProvider() {
@@ -73,7 +96,7 @@ public class ResourceEntityMapper {
     }
 
     public <S, D extends AbstractSchemaEntity, V> D map(S source, Class<D> destinationClass, Class<V> projection) {
-        D destination = getNewInstance(destinationClass);
+        D destination = getNewInstance(source, destinationClass);
 
         if (source instanceof OwnerProvider ownerProvider) {
             if (identityManager.getUser().equals(ownerProvider.getOwner())) {
@@ -135,10 +158,10 @@ public class ResourceEntityMapper {
     }
 
     private <S, D extends AbstractSchemaEntity> void processBean(Object sourcePropertyInstance,
-                                                                                      BeanProperty<S, ?> sourceProperty,
-                                                                                      Object destinationPropertyInstance,
-                                                                                      BeanProperty<D, Object> destinationProperty,
-                                                                                      D destination) {
+                                                                 BeanProperty<S, ?> sourceProperty,
+                                                                 Object destinationPropertyInstance,
+                                                                 BeanProperty<D, Object> destinationProperty,
+                                                                 D destination) {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
@@ -149,7 +172,7 @@ public class ResourceEntityMapper {
             } else {
                 if (UUID.class.isAssignableFrom(destinationPropertyType)) {
                     if (sourcePropertyInstance instanceof AbstractEntity entity) {
-                        destinationProperty.accept(destination, entity);
+                        destinationProperty.accept(destination, entity.getId());
                     }
                 } else {
                     MapperView mapperView = destinationProperty.getAnnotation(MapperView.class);
@@ -171,9 +194,9 @@ public class ResourceEntityMapper {
     }
 
     private <S, D extends AbstractSchemaEntity> void processMap(Map<Object, Object> sourcePropertyInstance,
-                                                                                     BeanProperty<S, ?> sourceProperty,
-                                                                                     Map<Object, Object> destinationPropertyInstance,
-                                                                                     BeanProperty<D, Object> destinationProperty) {
+                                                                BeanProperty<S, ?> sourceProperty,
+                                                                Map<Object, Object> destinationPropertyInstance,
+                                                                BeanProperty<D, Object> destinationProperty) {
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
                 .resolveType(Map.class.getTypeParameters()[0])
@@ -220,9 +243,9 @@ public class ResourceEntityMapper {
     }
 
     private <S, D extends AbstractSchemaEntity> void processCollection(Collection<Object> sourcePropertyInstance,
-                                                                                            BeanProperty<S, ?> sourceProperty,
-                                                                                            Collection<Object> destinationPropertyInstance,
-                                                                                            BeanProperty<D, Object> destinationProperty) {
+                                                                       BeanProperty<S, ?> sourceProperty,
+                                                                       Collection<Object> destinationPropertyInstance,
+                                                                       BeanProperty<D, Object> destinationProperty) {
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
                 .resolveType(Collection.class.getTypeParameters()[0])

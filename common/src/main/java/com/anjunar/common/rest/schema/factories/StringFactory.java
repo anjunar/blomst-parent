@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.validators.EmailValidator;
 import com.anjunar.common.rest.schema.validators.NotBlankValidator;
 import com.anjunar.common.rest.schema.validators.PatternValidator;
@@ -21,13 +22,13 @@ public class StringFactory extends JsonAbstractFactory<JsonString> {
     }
 
     @Override
-    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
+    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property, JsonContext context) {
         return new JsonString();
     }
 
     @Override
-    public JsonString buildWithAnnotation(BeanProperty<?, ?> property) {
-        JsonString jsonString = super.buildWithAnnotation(property);
+    public JsonString buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        JsonString jsonString = super.buildWithAnnotation(property, context);
 
         Email email = property.getAnnotation(Email.class);
         if (email != null) {

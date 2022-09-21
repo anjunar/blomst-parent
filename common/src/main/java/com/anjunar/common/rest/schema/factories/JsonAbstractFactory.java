@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.validators.NotNullValidator;
 import com.google.common.reflect.TypeToken;
@@ -13,10 +14,10 @@ public abstract class JsonAbstractFactory<J extends JsonNode> {
 
     public abstract boolean test(TypeToken<?> typeToken);
 
-    public abstract J build(TypeToken<?> typeToken, BeanProperty<?, ?> property);
+    public abstract J build(TypeToken<?> typeToken, BeanProperty<?, ?> property, JsonContext context);
 
-    public J buildWithAnnotation(BeanProperty<?, ?> property) {
-        J jsonNode = build(property.getType(), property);
+    public J buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        J jsonNode = build(property.getType(), property, context);
         JsonSchema jsonSchema = property.getAnnotation(JsonSchema.class);
         if (jsonSchema != null) {
             if (jsonSchema.title().length() > 0) {

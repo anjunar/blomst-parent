@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.timeline.post.comments;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
 import jakarta.ws.rs.QueryParam;
@@ -15,11 +16,11 @@ public class CommentsSearch extends AbstractLikeableSearch {
     @QueryParam("sort")
     private List<String> sort;
 
-    @RestPredicate(UserPostProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("post")
     private UUID post;
 
-    @RestPredicate(ParentProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("parent")
     private UUID parent;
 
@@ -28,7 +29,7 @@ public class CommentsSearch extends AbstractLikeableSearch {
     private String text;
 
     @QueryParam("owner")
-    @RestPredicate(OwnerProvider.class)
+    @RestPredicate(GenericManyToOneProvider.class)
     private UUID owner;
 
     public List<String> getSort() {

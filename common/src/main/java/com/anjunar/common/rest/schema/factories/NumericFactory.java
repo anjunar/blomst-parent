@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.schema.JsonNumeric;
 import com.anjunar.common.rest.schema.validators.*;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -9,8 +10,8 @@ import jakarta.validation.constraints.*;
 public abstract class NumericFactory<J extends JsonNumeric> extends JsonAbstractFactory<J> {
 
     @Override
-    public J buildWithAnnotation(BeanProperty<?, ?> property) {
-        J jsonNumber = super.buildWithAnnotation(property);
+    public J buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        J jsonNumber = super.buildWithAnnotation(property, context);
 
         Min min = property.getAnnotation(Min.class);
         if (min != null) {

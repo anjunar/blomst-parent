@@ -1,8 +1,10 @@
 package com.anjunar.blomst.social.timeline.post;
 
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.mapper.annotations.MapperView;
+import com.anjunar.common.rest.mapper.annotations.MapperWrite;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -21,14 +23,16 @@ import java.util.UUID;
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
 
-    @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text")
+    @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text", naming = true)
     private String text;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @MapperWrite
     private UserSelect owner;
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Source", readOnly = true)
-    private UUID source;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Source", readOnly = true)
+    @MapperWrite
+    private IdentitySelect source;
 
     public abstract <E> E accept(AbstractPostFormVisitor<E> visitor);
 
@@ -48,11 +52,11 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
         this.owner = owner;
     }
 
-    public UUID getSource() {
+    public IdentitySelect getSource() {
         return source;
     }
 
-    public void setSource(UUID source) {
+    public void setSource(IdentitySelect source) {
         this.source = source;
     }
 

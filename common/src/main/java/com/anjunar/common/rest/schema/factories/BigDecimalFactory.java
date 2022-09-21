@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.validators.DecimalMaxValidator;
 import com.anjunar.common.rest.schema.validators.DecimalMinValidator;
 import com.anjunar.common.rest.schema.validators.DigitsValidator;
@@ -20,15 +21,15 @@ public class BigDecimalFactory extends JsonAbstractFactory<JsonString> {
     }
 
     @Override
-    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
+    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property, JsonContext context) {
         JsonString jsonString = new JsonString();
         jsonString.setFormat(JsonString.Format.BIG_DECIMAL);
         return jsonString;
     }
 
     @Override
-    public JsonString buildWithAnnotation(BeanProperty<?, ?> property) {
-        JsonString jsonString = super.buildWithAnnotation(property);
+    public JsonString buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        JsonString jsonString = super.buildWithAnnotation(property, context);
 
         DecimalMax decimalMax = property.getAnnotation(DecimalMax.class);
         if (decimalMax != null) {

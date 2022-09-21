@@ -7,12 +7,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Identity extends AbstractEntity {
+public abstract class Identity extends AbstractEntity {
 
     private boolean enabled;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Image picture;
+
+    public abstract String getName();
 
     public boolean isEnabled() {
         return enabled;

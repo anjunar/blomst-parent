@@ -86,8 +86,6 @@ public abstract class JsonNode {
 
     private String description;
 
-    private String name;
-
     private Widget widget;
 
     private Boolean naming;
@@ -120,14 +118,6 @@ public abstract class JsonNode {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Widget getWidget() {

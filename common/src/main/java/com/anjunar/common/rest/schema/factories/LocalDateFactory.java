@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.validators.FutureOrPresentValidator;
 import com.anjunar.common.rest.schema.validators.FutureValidator;
 import com.anjunar.common.rest.schema.validators.PastOrPresentValidator;
@@ -22,15 +23,15 @@ public class LocalDateFactory extends JsonAbstractFactory<JsonString> {
     }
 
     @Override
-    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property) {
+    public JsonString build(TypeToken<?> typeToken, BeanProperty<?, ?> property, JsonContext context) {
         JsonString jsonString = new JsonString();
         jsonString.setFormat(JsonString.Format.DATE);
         return jsonString;
     }
 
     @Override
-    public JsonString buildWithAnnotation(BeanProperty<?, ?> property) {
-        JsonString jsonString = super.buildWithAnnotation(property);
+    public JsonString buildWithAnnotation(BeanProperty<?, ?> property, JsonContext context) {
+        JsonString jsonString = super.buildWithAnnotation(property, context);
 
         Future future = property.getAnnotation(Future.class);
         if (future != null) {

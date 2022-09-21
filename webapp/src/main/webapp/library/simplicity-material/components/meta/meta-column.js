@@ -8,20 +8,26 @@ class MetaColumn extends HTMLElement {
     schema;
 
     multiSelect(model, meta) {
-        return model.map((item) => Object
-            .entries(meta.items.properties)
-            .filter(([name, property]) => property.naming)
-            .map(([name, property]) => item[name])
-            .join(" ")
-        ).join(" ")
+        if (model && meta) {
+            return model.map((item) => Object
+                .entries(meta.items.properties)
+                .filter(([name, property]) => property.naming)
+                .map(([name, property]) => item[name])
+                .join(" ")
+            ).join(" ")
+        }
+        return "";
     }
 
     select(model, meta) {
-        return Object
-            .entries(meta.properties)
-            .filter(([name, property]) => property.naming)
-            .map(([name, property]) => model[name])
-            .join(" ")
+        if (model && meta) {
+            return Object
+                .entries(meta.properties)
+                .filter(([name, property]) => property.naming)
+                .map(([name, property]) => model[name])
+                .join(" ")
+        }
+        return "";
     }
 
     dateTime(value, meta) {

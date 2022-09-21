@@ -5,6 +5,9 @@ import com.anjunar.common.ddd.PostgresIndex;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
 import com.anjunar.blomst.social.pages.Page;
+import com.github.pemistahl.lingua.api.Language;
+import com.github.pemistahl.lingua.api.LanguageDetector;
+import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import org.hibernate.annotations.Filter;
 
 import jakarta.persistence.*;
@@ -15,8 +18,7 @@ import java.util.List;
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Question extends Likeable {
 
-    @Lob
-    @PostgresIndex(type = PostgresIndex.Type.TEXT)
+    @Column(columnDefinition="TEXT")
     private String topic;
 
     @Embedded
