@@ -7,10 +7,7 @@ import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.Category;
-import com.anjunar.common.security.EntitySchema;
-import com.anjunar.common.security.IdentityManager;
-import com.anjunar.common.security.OwnerProvider;
+import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -33,15 +30,15 @@ public class ResourceEntityMapper {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceEntityMapper.class);
 
-    private final IdentityManager identityManager;
+    private final IdentityStore identityStore;
 
     private final EntityManager entityManager;
 
     private final Instance<SecurityProvider> securityProviders;
 
     @Inject
-    public ResourceEntityMapper(IdentityManager identityManager, EntityManager entityManager, Instance<SecurityProvider> securityProviders) {
-        this.identityManager = identityManager;
+    public ResourceEntityMapper(IdentityStore identityStore, EntityManager entityManager, Instance<SecurityProvider> securityProviders) {
+        this.identityStore = identityStore;
         this.entityManager = entityManager;
         this.securityProviders = securityProviders;
     }
@@ -83,8 +80,8 @@ public class ResourceEntityMapper {
         return object.getClass();
     }
 
-    public IdentityManager identityProvider() {
-        return identityManager;
+    public IdentityStore identityProvider() {
+        return identityStore;
     }
 
     public EntityManager entityManager() {
@@ -99,7 +96,7 @@ public class ResourceEntityMapper {
         D destination = getNewInstance(source, destinationClass);
 
         if (source instanceof OwnerProvider ownerProvider) {
-            if (identityManager.getUser().equals(ownerProvider.getOwner())) {
+            if (identityStore.getUser().equals(ownerProvider.getOwner())) {
                 loadSchema((OwnerProvider) source, destination);
             } else {
                 for (Map.Entry<String, JsonNode> entry : destination.getSchema().getProperties().entrySet()) {
@@ -294,7 +291,7 @@ public class ResourceEntityMapper {
             } catch (NoResultException e) {
                 EntitySchema schemaItem = new EntitySchema();
                 schemaItem.setEntity(destination.getClass());
-                schemaItem.setOwner(identityManager.getUser());
+                schemaItem.setOwner(identityStore.getUser());
                 schemaItem.setProperty(entry.getKey());
                 entityManager.persist(schemaItem);
             }

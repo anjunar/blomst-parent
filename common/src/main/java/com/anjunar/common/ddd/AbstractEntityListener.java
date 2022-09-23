@@ -1,6 +1,6 @@
 package com.anjunar.common.ddd;
 
-import com.anjunar.common.security.IdentityManager;
+import com.anjunar.common.security.IdentityStore;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
@@ -15,12 +15,12 @@ public class AbstractEntityListener {
 
     private final Event<AbstractEntity> onPersist;
 
-    private final IdentityManager identityManager;
+    private final IdentityStore identityStore;
 
     @Inject
-    public AbstractEntityListener(@OnPersist Event<AbstractEntity> onPersist, IdentityManager identityManager) {
+    public AbstractEntityListener(@OnPersist Event<AbstractEntity> onPersist, IdentityStore identityStore) {
         this.onPersist = onPersist;
-        this.identityManager = identityManager;
+        this.identityStore = identityStore;
     }
 
     public AbstractEntityListener() {
@@ -29,7 +29,7 @@ public class AbstractEntityListener {
 
     @PostLoad
     private void onLoad(AbstractEntity entity) {
-        entity.setIdentityProvider(identityManager);
+        entity.setIdentityStore(identityStore);
     }
 
     @PrePersist

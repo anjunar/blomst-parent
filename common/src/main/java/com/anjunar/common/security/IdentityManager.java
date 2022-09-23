@@ -4,9 +4,8 @@ import com.anjunar.common.i18n.Language;
 import com.anjunar.common.security.enterprise.Authenticator;
 import com.anjunar.common.security.enterprise.CivilCredential;
 import com.anjunar.common.i18n.i18nResolver;
-import com.anjunar.jsr339.cdi.JaxRSExtension;
 
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.AuthenticationStatus;
 import jakarta.security.enterprise.credential.Password;
@@ -19,23 +18,23 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-@SessionScoped
+@ApplicationScoped
 public class IdentityManager implements Serializable {
 
     private final IdentityService service;
-
-    private final JaxRSExtension extension;
 
     private final Authenticator authenticator;
 
     private final i18nResolver resolver;
 
+    private final IdentityStore identityStore;
+
     @Inject
-    public IdentityManager(IdentityService service, JaxRSExtension extension, Authenticator authenticator, i18nResolver resolver) {
+    public IdentityManager(IdentityService service, Authenticator authenticator, i18nResolver resolver, IdentityStore identityStore) {
         this.service = service;
-        this.extension = extension;
         this.authenticator = authenticator;
         this.resolver = resolver;
+        this.identityStore = identityStore;
     }
 
     public IdentityManager() {
@@ -47,10 +46,15 @@ public class IdentityManager implements Serializable {
 
         AuthenticationStatus authenticate = authenticator.authenticate(credential);
 
+        if (authenticate == AuthenticationStatus.SUCCESS) {
+            identityStore.setUser(user);
+        }
+
         return authenticate == AuthenticationStatus.SUCCESS;
     }
 
     public void logout() {
+        identityStore.setUser(null);
         authenticator.logout();
     }
 

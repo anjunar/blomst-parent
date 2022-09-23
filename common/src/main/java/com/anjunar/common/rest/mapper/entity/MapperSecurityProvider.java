@@ -2,17 +2,17 @@ package com.anjunar.common.rest.mapper.entity;
 
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
-import com.anjunar.common.security.IdentityManager;
+import com.anjunar.common.security.IdentityStore;
 import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.inject.Inject;
 
 public class MapperSecurityProvider implements SecurityProvider {
 
-    private final IdentityManager identityManager;
+    private final IdentityStore identityStore;
 
     @Inject
-    public MapperSecurityProvider(IdentityManager identityManager) {
-        this.identityManager = identityManager;
+    public MapperSecurityProvider(IdentityStore identityStore) {
+        this.identityStore = identityStore;
     }
 
     public MapperSecurityProvider() {
@@ -26,7 +26,7 @@ public class MapperSecurityProvider implements SecurityProvider {
             return true;
         }
         for (String role : security.rolesAllowed()) {
-            if (!identityManager.hasRole(role)) {
+            if (!identityStore.hasRole(role)) {
                 return false;
             }
         }

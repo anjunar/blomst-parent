@@ -27,7 +27,7 @@ public class Language extends AbstractEntity {
     }
 
     public String getName() {
-        return i18nName.get(getIdentityProvider().getLanguage().getLocale());
+        return i18nName.get(getIdentityStore().getLanguage());
     }
 
     public Map<Locale, String> getI18nName() {

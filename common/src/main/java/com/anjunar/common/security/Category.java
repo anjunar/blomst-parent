@@ -3,15 +3,11 @@ package com.anjunar.common.security;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.i18n.I18nType;
 import com.anjunar.common.i18n.Language;
-import jakarta.enterprise.inject.spi.CDI;
-import jakarta.inject.Inject;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
-import org.hibernate.type.SqlTypes;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -35,8 +31,7 @@ public class Category extends AbstractEntity {
     }
 
     public String getName() {
-        Language language = getIdentityProvider().getLanguage();
-        return i18nName.get(language.getLocale());
+        return i18nName.get(getIdentityStore().getLanguage());
     }
 
     public String getDescription() {

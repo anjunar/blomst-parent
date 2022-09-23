@@ -43,8 +43,19 @@ public class ChatResourceStream {
     public void onMessage(@Observes @OnMessageEvent TextMessage message, EntityManager entityManager) throws IOException {
 
         User from = entityManager.find(User.class, UUID.fromString(message.getSession().getUserPrincipal().getName()));
-
         message.setFrom(mapper.map(from, UserForm.class));
+
+        final List<User> recipients = new ArrayList<>();
+        for (UUID uuid : message.getTo()) {
+            recipients.add(entityManager.find(User.class, uuid));
+        }
+
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setText(message.getText());
+        chatMessage.setOwner(from);
+        chatMessage.getParticipants().add(from);
+        chatMessage.getParticipants().addAll(recipients);
+        entityManager.persist(chatMessage);
 
         for (UUID uuid : message.getTo()) {
             if (message.getPool().containsKey(uuid.toString())) {
@@ -53,6 +64,8 @@ public class ChatResourceStream {
                         .sendText(objectMapper.writeValueAsString(message));
             }
         }
+
+        message.getSession().getBasicRemote().sendText(objectMapper.writeValueAsString(message));
     }
 
     public void onOpen(@Observes @OnMessageEvent UsersRead message, EntityManager entityManager) throws IOException {

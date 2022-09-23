@@ -1,6 +1,6 @@
 package com.anjunar.common.ddd;
 
-import com.anjunar.common.security.IdentityManager;
+import com.anjunar.common.security.IdentityStore;
 import org.hibernate.annotations.FilterDef;
 
 import jakarta.persistence.*;
@@ -33,7 +33,7 @@ public abstract class AbstractEntity implements Entity {
 
     private boolean deleted;
     @Transient
-    private IdentityManager identityManager;
+    private IdentityStore identityStore;
 
     public UUID getId() {
         return id;
@@ -84,11 +84,11 @@ public abstract class AbstractEntity implements Entity {
         return id != null ? id.hashCode() : 0;
     }
 
-    public void setIdentityProvider(IdentityManager identityManager) {
-        this.identityManager = identityManager;
+    public void setIdentityStore(IdentityStore identityManager) {
+        this.identityStore = identityManager;
     }
 
-    public IdentityManager getIdentityProvider() {
-        return identityManager;
+    public IdentityStore getIdentityStore() {
+        return identityStore;
     }
 }

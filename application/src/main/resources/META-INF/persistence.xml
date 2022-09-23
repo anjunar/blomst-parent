@@ -45,6 +45,8 @@
         <class>com.anjunar.blomst.social.sites.Site</class>
         <class>com.anjunar.blomst.social.sites.SiteConnection</class>
 
+        <class>com.anjunar.blomst.social.chat.ChatMessage</class>
+
         <properties>
             <property name="hibernate.dialect" value="com.anjunar.blomst.Postgres14Dialect"/>
             <property name="hibernate.connection.autocommit" value="false"/>

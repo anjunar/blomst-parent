@@ -9,10 +9,7 @@ import com.anjunar.common.rest.mapper.rest.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.Category;
-import com.anjunar.common.security.EntitySchema;
-import com.anjunar.common.security.IdentityManager;
-import com.anjunar.common.security.OwnerProvider;
+import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -35,15 +32,15 @@ public class ResourceRestMapper {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceRestMapper.class);
 
-    private final IdentityManager identityManager;
+    private final IdentityStore identityStore;
 
     private final EntityManager entityManager;
 
     private final Instance<SecurityProvider> securityProviders;
 
     @Inject
-    public ResourceRestMapper(IdentityManager identityManager, EntityManager entityManager, Instance<SecurityProvider> securityProviders) {
-        this.identityManager = identityManager;
+    public ResourceRestMapper(IdentityStore identityStore, EntityManager entityManager, Instance<SecurityProvider> securityProviders) {
+        this.identityStore = identityStore;
         this.entityManager = entityManager;
         this.securityProviders = securityProviders;
     }
@@ -70,7 +67,7 @@ public class ResourceRestMapper {
         }
 
         if (destination instanceof OwnerProvider ownerProvider) {
-            if (identityManager.getUser().equals(ownerProvider.getOwner())) {
+            if (identityStore.getUser().equals(ownerProvider.getOwner())) {
                 saveSchema(source, destination);
             } else {
                 throw new WebApplicationException(Response.Status.FORBIDDEN);
@@ -244,7 +241,7 @@ public class ResourceRestMapper {
                 Set<CategoryType> categories = entry.getValue().getCategories();
                 try {
                     EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
-                            .setParameter("owner", identityManager.getUser())
+                            .setParameter("owner", identityStore.getUser())
                             .setParameter("entity", source.getClass())
                             .setParameter("property", entry.getKey())
                             .getSingleResult();
@@ -258,7 +255,7 @@ public class ResourceRestMapper {
                 } catch (NoResultException e) {
                     EntitySchema schemaItem = new EntitySchema();
                     schemaItem.setEntity(source.getClass());
-                    schemaItem.setOwner(identityManager.getUser());
+                    schemaItem.setOwner(identityStore.getUser());
                     schemaItem.setProperty(entry.getKey());
                     for (CategoryType category : categories) {
                         Category categoryEntity = entityManager.find(Category.class, category.getId());

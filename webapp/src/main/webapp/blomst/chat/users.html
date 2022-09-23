@@ -7,17 +7,22 @@
 <body>
     <template>
         <div>
-            <div bind:if="users.length === 0" style="margin-left: 5px;line-height: 32px">
-                No Users Online
-            </div>
-            <div bind:for="let user of users">
-                <a bind:onclick="show(user)">
-                    <div style="display: flex; margin: 5px">
-                        <img read:src="user.picture.data" style="max-height: 32px; max-width: 32px; border-radius: 50%;"/>
-                        <div style="margin-left: 5px;line-height: 32px">{{{user.firstName}}} {{{user.lastName}}}</div>
-                    </div>
-                </a>
-            </div>
+            <table is="mat-table" bind:items="onlineUsers" bind:onmodel="show($event)">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div let="user">
+                                <img read:src="user.picture.data" style="max-height: 32px; max-width: 32px; border-radius: 50%;"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div let=user>
+                                <div style="margin-left: 5px;line-height: 32px">{{{user.firstName}}} {{{user.lastName}}}</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </template>
 </body>

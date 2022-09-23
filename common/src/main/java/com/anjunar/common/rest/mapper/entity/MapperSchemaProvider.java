@@ -13,13 +13,13 @@ import java.util.Set;
 
 public class MapperSchemaProvider implements SecurityProvider {
 
-    private final IdentityManager identityManager;
+    private final IdentityStore identityStore;
 
     private final EntityManager entityManager;
 
     @Inject
-    public MapperSchemaProvider(IdentityManager identityManager, EntityManager entityManager) {
-        this.identityManager = identityManager;
+    public MapperSchemaProvider(IdentityStore identityStore, EntityManager entityManager) {
+        this.identityStore = identityStore;
         this.entityManager = entityManager;
     }
 
@@ -41,7 +41,7 @@ public class MapperSchemaProvider implements SecurityProvider {
     }
 
     public boolean isAllowedWithSchema(OwnerProvider entity, String property, Class<?> aClass) {
-        if (entity.getOwner().equals(identityManager.getUser())) {
+        if (entity.getOwner().equals(identityStore.getUser())) {
             return true;
         }
 
@@ -62,7 +62,7 @@ public class MapperSchemaProvider implements SecurityProvider {
             }
 
             UserConnection userConnection = entityManager.createQuery("select c from UserConnection c where c.to = :to and c.from = :from", UserConnection.class)
-                    .setParameter("to", identityManager.getUser())
+                    .setParameter("to", identityStore.getUser())
                     .setParameter("from", entity.getOwner())
                     .getSingleResult();
 

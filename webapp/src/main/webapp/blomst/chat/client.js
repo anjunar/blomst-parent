@@ -3,19 +3,37 @@ import MatInputContainer from "../../library/simplicity-material/components/form
 import DomInput from "../../library/simplicity-core/directives/dom-input.js";
 import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
 import {broadCaster} from "../socket.js";
+import MatTable from "../../library/simplicity-material/components/table/mat-table.js";
 
 class Client extends HTMLElement {
 
-    messages = [];
+    user = null;
 
     model = {
         to: [],
         text: ""
     };
 
+    messages(query, callback) {
+        let url = new URL("service/social/chat/messages", `${window.location.protocol}//${window.location.host}/app/`);
+        url.searchParams.set("index", query.index);
+        url.searchParams.set("limit", query.limit);
+        url.searchParams.set("sort", "created:desc")
+        url.searchParams.set("participants", this.user.id);
+
+        for (const uuid of this.model.to) {
+            url.searchParams.set("participants", uuid);
+        }
+
+        fetch(url.toString())
+            .then(response => response.json())
+            .then(response => callback(response.rows, response.size))
+    }
+
     initialize() {
         let onTextMessage = (data) => {
-            this.messages.push(data)
+            let table = this.querySelector("table");
+            table.load();
         };
 
         broadCaster.register("chat-text-message", onTextMessage)
@@ -27,11 +45,10 @@ class Client extends HTMLElement {
 
     send() {
         broadCaster.fire("chat-text-message", this.model);
-        this.messages.push(JSON.parse(JSON.stringify(this.model)));
     }
 
     static get components() {
-        return [MatInputContainer, DomInput]
+        return [MatInputContainer, DomInput, MatTable]
     }
 
     static get template() {
@@ -43,5 +60,10 @@ class Client extends HTMLElement {
 export default customViews.define({
     name: "chat-client",
     class: Client,
-    header: "Client"
+    header: "Client",
+    guard(activeRoute) {
+        return {
+            user: fetch("service").then(response => response.json())
+        }
+    }
 })

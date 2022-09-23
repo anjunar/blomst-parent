@@ -11,7 +11,7 @@ public abstract class Identity extends AbstractEntity {
 
     private boolean enabled;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Image picture;
 
     @Transient

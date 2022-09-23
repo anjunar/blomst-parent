@@ -34,7 +34,7 @@ public class User extends Identity {
 
     private String token;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private final Set<Role> roles = new HashSet<>();
 
     public String getFirstName() {

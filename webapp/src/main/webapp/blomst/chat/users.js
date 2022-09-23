@@ -2,46 +2,42 @@ import {customViews} from "../../library/simplicity-core/simplicity.js";
 import MatInputContainer from "../../library/simplicity-material/components/form/container/mat-input-container.js";
 import DomInput from "../../library/simplicity-core/directives/dom-input.js";
 import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
-import {isEqual} from "../../library/simplicity-core/services/tools.js";
 import {windowManager} from "../../library/simplicity-material/manager/window-manager.js";
 import {broadCaster} from "../socket.js";
+import MatTable from "../../library/simplicity-material/components/table/mat-table.js";
 
 class Users extends HTMLElement {
 
     user = null;
-    users = [];
+
+    onlineUsers(query, callback) {
+        fetch(`service/social/chat/online?index=${query.index}&limit=${query.limit}`)
+            .then(response => response.json())
+            .then(response => callback(response.rows, response.size))
+    }
 
     initialize() {
 
         let onUsersUpdate = (data) => {
-            this.users = data.list;
+            let table = this.querySelector("table");
+            table.load();
         };
 
         let onStatus = (data) => {
-            if (data.status === "ONLINE") {
-                let find = this.users.find(user => isEqual(user, data.user));
-                if (! find) {
-                    this.users.push(data.user);
-                }
-            } else {
-                let find = this.users.find(user => isEqual(user, data.user));
-                if (find) {
-                    let indexOf = this.users.indexOf(find);
-                    this.users.splice(indexOf,1)
-                }
-            }
+            let table = this.querySelector("table");
+            table.load();
         };
 
-        let onTextMessage = (data) => {
-            windowManager.openWindow("hive/chat/client.js", {
-                singleton : true,
+        let onTextMessage = (event) => {
+            windowManager.openWindow("blomst/chat/client.js", {
+                singleton: true,
                 data: {
-                    model : {
-                        to : [data.from.id],
-                        from : this.user,
-                        text : ""
+                    model: {
+                        to: [event.from.id],
+                        from: this.user,
+                        text: ""
                     },
-                    messages : [data]
+                    messages: [event]
                 }
             })
         };
@@ -59,21 +55,21 @@ class Users extends HTMLElement {
         }
     }
 
-    show(model) {
-        windowManager.openWindow("hive/chat/client.js", {
-            singleton : true,
+    show(event) {
+        windowManager.openWindow("blomst/chat/client.js", {
+            singleton: true,
             data: {
-                model : {
-                    from : this.user,
-                    to : [model.id],
-                    text : ""
+                model: {
+                    from: this.user,
+                    to: [event.detail.id],
+                    text: ""
                 }
             }
         })
     }
 
     static get components() {
-        return [MatInputContainer, DomInput]
+        return [MatInputContainer, DomInput, MatTable]
     }
 
     static get template() {
@@ -84,11 +80,11 @@ class Users extends HTMLElement {
 
 export default customViews.define({
     name: "chat-users",
-    header : "Chat Users",
+    header: "Chat Users",
     class: Users,
     guard(activeRoute) {
         return {
-            user : fetch("service")
+            user: fetch("service")
                 .then(response => response.json())
         }
     }

@@ -7,6 +7,7 @@ import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
+import com.anjunar.common.security.IdentityStore;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -58,7 +59,7 @@ public class JsonSchemaGenerator {
                     MapperSecurity mapperSecurity = property.getAnnotation(MapperSecurity.class);
                     if (Objects.nonNull(mapperSecurity)) {
                         String[] rolesAllowed = mapperSecurity.rolesAllowed();
-                        IdentityManager identityManager = CDI.current().select(IdentityManager.class).get();
+                        IdentityStore identityManager = CDI.current().select(IdentityStore.class).get();
                         if (identityManager.hasRole(rolesAllowed)) {
                             process(jsonObject, property, context);
                         }
