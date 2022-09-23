@@ -36,9 +36,13 @@ public class TransactionFilter implements Filter {
             transaction.commit();
             long end = System.currentTimeMillis();
             log.info("Request timing: " + Math.round( end- start) + "ms") ;
-        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException |
-                 HeuristicRollbackException e) {
-            log.error(e.getLocalizedMessage(), e);
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
+            try {
+                log.error(e.getLocalizedMessage(), e);
+                transaction.rollback();
+            } catch (SystemException ex) {
+                log.error(ex.getLocalizedMessage(), ex);
+            }
         }
     }
 }

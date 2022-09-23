@@ -20,6 +20,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
@@ -64,8 +65,10 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
                 .build(table::addLink);
 
         JsonArray roles = table.find("roles", JsonArray.class);
-        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
-                .build(roles::addLink);
+        if (Objects.nonNull(roles)) {
+            linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                    .build(roles::addLink);
+        }
 
         JsonObject language = table.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))

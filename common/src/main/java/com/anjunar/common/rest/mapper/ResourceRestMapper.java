@@ -66,14 +66,6 @@ public class ResourceRestMapper {
             destination = getNewInstance(destinationClass);
         }
 
-        if (destination instanceof OwnerProvider ownerProvider) {
-            if (identityStore.getUser().equals(ownerProvider.getOwner())) {
-                saveSchema(source, destination);
-            } else {
-                throw new WebApplicationException(Response.Status.FORBIDDEN);
-            }
-        }
-
         if (loadOnly) {
             return destination;
         }
@@ -114,6 +106,14 @@ public class ResourceRestMapper {
                         }
                     }
                 }
+            }
+        }
+
+        if (destination instanceof OwnerProvider ownerProvider) {
+            if (identityStore.getUser().equals(ownerProvider.getOwner())) {
+                saveSchema(source, destination);
+            } else {
+                throw new WebApplicationException(Response.Status.FORBIDDEN);
             }
         }
 

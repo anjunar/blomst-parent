@@ -45,8 +45,9 @@ class DomForm extends mix(HTMLFormElement).with(Input) {
         if (this.model) {
             let value = this.model[component.name];
             if (value !== undefined) {
-                component.model = value;
-                component.value = value;
+                // Make a deep copy of value, so the membrane is connected to new object graph
+                component.model = JSON.parse(JSON.stringify(value));
+                component.value = JSON.parse(JSON.stringify(value));
                 component.defaultValue = JSON.parse(JSON.stringify(value));
             }
 

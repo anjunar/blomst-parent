@@ -28,4 +28,11 @@ public class ChatMessagesSearch extends AbstractRestSearch {
         this.sort = sort;
     }
 
+    public Set<UUID> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<UUID> participants) {
+        this.participants = participants;
+    }
 }

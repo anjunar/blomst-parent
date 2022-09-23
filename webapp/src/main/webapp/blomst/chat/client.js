@@ -22,7 +22,7 @@ class Client extends HTMLElement {
         url.searchParams.set("participants", this.user.id);
 
         for (const uuid of this.model.to) {
-            url.searchParams.set("participants", uuid);
+            url.searchParams.append("participants", uuid);
         }
 
         fetch(url.toString())

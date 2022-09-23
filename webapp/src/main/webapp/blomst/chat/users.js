@@ -36,8 +36,7 @@ class Users extends HTMLElement {
                         to: [event.from.id],
                         from: this.user,
                         text: ""
-                    },
-                    messages: [event]
+                    }
                 }
             })
         };
