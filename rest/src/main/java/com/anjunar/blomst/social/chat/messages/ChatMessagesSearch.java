@@ -1,4 +1,4 @@
-package com.anjunar.blomst.social.chat;
+package com.anjunar.blomst.social.chat.messages;
 
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestPredicate;

@@ -98,6 +98,8 @@ public abstract class JsonNode {
 
     private Boolean visibility;
 
+    private Boolean visible;
+
     private Set<CategoryType> categories = new HashSet<>();
 
     private final LinkedHashMap<String, Link> links = new LinkedHashMap<>();
@@ -188,6 +190,14 @@ public abstract class JsonNode {
         return visibility;
     }
 
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
     public Set<CategoryType> getCategories() {
         return categories;
     }
@@ -195,4 +205,5 @@ public abstract class JsonNode {
     public void setCategories(Set<CategoryType> categories) {
         this.categories = categories;
     }
+
 }

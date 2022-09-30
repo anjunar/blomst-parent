@@ -2,12 +2,7 @@ package com.anjunar.blomst;
 
 import com.anjunar.common.security.IdentityStore;
 import com.anjunar.common.security.User;
-import com.anjunar.common.websocket.OnCloseEvent;
-import com.anjunar.common.websocket.OnMessageEvent;
-import com.anjunar.common.websocket.OnOpenEvent;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.anjunar.common.websocket.*;
 import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
@@ -22,93 +17,89 @@ import org.jboss.weld.context.bound.BoundRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ServerEndpoint("/socket")
-public class ApplicationWebSocket {
+public class WebSocket {
 
-    private static final Logger log = LoggerFactory.getLogger(ApplicationWebSocket.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    public static final Map<String, Session> pool = new ConcurrentHashMap<>();
-
-    static {
-        objectMapper.registerModule(new JavaTimeModule())
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+    private static final Logger log = LoggerFactory.getLogger(WebSocket.class);
 
     private final EntityManager entityManager;
 
-    private final Event<ApplicationWebSocketMessage> messageEvent;
+    private final Event<WebSocketMessage> messageEvent;
 
-    private final Event<ApplicationWebSocketMessage> openEvent;
+    private final Event<WebSocketMessage> openEvent;
 
-    private final Event<ApplicationWebSocketMessage> closeEvent;
+    private final Event<WebSocketMessage> closeEvent;
 
     private final BoundRequestContext requestContext;
 
     private final UserTransaction transaction;
 
+    private final WebSocketSessions sessions;
+
 
     @Inject
-    public ApplicationWebSocket(EntityManager entityManager,
-                                @OnMessageEvent Event<ApplicationWebSocketMessage> messageEvent,
-                                @OnOpenEvent Event<ApplicationWebSocketMessage> openEvent,
-                                @OnCloseEvent Event<ApplicationWebSocketMessage> closeEvent,
-                                BoundRequestContext requestContext,
-                                UserTransaction transaction) {
+    public WebSocket(EntityManager entityManager,
+                     Event<WebSocketMessage> messageEvent,
+                     @OnOpenEvent Event<WebSocketMessage> openEvent,
+                     @OnCloseEvent Event<WebSocketMessage> closeEvent,
+                     BoundRequestContext requestContext,
+                     UserTransaction transaction,
+                     WebSocketSessions sessions) {
         this.entityManager = entityManager;
         this.messageEvent = messageEvent;
         this.openEvent = openEvent;
         this.closeEvent = closeEvent;
         this.requestContext = requestContext;
         this.transaction = transaction;
+        this.sessions = sessions;
     }
 
-    public ApplicationWebSocket() {
-        this(null, null, null, null, null, null);
+    public WebSocket() {
+        this(null, null, null, null, null, null, null);
     }
 
     @OnMessage
     public void onStringMessage(String message, Session session) throws RuntimeException {
 
         try {
-            transaction.begin();
-
-            User user = entityManager.find(User.class, UUID.fromString(session.getUserPrincipal().getName()));
-
             requestContext.associate(new LinkedHashMap<>());
             requestContext.activate();
 
-            IdentityStore identityStore = CDI.current().select(IdentityStore.class).get();
-            identityStore.setUser(user);
+            transaction.begin();
 
-            ApplicationWebSocketMessage socketMessage = objectMapper
-                    .readerFor(ApplicationWebSocketMessage.class)
-                    .readValue(message, ApplicationWebSocketMessage.class);
+            Pattern pattern = Pattern.compile("([\\w-]+)\\((.*)\\)");
+            Matcher matcher = pattern.matcher(message);
 
-            socketMessage.setSession(session);
-            socketMessage.setPool(pool);
+            if (matcher.matches()) {
+                User user = entityManager.find(User.class, UUID.fromString(session.getUserPrincipal().getName()));
 
-            messageEvent.fire(socketMessage);
+                IdentityStore identityStore = CDI.current().select(IdentityStore.class).get();
+                identityStore.setUser(user);
 
-            requestContext.invalidate();
-            requestContext.deactivate();
+                WebSocketMessage socketMessage = new WebSocketMessage();
+                socketMessage.setMessage(matcher.group(2));
+                socketMessage.setSession(session);
+                socketMessage.setPool(sessions.getPool());
+
+                messageEvent.select(new OnMessageEventLiteral(matcher.group(1))).fire(socketMessage);
+            }
 
             transaction.commit();
-        } catch (NotSupportedException | SystemException | IOException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
             try {
                 log.error(e.getLocalizedMessage(), e);
-                requestContext.invalidate();
-                requestContext.deactivate();
                 transaction.rollback();
             } catch (SystemException ex) {
                 log.error(ex.getLocalizedMessage(), ex);
             }
+        } finally {
+            requestContext.invalidate();
+            requestContext.deactivate();
         }
     }
 
@@ -117,37 +108,35 @@ public class ApplicationWebSocket {
         if (session.getUserPrincipal() != null) {
 
             try {
+                requestContext.associate(new LinkedHashMap<>());
+                requestContext.activate();
+
                 transaction.begin();
 
                 User user = entityManager.find(User.class, UUID.fromString(session.getUserPrincipal().getName()));
 
-                requestContext.associate(new LinkedHashMap<>());
-                requestContext.activate();
-
                 IdentityStore identityStore = CDI.current().select(IdentityStore.class).get();
                 identityStore.setUser(user);
 
-                pool.put(session.getUserPrincipal().getName(), session);
+                sessions.getPool().put(session.getUserPrincipal().getName(), session);
 
-                ApplicationWebSocketMessage socketMessage = new ApplicationWebSocketMessage();
+                WebSocketMessage socketMessage = new WebSocketMessage();
                 socketMessage.setSession(session);
-                socketMessage.setPool(pool);
+                socketMessage.setPool(sessions.getPool());
 
                 openEvent.fire(socketMessage);
-
-                requestContext.invalidate();
-                requestContext.deactivate();
 
                 transaction.commit();
             } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
                 try {
                     log.error(e.getLocalizedMessage(), e);
-                    requestContext.invalidate();
-                    requestContext.deactivate();
                     transaction.rollback();
                 } catch (SystemException ex) {
                     log.error(ex.getLocalizedMessage(), ex);
                 }
+            } finally {
+                requestContext.invalidate();
+                requestContext.deactivate();
             }
         }
     }
@@ -155,14 +144,14 @@ public class ApplicationWebSocket {
     @OnClose
     public void onClose(Session session)  {
         try {
-            transaction.begin();
-
             requestContext.associate(new LinkedHashMap<>());
             requestContext.activate();
 
-            ApplicationWebSocketMessage socketMessage = new ApplicationWebSocketMessage();
+            transaction.begin();
+
+            WebSocketMessage socketMessage = new WebSocketMessage();
             socketMessage.setSession(session);
-            socketMessage.setPool(pool);
+            socketMessage.setPool(sessions.getPool());
 
             closeEvent.fire(socketMessage);
 
@@ -172,18 +161,19 @@ public class ApplicationWebSocket {
             requestContext.invalidate();
             requestContext.deactivate();
 
-            pool.remove(session.getUserPrincipal().getName());
+            sessions.getPool().remove(session.getUserPrincipal().getName());
 
             transaction.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
             try {
                 log.error(e.getLocalizedMessage(), e);
-                requestContext.invalidate();
-                requestContext.deactivate();
                 transaction.rollback();
             } catch (SystemException ex) {
                 log.error(ex.getLocalizedMessage(), ex);
             }
+        } finally {
+            requestContext.invalidate();
+            requestContext.deactivate();
         }
     }
 

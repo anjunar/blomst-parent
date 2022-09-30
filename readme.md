@@ -78,4 +78,10 @@ anjunar-parent/application/src/main/server/wildFly/modules
 
 copy to $JBOSS_HOME/modules
 
+AJP 1.3 Connector for Apache2
+apt-get install libapache2-mod-jk
+
 https://github.com/wildfly/quickstart/tree/main/messaging-clustering-singleton
+https://www.how2shout.com/linux/how-to-install-wildfly-application-server-on-debian-11-bullseye
+https://linuxize.com/post/how-to-install-postgresql-on-debian-10/
+http://www.zeitoun.net/articles/configure-mod_proxy_ajp-with-tomcat/start

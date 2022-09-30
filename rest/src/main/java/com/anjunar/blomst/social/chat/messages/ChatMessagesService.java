@@ -1,5 +1,6 @@
-package com.anjunar.blomst.social.chat;
+package com.anjunar.blomst.social.chat.messages;
 
+import com.anjunar.blomst.social.chat.ChatMessage;
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityManager;
 import jakarta.enterprise.context.ApplicationScoped;

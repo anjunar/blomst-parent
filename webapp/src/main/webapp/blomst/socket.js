@@ -1,15 +1,52 @@
-const socket = new WebSocket("ws://localhost:8080/app/socket")
+let socket;
+
+(function connect() {
+    socket = new WebSocket("ws://localhost:8080/app/socket")
+
+    let interval = setInterval(() => {
+        socket.send("heartbeat()")
+    }, 1000 * 60);
+
+    let onBeforeUnload = () => {
+        socket.close();
+        window.clearInterval(interval);
+        window.removeEventListener("beforeunload", onBeforeUnload)
+    };
+
+    window.addEventListener("beforeunload", onBeforeUnload)
+
+    socket.onclose = () => {
+        console.log("Connection Error... try reconnection in 1s...")
+        setTimeout(() => {
+            connect();
+        }, 1000)
+    }
+
+    socket.onerror = () => {
+        socket.close();
+        window.clearInterval(interval);
+        window.removeEventListener("beforeunload", onBeforeUnload)
+    }
+
+
+})()
+
 
 const handlersRegistry = new Map();
 
 socket.addEventListener("message", (event) => {
-    let data = JSON.parse(event.data);
+    let regex = /([\w-]+)\((.*)\)/;
+    let regexResult = regex.exec(event.data);
 
-    let handlers = handlersRegistry.get(data.type)
+    let handlers = handlersRegistry.get(regexResult[1])
 
     if (handlers) {
         for (const handler of handlers) {
-            handler(data)
+            if (regexResult[2]) {
+                handler(JSON.parse(regexResult[2]))
+            } else {
+                handler()
+            }
         }
     }
 });
@@ -33,10 +70,11 @@ export const broadCaster = new class BroadCaster {
     }
 
     fire(name, object) {
-        socket.send(JSON.stringify({
-            type : name,
-            ...object
-        }))
+        if (object) {
+            socket.send(`${name}(${JSON.stringify(object)})`)
+        } else {
+            socket.send(`${name}()`)
+        }
     }
 
 }

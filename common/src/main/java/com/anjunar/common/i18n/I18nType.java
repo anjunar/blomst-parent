@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.type.MapType;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
+import org.jooq.util.postgres.PGobject;
 
 import java.io.IOException;
 import java.io.Serializable;

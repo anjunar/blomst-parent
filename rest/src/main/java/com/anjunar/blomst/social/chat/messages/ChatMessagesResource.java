@@ -1,5 +1,6 @@
-package com.anjunar.blomst.social.chat;
+package com.anjunar.blomst.social.chat.messages;
 
+import com.anjunar.blomst.social.chat.ChatMessage;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("social/chat/messages")
-public class ChatMessagesResource implements ListResourceTemplate<ChatMessageForm, ChatMessagesSearch> {
+public class ChatMessagesResource implements ListResourceTemplate<ChatMessageRow, ChatMessagesSearch> {
 
     private final ChatMessagesService service;
 
@@ -27,17 +28,20 @@ public class ChatMessagesResource implements ListResourceTemplate<ChatMessageFor
     }
 
     @Override
-    public Table<ChatMessageForm> list(ChatMessagesSearch search) {
+    public Table<ChatMessageRow> list(ChatMessagesSearch search) {
         long count = service.count(search);
         List<ChatMessage> chatMessages = service.find(search);
-        List<ChatMessageForm> resources = new ArrayList<>();
+        List<ChatMessageRow> resources = new ArrayList<>();
 
         for (ChatMessage chatMessage : chatMessages) {
-            ChatMessageForm form = entityMapper.map(chatMessage, ChatMessageForm.class);
-
+            ChatMessageRow form = entityMapper.map(chatMessage, ChatMessageRow.class);
             resources.add(form);
         }
 
-        return new Table<>(resources, count) {};
+        Table<ChatMessageRow> table = new Table<>(resources, count) {};
+
+        table.visible("text", "owner");
+
+        return table;
     }
 }

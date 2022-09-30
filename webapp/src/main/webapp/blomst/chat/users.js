@@ -4,53 +4,48 @@ import DomInput from "../../library/simplicity-core/directives/dom-input.js";
 import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
 import {windowManager} from "../../library/simplicity-material/manager/window-manager.js";
 import {broadCaster} from "../socket.js";
-import MatTable from "../../library/simplicity-material/components/table/mat-table.js";
+import MetaTable from "../../library/simplicity-material/components/meta/meta-table.js";
 
 class Users extends HTMLElement {
 
     user = null;
 
     onlineUsers(query, callback) {
-        fetch(`service/social/chat/online?index=${query.index}&limit=${query.limit}`)
+        fetch(`service/social/chat/online?index=${query.index}&limit=${query.limit}&from=${this.user.id}`)
             .then(response => response.json())
-            .then(response => callback(response.rows, response.size))
+            .then(response => callback(response.rows, response.size, response.$schema))
     }
 
     initialize() {
 
-        let onUsersUpdate = (data) => {
-            let table = this.querySelector("table");
-            table.load();
-        };
-
-        let onStatus = (data) => {
+        let onStatus = () => {
             let table = this.querySelector("table");
             table.load();
         };
 
         let onTextMessage = (event) => {
+            let participants = event["participants"];
+            let indexOf = participants.indexOf(this.user.id);
+            participants.splice(indexOf, 1);
+
             windowManager.openWindow("blomst/chat/client.js", {
                 singleton: true,
                 data: {
                     model: {
-                        to: [event.from.id],
-                        from: this.user,
+                        to: participants,
+                        from: this.user.id,
                         text: ""
                     }
                 }
             })
         };
 
-        broadCaster.register("chat-users-update", onUsersUpdate)
         broadCaster.register("chat-status", onStatus)
-        broadCaster.register("chat-text-message", onTextMessage)
-
-        broadCaster.fire("chat-users-read")
+        broadCaster.register("chat-message", onTextMessage)
 
         Users.prototype.destroy = () => {
-            broadCaster.unregister("chat-users-update", onUsersUpdate)
             broadCaster.unregister("chat-status", onStatus)
-            broadCaster.unregister("chat-text-message", onTextMessage)
+            broadCaster.unregister("chat-message", onTextMessage)
         }
     }
 
@@ -59,7 +54,7 @@ class Users extends HTMLElement {
             singleton: true,
             data: {
                 model: {
-                    from: this.user,
+                    from: this.user.id,
                     to: [event.detail.id],
                     text: ""
                 }
@@ -68,7 +63,7 @@ class Users extends HTMLElement {
     }
 
     static get components() {
-        return [MatInputContainer, DomInput, MatTable]
+        return [MatInputContainer, DomInput, MetaTable]
     }
 
     static get template() {

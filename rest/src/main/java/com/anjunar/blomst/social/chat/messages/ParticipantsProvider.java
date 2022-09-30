@@ -1,5 +1,7 @@
-package com.anjunar.blomst.social.chat;
+package com.anjunar.blomst.social.chat.messages;
 
+import com.anjunar.blomst.social.chat.ChatMessage;
+import com.anjunar.blomst.social.chat.ChatMessage_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;

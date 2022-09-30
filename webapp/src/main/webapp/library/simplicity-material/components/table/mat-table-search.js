@@ -4,6 +4,7 @@ class MatTableSearch extends HTMLElement {
 
     path
     schema;
+    visible = true;
 
     get sortable() {
         return this.schema.type === "string"
@@ -18,6 +19,11 @@ class MatTableSearch extends HTMLElement {
             case "schema" : {
                 this.schema = newValue
             }
+                break
+            case "visible" : {
+                this.visible = newValue;
+            }
+
         }
     }
 
@@ -28,6 +34,9 @@ class MatTableSearch extends HTMLElement {
                 binding: "input"
             }, {
                 name: "schema",
+                binding: "input"
+            }, {
+                name: "visible",
                 binding: "input"
             }
         ]

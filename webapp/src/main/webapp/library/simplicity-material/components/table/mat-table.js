@@ -40,10 +40,13 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
                     let tableSearch = tableSearches[i];
                     let colAttribute = tableSearch.path;
                     let sortable = tableSearch.sortable;
-
+                    let visible = tableSearch.visible;
+                    if (visible === undefined) {
+                        visible = true
+                    }
                     let column = {
                         index: i,
-                        visible: true,
+                        visible: visible ,
                         sort: sortable ? "none" : null,
                         path: colAttribute,
                         search : ""

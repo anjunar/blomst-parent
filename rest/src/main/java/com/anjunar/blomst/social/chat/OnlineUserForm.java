@@ -16,6 +16,9 @@ public class OnlineUserForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true)
     private String lastName;
 
+    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Online", readOnly = true)
+    private Boolean online;
+
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
     @MapperConverter(ImageConverter.class)
     private ImageType picture;
@@ -34,6 +37,14 @@ public class OnlineUserForm extends AbstractRestEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Boolean getOnline() {
+        return online;
+    }
+
+    public void setOnline(Boolean online) {
+        this.online = online;
     }
 
     public ImageType getPicture() {

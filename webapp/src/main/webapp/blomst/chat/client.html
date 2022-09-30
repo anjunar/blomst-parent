@@ -6,34 +6,14 @@
 </head>
 <body>
 <template>
-
-    <table is="mat-table" bind:items="messages">
-        <tbody>
-            <tr>
-                <td>
-                    <div let="message">
-                        <img read:src="message.owner.picture.data" style="max-width: 32px; max-height: 32px; border-radius: 50%;">
-                    </div>
-                </td>
-                <td>
-                    <div let="message">
-                        <div style="line-height: 32px; margin-left: 5px">{{{message.owner.firstName}}} {{{message.owner.lastName}}}</div>
-                    </div>
-                </td>
-                <td>
-                    <div let="message">
-                        <div style="line-height: 32px; margin-left: 5px">{{{message.text}}}</div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <meta-table read:items="messages"></meta-table>
 
     <mat-input-container placeholder="Text">
         <input type="text" is="dom-input" bind:model="model.text"/>
     </mat-input-container>
 
     <button type="button" bind:onclick="send()">Send</button>
+    <div bind:if="typing">{{{typing.firstName}}} {{{typing.lastName}}} is typing...</div>
 </template>
 </body>
 </html>
