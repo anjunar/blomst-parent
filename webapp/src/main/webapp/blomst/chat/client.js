@@ -18,7 +18,7 @@ class Client extends HTMLElement {
     typing = null;
 
     messages(query, callback) {
-        let url = new URL("service/social/chat/messages", `${window.location.protocol}//${window.location.host}/app/`);
+        let url = new URL("service/social/chat/messages", `${window.location.protocol}//${window.location.host}/`);
         url.searchParams.set("index", query.index);
         url.searchParams.set("limit", query.limit);
         url.searchParams.set("sort", "created:desc")

@@ -5,6 +5,7 @@ import MetaInput from "../../library/simplicity-material/components/meta/meta-in
 import MatDrawer from "../../library/simplicity-material/components/navigation/mat-drawer.js";
 import MatDrawerContent from "../../library/simplicity-material/components/navigation/mat-drawer-content.js";
 import MatDrawerContainer from "../../library/simplicity-material/components/navigation/mat-drawer-container.js";
+import {windowManager} from "../../library/simplicity-material/manager/window-manager.js";
 
 class Table extends HTMLElement {
 

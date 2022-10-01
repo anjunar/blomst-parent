@@ -1,7 +1,7 @@
 let socket;
 
 (function connect() {
-    socket = new WebSocket("ws://localhost:8080/socket")
+    socket = new WebSocket(`ws://${window.location.host}/socket`)
 
     let interval = setInterval(() => {
         socket.send("heartbeat()")
