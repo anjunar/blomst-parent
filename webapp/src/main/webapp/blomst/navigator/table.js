@@ -56,26 +56,6 @@ class Table extends HTMLElement {
         window.location.hash = `/navigator/form?link=${encodeURIComponent(link.url)}`
     }
 
-    onAction(link) {
-        fetch(link.url, {
-            body: JSON.stringify(this.model),
-            method: link.method,
-            headers: new Headers({'content-type': 'application/json'}),
-        })
-            .then(response => response.json())
-            .then(response => {
-                /*
-                                const tx = db.transaction("activities", "readwrite");
-                                const store = tx.objectStore("activities");
-                                store.put({
-                                    created : Date.now(),
-                                    description : link.description,
-                                    content : JSON.stringify(this.model)
-                                });
-                */
-            })
-    }
-
     onLoad(event) {
         this.schema = event.detail.schema;
     }
@@ -93,10 +73,6 @@ class Table extends HTMLElement {
 
     links(links) {
         return Object.values(links).filter((link) => link.method === "GET");
-    }
-
-    actions(links) {
-        return Object.values(links).filter((link) => link.method !== "GET");
     }
 
     static get components() {

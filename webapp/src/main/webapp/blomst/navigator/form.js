@@ -11,25 +11,6 @@ class Table extends HTMLElement {
     model;
     open = true;
 
-    items(query, callback) {
-        let link = decodeURIComponent(this.queryParams.link);
-        let url = new URL(link, `${window.location.protocol}//${window.location.host}/app/`);
-        url.searchParams.set("index", query.index);
-        url.searchParams.set("limit", query.limit);
-        fetch(url.toString())
-            .then(response => response.json())
-            .then((response) => {
-                callback(response.rows, response.size, response.$schema)
-            })
-    }
-
-    onRowClick(event) {
-        let row = event.detail;
-        let link = row.$schema.links.read;
-        history.pushState(null, null, `navigator?link=${encodeURIComponent(link.url)}`)
-        window.dispatchEvent(new Event("popstate"))
-    }
-
     onAction(link) {
         fetch(link.url, {
             body: JSON.stringify(this.model),
@@ -38,15 +19,10 @@ class Table extends HTMLElement {
         })
             .then(response => response.json())
             .then(response => {
-                /*
-                                const tx = db.transaction("activities", "readwrite");
-                                const store = tx.objectStore("activities");
-                                store.put({
-                                    created : Date.now(),
-                                    description : link.description,
-                                    content : JSON.stringify(this.model)
-                                });
-                */
+                let read = response.$schema.links.read;
+                if (read) {
+                    window.location.hash = `#/navigator/form?link=${encodeURIComponent(read.url)}`
+                }
             })
     }
 

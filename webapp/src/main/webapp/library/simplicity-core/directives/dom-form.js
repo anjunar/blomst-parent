@@ -48,12 +48,14 @@ class DomForm extends mix(HTMLFormElement).with(Input) {
                 // Make a deep copy of value, so the membrane is connected to new object graph
                 component.model = JSON.parse(JSON.stringify(value));
                 component.value = JSON.parse(JSON.stringify(value));
-                component.defaultValue = JSON.parse(JSON.stringify(value));
+                component.defaulValue = JSON.parse(JSON.stringify(value));
+                component.defaultModel = JSON.parse(JSON.stringify(value));
             }
 
             Membrane.track(this.model, {
                 property : component.name,
                 element : this,
+                scoped : true,
                 handler : (value) => {
                     component.model = value;
                     component.value = value;

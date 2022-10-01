@@ -255,7 +255,7 @@ export const Input = (superclass) => class InputMixin extends superclass {
 
     get pristine() {
         let method = () => {
-            return isEqual(this.value, this.defaultValue)
+            return isEqual(this.model, this.defaultModel)
         }
         let resonator = (context, element) => {
             this.addEventListener("input", context)
@@ -384,11 +384,11 @@ export function generateDomProxy(node) {
                 Reflect.set(data, property, value)
                 for (const eventHandler of node.handlers) {
                     if (eventHandler.scoped) {
-                        if (eventHandler.path === property && (node.passive.indexOf(property) === -1 || eventHandler.override)) {
+                        if (eventHandler.path === property) {
                             eventHandler.handler(value);
                         }
                     } else {
-                        if (eventHandler.path.startsWith(property) && (node.passive.indexOf(property) === -1 || eventHandler.override)) {
+                        if (eventHandler.path.startsWith(property)) {
                             eventHandler.handler(value);
                         }
                     }
@@ -410,7 +410,7 @@ export function generateDomProxy(node) {
 
     function addEventHandler (options) {
         let name = options.property, handler = options.handler, element = options.element,
-            scoped = options.scoped || false, passive = options.passive || false, override = options.override || false;
+            scoped = options.scoped;
 
         if (node[name] instanceof Object && Reflect.has(node[name], "method") && Reflect.has(node[name], "resonator")) {
             let nodeElement = node[name];
@@ -423,9 +423,7 @@ export function generateDomProxy(node) {
                 path: name,
                 handler: handler,
                 element: element,
-                scoped : scoped,
-                passive : passive,
-                override : override
+                scoped : scoped
             };
             node.handlers.push(result);
 

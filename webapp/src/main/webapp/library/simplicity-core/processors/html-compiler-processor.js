@@ -139,7 +139,7 @@ export function activeObjectExpression(expression, context, element, callback) {
                     property : lastSegment,
                     element : element,
                     handler : () => {
-                        callback(evaluation(expression, context));
+                        callback(evaluation(expression, context, {}, true));
                     }
                 })
             }
@@ -172,7 +172,7 @@ function addEventHandler(scope) {
     let handlers = node.handlers;
     return function (options) {
         let name = options.property, handler = options.handler, element = options.element,
-            scoped = options.scoped || false, passive = options.passive || false, override = options.override || false;
+            scoped = options.scoped || false;
         let path = scope.map(object => object.property).join(".") + "." + name;
 
         let result = {
@@ -180,9 +180,7 @@ function addEventHandler(scope) {
             path : path,
             handler: handler,
             element: element,
-            scoped : scoped,
-            passive : passive,
-            override : override
+            scoped : scoped
         };
         handlers.push(result);
 
@@ -292,11 +290,11 @@ export function membraneFactory(instance, parent = []) {
 
                 for (const eventHandler of root.handlers) {
                     if (eventHandler.scoped) {
-                        if (eventHandler.path === (path + "." + p) && (root.passive.indexOf(path + "." + p) === -1 || eventHandler.override)) {
+                        if (eventHandler.path === (path + "." + p)) {
                             eventHandler.handler(value);
                         }
                     } else {
-                        if (eventHandler.path.startsWith(path + "." + p) && (root.passive.indexOf(path + "." + p) === -1 || eventHandler.override)) {
+                        if (eventHandler.path.startsWith(path + "." + p)) {
                             eventHandler.handler(value);
                         }
                     }

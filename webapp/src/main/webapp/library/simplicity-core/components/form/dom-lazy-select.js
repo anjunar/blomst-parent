@@ -130,9 +130,17 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
             let find = this.model.find(model => isEqual(model, item));
             if (! find) {
                 this.model.push(item);
+            } else {
+                let indexOf = this.model.indexOf(item);
+                this.model.splice(indexOf, 1);
             }
         } else {
-            this.model = item;
+            if (this.model) {
+                this.model = null;
+            } else {
+                this.model = item;
+            }
+
         }
 
         this.render();
@@ -165,8 +173,11 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
         return false;
     }
 
-    checkbox(event) {
+    checkbox(event, item) {
         event.stopPropagation();
+
+        this.onItemClicked(event, item);
+
         return false;
     }
 
@@ -214,6 +225,14 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
         return false;
     }
 
+    selected(item) {
+        if (this.multiSelect) {
+            return this.model.some((model) => isEqual(model, item))
+        } else {
+            return isEqual(this.model,item);
+        }
+    }
+
     load() {
         if (this.showSelected) {
             this.open = true;
@@ -227,7 +246,7 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
                 this.size = size;
                 this.open = true;
                 this.showSelected = false;
-                this.window = data.map(item => this.proxyFactory(item, this));
+                this.window = data;
                 let viewport = this.queryUpwards((element) => element.localName === "viewport");
 
                 let height = 14 + 39 + data.length * 42;
@@ -245,74 +264,11 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
         }
     }
 
-    proxyFactory(item, self) {
-        return new Proxy(item, {
-            get(target, p, receiver) {
-                if (p === "selected") {
-                    if (self.multiSelect) {
-                        return self.model.find(model => target[self.id] === model[self.id])
-                    } else {
-                        if (self.model) {
-                            return self.model[self.id] === target[self.id];
-                        }
-                        return false;
-                    }
-                }
-                return Reflect.get(target, p, receiver);
-            },
-            set(target, p, value, receiver) {
-                if (p === "selected") {
-                    let oldValue = Reflect.get(receiver, p, receiver);
-                    if (oldValue) {
-                        if (self.multiSelect) {
-                            let find = self.model.find(model => isEqual(model, target));
-                            let indexOf = self.model.indexOf(find)
-                            self.model.splice(indexOf, 1)
-                            self.oringinalModel.splice(indexOf, 1)
-                        } else {
-                            self.model = null
-                        }
-                        self.dispatchEvent(new CustomEvent("model"))
-                        self.dispatchEvent(new CustomEvent("input"));
-                    } else {
-                        if (self.multiSelect) {
-                            self.model.push(receiver);
-                            self.oringinalModel.push(receiver);
-                        } else {
-                            self.model = receiver;
-                        }
-                    }
-                    self.window.forEach((item) => item.fire())
-                }
-                return Reflect.set(target, p, value, receiver);
-            },
-            getOwnPropertyDescriptor(target, p) {
-                if (p === "selected") {
-                    let object = {
-                        get selected() {
-                            return false
-                        },
-                        set selected(value) {
-                        }
-                    }
-                    return Reflect.getOwnPropertyDescriptor(object, "selected");
-                }
-                return Reflect.getOwnPropertyDescriptor(target, p);
-            }
-        });
-    }
 
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case "model" : {
-                if (newValue) {
-                    if (newValue instanceof Array) {
-                        this.model = newValue.map(model => this.proxyFactory(model, this));
-                        this.oringinalModel = newValue;
-                    } else {
-                        this.model = this.proxyFactory(newValue, this);
-                    }
-                }
+                this.model = newValue;
             } break;
             case "placeholder" : {
                 this.placeholder = newValue;

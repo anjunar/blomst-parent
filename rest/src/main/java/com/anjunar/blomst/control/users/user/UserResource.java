@@ -7,6 +7,7 @@ import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
+import com.anjunar.common.rest.api.CREATE;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
@@ -116,6 +117,9 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         JsonArray roles = resource.find("roles", JsonArray.class);
         linkTo(methodOn(RolesResource.class).list(null))
                 .build(roles::addLink);
+        JsonObject language = resource.find("language", JsonObject.class);
+        linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
+                .build(language::addLink);
         linkTo(methodOn(ApplicationResource.class).validate(null))
                 .build(resource::addLink);
         linkTo(methodOn(UserResource.class).save(null))
@@ -239,6 +243,8 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         resource.setId(user.getId());
 
+        linkTo(methodOn(UserResource.class).read(user.getId()))
+                .build(resource::addLink);
         linkTo(methodOn(UserResource.class).update(user.getId(), null))
                 .build(resource::addLink);
         linkTo(methodOn(UserResource.class).delete(user.getId()))

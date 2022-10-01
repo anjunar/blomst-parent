@@ -36,6 +36,10 @@ public class UserForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate")
     private LocalDate birthDate;
 
+    @MapperSecurity(rolesAllowed = {"Administrator"})
+    @JsonSchema(widget = JsonNode.Widget.PASSWORD, title = "Password")
+    private String password;
+
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
     @MapperConverter(ImageConverter.class)
     private ImageType picture = new ImageType();
@@ -78,6 +82,14 @@ public class UserForm extends AbstractRestEntity {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public ImageType getPicture() {

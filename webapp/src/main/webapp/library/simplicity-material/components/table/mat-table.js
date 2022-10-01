@@ -202,7 +202,7 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
         })
     }
 
-    configuration(array, all, override) {
+    configuration(array, all) {
         let method = () => {
             if (all) {
                 return array;
@@ -223,7 +223,6 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
             handlers.push(Membrane.track(this, {
                 property: "columns",
                 element: element,
-                override: true,
                 handler: callback
             }))
 
