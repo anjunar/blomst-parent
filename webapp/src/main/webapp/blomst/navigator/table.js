@@ -17,7 +17,7 @@ class Table extends HTMLElement {
 
     items(query, callback) {
         let link = decodeURIComponent(this.queryParams.link);
-        let url = new URL(link, `${window.location.protocol}//${window.location.host}/app/`);
+        let url = new URL(link, `${window.location.protocol}//${window.location.host}/`);
         url.searchParams.set("index", query.index);
         url.searchParams.set("limit", query.limit);
 
