@@ -26,7 +26,7 @@ class MetaInputLazySelect extends HTMLElement {
     domLazySelect(schema) {
         let link = schema.links.list;
         return (query, callback) => {
-            let url = new URL(link.url, `${window.location.protocol}//${window.location.host}/app/`);
+            let url = new URL(link.url, `${window.location.protocol}//${window.location.host}/`);
             url.searchParams.set("index", query.index);
             url.searchParams.set("limit", query.limit);
 
