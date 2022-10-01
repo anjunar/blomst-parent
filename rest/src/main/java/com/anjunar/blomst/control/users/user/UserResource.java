@@ -7,7 +7,6 @@ import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
-import com.anjunar.common.rest.api.CREATE;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
