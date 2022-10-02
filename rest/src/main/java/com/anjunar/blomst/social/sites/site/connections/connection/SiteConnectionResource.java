@@ -1,9 +1,13 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
+import com.anjunar.blomst.control.roles.RolesResource;
+import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
+import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
+import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -91,33 +95,34 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Site Connection")
     @Override
-    public SiteConnectionForm save(SiteConnectionForm form) {
+    public ResponseOk save(SiteConnectionForm form) {
 
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
 
         entityManager.persist(entity);
 
-        linkTo(methodOn(SiteConnectionResource.class).update(entity.getId(), new SiteConnectionForm()))
-                .build(form::addLink);
-        linkTo(methodOn(SiteConnectionResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(SiteConnectionsResource.class).list(new SiteConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site Connection")
     @Override
-    public SiteConnectionForm update(UUID id, SiteConnectionForm form) {
+    public ResponseOk update(UUID id, SiteConnectionForm form) {
         restMapper.map(form, SiteConnection.class);
 
-        linkTo(methodOn(SiteConnectionResource.class).update(id, new SiteConnectionForm()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(SiteConnectionResource.class).delete(id))
-                .build(form::addLink);
+        linkTo(methodOn(SiteConnectionsResource.class).list(new SiteConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User"})
@@ -126,6 +131,12 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     public ResponseOk delete(UUID id) {
         SiteConnection entity = entityManager.getReference(SiteConnection.class, id);
         entityManager.remove(entity);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(SiteConnectionsResource.class).list(new SiteConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

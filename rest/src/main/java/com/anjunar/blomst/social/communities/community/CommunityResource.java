@@ -1,5 +1,7 @@
 package com.anjunar.blomst.social.communities.community;
 
+import com.anjunar.blomst.social.communities.CommunitiesResource;
+import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
@@ -111,7 +113,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Community")
     @Override
-    public CommunityForm save(CommunityForm form) {
+    public ResponseOk save(CommunityForm form) {
 
         Community entity = restMapper.map(form, Community.class);
 
@@ -120,30 +122,30 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
 
         service.addAdministrator(entity);
 
-        linkTo(methodOn(CommunityResource.class).update(entity.getId(), new CommunityForm()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(CommunityResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update Community")
     @Override
-    public CommunityForm update(UUID id, CommunityForm form) {
+    public ResponseOk update(UUID id, CommunityForm form) {
 
         if (service.hasRole("Administrator", id)) {
             restMapper.map(form, Community.class);
 
-            linkTo(methodOn(CommunityResource.class).update(id, new CommunityForm()))
-                    .build(form::addLink);
+            ResponseOk response = new ResponseOk();
 
-            linkTo(methodOn(CommunityResource.class).delete(id))
-                    .build(form::addLink);
+            linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
+                    .withRel("redirect")
+                    .build(response::addLink);
 
-            return form;
+            return response;
         }
 
         throw new WebApplicationException(Response.Status.FORBIDDEN);
@@ -156,7 +158,13 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         if (service.hasRole("Administrator", id)) {
             Community entity = entityManager.find(Community.class, id);
             entity.setDeleted(true);
-            return new ResponseOk();
+            ResponseOk response = new ResponseOk();
+
+            linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
+                    .withRel("redirect")
+                    .build(response::addLink);
+
+            return response;
         }
         throw new WebApplicationException(Response.Status.FORBIDDEN);
     }

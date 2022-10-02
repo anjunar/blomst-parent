@@ -3,9 +3,13 @@ package com.anjunar.blomst.control.users.user.connections.categories.category;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
+import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
+import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -95,33 +99,35 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Category")
-    public CategoryForm save(CategoryForm form) {
+    public ResponseOk save(CategoryForm form) {
 
         Category entity = restMapper.map(form, Category.class);
 
         entityManager.persist(entity);
 
-        linkTo(methodOn(CategoryResource.class).update(entity.getId(), new CategoryForm()))
-                .build(form::addLink);
-        linkTo(methodOn(CategoryResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Category")
-    public CategoryForm update(UUID id, CategoryForm form) {
+    public ResponseOk update(UUID id, CategoryForm form) {
 
         restMapper.map(form, Category.class);
 
-        linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))
-                .build(form::addLink);
-        linkTo(methodOn(CategoryResource.class).delete(id))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -137,6 +143,12 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
             throw new WebApplicationException(Response.Status.FORBIDDEN);
         }
 
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

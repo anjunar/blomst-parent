@@ -1,5 +1,7 @@
 package com.anjunar.blomst.social.sites.site;
 
+import com.anjunar.blomst.social.sites.SitesResource;
+import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionResource;
@@ -111,34 +113,34 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Site")
     @Override
-    public SiteForm save(SiteForm form) {
+    public ResponseOk save(SiteForm form) {
         Site entity = restMapper.map(form, Site.class);
 
         entityManager.persist(entity);
 
-        linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(SiteResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update Site")
     @Override
-    public SiteForm update(UUID id, SiteForm form) {
+    public ResponseOk update(UUID id, SiteForm form) {
 
-        Site entity = restMapper.map(form, Site.class);
+        restMapper.map(form, Site.class);
 
-        linkTo(methodOn(SiteResource.class).update(entity.getId(), new SiteForm()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(SiteResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User", "Guest"})
@@ -149,7 +151,13 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
 
         entityManager.remove(entity);
 
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
 }

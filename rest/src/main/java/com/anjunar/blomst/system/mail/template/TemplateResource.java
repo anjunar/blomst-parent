@@ -1,7 +1,11 @@
 package com.anjunar.blomst.system.mail.template;
 
+import com.anjunar.blomst.social.sites.SitesResource;
+import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
+import com.anjunar.blomst.system.mail.TemplatesResource;
+import com.anjunar.blomst.system.mail.TemplatesSearch;
 import com.anjunar.common.mail.Template;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.Editor;
@@ -91,7 +95,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Template")
-    public TemplateForm save(TemplateForm form) {
+    public ResponseOk save(TemplateForm form) {
 
         Template template = restMapper.map(form, Template.class);
 
@@ -99,27 +103,29 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
 
         form.setId(template.getId());
 
-        linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
-                .build(form::addLink);
-        linkTo(methodOn(TemplateResource.class).delete(template.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Template")
-    public TemplateForm update(UUID id, TemplateForm form) {
+    public ResponseOk update(UUID id, TemplateForm form) {
 
-        Template template = restMapper.map(form, Template.class);
+        restMapper.map(form, Template.class);
 
-        linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
-                .build(form::addLink);
-        linkTo(methodOn(TemplateResource.class).delete(template.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -128,6 +134,12 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     public ResponseOk delete(UUID id) {
         Template reference = entityManager.getReference(Template.class, id);
         entityManager.remove(reference);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

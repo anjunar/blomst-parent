@@ -20,9 +20,13 @@ class Table extends HTMLElement {
         })
             .then(response => response.json())
             .then(response => {
-                let read = response.$schema.links.read;
+                let read = response.$schema.links.redirect;
                 if (read) {
-                    window.location.hash = `#/navigator/form?link=${encodeURIComponent(read.url)}`
+                    if (read.type === "table") {
+                        window.location.hash = `#/navigator/table?link=${encodeURIComponent(read.url)}`
+                    } else {
+                        window.location.hash = `#/navigator/form?link=${encodeURIComponent(read.url)}`
+                    }
                 }
             })
     }

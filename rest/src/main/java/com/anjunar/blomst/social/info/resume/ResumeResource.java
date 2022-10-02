@@ -2,7 +2,10 @@ package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.blomst.control.users.Resume;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.control.users.user.UserResource;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
+import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -93,30 +96,32 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
 
     @LinkDescription("Save Resume")
     @Override
-    public ResumeForm save(ResumeForm form) {
+    public ResponseOk save(ResumeForm form) {
         Resume entity = restMapper.map(form, Resume.class);
 
         entityManager.persist(entity);
 
-        linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
-                .build(form::addLink);
-        linkTo(methodOn(ResumeResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @LinkDescription("Update Resume")
     @Override
-    public ResumeForm update(UUID id, ResumeForm form) {
+    public ResponseOk update(UUID id, ResumeForm form) {
         Resume entity = restMapper.map(form, Resume.class);
 
-        linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
-                .build(form::addLink);
-        linkTo(methodOn(ResumeResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @LinkDescription("Delete Resume")
@@ -124,6 +129,12 @@ public class ResumeResource implements FormResourceTemplate<ResumeForm> {
     public ResponseOk delete(UUID id) {
         Resume entity = entityManager.getReference(Resume.class, id);
         entityManager.remove(entity);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

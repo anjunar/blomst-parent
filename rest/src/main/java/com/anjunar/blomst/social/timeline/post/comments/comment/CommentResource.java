@@ -6,6 +6,8 @@ import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.communities.CommunitiesResource;
+import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -124,7 +126,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Comment")
-    public CommentForm save(CommentForm resource) {
+    public ResponseOk save(CommentForm resource) {
 
         Comment comment = restMapper.map(resource, Comment.class);
 
@@ -138,19 +140,20 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
         resource.setId(comment.getId());
 
-        linkTo(methodOn(CommentResource.class).update(comment.getId(), new CommentForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(CommentResource.class).delete(comment.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerCommentIdentity.class)
     @LinkDescription("Update Comment")
-    public CommentForm update(UUID id, CommentForm resource) {
+    public ResponseOk update(UUID id, CommentForm resource) {
         Comment rawComment = entityManager.find(Comment.class, id);
         Set<User> rawLikes = Sets.newHashSet(rawComment.getLikes());
 
@@ -165,12 +168,13 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
             }
         }
 
-        linkTo(methodOn(CommentResource.class).update(comment.getId(), new CommentForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(CommentResource.class).delete(comment.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -180,6 +184,12 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     public ResponseOk delete(UUID id) {
         Comment comment = entityManager.find(Comment.class, id);
         entityManager.remove(comment);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

@@ -1,6 +1,6 @@
 package com.anjunar.common.rest.api;
 
-public class ResponseOk {
+public class ResponseOk extends AbstractSchemaEntity {
 
     private Boolean ok = true;
 
@@ -11,4 +11,5 @@ public class ResponseOk {
     public void setOk(Boolean ok) {
         this.ok = ok;
     }
+
 }

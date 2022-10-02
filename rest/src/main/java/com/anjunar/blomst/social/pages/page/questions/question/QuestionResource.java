@@ -5,8 +5,12 @@ import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.page.PageForm;
+import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
+import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
+import com.anjunar.blomst.social.timeline.TimelineResource;
+import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -107,7 +111,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Question")
-    public QuestionForm save(QuestionForm resource) {
+    public ResponseOk save(QuestionForm resource) {
 
         Question question = restMapper.map(resource, Question.class);
 
@@ -115,33 +119,35 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
 
         resource.setId(question.getId());
 
-        linkTo(methodOn(QuestionResource.class).update(question.getId(), new QuestionForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(QuestionResource.class).delete(question.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
-    public QuestionForm update(UUID id, QuestionForm resource) {
+    public ResponseOk update(UUID id, QuestionForm resource) {
 
         UserSelect owner = resource.getOwner();
         if (!owner.getId().equals(identityManager.getUser().getId())) {
             throw new NotAuthorizedException("Not Allowed");
         }
 
-        Question question = restMapper.map(resource, Question.class);
+        restMapper.map(resource, Question.class);
 
-        linkTo(methodOn(QuestionResource.class).update(question.getId(), new QuestionForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(QuestionResource.class).delete(question.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -152,7 +158,13 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         Question question = entityManager.getReference(Question.class, id);
 
         entityManager.remove(question);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
 }

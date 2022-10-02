@@ -10,7 +10,8 @@ let socket;
     let onBeforeUnload = () => {
         socket.close();
         window.clearInterval(interval);
-        window.removeEventListener("beforeunload", onBeforeUnload)
+        window.removeEventListener("beforeunload", onBeforeUnload);
+        socket.removeEventListener("message", onMessage)
     };
 
     window.addEventListener("beforeunload", onBeforeUnload)
@@ -26,30 +27,33 @@ let socket;
         socket.close();
         window.clearInterval(interval);
         window.removeEventListener("beforeunload", onBeforeUnload)
+        socket.removeEventListener("message", onMessage)
     }
+
+    let onMessage = (event) => {
+        let regex = /([\w-]+)\((.*)\)/;
+        let regexResult = regex.exec(event.data);
+
+        let handlers = handlersRegistry.get(regexResult[1])
+
+        if (handlers) {
+            for (const handler of handlers) {
+                if (regexResult[2]) {
+                    handler(JSON.parse(regexResult[2]))
+                } else {
+                    handler()
+                }
+            }
+        }
+    };
+
+    socket.addEventListener("message", onMessage);
 
 
 })()
 
 
 const handlersRegistry = new Map();
-
-socket.addEventListener("message", (event) => {
-    let regex = /([\w-]+)\((.*)\)/;
-    let regexResult = regex.exec(event.data);
-
-    let handlers = handlersRegistry.get(regexResult[1])
-
-    if (handlers) {
-        for (const handler of handlers) {
-            if (regexResult[2]) {
-                handler(JSON.parse(regexResult[2]))
-            } else {
-                handler()
-            }
-        }
-    }
-});
 
 export const broadCaster = new class BroadCaster {
 

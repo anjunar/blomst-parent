@@ -5,6 +5,11 @@ import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.roles.role.RoleForm;
 import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.communities.*;
+import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
+import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
+import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
+import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -12,9 +17,6 @@ import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
-import com.anjunar.blomst.social.communities.CommunitiesConnection;
-import com.anjunar.blomst.social.communities.Community;
-import com.anjunar.blomst.social.communities.Status;
 import com.anjunar.blomst.social.communities.community.CommunityForm;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -99,34 +101,35 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community Connection")
     @Override
-    public CommunityConnectionForm save(CommunityConnectionForm form) {
+    public ResponseOk save(CommunityConnectionForm form) {
 
         CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
 
         entityManager.persist(entity);
 
-        linkTo(methodOn(CommunityConnectionResource.class).update(entity.getId(), new CommunityConnectionForm()))
-                .build(form::addLink);
-        linkTo(methodOn(CommunityConnectionResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
+        linkTo(methodOn(CommunityConnectionsResource.class).list(new CommunityConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community Connection")
     @Override
-    public CommunityConnectionForm update(UUID id, CommunityConnectionForm form) {
+    public ResponseOk update(UUID id, CommunityConnectionForm form) {
 
-        CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
+        restMapper.map(form, CommunitiesConnection.class);
 
-        linkTo(methodOn(CommunityConnectionResource.class).update(entity.getId(), new CommunityConnectionForm()))
-                .build(form::addLink);
-        linkTo(methodOn(CommunityConnectionResource.class).delete(entity.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(CommunityConnectionsResource.class).list(new CommunityConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @RolesAllowed({"Administrator", "User"})
@@ -135,6 +138,12 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     public ResponseOk delete(UUID id) {
         CommunitiesConnection entity = entityManager.getReference(CommunitiesConnection.class, id);
         entityManager.remove(entity);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(CommunityConnectionsResource.class).list(new CommunityConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

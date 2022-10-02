@@ -109,7 +109,13 @@ public class RegisterResource {
 
         identityManager.authenticate(user);
 
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(ApplicationResource.class).service())
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
 }

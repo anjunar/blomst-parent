@@ -56,11 +56,13 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
         User user = identityManager.findUser(resource.getFirstname(), resource.getLastname(), resource.getBirthday());
 
         if (identityManager.authenticate(user)) {
+            ResponseOk response = new ResponseOk();
+
             linkTo(methodOn(ApplicationResource.class).service())
                     .withRel("redirect")
-                    .build(resource::addLink);
+                    .build(response::addLink);
 
-            return new ResponseOk();
+            return response;
         } else {
             throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);
         }
@@ -78,7 +80,13 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
 
         identityManager.authenticate(authenticate);
 
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(ApplicationResource.class).service())
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
 }

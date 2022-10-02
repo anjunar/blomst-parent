@@ -3,20 +3,21 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.page.Answer;
 import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
-import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
+import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
-import com.anjunar.blomst.social.pages.page.Answer;
-
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,6 +26,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+
 import java.util.UUID;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
@@ -111,37 +113,36 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Answer")
-    public AnswerForm save(AnswerForm resource) {
+    public ResponseOk save(AnswerForm resource) {
 
         Answer answer = restMapper.map(resource, Answer.class);
 
         entityManager.persist(answer);
 
-        resource.setId(answer.getId());
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(AnswerResource.class).update(answer.getId(), new AnswerForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(AnswerResource.class).delete(answer.getId()))
-                .build(resource::addLink);
+        linkTo(methodOn(AnswersResource.class).list(new AnswersSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-
-        return resource;
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Answer")
     @MethodPredicate(AnswerOwnerPredicate.class)
-    public AnswerForm update(UUID id, AnswerForm resource) {
+    public ResponseOk update(UUID id, AnswerForm resource) {
 
-        Answer answer = restMapper.map(resource, Answer.class);
+        restMapper.map(resource, Answer.class);
 
-        linkTo(methodOn(AnswerResource.class).update(answer.getId(), new AnswerForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(AnswerResource.class).delete(answer.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(AnswersResource.class).list(new AnswersSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -151,6 +152,12 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     public ResponseOk delete(UUID id) {
         Answer answer = entityManager.getReference(Answer.class, id);
         entityManager.remove(answer);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(AnswersResource.class).list(new AnswersSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

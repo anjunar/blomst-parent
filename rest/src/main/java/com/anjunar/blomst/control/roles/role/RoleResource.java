@@ -1,5 +1,8 @@
 package com.anjunar.blomst.control.roles.role;
 
+import com.anjunar.blomst.control.roles.RolesResource;
+import com.anjunar.blomst.control.roles.RolesSearch;
+import com.anjunar.blomst.social.info.resume.ResumeResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -79,34 +82,36 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Role")
-    public RoleForm save(RoleForm form) {
+    public ResponseOk save(RoleForm form) {
 
         Role role = restMapper.map(form, Role.class);
 
         entityManager.persist(role);
         form.setId(role.getId());
 
-        linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
-                .build(form::addLink);
-        linkTo(methodOn(RoleResource.class).delete(role.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Role")
-    public RoleForm update(UUID id, RoleForm form) {
+    public ResponseOk update(UUID id, RoleForm form) {
 
-        Role role = restMapper.map(form, Role.class);
+        restMapper.map(form, Role.class);
 
-        linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
-                .build(form::addLink);
-        linkTo(methodOn(RoleResource.class).delete(role.getId()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return form;
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -115,6 +120,12 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     public ResponseOk delete(UUID id) {
         Role role = entityManager.find(Role.class, id);
         entityManager.remove(role);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }

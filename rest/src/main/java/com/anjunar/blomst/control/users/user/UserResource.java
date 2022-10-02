@@ -1,5 +1,7 @@
 package com.anjunar.blomst.control.users.user;
 
+import com.anjunar.blomst.control.users.UsersResource;
+import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.connections.UserConnectionsResource;
 import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
@@ -211,7 +213,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save User")
-    public UserForm save(UserForm resource) {
+    public ResponseOk save(UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
 
@@ -242,32 +244,32 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         resource.setId(user.getId());
 
-        linkTo(methodOn(UserResource.class).read(user.getId()))
-                .build(resource::addLink);
-        linkTo(methodOn(UserResource.class).update(user.getId(), null))
-                .build(resource::addLink);
-        linkTo(methodOn(UserResource.class).delete(user.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Update User")
     @MethodPredicate(MyOwnIdentity.class)
-    public UserForm update(UUID id, UserForm resource) {
+    public ResponseOk update(UUID id, UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
 
         service.confirmationEmail(user, request);
 
-        linkTo(methodOn(UserResource.class).update(id, null))
-                .build(resource::addLink);
-        linkTo(methodOn(UserResource.class).delete(id))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -279,7 +281,13 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         entityManager.remove(user);
 
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
 }

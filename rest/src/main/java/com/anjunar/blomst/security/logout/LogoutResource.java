@@ -1,5 +1,6 @@
 package com.anjunar.blomst.security.logout;
 
+import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.ApplicationResource;
@@ -47,17 +48,17 @@ public class LogoutResource {
     @Produces("application/json")
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Do Logout")
-    public LogoutForm doLogout() {
+    public ResponseOk doLogout() {
 
         identityManager.logout();
 
-        LogoutForm resource = new LogoutForm();
+        ResponseOk response = new ResponseOk();
 
         linkTo(methodOn(ApplicationResource.class).service())
                 .withRel("redirect")
-                .build(resource::addLink);
+                .build(response::addLink);
 
-        return resource;
+        return response;
     }
 
 }

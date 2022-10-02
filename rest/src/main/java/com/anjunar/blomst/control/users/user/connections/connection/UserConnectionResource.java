@@ -1,9 +1,13 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.control.users.user.connections.UserConnectionsResource;
+import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.system.mail.TemplatesResource;
+import com.anjunar.blomst.system.mail.TemplatesSearch;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -119,7 +123,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Connection")
-    public UserConnectionForm save(UserConnectionForm form) {
+    public ResponseOk save(UserConnectionForm form) {
 
         UserConnection from = restMapper.map(form, UserConnection.class);
         from.setFrom(identityManager.getUser());
@@ -132,29 +136,29 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
         service.createNotification(form.getTo().getId(), form.getFrom().getId());
 
-        linkTo(methodOn(UserConnectionResource.class).update(from.getId(), new UserConnectionForm()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserConnectionResource.class).delete(from.getId()))
-                .build(form::addLink);
+        linkTo(methodOn(UserConnectionsResource.class).list(new UserConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Connection")
-    public UserConnectionForm update(UUID id, UserConnectionForm form) {
+    public ResponseOk update(UUID id, UserConnectionForm form) {
 
         restMapper.map(form, UserConnection.class);
 
-        linkTo(methodOn(UserConnectionResource.class).update(id, new UserConnectionForm()))
-                .build(form::addLink);
+        ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserConnectionResource.class).delete(id))
-                .build(form::addLink);
+        linkTo(methodOn(UserConnectionsResource.class).list(new UserConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
 
-        return form;
+        return response;
     }
 
     @Override
@@ -170,7 +174,13 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
             throw new WebApplicationException(Status.FORBIDDEN);
         }
 
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(UserConnectionsResource.class).list(new UserConnectionsSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
 }

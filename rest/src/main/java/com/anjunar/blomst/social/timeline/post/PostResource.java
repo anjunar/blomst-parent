@@ -7,6 +7,8 @@ import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.communities.CommunitiesResource;
+import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
@@ -148,7 +150,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
-    public AbstractPostForm save(AbstractPostForm resource) {
+    public ResponseOk save(AbstractPostForm resource) {
 
         AbstractPost post = resource.accept(new AbstractPostFormVisitor<>() {
             @Override
@@ -205,19 +207,20 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
         resource.setId(post.getId());
 
-        linkTo(methodOn(PostResource.class).update(post.getId(), new TextPostForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(PostResource.class).delete(post.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
-    public AbstractPostForm update(UUID id, AbstractPostForm resource) {
+    public ResponseOk update(UUID id, AbstractPostForm resource) {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
         Set<User> rawLikes = Sets.newHashSet(post.getLikes());
 
@@ -243,6 +246,9 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
             }
         });
 
+        linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
+                .withRel("redirect")
+                .build(resource::addLink);
         linkTo(methodOn(PostResource.class).update(post.getId(), new TextPostForm()))
                 .build(resource::addLink);
         linkTo(methodOn(PostResource.class).delete(post.getId()))
@@ -257,7 +263,13 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
             }
         }
 
-        return resource;
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Override
@@ -268,6 +280,12 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     public ResponseOk delete(UUID id) {
         AbstractPost userPost = entityManager.getReference(AbstractPost.class, id);
         entityManager.remove(userPost);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }
