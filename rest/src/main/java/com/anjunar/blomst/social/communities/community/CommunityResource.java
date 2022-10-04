@@ -1,5 +1,7 @@
 package com.anjunar.blomst.social.communities.community;
 
+import com.anjunar.blomst.control.roles.RolesResource;
+import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.social.communities.CommunitiesResource;
 import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
@@ -7,6 +9,7 @@ import com.anjunar.blomst.social.communities.community.connections.CommunityConn
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -91,7 +94,6 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
 
         linkTo(methodOn(CommunityResource.class).update(id, new CommunityForm()))
                 .build(form::addLink);
-
         linkTo(methodOn(CommunityResource.class).delete(id))
                 .build(form::addLink);
 

@@ -75,6 +75,11 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         linkTo(methodOn(CommunityConnectionResource.class).save(new CommunityConnectionForm()))
                 .build(form::addLink);
 
+        JsonObject role = form.find("role", JsonObject.class);
+        linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
+                .build(role::addLink);
+
+
         return form;
     }
 

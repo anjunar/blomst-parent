@@ -20,6 +20,7 @@ import java.util.Set;
         @JsonSubTypes.Type(JsonBoolean.class),
         @JsonSubTypes.Type(JsonNull.class),
         @JsonSubTypes.Type(JsonImage.class),
+        @JsonSubTypes.Type(JsonEnum.class),
 })
 public abstract class JsonNode {
 
