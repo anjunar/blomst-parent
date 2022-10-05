@@ -74,9 +74,7 @@ public class RegisterResource {
 
         User user = new User();
 
-        user.setFirstName(resource.getFirstName());
-        user.setLastName(resource.getLastName());
-        user.setBirthDate(resource.getBirthDate());
+        user.setFirstName(resource.getEmail());
         user.setPassword(resource.getPassword());
         user.setLanguage(language);
         user.setEnabled(true);

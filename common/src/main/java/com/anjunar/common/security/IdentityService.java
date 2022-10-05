@@ -43,7 +43,7 @@ public class IdentityService {
     }
 
     public User findUser(String email) {
-        return entityManager.createQuery("select u from User u where u.email = :email", User.class)
+        return entityManager.createQuery("select u from User u join u.emails e where e.value = :email", User.class)
                 .setParameter("email", email)
                 .getSingleResult();
     }

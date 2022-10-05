@@ -25,7 +25,7 @@ public class NatualIdValidator implements ConstraintValidator<NaturalId, Registe
 
     @Override
     public boolean isValid(RegisterForm value, ConstraintValidatorContext context) {
-        User user = identityManager.findUser(value.getFirstName(), value.getLastName(), value.getBirthDate());
+        User user = identityManager.findUser(value.getEmail());
         return user == null;
     }
 
