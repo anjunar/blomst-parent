@@ -8,6 +8,7 @@ import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,11 @@ import java.util.Set;
 @NaturalId
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class UserForm extends AbstractRestEntity {
+
+    @NotBlank
+    @Email
+    @JsonSchema(widget = JsonNode.Widget.EMAIL, title = "Email")
+    private String email;
 
     @NotBlank
     @Size(min = 3, max = 80)
@@ -59,6 +65,14 @@ public class UserForm extends AbstractRestEntity {
     @NotNull
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private Set<RoleForm> roles = new HashSet<>();
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getFirstName() {
         return firstName;

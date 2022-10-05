@@ -78,6 +78,10 @@ public class IdentityManager implements Serializable {
         return service.findUser(firstName, lastName, birthDate);
     }
 
+    public User findUser(String email) {
+        return service.findUser(email);
+    }
+
     public boolean hasRole(String role) {
         User user = getUser();
         if (Objects.nonNull(user)) {
@@ -129,4 +133,5 @@ public class IdentityManager implements Serializable {
     public User findUserByToken(String token) {
         return service.findUserByToken(token);
     }
+
 }

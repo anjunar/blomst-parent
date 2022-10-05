@@ -33,12 +33,31 @@ public class CustomIdentityStore implements IdentityStore {
 
     @Override
     public CredentialValidationResult validate(Credential credential) {
-        CivilCredential civilCredential = (CivilCredential) credential;
 
-        User user = identity.findUser(civilCredential.getFirstName(), civilCredential.getLastName(), civilCredential.getBirthdate());
+        switch (credential) {
+            case CivilCredential civilCredential -> {
+                User user = identity.findUser(civilCredential.getFirstName(), civilCredential.getLastName(), civilCredential.getBirthdate());
 
+                CredentialValidationResult result = getCredentialValidationResult(user, civilCredential.getPasswordAsString());
+                if (result != null) return result;
+            }
+            case EmailCredential emailCredential -> {
+                User user = identity.findUser(emailCredential.getEmail());
+
+                CredentialValidationResult result = getCredentialValidationResult(user, emailCredential.getPasswordAsString());
+                if (result != null) return result;
+            }
+            default -> {
+                return CredentialValidationResult.INVALID_RESULT;
+            }
+        }
+
+        return CredentialValidationResult.INVALID_RESULT;
+    }
+
+    private CredentialValidationResult getCredentialValidationResult(User user, String passwordAsString) {
         if (user != null) {
-            if (user.getPassword().equals(civilCredential.getPasswordAsString())) {
+            if (user.getPassword().equals(passwordAsString)) {
                 event.fire(new LoggedInEvent(user));
 
                 Set<Role> relationships = user.getRoles();
@@ -49,7 +68,7 @@ public class CustomIdentityStore implements IdentityStore {
                 return new CredentialValidationResult(user.getId().toString(), roles);
             }
         }
-        return CredentialValidationResult.INVALID_RESULT;
+        return null;
     }
 
 }

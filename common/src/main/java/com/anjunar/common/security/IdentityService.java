@@ -42,6 +42,12 @@ public class IdentityService {
         return entityManager.find(User.class, primaryKey);
     }
 
+    public User findUser(String email) {
+        return entityManager.createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", email)
+                .getSingleResult();
+    }
+
     public boolean authenticate(User user) {
         return entityManager
                 .createQuery("select count(e) from User e where e.firstName = :firstName and e.lastName = :lastName and e.birthDate = :birthDate and e.password = :password", Long.class)
@@ -105,4 +111,5 @@ public class IdentityService {
                 .setParameter("locale", locale)
                 .getSingleResult();
     }
+
 }

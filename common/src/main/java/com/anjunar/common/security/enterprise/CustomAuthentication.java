@@ -8,6 +8,7 @@ import jakarta.security.enterprise.authentication.mechanism.http.AutoApplySessio
 import jakarta.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanism;
 import jakarta.security.enterprise.authentication.mechanism.http.HttpMessageContext;
 import jakarta.security.enterprise.authentication.mechanism.http.RememberMe;
+import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,15 +33,14 @@ public class CustomAuthentication implements HttpAuthenticationMechanism {
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext httpMessageContext) throws AuthenticationException {
 
-        Object credential = request.getAttribute("credential");
+        Credential credential = (Credential) request.getAttribute("credential");
 
         if (credential != null) {
 
-            CivilCredential civilCredential = (CivilCredential) credential;
-
-            CredentialValidationResult result = identityStoreHandler.validate(civilCredential);
+            CredentialValidationResult result = identityStoreHandler.validate(credential);
 
             return httpMessageContext.notifyContainerAboutLogin(result);
+
         }
 
         if (httpMessageContext.isProtected()) {

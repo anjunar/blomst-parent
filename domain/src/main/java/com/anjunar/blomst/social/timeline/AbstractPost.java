@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "post")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractPost extends Likeable {
 
