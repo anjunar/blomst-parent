@@ -24,7 +24,6 @@ class MatTable extends mix(HTMLTableElement).with(Input) {
 
     preInitialize() {
         this.contentTemplate = contentManager.instance(this);
-        Membrane.passive(this, "columns")
 
         let callback = () => {
             this.header = Array.from(this.contentTemplate.querySelectorAll("thead tr td"))

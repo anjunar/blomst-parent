@@ -352,7 +352,6 @@ const data = new WeakMap();
 
 export function generateDomProxy(node) {
     node.handlers = node.handlers || [];
-    node.passive = node.passive || [];
     let dataObject = data.get(node);
     if (! dataObject) {
         dataObject = {}
@@ -444,16 +443,12 @@ export function generateDomProxy(node) {
         node.handlers.splice(indexOf, 1)
     }
 
-    function passiveProperty(name) {
-        node.passive.push(name);
-    }
-
     function setupProxy() {
         let descriptors = Object.getOwnPropertyDescriptors(node);
         for (const [property, descriptor] of Object.entries(descriptors)) {
             let privateGetter = Object.getOwnPropertyDescriptor(dataObject, property)
             if (! privateGetter) {
-                let blackList = ["$fire", "addEventHandler", "removeEventHandler", "initialized", "handlers", "passiveProperty"];
+                let blackList = ["$fire", "addEventHandler", "removeEventHandler", "initialized", "handlers"];
                 let blackListRegex = /\d+/;
                 if (! blackList.includes(property) && ! blackListRegex.test(property)) {
                     generateWrapper(node, property, descriptor, dataObject);
@@ -474,9 +469,6 @@ export function generateDomProxy(node) {
             },
             removeEventHandler : {
                 value : removeEventHandler
-            },
-            passiveProperty : {
-                value : passiveProperty
             }
         })
     }
@@ -495,10 +487,6 @@ export const Membrane = class Membrane {
     }
     static remove(options) {
         options.node.removeEventHandler(options);
-    }
-    static passive(membrane, property) {
-        membrane.passiveProperty(property);
-        return property;
     }
     static fire(membrane) {
         membrane.fire();

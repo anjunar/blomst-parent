@@ -214,21 +214,17 @@ function fire(handlers, path) {
     }
 }
 
-function passiveProperty(passive, path) {
-    return function () {
-        passive.push(path);
-    }
-}
-
 export function membraneFactory(instance, parent = []) {
     if (instance instanceof Node) {
         return instance;
     }
     if (instance instanceof Object) {
+/*
         let newVar = membraneCache.get(instance);
         if (newVar) {
             return newVar;
         }
+*/
         let root = parent[0].proxy;
         let path = parent.map(object => object.property).join(".");
         let proxy = new Proxy(instance, {
@@ -307,6 +303,10 @@ export function membraneFactory(instance, parent = []) {
                 return result;
             },
             get(target, p, receiver) {
+                if (p === "$parent") {
+                    return parent
+                }
+
                 if (p === "resolve") {
                     if (target.isProxy) {
                         return target.resolve;
@@ -328,10 +328,6 @@ export function membraneFactory(instance, parent = []) {
 
                 if (p === "fire") {
                     return fire(root.handlers, path);
-                }
-
-                if (p === "passiveProperty") {
-                    return passiveProperty(root.passive, path + "." + p)
                 }
 
                 if (typeof p === "symbol" || p === "prototype") {

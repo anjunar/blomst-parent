@@ -28,16 +28,7 @@ class MatTableConfiguration extends HTMLElement {
     }
 
     tableColumns(query, callback) {
-        let configuration = this.table.configuration(this.table.columns, true);
-
-        configuration.resonator(() => {
-            let configuration = this.table.configuration(this.table.columns, true);
-            let method = configuration.method();
-            callback(method, method.length);
-        }, this);
-
-        let method = configuration.method();
-        callback(method, method.length);
+        callback(this.table.columns.slice(query.index, query.index + query.limit), this.table.columns.length);
     }
 
     static get components() {

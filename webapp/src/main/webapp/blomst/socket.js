@@ -1,7 +1,12 @@
 let socket;
 
 (function connect() {
-    socket = new WebSocket(`wss://${window.location.host}/socket`)
+    if (window.location.port === "8080") {
+        socket = new WebSocket(`ws://${window.location.host}/socket`)
+    } else {
+        socket = new WebSocket(`wss://${window.location.host}/socket`)
+    }
+
 
     let interval = setInterval(() => {
         socket.send("heartbeat()")
