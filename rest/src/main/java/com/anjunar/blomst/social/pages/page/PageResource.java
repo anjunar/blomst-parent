@@ -5,6 +5,8 @@ import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.PagesResource;
+import com.anjunar.blomst.social.pages.PagesSearch;
 import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
@@ -132,7 +134,7 @@ public class PageResource {
     @POST
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Page")
-    public PageForm save(PageForm resource) {
+    public ResponseOk save(PageForm resource) {
 
         Page page = restMapper.map(resource, Page.class);
 
@@ -142,12 +144,13 @@ public class PageResource {
 
         resource.setId(page.getId());
 
-        linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(PageResource.class).delete(page.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(PagesResource.class).list(new PagesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @Consumes("application/json")
@@ -155,18 +158,19 @@ public class PageResource {
     @PUT
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Page")
-    public PageForm update(@QueryParam("id") UUID id, PageForm resource) {
+    public ResponseOk update(@QueryParam("id") UUID id, PageForm resource) {
 
         Page page = restMapper.map(resource, Page.class);
 
         page.setModifier(identityManager.getUser());
 
-        linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
-                .build(resource::addLink);
-        linkTo(methodOn(PageResource.class).delete(page.getId()))
-                .build(resource::addLink);
+        ResponseOk response = new ResponseOk();
 
-        return resource;
+        linkTo(methodOn(PagesResource.class).list(new PagesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 
     @DELETE
@@ -184,6 +188,12 @@ public class PageResource {
         }
 
         entityManager.remove(page);
-        return new ResponseOk();
+        ResponseOk response = new ResponseOk();
+
+        linkTo(methodOn(PagesResource.class).list(new PagesSearch()))
+                .withRel("redirect")
+                .build(response::addLink);
+
+        return response;
     }
 }
