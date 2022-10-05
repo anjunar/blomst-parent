@@ -11,8 +11,6 @@ import java.util.*;
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class User extends Identity {
 
-    private String email;
-
     private String firstName;
 
     private String lastName;
@@ -22,14 +20,6 @@ public class User extends Identity {
     private String question;
 
     private String password;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @Override
     public String getName() {

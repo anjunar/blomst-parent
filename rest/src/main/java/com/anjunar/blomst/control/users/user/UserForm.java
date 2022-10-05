@@ -24,11 +24,6 @@ import java.util.Set;
 public class UserForm extends AbstractRestEntity {
 
     @NotBlank
-    @Email
-    @JsonSchema(widget = JsonNode.Widget.EMAIL, title = "Email")
-    private String email;
-
-    @NotBlank
     @Size(min = 3, max = 80)
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true)
     private String firstName;
@@ -65,14 +60,6 @@ public class UserForm extends AbstractRestEntity {
     @NotNull
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private Set<RoleForm> roles = new HashSet<>();
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getFirstName() {
         return firstName;
