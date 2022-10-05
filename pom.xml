@@ -22,6 +22,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/anjunar/blomst-parent.git</developerConnection>
+    </scm>
+
     <dependencies>
 
         <dependency>
@@ -325,6 +329,14 @@
 
 
     <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M6</version>
+            </plugin>
+        </plugins>
 
         <pluginManagement>
             <plugins>
