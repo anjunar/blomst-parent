@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class IdentitySelect extends AbstractRestEntity {
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Name", readOnly = true, naming = true)
     private String name;
 
     @NotNull
@@ -18,6 +17,7 @@ public class IdentitySelect extends AbstractRestEntity {
     @MapperConverter(ImageConverter.class)
     private ImageType picture;
 
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Name", readOnly = true, naming = true)
     public String getName() {
         return name;
     }

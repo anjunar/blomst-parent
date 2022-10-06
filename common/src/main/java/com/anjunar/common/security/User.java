@@ -27,11 +27,6 @@ public class User extends Identity implements OwnerProvider {
 
     private String password;
 
-    @Override
-    public String getName() {
-        return firstName + " " + lastName;
-    }
-
     @MapperVisibility
     @ElementCollection
     private final List<EmailType> emails = new ArrayList<>();
