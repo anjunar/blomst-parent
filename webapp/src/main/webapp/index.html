@@ -4,6 +4,12 @@
     <base href="/">
     <meta charset="UTF-8">
     <title>Blomst 1.0 alpha</title>
+    <script>
+        if (window.location.host.indexOf("poseidon") > -1) {
+            let title = document.querySelector("title");
+            title.textContent = "Poseidon 1.0 alpha"
+        }
+    </script>
     <link rel="stylesheet" href="styles.css">
     <script type="module">
         import {bootstrap} from "./library/simplicity-material/bootstrap.js";

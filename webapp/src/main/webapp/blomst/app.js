@@ -7,9 +7,16 @@ import MatLanguage from "../library/simplicity-material/components/system/mat-la
 import MatTaskbar from "../library/simplicity-material/components/system/mat-taskbar.js";
 import {routes} from "./routes.js"
 import DomA from "../library/simplicity-core/directives/dom-a.js";
-import {broadCaster} from "./socket.js";
 
 class HiveApp extends HTMLElement {
+
+    get title() {
+        if (window.location.host.indexOf("poseidon") > -1) {
+            return "Poseidon"
+        } else {
+            return "Blomst"
+        }
+    }
 
     get navigatorLink() {
         return `#/navigator/form?link=${encodeURIComponent("service")}`

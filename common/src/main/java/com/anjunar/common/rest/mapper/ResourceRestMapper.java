@@ -1,5 +1,7 @@
 package com.anjunar.common.rest.mapper;
 
+import com.anjunar.common.ddd.AbstractEntity;
+import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
@@ -16,8 +18,10 @@ import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Table;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
@@ -112,8 +116,6 @@ public class ResourceRestMapper {
         if (destination instanceof OwnerProvider ownerProvider) {
             if (identityStore.getUser().equals(ownerProvider.getOwner())) {
                 saveSchema(source, destination);
-            } else {
-                throw new WebApplicationException(Response.Status.FORBIDDEN);
             }
         }
 
@@ -236,32 +238,54 @@ public class ResourceRestMapper {
 
     private <S extends AbstractSchemaEntity, D> void saveSchema(S source, D destination) {
         JsonObject schema = source.getSchema();
+
+        BeanModel<?> model = BeanIntrospector.create(destination.getClass());
+        String tableName = null;
+        Table annotation = model.getAnnotation(Table.class);
+        if (Objects.nonNull(annotation)) {
+            tableName = annotation.name();
+        } else {
+            tableName = destination.getClass().getSimpleName();
+        }
+
         for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
+            String columnName = null;
+            Column column = model.get(entry.getKey()).getAnnotation(Column.class);
+            if (Objects.nonNull(column)) {
+                columnName = column.name();
+            } else {
+                columnName = entry.getKey();
+            }
+
             if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
                 Set<CategoryType> categories = entry.getValue().getCategories();
                 try {
-                    EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
-                            .setParameter("owner", identityStore.getUser())
-                            .setParameter("entity", source.getClass())
-                            .setParameter("property", entry.getKey())
+                    AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
+                            .setParameter("source", destination)
+                            .setParameter("column", columnName)
                             .getSingleResult();
 
-                    entitySchema.getVisibility().clear();
+                    right.getCategories().clear();
 
                     for (CategoryType category : categories) {
                         Category categoryEntity = entityManager.find(Category.class, category.getId());
-                        entitySchema.getVisibility().add(categoryEntity);
+                        right.getCategories().add(categoryEntity);
                     }
                 } catch (NoResultException e) {
-                    EntitySchema schemaItem = new EntitySchema();
-                    schemaItem.setEntity(source.getClass());
-                    schemaItem.setOwner(identityStore.getUser());
-                    schemaItem.setProperty(entry.getKey());
-                    for (CategoryType category : categories) {
-                        Category categoryEntity = entityManager.find(Category.class, category.getId());
-                        schemaItem.getVisibility().add(categoryEntity);
+                    try {
+                        Class<?> right = Class.forName(destination.getClass().getPackageName() + "." + destination.getClass().getSimpleName() + "Right");
+                        AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
+                        schemaItem.setSource((AbstractEntity) destination);
+                        schemaItem.setColumn(columnName);
+                        for (CategoryType category : categories) {
+                            Category categoryEntity = entityManager.find(Category.class, category.getId());
+                            schemaItem.getCategories().add(categoryEntity);
+                        }
+                        entityManager.persist(schemaItem);
+                    } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
+                             IllegalAccessException | NoSuchMethodException ex) {
+                        throw new RuntimeException(ex);
                     }
-                    entityManager.persist(schemaItem);
                 }
             }
         }

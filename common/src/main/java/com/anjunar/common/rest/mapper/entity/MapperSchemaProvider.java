@@ -1,14 +1,20 @@
 package com.anjunar.common.rest.mapper.entity;
 
+import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.security.*;
+import com.anjunar.introspector.bean.BeanIntrospector;
+import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.inject.Inject;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Table;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 public class MapperSchemaProvider implements SecurityProvider {
@@ -30,26 +36,50 @@ public class MapperSchemaProvider implements SecurityProvider {
     @Override
     public <S, D extends AbstractSchemaEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
         boolean isAllowed = true;
-        if (visibility(destination, destinationProperty) && source instanceof OwnerProvider) {
-            isAllowed = isAllowedWithSchema((OwnerProvider) source, sourceProperty.getKey(), destination.getClass());
+        if (visibility(sourceProperty) && source instanceof OwnerProvider) {
+            isAllowed = isAllowedWithSchema((OwnerProvider) source, sourceProperty);
         }
         return isAllowed;
     }
 
-    public <S extends AbstractSchemaEntity, D extends AbstractSchemaEntity> boolean visibility(D destination, BeanProperty<S, ?> property) {
+    public <S> boolean visibility(BeanProperty<S, ?> property) {
         return property.getAnnotation(MapperVisibility.class) != null;
     }
 
-    public boolean isAllowedWithSchema(OwnerProvider entity, String property, Class<?> aClass) {
+    public boolean isAllowedWithSchema(OwnerProvider entity, BeanProperty<?, ?> property) {
         if (entity.getOwner().equals(identityStore.getUser())) {
             return true;
         }
 
+        Role role = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
+                .setParameter("name", "Administrator")
+                .getSingleResult();
+
+        if (identityStore.getUser().getRoles().contains(role)) {
+            return true;
+        }
+
         try {
-            EntitySchema schemaItem = entityManager.createQuery("select s from EntitySchema s where s.property = :property and s.entity = :entity and s.owner = :owner", EntitySchema.class)
-                    .setParameter("property", property)
-                    .setParameter("entity", aClass)
-                    .setParameter("owner", entity.getOwner())
+            BeanModel<? extends OwnerProvider> model = BeanIntrospector.create(entity.getClass());
+            String tableName = null;
+            Table annotation = model.getAnnotation(Table.class);
+            if (Objects.nonNull(annotation)) {
+                tableName = annotation.name();
+            } else {
+                tableName = entity.getClass().getSimpleName();
+            }
+
+            String columnName = null;
+            Column column = property.getAnnotation(Column.class);
+            if (Objects.nonNull(column)) {
+                columnName = column.name();
+            } else {
+                columnName = property.getKey();
+            }
+
+            AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
+                    .setParameter("source", entity)
+                    .setParameter("column", columnName)
                     .getSingleResult();
 
             Category category = entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
@@ -57,7 +87,7 @@ public class MapperSchemaProvider implements SecurityProvider {
                     .setParameter("name", "Everybody")
                     .getSingleResult();
 
-            if (schemaItem.getVisibility().contains(category)) {
+            if (right.getCategories().contains(category)) {
                 return true;
             }
 
@@ -66,7 +96,7 @@ public class MapperSchemaProvider implements SecurityProvider {
                     .setParameter("from", entity.getOwner())
                     .getSingleResult();
 
-            Set<Category> visibility = schemaItem.getVisibility();
+            Set<Category> visibility = right.getCategories();
 
             return visibility.contains(userConnection.getCategory());
         } catch (NoResultException e) {

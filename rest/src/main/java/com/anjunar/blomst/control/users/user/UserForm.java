@@ -25,16 +25,21 @@ public class UserForm extends AbstractRestEntity {
 
     @NotBlank
     @Size(min = 3, max = 80)
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Nick Name", naming = true)
+    private String nickName;
+
+    @NotBlank
+    @Size(min = 3, max = 80)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true, visibility = true)
     private String firstName;
 
     @NotBlank
     @Size(min = 3, max = 80)
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true, visibility = true)
     private String lastName;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate")
+    @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate", visibility = true)
     private LocalDate birthDate;
 
     @MapperSecurity(rolesAllowed = {"Administrator"})
@@ -45,14 +50,14 @@ public class UserForm extends AbstractRestEntity {
     @MapperConverter(ImageConverter.class)
     private ImageType picture = new ImageType();
 
-    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
+    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails", visibility = true)
     private List<EmailForm> emails = new ArrayList<>();
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Enabled")
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private boolean enabled;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language", visibility = true)
     private LanguageForm language;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")
@@ -60,6 +65,14 @@ public class UserForm extends AbstractRestEntity {
     @NotNull
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private Set<RoleForm> roles = new HashSet<>();
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public String getFirstName() {
         return firstName;

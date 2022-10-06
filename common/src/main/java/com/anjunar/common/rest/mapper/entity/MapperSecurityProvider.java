@@ -3,6 +3,7 @@ package com.anjunar.common.rest.mapper.entity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.security.IdentityStore;
+import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.introspector.bean.BeanProperty;
 import jakarta.inject.Inject;
 
@@ -24,6 +25,11 @@ public class MapperSecurityProvider implements SecurityProvider {
         MapperSecurity security = destinationProperty.getAnnotation(MapperSecurity.class);
         if (security == null) {
             return true;
+        }
+        if (source instanceof OwnerProvider ownerProvider) {
+            if (ownerProvider.getOwner().equals(identityStore.getUser())) {
+                return true;
+            }
         }
         for (String role : security.rolesAllowed()) {
             if (!identityStore.hasRole(role)) {

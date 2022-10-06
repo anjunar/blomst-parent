@@ -31,11 +31,17 @@ class MetaColumn extends HTMLElement {
     }
 
     dateTime(value, meta) {
-        return dateTimeFormat(value, this.app.language)
+        if (value) {
+            return dateTimeFormat(value, this.app.language)
+        }
+        return "";
     }
 
     date(value, meta) {
-        return dateFormat(value, this.app.language)
+        if (value) {
+            return dateFormat(value, this.app.language)
+        }
+        return "";
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

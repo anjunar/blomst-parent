@@ -1,12 +1,9 @@
 package com.anjunar.blomst.shared.users.user;
 
-import com.anjunar.blomst.control.users.user.ImageConverter;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
-import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.ImageType;
-import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.google.common.base.Strings;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +12,11 @@ import java.time.LocalDate;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class UserSelect extends IdentitySelect {
+
+    @Size(min = 3, max = 80)
+    @NotBlank
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Nick Name", readOnly = true)
+    private String nickName;
 
     @Size(min = 3, max = 80)
     @NotBlank
@@ -33,6 +35,14 @@ public class UserSelect extends IdentitySelect {
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language", readOnly = true)
     private LanguageForm language;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -64,6 +74,13 @@ public class UserSelect extends IdentitySelect {
 
     public void setLanguage(LanguageForm language) {
         this.language = language;
+    }
+
+    public String getName() {
+        if (! Strings.isNullOrEmpty(firstName) && ! Strings.isNullOrEmpty(lastName)) {
+            return firstName + " " + lastName;
+        }
+        return nickName;
     }
 
 }

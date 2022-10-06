@@ -1,6 +1,7 @@
 package com.anjunar.common.security;
 
 import com.anjunar.common.i18n.Language;
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import org.hibernate.annotations.Filter;
 
 import jakarta.persistence.*;
@@ -9,12 +10,17 @@ import java.util.*;
 
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")
-public class User extends Identity {
+public class User extends Identity implements OwnerProvider {
 
+    private String nickName;
+
+    @MapperVisibility
     private String firstName;
 
+    @MapperVisibility
     private String lastName;
 
+    @MapperVisibility
     private LocalDate birthDate;
 
     private String question;
@@ -26,9 +32,11 @@ public class User extends Identity {
         return firstName + " " + lastName;
     }
 
+    @MapperVisibility
     @ElementCollection
     private final List<EmailType> emails = new ArrayList<>();
 
+    @MapperVisibility
     @ManyToOne(fetch = FetchType.LAZY)
     private Language language;
 
@@ -36,6 +44,14 @@ public class User extends Identity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private final Set<Role> roles = new HashSet<>();
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -101,4 +117,8 @@ public class User extends Identity {
         return roles;
     }
 
+    @Override
+    public User getOwner() {
+        return this;
+    }
 }

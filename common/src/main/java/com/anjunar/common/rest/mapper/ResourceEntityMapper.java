@@ -1,6 +1,7 @@
 package com.anjunar.common.rest.mapper;
 
 import com.anjunar.common.ddd.AbstractEntity;
+import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.*;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
@@ -15,8 +16,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Table;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -272,28 +275,51 @@ public class ResourceEntityMapper {
 
     private <S extends AbstractEntity, D extends AbstractSchemaEntity> void loadSchema(OwnerProvider source, D destination) {
         JsonObject schema = destination.getSchema();
+
+        BeanModel<?> model = BeanIntrospector.create(source.getClass());
+        String tableName = null;
+        Table annotation = model.getAnnotation(Table.class);
+        if (Objects.nonNull(annotation)) {
+            tableName = annotation.name();
+        } else {
+            tableName = source.getClass().getSimpleName();
+        }
+
         for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
+            String columnName = null;
+            Column column = model.get(entry.getKey()).getAnnotation(Column.class);
+            if (Objects.nonNull(column)) {
+                columnName = column.name();
+            } else {
+                columnName = entry.getKey();
+            }
+
             try {
                 if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
                     Set<CategoryType> categories = entry.getValue().getCategories();
                     EntityManager entityManager = entityManager();
-                    EntitySchema entitySchema = entityManager.createQuery("select s from EntitySchema s where s.owner = :owner and s.entity = :entity and s.property = :property", EntitySchema.class)
-                            .setParameter("owner", source.getOwner())
-                            .setParameter("entity", destination.getClass())
-                            .setParameter("property", entry.getKey())
+
+                    AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
+                            .setParameter("source", source)
+                            .setParameter("column", columnName)
                             .getSingleResult();
 
-                    for (Category category : entitySchema.getVisibility()) {
+                    for (Category category : right.getCategories()) {
                         CategoryType categoryType = map(category, CategoryType.class, null);
                         categories.add(categoryType);
                     }
                 }
             } catch (NoResultException e) {
-                EntitySchema schemaItem = new EntitySchema();
-                schemaItem.setEntity(destination.getClass());
-                schemaItem.setOwner(identityStore.getUser());
-                schemaItem.setProperty(entry.getKey());
-                entityManager.persist(schemaItem);
+                try {
+                    Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
+                    AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
+                    schemaItem.setSource((AbstractEntity) source);
+                    schemaItem.setColumn(columnName);
+                    entityManager.persist(schemaItem);
+                } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
+                         IllegalAccessException | NoSuchMethodException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }

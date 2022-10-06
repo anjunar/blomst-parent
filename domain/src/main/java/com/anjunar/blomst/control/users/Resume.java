@@ -1,5 +1,6 @@
 package com.anjunar.blomst.control.users;
 
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.security.User;
@@ -16,6 +17,7 @@ public class Resume extends AbstractEntity implements OwnerProvider {
 
     @OrderBy("end desc")
     @OneToMany(cascade = CascadeType.ALL)
+    @MapperVisibility
     private final List<ResumeItem> items = new ArrayList<>();
 
     @Override
