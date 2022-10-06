@@ -30,7 +30,11 @@ class ToolbarTools extends HTMLElement {
     }
 
     selectAll = {
-        click() {
+        click : () => {
+            let range = document.createRange();
+            range.selectNodeContents(this.contents);
+            document.getSelection().removeAllRanges();
+            document.getSelection().addRange(range);
             document.execCommand("selectALl")
         }
     }

@@ -287,38 +287,41 @@ public class ResourceEntityMapper {
 
         for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
             String columnName = null;
-            Column column = model.get(entry.getKey()).getAnnotation(Column.class);
-            if (Objects.nonNull(column)) {
-                columnName = column.name();
-            } else {
-                columnName = entry.getKey();
-            }
-
-            try {
-                if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
-                    Set<CategoryType> categories = entry.getValue().getCategories();
-                    EntityManager entityManager = entityManager();
-
-                    AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
-                            .setParameter("source", source)
-                            .setParameter("column", columnName)
-                            .getSingleResult();
-
-                    for (Category category : right.getCategories()) {
-                        CategoryType categoryType = map(category, CategoryType.class, null);
-                        categories.add(categoryType);
-                    }
+            BeanProperty<?, ?> property = model.get(entry.getKey());
+            if (Objects.nonNull(property)) {
+                Column column = property.getAnnotation(Column.class);
+                if (Objects.nonNull(column)) {
+                    columnName = column.name();
+                } else {
+                    columnName = entry.getKey();
                 }
-            } catch (NoResultException e) {
+
                 try {
-                    Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
-                    AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
-                    schemaItem.setSource((AbstractEntity) source);
-                    schemaItem.setColumn(columnName);
-                    entityManager.persist(schemaItem);
-                } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
-                         IllegalAccessException | NoSuchMethodException ex) {
-                    throw new RuntimeException(ex);
+                    if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
+                        Set<CategoryType> categories = entry.getValue().getCategories();
+                        EntityManager entityManager = entityManager();
+
+                        AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
+                                .setParameter("source", source)
+                                .setParameter("column", columnName)
+                                .getSingleResult();
+
+                        for (Category category : right.getCategories()) {
+                            CategoryType categoryType = map(category, CategoryType.class, null);
+                            categories.add(categoryType);
+                        }
+                    }
+                } catch (NoResultException e) {
+                    try {
+                        Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
+                        AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
+                        schemaItem.setSource((AbstractEntity) source);
+                        schemaItem.setColumn(columnName);
+                        entityManager.persist(schemaItem);
+                    } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
+                             IllegalAccessException | NoSuchMethodException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         }
