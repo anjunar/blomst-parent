@@ -82,7 +82,7 @@ class ToolbarFont extends HTMLElement {
         click() {
             document.execCommand("styleWithCSS", false, true);
             document.execCommand('bold', false, null);
-            this.active = true;
+            this.active = ! this.active;
         },
         handler(event) {
             let computedStyle = window.getComputedStyle(event.target);
@@ -94,7 +94,7 @@ class ToolbarFont extends HTMLElement {
         click() {
             document.execCommand("styleWithCSS", false, true);
             document.execCommand("italic", false, null);
-            this.active = true;
+            this.active = ! this.active;
         },
         handler(event) {
             let computedStyle = window.getComputedStyle(event.target);
@@ -106,7 +106,7 @@ class ToolbarFont extends HTMLElement {
         click() {
             document.execCommand("styleWithCSS", false, true);
             document.execCommand("strikethrough", false, null);
-            this.active = true;
+            this.active = ! this.active;
         },
         handler(event) {
             let computedStyle = window.getComputedStyle(event.target);
@@ -118,7 +118,7 @@ class ToolbarFont extends HTMLElement {
         click() {
             document.execCommand("styleWithCSS", false, true);
             document.execCommand("subscript", false, null);
-            this.active = true;
+            this.active = ! this.active;
         },
         handler(event) {
             let computedStyle = window.getComputedStyle(event.target);
@@ -130,7 +130,7 @@ class ToolbarFont extends HTMLElement {
         click() {
             document.execCommand("styleWithCSS", false, true);
             document.execCommand("superscript", false, null);
-            this.active = true;
+            this.active = ! this.active;
         },
         handler(event) {
             let computedStyle = window.getComputedStyle(event.target);
