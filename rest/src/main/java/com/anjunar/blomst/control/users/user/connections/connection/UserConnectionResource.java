@@ -79,7 +79,9 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
                 .build(form::addLink);
 
         JsonObject category = form.find("category", JsonObject.class);
-        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+        CategoriesSearch search = new CategoriesSearch();
+        search.setOwner(identityManager.getUser().getId());
+        linkTo(methodOn(CategoriesResource.class).list(search))
                 .build(category::addLink);
 
         JsonObject to = form.find("to", JsonObject.class);

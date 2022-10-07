@@ -260,7 +260,7 @@ public class ResourceRestMapper {
                 } else {
                     columnName = entry.getKey();
                 }
-                if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility().size() > 0) {
+                if (entry.getValue().getVisibility() != null) {
                     Set<CategoryType> categories = entry.getValue().getVisibility();
                     try {
                         AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)

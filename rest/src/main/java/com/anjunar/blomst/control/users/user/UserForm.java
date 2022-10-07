@@ -26,7 +26,7 @@ public class UserForm extends AbstractRestEntity {
 
     @NotBlank
     @Size(min = 3, max = 80)
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Nick Name", naming = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Nick Name")
     private String nickName;
 
     @NotBlank

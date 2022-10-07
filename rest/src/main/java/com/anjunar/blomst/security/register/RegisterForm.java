@@ -17,7 +17,7 @@ public class RegisterForm implements LinksContainer {
 
     @Email
     @NotBlank
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name")
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Email")
     private String email;
 
     @Size(min = 3, max = 80)

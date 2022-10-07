@@ -1,6 +1,7 @@
 package com.anjunar.blomst.shared.users.user;
 
 import com.anjunar.blomst.system.languages.language.LanguageForm;
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.google.common.base.Strings;
@@ -21,19 +22,23 @@ public class UserSelect extends IdentitySelect {
     @Size(min = 3, max = 80)
     @NotBlank
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", readOnly = true)
+    @MapperVisibility
     private String firstName;
 
     @Size(min = 3, max = 80)
     @NotBlank
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", readOnly = true)
+    @MapperVisibility
     private String lastName;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate", readOnly = true)
+    @MapperVisibility
     private LocalDate birthDate;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language", readOnly = true)
+    @MapperVisibility
     private LanguageForm language;
 
     public String getNickName() {

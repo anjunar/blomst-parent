@@ -25,7 +25,7 @@ class ToolbarTools extends HTMLElement {
 
     delete = {
         click() {
-            document.execCommand("delete")
+            document.execCommand("removeFormat")
         }
     }
 
