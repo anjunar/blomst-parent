@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.schema.factories;
 
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.JsonContext;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.validators.NotNullValidator;
@@ -8,6 +9,9 @@ import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.introspector.bean.BeanProperty;
 
 import jakarta.validation.constraints.NotNull;
+
+import java.util.HashSet;
+import java.util.Objects;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class JsonAbstractFactory<J extends JsonNode> {
@@ -35,8 +39,9 @@ public abstract class JsonAbstractFactory<J extends JsonNode> {
             if (! jsonSchema.widget().equals(JsonNode.Widget.NO_WIDGET)) {
                 jsonNode.setWidget(jsonSchema.widget());
             }
-            if (jsonSchema.visibility()) {
-                jsonNode.setVisibility(true);
+            MapperVisibility visibility = property.getAnnotation(MapperVisibility.class);
+            if (Objects.nonNull(visibility)) {
+                jsonNode.setVisibility(new HashSet<>());
             }
             if (jsonSchema.readOnly()) {
                 jsonNode.setReadOnly(true);

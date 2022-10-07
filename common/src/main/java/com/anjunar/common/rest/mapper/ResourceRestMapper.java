@@ -6,7 +6,7 @@ import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
-import com.anjunar.common.rest.mapper.annotations.MapperWrite;
+import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.mapper.rest.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -22,8 +22,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Table;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +66,10 @@ public class ResourceRestMapper {
             }
         } else {
             destination = getNewInstance(destinationClass);
+        }
+
+        if (destination instanceof AbstractEntity entity) {
+            entity.setIdentityStore(identityStore);
         }
 
         if (loadOnly) {
@@ -139,7 +141,7 @@ public class ResourceRestMapper {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
-        MapperWrite mapperWrite = sourceProperty.getAnnotation(MapperWrite.class);
+        MapperPermanent mapperPermanent = sourceProperty.getAnnotation(MapperPermanent.class);
         MapperConverter mapperConverter = sourceProperty.getAnnotation(MapperConverter.class);
         if (mapperConverter == null) {
             if (sourcePropertyType.equals(destinationPropertyType)) {
@@ -153,7 +155,7 @@ public class ResourceRestMapper {
                     destinationProperty.accept(destination, entity);
                 } else {
                     AbstractSchemaEntity entity = (AbstractSchemaEntity) sourcePropertyInstance;
-                    Object restEntity = map(entity, (Class<?>) destinationPropertyType, isDirty(source, sourceProperty), mapperWrite != null);
+                    Object restEntity = map(entity, (Class<?>) destinationPropertyType, isDirty(source, sourceProperty), mapperPermanent != null);
                     destinationProperty.accept(destination, restEntity);
                 }
             }
@@ -168,7 +170,7 @@ public class ResourceRestMapper {
                                                                 BeanProperty<S, ?> sourceProperty,
                                                                 Map<Object, Object> destinationPropertyInstance,
                                                                 BeanProperty<D, Object> destinationProperty) {
-        MapperWrite mapperWrite = sourceProperty.getAnnotation(MapperWrite.class);
+        MapperPermanent mapperPermanent = sourceProperty.getAnnotation(MapperPermanent.class);
 
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
@@ -195,12 +197,12 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
                 AbstractSchemaEntity restKeyEntity = (AbstractSchemaEntity) entry.getKey();
-                Object keyEntity = map(restKeyEntity, (Class<?>) destinationMapKeyType, false, mapperWrite != null);
+                Object keyEntity = map(restKeyEntity, (Class<?>) destinationMapKeyType, false, mapperPermanent != null);
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(keyEntity, entry.getValue());
                 } else {
                     AbstractSchemaEntity restValueEntity = (AbstractSchemaEntity) entry.getValue();
-                    Object valueEntity = map(restValueEntity, (Class<?>) destinationMapValueType, false, mapperWrite != null);
+                    Object valueEntity = map(restValueEntity, (Class<?>) destinationMapValueType, false, mapperPermanent != null);
                     destinationPropertyInstance.put(keyEntity, valueEntity);
                 }
             }
@@ -211,7 +213,7 @@ public class ResourceRestMapper {
                                                                        BeanProperty<S, ?> sourceProperty,
                                                                        Collection<Object> destinationPropertyInstance,
                                                                        BeanProperty<D, Object> destinationProperty) {
-        MapperWrite mapperWrite = sourceProperty.getAnnotation(MapperWrite.class);
+        MapperPermanent mapperPermanent = sourceProperty.getAnnotation(MapperPermanent.class);
 
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
@@ -230,7 +232,7 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.add(element);
             } else {
                 AbstractSchemaEntity restEntity = (AbstractSchemaEntity) element;
-                Object entity = map(restEntity, (Class<?>) destinationCollectionType, false, mapperWrite != null);
+                Object entity = map(restEntity, (Class<?>) destinationCollectionType, false, mapperPermanent != null);
                 destinationPropertyInstance.add(entity);
             }
         }
@@ -250,41 +252,43 @@ public class ResourceRestMapper {
 
         for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
             String columnName = null;
-            Column column = model.get(entry.getKey()).getAnnotation(Column.class);
-            if (Objects.nonNull(column)) {
-                columnName = column.name();
-            } else {
-                columnName = entry.getKey();
-            }
-
-            if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
-                Set<CategoryType> categories = entry.getValue().getCategories();
-                try {
-                    AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
-                            .setParameter("source", destination)
-                            .setParameter("column", columnName)
-                            .getSingleResult();
-
-                    right.getCategories().clear();
-
-                    for (CategoryType category : categories) {
-                        Category categoryEntity = entityManager.find(Category.class, category.getId());
-                        right.getCategories().add(categoryEntity);
-                    }
-                } catch (NoResultException e) {
+            BeanProperty<?, ?> property = model.get(entry.getKey());
+            if (Objects.nonNull(property)) {
+                Column column = property.getAnnotation(Column.class);
+                if (Objects.nonNull(column)) {
+                    columnName = column.name();
+                } else {
+                    columnName = entry.getKey();
+                }
+                if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility().size() > 0) {
+                    Set<CategoryType> categories = entry.getValue().getVisibility();
                     try {
-                        Class<?> right = Class.forName(destination.getClass().getPackageName() + "." + destination.getClass().getSimpleName() + "Right");
-                        AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
-                        schemaItem.setSource((AbstractEntity) destination);
-                        schemaItem.setColumn(columnName);
+                        AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
+                                .setParameter("source", destination)
+                                .setParameter("column", columnName)
+                                .getSingleResult();
+
+                        right.getCategories().clear();
+
                         for (CategoryType category : categories) {
                             Category categoryEntity = entityManager.find(Category.class, category.getId());
-                            schemaItem.getCategories().add(categoryEntity);
+                            right.getCategories().add(categoryEntity);
                         }
-                        entityManager.persist(schemaItem);
-                    } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
-                             IllegalAccessException | NoSuchMethodException ex) {
-                        throw new RuntimeException(ex);
+                    } catch (NoResultException e) {
+                        try {
+                            Class<?> right = Class.forName(destination.getClass().getPackageName() + "." + destination.getClass().getSimpleName() + "Right");
+                            AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
+                            schemaItem.setSource((AbstractEntity) destination);
+                            schemaItem.setColumn(columnName);
+                            for (CategoryType category : categories) {
+                                Category categoryEntity = entityManager.find(Category.class, category.getId());
+                                schemaItem.getCategories().add(categoryEntity);
+                            }
+                            entityManager.persist(schemaItem);
+                        } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
+                                 IllegalAccessException | NoSuchMethodException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 }
             }
@@ -292,8 +296,8 @@ public class ResourceRestMapper {
     }
 
     private static <S> Boolean isDirty(S source, BeanProperty<S, ?> propertySource) {
-        MapperWrite mapperWrite = propertySource.getAnnotation(MapperWrite.class);
-        if (Objects.nonNull(mapperWrite)) {
+        MapperPermanent mapperPermanent = propertySource.getAnnotation(MapperPermanent.class);
+        if (Objects.nonNull(mapperPermanent)) {
             return true;
         }
         Boolean dirty = false;

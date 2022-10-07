@@ -103,7 +103,7 @@ public class ResourceEntityMapper {
                 loadSchema((OwnerProvider) source, destination);
             } else {
                 for (Map.Entry<String, JsonNode> entry : destination.getSchema().getProperties().entrySet()) {
-                    entry.getValue().setVisibility(false);
+                    entry.getValue().setVisibility(null);
                 }
             }
         }
@@ -297,8 +297,8 @@ public class ResourceEntityMapper {
                 }
 
                 try {
-                    if (entry.getValue().getVisibility() != null && entry.getValue().getVisibility()) {
-                        Set<CategoryType> categories = entry.getValue().getCategories();
+                    if (entry.getValue().getVisibility() != null) {
+                        Set<CategoryType> categories = entry.getValue().getVisibility();
                         EntityManager entityManager = entityManager();
 
                         AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)

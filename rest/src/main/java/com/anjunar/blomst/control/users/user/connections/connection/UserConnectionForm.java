@@ -1,11 +1,9 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.connections.categories.category.CategoryForm;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
-import com.anjunar.common.rest.mapper.annotations.MapperWrite;
+import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
@@ -15,11 +13,11 @@ public class UserConnectionForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "From", readOnly = true)
-    @MapperWrite
+    @MapperPermanent
     private UserSelect from;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Category")
-    @MapperWrite
+    @MapperPermanent
     private CategoryForm category;
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted", readOnly = true)
@@ -27,7 +25,7 @@ public class UserConnectionForm extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
-    @MapperWrite
+    @MapperPermanent
     private UserSelect to;
 
     public UserSelect getFrom() {

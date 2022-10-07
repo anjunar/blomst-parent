@@ -2,10 +2,9 @@ package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.pages.page.Question;
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.mapper.annotations.MapperWrite;
+import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
@@ -20,12 +19,12 @@ public class AnswerForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Question", readOnly = true)
-    @MapperWrite
+    @MapperPermanent
     private QuestionForm question;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
-    @MapperWrite
+    @MapperPermanent
     private UserSelect owner;
 
     public Editor getEditor() {

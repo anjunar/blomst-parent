@@ -2,11 +2,9 @@ package com.anjunar.common.rest.schema.schema;
 
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.validators.Validator;
-import com.anjunar.common.security.Category;
 import com.fasterxml.jackson.annotation.*;
 import com.anjunar.common.rest.api.Link;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -97,11 +95,9 @@ public abstract class JsonNode {
 
     private Boolean dirty;
 
-    private Boolean visibility;
-
     private Boolean visible;
 
-    private Set<CategoryType> categories = new HashSet<>();
+    private Set<CategoryType> visibility;
 
     private final LinkedHashMap<String, Link> links = new LinkedHashMap<>();
 
@@ -183,14 +179,6 @@ public abstract class JsonNode {
         validators.put(name, validator);
     }
 
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
-    }
-
-    public Boolean getVisibility() {
-        return visibility;
-    }
-
     public Boolean getVisible() {
         return visible;
     }
@@ -199,12 +187,12 @@ public abstract class JsonNode {
         this.visible = visible;
     }
 
-    public Set<CategoryType> getCategories() {
-        return categories;
+    public Set<CategoryType> getVisibility() {
+        return visibility;
     }
 
-    public void setCategories(Set<CategoryType> categories) {
-        this.categories = categories;
+    public void setVisibility(Set<CategoryType> visibility) {
+        this.visibility = visibility;
     }
 
 }

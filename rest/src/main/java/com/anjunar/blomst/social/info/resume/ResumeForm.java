@@ -3,7 +3,7 @@ package com.anjunar.blomst.social.info.resume;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
-import com.anjunar.common.rest.mapper.annotations.MapperWrite;
+import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
@@ -14,10 +14,11 @@ import java.util.List;
 public class ResumeForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
-    @MapperWrite
+    @MapperPermanent
     private UserSelect owner;
 
-    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Items", visibility = true)
+    @MapperVisibility
+    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Items")
     private final List<ResumeItemForm> items = new ArrayList<>();
 
     public UserSelect getOwner() {

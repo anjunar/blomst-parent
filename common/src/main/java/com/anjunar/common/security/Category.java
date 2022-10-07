@@ -34,6 +34,10 @@ public class Category extends AbstractEntity {
         return i18nName.get(getIdentityStore().getLanguage());
     }
 
+    public void setName(String name) {
+        i18nName.put(getIdentityStore().getLanguage(), name);
+    }
+
     public String getDescription() {
         return description;
     }

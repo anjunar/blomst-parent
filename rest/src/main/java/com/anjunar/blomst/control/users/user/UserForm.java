@@ -6,6 +6,7 @@ import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.Email;
@@ -30,16 +31,19 @@ public class UserForm extends AbstractRestEntity {
 
     @NotBlank
     @Size(min = 3, max = 80)
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true, visibility = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true)
+    @MapperVisibility
     private String firstName;
 
     @NotBlank
     @Size(min = 3, max = 80)
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true, visibility = true)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true)
+    @MapperVisibility
     private String lastName;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate", visibility = true)
+    @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate")
+    @MapperVisibility
     private LocalDate birthDate;
 
     @MapperSecurity(rolesAllowed = {"Administrator"})
@@ -50,14 +54,16 @@ public class UserForm extends AbstractRestEntity {
     @MapperConverter(ImageConverter.class)
     private ImageType picture = new ImageType();
 
-    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails", visibility = true)
+    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
+    @MapperVisibility
     private List<EmailForm> emails = new ArrayList<>();
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Enabled")
     @MapperSecurity(rolesAllowed = {"Administrator"})
     private boolean enabled;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language", visibility = true)
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
+    @MapperVisibility
     private LanguageForm language;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")

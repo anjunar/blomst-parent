@@ -14,24 +14,19 @@ public class User extends Identity implements OwnerProvider {
 
     private String nickName;
 
-    @MapperVisibility
     private String firstName;
 
-    @MapperVisibility
     private String lastName;
 
-    @MapperVisibility
     private LocalDate birthDate;
 
     private String question;
 
     private String password;
 
-    @MapperVisibility
     @ElementCollection
     private final List<EmailType> emails = new ArrayList<>();
 
-    @MapperVisibility
     @ManyToOne(fetch = FetchType.LAZY)
     private Language language;
 

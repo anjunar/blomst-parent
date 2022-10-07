@@ -17,7 +17,6 @@ public class Resume extends AbstractEntity implements OwnerProvider {
 
     @OrderBy("end desc")
     @OneToMany(cascade = CascadeType.ALL)
-    @MapperVisibility
     private final List<ResumeItem> items = new ArrayList<>();
 
     @Override

@@ -1,12 +1,10 @@
 package com.anjunar.blomst.social.pages.page.questions.question;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.PageForm;
 import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.mapper.annotations.MapperView;
-import com.anjunar.common.rest.mapper.annotations.MapperWrite;
+import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
@@ -16,14 +14,13 @@ import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Page", readOnly = true)
-    @MapperWrite
+    @MapperPermanent
     private PageForm page;
 
     @Size(min = 3, max = 80)
@@ -37,7 +34,7 @@ public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
-    @MapperWrite
+    @MapperPermanent
     private UserSelect owner;
 
     @NotNull

@@ -2,6 +2,7 @@ package com.anjunar.common.ddd;
 
 import com.anjunar.common.security.Category;
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToMany;
 
@@ -14,7 +15,7 @@ public abstract class AbstractRight<S extends AbstractEntity> extends AbstractEn
     @Column(name = "source_column")
     private String column;
 
-    @OneToMany
+    @ManyToMany
     private final Set<Category> categories = new HashSet<>();
 
     public String getColumn() {

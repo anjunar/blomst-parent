@@ -107,7 +107,9 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+        CategoriesSearch search = new CategoriesSearch();
+        search.setOwner(identityManager.getUser().getId());
+        linkTo(methodOn(CategoriesResource.class).list(search))
                 .withRel("redirect")
                 .build(response::addLink);
 
@@ -123,7 +125,9 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+        CategoriesSearch search = new CategoriesSearch();
+        search.setOwner(identityManager.getUser().getId());
+        linkTo(methodOn(CategoriesResource.class).list(search))
                 .withRel("redirect")
                 .build(response::addLink);
 
@@ -145,7 +149,9 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(CategoriesResource.class).list(new CategoriesSearch()))
+        CategoriesSearch search = new CategoriesSearch();
+        search.setOwner(identityManager.getUser().getId());
+        linkTo(methodOn(CategoriesResource.class).list(search))
                 .withRel("redirect")
                 .build(response::addLink);
 
