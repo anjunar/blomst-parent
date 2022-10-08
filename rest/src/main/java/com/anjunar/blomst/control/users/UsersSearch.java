@@ -17,15 +17,15 @@ public class UsersSearch extends AbstractRestSearch {
     @QueryParam("sort")
     private List<String> sort;
 
-    @RestPredicate(GenericLikeProvider.class)
+    @RestPredicate(FirstNameProvider.class)
     @QueryParam("firstName")
     private String firstName;
 
-    @RestPredicate(GenericLikeProvider.class)
+    @RestPredicate(LastNameProvider.class)
     @QueryParam("lastName")
     private String lastName;
 
-    @RestPredicate(GenericDurationDateProvider.class)
+    @RestPredicate(BirthDateProvider.class)
     @QueryParam("birthDate")
     private DateDuration birthDate;
 

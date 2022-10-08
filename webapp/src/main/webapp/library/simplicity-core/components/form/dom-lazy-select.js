@@ -127,7 +127,7 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
     onItemClicked(event, item) {
         event.stopPropagation();
         if (this.multiSelect) {
-            let find = this.model.find(model => isEqual(model, item));
+            let find = this.model.find(model => isEqual(model[this.id], item[this.id]));
             if (! find) {
                 this.model.push(item);
             } else {
@@ -227,9 +227,9 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
 
     selected(item) {
         if (this.multiSelect) {
-            return this.model.some((model) => isEqual(model, item))
+            return this.model.some((model) => isEqual(model[this.id], item[this.id]))
         } else {
-            return isEqual(this.model,item);
+            return isEqual(this.model[this.id],item[this.id]);
         }
     }
 

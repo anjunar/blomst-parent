@@ -63,7 +63,6 @@ public class UserForm extends AbstractRestEntity {
     private boolean enabled;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language")
-    @MapperVisibility
     private LanguageForm language;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")

@@ -38,7 +38,6 @@ public class UserSelect extends IdentitySelect {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Language", readOnly = true)
-    @MapperVisibility
     private LanguageForm language;
 
     public String getNickName() {
