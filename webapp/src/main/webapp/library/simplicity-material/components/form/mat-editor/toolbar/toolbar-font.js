@@ -1,7 +1,6 @@
 import {customComponents} from "../../../../../simplicity-core/simplicity.js";
 import {libraryLoader} from "../../../../../simplicity-core/processors/loader-processor.js";
 import DomSelect from "../../../../../simplicity-core/directives/dom-select.js";
-import {membraneFactory} from "../../../../../simplicity-core/processors/html-compiler-processor.js";
 
 class ToolbarFont extends HTMLElement {
 
@@ -69,7 +68,7 @@ class ToolbarFont extends HTMLElement {
                     case "h6" :
                         return "H6"
                     default :
-                        return "none";
+                        return "p";
                 }
             }
 
