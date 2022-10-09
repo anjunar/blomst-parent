@@ -48,7 +48,9 @@ class ToolbarTools extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case "contents" : {
-                this.contents = newValue;
+                if (newValue) {
+                    this.contents = newValue;
+                }
             }
         }
     }

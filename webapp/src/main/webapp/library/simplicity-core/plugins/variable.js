@@ -12,7 +12,15 @@ function variableStatement(rawAttributes, context, html) {
 
     evaluation(variable + " = $value", context, {$value: element})
 
-    return html;
+    return {
+        build(parent) {
+            html.build(parent)
+        },
+        import(parent) {
+            let element = html.import(parent);
+            evaluation(variable + " = $value", context, {$value: element})
+        }
+    }
 
 }
 

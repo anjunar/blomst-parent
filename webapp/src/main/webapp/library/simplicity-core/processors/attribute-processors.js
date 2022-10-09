@@ -276,7 +276,9 @@ class DomAttributesProcessor {
                             this.element[this.name] = result === true || result === "true";
                         } break;
                         default : {
-                            this.element[this.name] = result;
+                            if (! isEqual(this.element[this.name], result)) {
+                                this.element[this.name] = result;
+                            }
                         }
                     }
                 })
@@ -293,7 +295,9 @@ class DomAttributesProcessor {
                     this.element[this.name] = result === true || result === "true";
                 } break;
                 default : {
-                    this.element[this.name] = result;
+                    if (! isEqual(this.element[this.name], result)) {
+                        this.element[this.name] = result;
+                    }
                 }
             }
         }
