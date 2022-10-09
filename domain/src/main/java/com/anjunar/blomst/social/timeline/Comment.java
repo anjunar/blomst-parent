@@ -1,25 +1,18 @@
 package com.anjunar.blomst.social.timeline;
 
-import com.anjunar.common.ddd.PostgresIndex;
-import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
-import com.github.pemistahl.lingua.api.Language;
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
-import org.hibernate.annotations.Filter;
-
+import com.anjunar.common.ddd.PostgresIndex;
+import com.anjunar.common.i18n.Detector;
+import com.anjunar.common.security.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
 
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Comment extends Likeable {
 
-    private final static LanguageDetector detector = LanguageDetectorBuilder
-            .fromAllLanguages()
-            .build();
-
     @PostgresIndex(type = PostgresIndex.Type.TEXT)
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     private String language;
@@ -36,8 +29,8 @@ public class Comment extends Likeable {
     @PrePersist
     @PreUpdate
     private void prePersist() {
-        Language detectedLanguage = detector.detectLanguageOf(text);
-        language = detectedLanguage.name().toLowerCase();
+        String detectedLanguage = Detector.detectLanguageOf(text);
+        language = detectedLanguage.toLowerCase();
     }
 
     public String getLanguage() {

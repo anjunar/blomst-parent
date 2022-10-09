@@ -1,9 +1,7 @@
 package com.anjunar.blomst.social.pages;
 
 import com.anjunar.common.ddd.PostgresIndex;
-import com.github.pemistahl.lingua.api.Language;
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
+import com.anjunar.common.i18n.Detector;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.PrePersist;
@@ -12,15 +10,11 @@ import jakarta.persistence.PreUpdate;
 @Embeddable
 public class Editor {
 
-    private final static LanguageDetector detector = LanguageDetectorBuilder
-            .fromAllLanguages()
-            .build();
-
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String html;
 
     @PostgresIndex(type = PostgresIndex.Type.TEXT)
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     private String language;
@@ -28,8 +22,8 @@ public class Editor {
     @PrePersist
     @PreUpdate
     private void prePersist() {
-        Language detectedLanguage = detector.detectLanguageOf(text);
-        language = detectedLanguage.name().toLowerCase();
+        String detectedLanguage = Detector.detectLanguageOf(text);
+        language = detectedLanguage.toLowerCase();
     }
 
     public String getHtml() {

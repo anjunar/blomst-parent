@@ -1,16 +1,12 @@
 package com.anjunar.blomst.social.pages.page;
 
-import com.anjunar.blomst.social.pages.Editor;
-import com.anjunar.common.ddd.PostgresIndex;
-import com.anjunar.common.security.User;
 import com.anjunar.blomst.shared.Likeable;
+import com.anjunar.blomst.social.pages.Editor;
 import com.anjunar.blomst.social.pages.Page;
-import com.github.pemistahl.lingua.api.Language;
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
+import com.anjunar.common.security.User;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Filter;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +14,7 @@ import java.util.List;
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Question extends Likeable {
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String topic;
 
     @Embedded

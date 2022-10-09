@@ -5,11 +5,7 @@ import com.anjunar.blomst.social.timeline.Comment_;
 import com.anjunar.common.i18n.Detector;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityManager;
-
 import com.anjunar.introspector.bean.BeanProperty;
-import com.github.pemistahl.lingua.api.Language;
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

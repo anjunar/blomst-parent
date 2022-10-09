@@ -3,6 +3,7 @@ package com.anjunar.common.i18n;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.google.common.base.Strings;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
@@ -42,6 +43,9 @@ public class I18nType implements UserType<Map> {
     public Map nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
         try {
             String string = rs.getString(position);
+            if (Strings.isNullOrEmpty(string)) {
+                return null;
+            }
             MapType mapType = objectMapper.getTypeFactory().constructMapType(Map.class, Locale.class, String.class);
             return objectMapper.readValue(string, mapType);
         } catch (IOException e) {

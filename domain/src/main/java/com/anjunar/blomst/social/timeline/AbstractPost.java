@@ -1,15 +1,12 @@
 package com.anjunar.blomst.social.timeline;
 
+import com.anjunar.blomst.shared.Likeable;
 import com.anjunar.common.ddd.PostgresIndex;
 import com.anjunar.common.i18n.Detector;
 import com.anjunar.common.security.Identity;
 import com.anjunar.common.security.User;
-import com.anjunar.blomst.shared.Likeable;
-
-import com.github.pemistahl.lingua.api.Language;
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +16,7 @@ import java.util.List;
 public abstract class AbstractPost extends Likeable {
 
     @PostgresIndex(type = PostgresIndex.Type.TEXT)
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     private String language;

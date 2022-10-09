@@ -229,7 +229,10 @@ class DomLazySelect extends mix(HTMLElement).with(Input) {
         if (this.multiSelect) {
             return this.model.some((model) => isEqual(model[this.id], item[this.id]))
         } else {
-            return isEqual(this.model[this.id],item[this.id]);
+            if (this.model) {
+                return isEqual(this.model[this.id],item[this.id]);
+            }
+            return false;
         }
     }
 
