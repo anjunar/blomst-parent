@@ -1,29 +1,23 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.communities.CommunitiesResource;
-import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.timeline.AbstractPost;
+import com.anjunar.blomst.social.timeline.Comment;
 import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
-import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
+import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
-import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
-import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
-import com.anjunar.blomst.social.timeline.Comment;
-
 import com.google.common.collect.Sets;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,6 +26,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -74,12 +69,13 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         User user = identityManager.getUser();
 
         AbstractPost post = entityManager.find(AbstractPost.class, postId);
-        Comment parent = entityManager.find(Comment.class, commentId);
-
         resource.setPost(entityMapper.map(post, AbstractPostForm.class));
-        resource.setParent(entityMapper.map(parent, CommentForm.class));
-
         resource.setOwner(entityMapper.map(user, UserSelect.class));
+
+        if (Objects.nonNull(commentId)) {
+            Comment parent = entityManager.find(Comment.class, commentId);
+            resource.setParent(entityMapper.map(parent, CommentForm.class));
+        }
 
         linkTo(methodOn(CommentResource.class).save(new CommentForm()))
                 .build(resource::addLink);
@@ -131,7 +127,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         Comment comment = restMapper.map(resource, Comment.class);
 
         for (User like : comment.getLikes()) {
-            if (! like.equals(identityManager.getUser())) {
+            if (!like.equals(identityManager.getUser())) {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }
@@ -163,7 +159,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         likes.removeAll(rawLikes);
 
         for (User like : likes) {
-            if (! like.equals(identityManager.getUser())) {
+            if (!like.equals(identityManager.getUser())) {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }

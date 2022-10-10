@@ -15,4 +15,6 @@ public @interface RestPredicate {
 
     Class<? extends AbstractRestPredicateProvider> value();
 
+    boolean canBeNull() default false;
+
 }

@@ -20,7 +20,7 @@ public class CommentsSearch extends AbstractLikeableSearch {
     @QueryParam("post")
     private UUID post;
 
-    @RestPredicate(GenericManyToOneProvider.class)
+    @RestPredicate(value = ParentProvider.class, canBeNull = true)
     @QueryParam("parent")
     private UUID parent;
 

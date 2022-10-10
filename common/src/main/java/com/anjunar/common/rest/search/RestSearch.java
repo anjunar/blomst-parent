@@ -61,7 +61,13 @@ public class RestSearch {
         BeanModel<Q> beanModel = BeanIntrospector.create(queryClass);
         List<? extends BeanProperty<Q, ?>> properties = beanModel.getProperties();
         Set<Predicate> predicates = properties.stream()
-                .filter((property) -> property.isAnnotationPresent(RestPredicate.class) && Objects.nonNull(property.apply(search)))
+                .filter((property) -> {
+                    RestPredicate predicate = property.getAnnotation(RestPredicate.class);
+                    if (Objects.nonNull(predicate)) {
+                        return (property.isAnnotationPresent(RestPredicate.class) && Objects.nonNull(property.apply(search))) || predicate.canBeNull() ;
+                    }
+                    return false;
+                })
                 .map((beanProperty) -> {
                     RestPredicate annotation = beanProperty.getAnnotation(RestPredicate.class);
                     Object value = beanProperty.apply(search);

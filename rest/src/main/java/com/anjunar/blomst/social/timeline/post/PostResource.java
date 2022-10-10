@@ -73,19 +73,23 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         AbstractPostForm resource;
 
         switch (type) {
-            case "image" : {
+            case "image" -> {
                 resource = new ImagePostForm();
-            } break;
-            case "link" : {
+            }
+            case "link" -> {
                 resource = new LinkPostForm();
-            } break;
-            default: {
+            }
+            default -> {
                 resource = new TextPostForm();
-            } break;
+            }
         }
 
         Identity identity = entityManager.find(Identity.class, source);
-        resource.setSource(entityMapper.map(identity, IdentitySelect.class));
+        if (identity instanceof User) {
+            resource.setSource(entityMapper.map(identity, UserSelect.class));
+        } else {
+            resource.setSource(entityMapper.map(identity, IdentitySelect.class));
+        }
         resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(PostResource.class).save(new TextPostForm()))
