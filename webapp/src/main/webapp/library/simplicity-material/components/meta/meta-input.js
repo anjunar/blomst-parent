@@ -34,12 +34,6 @@ class MetaInput extends HTMLElement {
     }
 
     initialize() {
-        let metaForm = this.queryUpwards((element) => {
-            return element.localName === "meta-form"
-        })
-
-        this.schema = metaForm.register(this);
-
         this.load().then(result => {
             let component = new result.default();
             component.schema = this.schema;

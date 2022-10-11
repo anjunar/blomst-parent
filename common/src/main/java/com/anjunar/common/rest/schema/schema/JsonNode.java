@@ -12,7 +12,8 @@ import java.util.Set;
 @JsonSubTypes({
         @JsonSubTypes.Type(JsonString.class),
         @JsonSubTypes.Type(JsonInteger.class),
-        @JsonSubTypes.Type(JsonNumber.class),
+        @JsonSubTypes.Type(JsonDouble.class),
+        @JsonSubTypes.Type(JsonFloat.class),
         @JsonSubTypes.Type(JsonObject.class),
         @JsonSubTypes.Type(JsonArray.class),
         @JsonSubTypes.Type(JsonBoolean.class),

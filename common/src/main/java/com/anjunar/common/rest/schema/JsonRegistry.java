@@ -23,7 +23,6 @@ public class JsonRegistry {
             new LocalDateTimeFactory(),
             new LocaleFactory(),
             new LongFactory(),
-            new NumberFactory(),
             new StringFactory(),
             new UUIDFactory(),
             new URLFactory(),

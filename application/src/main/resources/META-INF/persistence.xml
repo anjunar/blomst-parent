@@ -39,6 +39,9 @@
         <class>com.anjunar.blomst.control.users.ResumeItem</class>
         <class>com.anjunar.blomst.control.users.Resume</class>
         <class>com.anjunar.blomst.control.users.ResumeRight</class>
+        <class>com.anjunar.blomst.control.users.Addresses</class>
+        <class>com.anjunar.blomst.control.users.Address</class>
+        <class>com.anjunar.blomst.control.users.AddressesRight</class>
 
         <class>com.anjunar.blomst.control.notifications.Notification</class>
 

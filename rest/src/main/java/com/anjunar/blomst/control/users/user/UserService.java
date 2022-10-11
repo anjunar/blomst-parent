@@ -1,5 +1,6 @@
 package com.anjunar.blomst.control.users.user;
 
+import com.anjunar.blomst.control.users.Addresses;
 import com.google.common.base.Strings;
 import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.mail.Email;
@@ -89,4 +90,9 @@ public class UserService {
         }
     }
 
+    public Addresses findAddress(User user) {
+        return entityManager.createQuery("select a from Addresses a where a.owner = :owner", Addresses.class)
+                .setParameter("owner", user)
+                .getSingleResult();
+    }
 }

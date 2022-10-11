@@ -1,5 +1,6 @@
 package com.anjunar.blomst.control.users.user;
 
+import com.anjunar.blomst.control.users.Addresses;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.connections.UserConnectionsResource;
@@ -7,6 +8,7 @@ import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
+import com.anjunar.blomst.social.info.address.AddressesResource;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -167,6 +169,17 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         } catch (NoResultException e) {
             linkTo(methodOn(ResumeResource.class).create())
                     .withRel("resume")
+                    .build(resource::addLink);
+        }
+
+        try {
+            Addresses addresses = service.findAddress(user);
+            linkTo(methodOn(AddressesResource.class).read(addresses.getId()))
+                    .withRel("addresses")
+                    .build(resource::addLink);
+        } catch (NoResultException e) {
+            linkTo(methodOn(AddressesResource.class).create())
+                    .withRel("addresses")
                     .build(resource::addLink);
         }
 

@@ -7,7 +7,7 @@
 <body>
     <template>
         <mat-input-container read:placeholder="schema.title">
-            <input is="dom-input" read:type="schema.widget" read:name="property" read:disabled="schema.readOnly" step="1">
+            <input is="dom-input" read:type="schema.widget" read:name="property" read:disabled="schema.readOnly">
             <div slot="error">
                 <div read:for="let [key, validator] of schema.validators">
                     <div read:switch="key">
@@ -25,6 +25,7 @@
                         </case>
                     </div>
                 </div>
+                <span name="stepMismatch">Step miss match</span>
             </div>
         </mat-input-container>
     </template>
