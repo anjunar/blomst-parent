@@ -6,6 +6,8 @@ import com.anjunar.blomst.control.users.user.UserResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
 import com.anjunar.blomst.social.info.addresses.AddressSearchResource;
+import com.anjunar.blomst.social.info.addresses.AddressesResource;
+import com.anjunar.blomst.social.info.addresses.AddressesSearch;
 import com.anjunar.blomst.social.info.addresses.MapBoxAddress;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.SecuredForm;
@@ -118,7 +120,7 @@ public class AddressResource {
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
+        linkTo(methodOn(AddressesResource.class).list(new AddressesSearch()))
                 .withRel("redirect")
                 .build(response::addLink);
 
@@ -135,7 +137,7 @@ public class AddressResource {
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
+        linkTo(methodOn(AddressesResource.class).list(new AddressesSearch()))
                 .withRel("redirect")
                 .build(response::addLink);
 
@@ -150,7 +152,7 @@ public class AddressResource {
         entityManager.remove(entity);
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
+        linkTo(methodOn(AddressesResource.class).list(new AddressesSearch()))
                 .withRel("redirect")
                 .build(response::addLink);
 
