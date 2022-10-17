@@ -2,10 +2,7 @@ package com.anjunar.blomst.control.users;
 
 import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.security.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +10,7 @@ import java.util.Set;
 @Entity
 public class ResumeRight extends AbstractRight<Resume> {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Resume source;
 
     @Override
