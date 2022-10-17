@@ -54,13 +54,12 @@ public class AddressResource {
     @RolesAllowed({"Administrator", "User"})
     public SecuredForm<AddressSelect> create() {
         AddressSelect form = new AddressSelect();
-
-        JsonObject name = form.find("name", JsonObject.class);
-        linkTo(methodOn(AddressSearchResource.class).list(null))
-                .build(name::addLink);
-
         SecuredForm<AddressSelect> securedForm = new SecuredForm<>() {};
         securedForm.setForm(form);
+
+        JsonObject name = securedForm.find("name", JsonObject.class);
+        linkTo(methodOn(AddressSearchResource.class).list(null))
+                .build(name::addLink);
 
         linkTo(methodOn(AddressResource.class).save(new SecuredForm<>()))
                 .build(securedForm::addLink);
