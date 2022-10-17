@@ -1,8 +1,10 @@
 package com.anjunar.common.rest.mapper;
 
+import com.anjunar.common.ddd.AbstractColumnRight;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.mapper.annotations.*;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
@@ -12,19 +14,22 @@ import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
+import com.anjunar.introspector.type.TypeResolver;
+import com.anjunar.introspector.type.resolved.ResolvedType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.google.common.base.Strings;
+import com.google.common.reflect.TypeToken;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.*;
 
 @ApplicationScoped
@@ -91,8 +96,18 @@ public class ResourceEntityMapper {
         return entityManager;
     }
 
-    public <S, D extends AbstractSchemaEntity, V> D map(S source, Class<D> destinationClass) {
+    public <S, D extends AbstractSchemaEntity> D map(S source, Class<D> destinationClass) {
         return map(source, destinationClass, null);
+    }
+
+    public <S, D extends AbstractSchemaEntity> SecuredForm<D> mapSecuredForm(S source, SecuredForm<D> securedForm) {
+        ResolvedType<? extends SecuredForm> typeResolver = TypeResolver.resolve(securedForm.getClass());
+        TypeToken<?> typeToken = typeResolver.getType().resolveType(securedForm.getClass().getSuperclass().getTypeParameters()[0]);
+        Class<D> rawType = (Class<D>) typeToken.getRawType();
+        D result = map(source, rawType, null);
+        securedForm.setForm(result);
+        loadFormSchema(source, securedForm);
+        return securedForm;
     }
 
     public <S, D extends AbstractSchemaEntity, V> D map(S source, Class<D> destinationClass, Class<V> projection) {
@@ -272,17 +287,53 @@ public class ResourceEntityMapper {
         }
     }
 
+    private <S, D extends AbstractSchemaEntity> void loadFormSchema(S source, SecuredForm<D> securedForm) {
+        BeanModel<?> model = BeanIntrospector.create(source.getClass());
+        String entityName = null;
+        Entity annotation = model.getAnnotation(Entity.class);
+        if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
+            entityName = annotation.name();
+        } else {
+            entityName = source.getClass().getSimpleName();
+        }
+
+        try {
+            JsonObject jsonObject = securedForm.find("form", JsonObject.class);
+            Set<CategoryType> categories = jsonObject.getVisibility();
+            EntityManager entityManager = entityManager();
+
+            AbstractRight<?> right = entityManager.createQuery("select s from " + entityName + "Right s where s.source = :source", AbstractRight.class)
+                    .setParameter("source", source)
+                    .getSingleResult();
+
+            for (Category category : right.getCategories()) {
+                CategoryType categoryType = map(category, CategoryType.class, null);
+                categories.add(categoryType);
+            }
+        } catch (NoResultException e) {
+            try {
+                Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
+                AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
+                schemaItem.setSource(source);
+                entityManager.persist(schemaItem);
+            } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException | NoSuchMethodException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
 
     private <S extends AbstractEntity, D extends AbstractSchemaEntity> void loadSchema(OwnerProvider source, D destination) {
         JsonObject schema = destination.getSchema();
 
         BeanModel<?> model = BeanIntrospector.create(source.getClass());
-        String tableName = null;
-        Table annotation = model.getAnnotation(Table.class);
-        if (Objects.nonNull(annotation)) {
-            tableName = annotation.name();
+        String entityName = null;
+        Entity annotation = model.getAnnotation(Entity.class);
+        if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
+            entityName = annotation.name();
         } else {
-            tableName = source.getClass().getSimpleName();
+            entityName = source.getClass().getSimpleName();
         }
 
         for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
@@ -301,7 +352,7 @@ public class ResourceEntityMapper {
                         Set<CategoryType> categories = entry.getValue().getVisibility();
                         EntityManager entityManager = entityManager();
 
-                        AbstractRight<?> right = entityManager.createQuery("select s from " + tableName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
+                        AbstractRight<?> right = entityManager.createQuery("select s from " + entityName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
                                 .setParameter("source", source)
                                 .setParameter("column", columnName)
                                 .getSingleResult();
@@ -314,8 +365,8 @@ public class ResourceEntityMapper {
                 } catch (NoResultException e) {
                     try {
                         Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
-                        AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
-                        schemaItem.setSource((AbstractEntity) source);
+                        AbstractColumnRight schemaItem = (AbstractColumnRight) right.getDeclaredConstructor().newInstance();
+                        schemaItem.setSource(source);
                         schemaItem.setColumn(columnName);
                         entityManager.persist(schemaItem);
                     } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |

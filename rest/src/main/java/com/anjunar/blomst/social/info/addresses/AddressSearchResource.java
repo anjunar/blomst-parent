@@ -1,8 +1,8 @@
-package com.anjunar.blomst.social.info.address;
+package com.anjunar.blomst.social.info.addresses;
 
-import com.anjunar.blomst.social.info.address.client.MapBoxService;
-import com.anjunar.blomst.social.info.address.client.resources.Feature;
-import com.anjunar.blomst.social.info.address.client.resources.FeatureCollection;
+import com.anjunar.blomst.social.info.addresses.client.MapBoxService;
+import com.anjunar.blomst.social.info.addresses.client.resources.Feature;
+import com.anjunar.blomst.social.info.addresses.client.resources.FeatureCollection;
 import com.anjunar.common.rest.api.Table;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -37,7 +37,7 @@ public class AddressSearchResource {
         for (Feature feature : featureCollection.getFeatures()) {
             MapBoxAddress addressRow = new MapBoxAddress();
             addressRow.setName(feature.getPlaceName());
-            Point point = new Point();
+            MapBoxPoint point = new MapBoxPoint();
             point.setX(feature.getCenter().get(0));
             point.setY(feature.getCenter().get(1));
             addressRow.setPoint(point);

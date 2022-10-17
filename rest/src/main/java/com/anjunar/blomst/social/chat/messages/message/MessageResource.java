@@ -7,6 +7,7 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityStore;
 import com.anjunar.common.security.User;
 import com.anjunar.common.websocket.WebSocketProtocol;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -45,6 +46,7 @@ public class MessageResource {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
+    @RolesAllowed({"Administrator", "User"})
     public ResponseOk send(MessageForm message) {
 
         User from = identityStore.getUser();

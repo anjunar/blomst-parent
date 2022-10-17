@@ -1,4 +1,4 @@
-package com.anjunar.blomst.social.info.address;
+package com.anjunar.blomst.social.info.addresses;
 
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -11,7 +11,7 @@ public class MapBoxAddress extends AbstractSchemaEntity {
     private String name;
 
     @JsonSchema(widget = JsonNode.Widget.FORM, title = "Point")
-    private Point point;
+    private MapBoxPoint point;
 
     public String getName() {
         return name;
@@ -21,11 +21,11 @@ public class MapBoxAddress extends AbstractSchemaEntity {
         this.name = name;
     }
 
-    public void setPoint(Point point) {
+    public void setPoint(MapBoxPoint point) {
         this.point = point;
     }
 
-    public Point getPoint() {
+    public MapBoxPoint getPoint() {
         return point;
     }
 }

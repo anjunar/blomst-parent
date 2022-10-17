@@ -1,6 +1,7 @@
 package com.anjunar.blomst.control.users.user;
 
-import com.anjunar.blomst.control.users.Addresses;
+import com.anjunar.blomst.control.users.Address;
+import com.anjunar.blomst.control.users.Resume;
 import com.google.common.base.Strings;
 import com.anjunar.common.ddd.OnPersist;
 import com.anjunar.common.mail.Email;
@@ -8,7 +9,6 @@ import com.anjunar.common.mail.Template;
 import com.anjunar.common.security.EmailType;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
-import com.anjunar.blomst.control.users.Resume;
 import com.anjunar.common.security.UserConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +90,8 @@ public class UserService {
         }
     }
 
-    public Addresses findAddress(User user) {
-        return entityManager.createQuery("select a from Addresses a where a.owner = :owner", Addresses.class)
+    public Address findAddress(User user) {
+        return entityManager.createQuery("select a from Address a where a.owner = :owner", Address.class)
                 .setParameter("owner", user)
                 .getSingleResult();
     }

@@ -1,4 +1,4 @@
-package com.anjunar.blomst.social.info.address.client;
+package com.anjunar.blomst.social.info.addresses.client;
 
 public class MapBoxKey {
 

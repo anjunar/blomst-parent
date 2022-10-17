@@ -1,6 +1,5 @@
-package com.anjunar.blomst.social.info.address.client.resources;
+package com.anjunar.blomst.social.info.addresses.client.resources;
 
-import com.anjunar.blomst.social.info.address.client.resources.FeatureCollection;
 import jakarta.ws.rs.*;
 
 @Path("mapbox.places")

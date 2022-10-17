@@ -6,6 +6,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.IdentityStore;
 import com.anjunar.common.security.User;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 
@@ -36,6 +37,7 @@ public class OnlineUsersResource implements ListResourceTemplate<OnlineUserForm,
     }
 
     @Override
+    @RolesAllowed({"Administrator", "User"})
     public Table<OnlineUserForm> list(OnlineUsersSearch search) {
         long count = service.count(search);
         List<User> users = service.find(search);

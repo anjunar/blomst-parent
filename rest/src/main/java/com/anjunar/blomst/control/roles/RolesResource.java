@@ -38,7 +38,7 @@ public class RolesResource implements ListResourceTemplate<RoleForm, RolesSearch
     }
 
     @Override
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Roles Table")
     public Table<RoleForm> list(RolesSearch search) {
 

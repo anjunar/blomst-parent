@@ -112,4 +112,10 @@ public class IdentityService {
                 .getSingleResult();
     }
 
+    public Category findEveryBody() {
+        return entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
+                .setParameter("locale", Locale.forLanguageTag("en-DE"))
+                .setParameter("name", "Everybody")
+                .getSingleResult();
+    }
 }

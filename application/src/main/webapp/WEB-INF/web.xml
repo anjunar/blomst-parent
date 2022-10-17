@@ -18,30 +18,6 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Home</web-resource-name>
-            <url-pattern>/service/home/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>Administrator</role-name>
-            <role-name>User</role-name>
-            <role-name>Guest</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Pages</web-resource-name>
-            <url-pattern>/service/pages/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>Administrator</role-name>
-            <role-name>User</role-name>
-            <role-name>Guest</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
             <web-resource-name>RunAS</web-resource-name>
             <url-pattern>/service/security/runas</url-pattern>
         </web-resource-collection>
@@ -50,6 +26,41 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Shared</web-resource-name>
+            <url-pattern>/service/shared/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Administrator</role-name>
+            <role-name>User</role-name>
+            <role-name>Guest</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Social</web-resource-name>
+            <url-pattern>/service/social/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Administrator</role-name>
+            <role-name>User</role-name>
+            <role-name>Guest</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>System</web-resource-name>
+            <url-pattern>/service/system/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Administrator</role-name>
+            <role-name>User</role-name>
+            <role-name>Guest</role-name>
+        </auth-constraint>
+    </security-constraint>
 
     <security-role>
         <role-name>Administrator</role-name>

@@ -1,11 +1,11 @@
 package com.anjunar.common.security;
 
-import com.anjunar.common.ddd.AbstractRight;
+import com.anjunar.common.ddd.AbstractColumnRight;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class UserRight extends AbstractRight<User> {
+public class UserRight extends AbstractColumnRight<User> {
 
     @ManyToOne
     private User source;

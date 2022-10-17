@@ -2,6 +2,7 @@ package com.anjunar.blomst.system.languages.language;
 
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityManager;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -25,6 +26,7 @@ public class LanguageResource {
 
     @GET
     @Path("lang")
+    @RolesAllowed({"Administrator", "User", "Guest"})
     public ResponseOk language(@QueryParam("lang") Locale locale) {
 
         identityManager.setLanguage(locale);

@@ -8,6 +8,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.blomst.social.communities.CommunitiesConnection;
 
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -40,6 +41,7 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
 
     @Override
     @LinkDescription("Table Community Connection")
+    @RolesAllowed({"Administrator", "User"})
     public Table<CommunityConnectionForm> list(CommunityConnectionsSearch search) {
         final long count = service.count(search);
         final List<CommunitiesConnection> connections = service.find(search);

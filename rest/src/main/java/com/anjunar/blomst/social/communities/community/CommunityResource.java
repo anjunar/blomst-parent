@@ -112,7 +112,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         return form;
     }
 
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community")
     @Override
     public ResponseOk save(CommunityForm form) {
@@ -133,7 +133,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         return response;
     }
 
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community")
     @Override
     public ResponseOk update(UUID id, CommunityForm form) {
@@ -153,7 +153,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         throw new WebApplicationException(Response.Status.FORBIDDEN);
     }
 
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Community")
     @Override
     public ResponseOk delete(UUID id) {

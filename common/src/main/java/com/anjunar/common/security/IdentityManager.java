@@ -82,6 +82,10 @@ public class IdentityManager implements Serializable {
         return service.findUser(email);
     }
 
+    public Category findEverybody() {
+        return service.findEveryBody();
+    }
+
     public boolean hasRole(String role) {
         User user = getUser();
         if (Objects.nonNull(user)) {

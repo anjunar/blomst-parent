@@ -1,17 +1,13 @@
-package com.anjunar.blomst.social.info.address.client;
+package com.anjunar.blomst.social.info.addresses.client;
 
-import com.anjunar.blomst.social.info.address.client.resources.FeatureCollection;
-import com.anjunar.blomst.social.info.address.client.resources.MapBoxGeoCoding;
-import com.fasterxml.jackson.core.Version;
+import com.anjunar.blomst.social.info.addresses.client.resources.FeatureCollection;
+import com.anjunar.blomst.social.info.addresses.client.resources.MapBoxGeoCoding;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
 

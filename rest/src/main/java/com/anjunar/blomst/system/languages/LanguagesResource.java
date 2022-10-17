@@ -32,7 +32,7 @@ public class LanguagesResource implements ListResourceTemplate<LanguageForm, Lan
     }
 
     @Override
-    @RolesAllowed({"User", "Administrator"})
+    @RolesAllowed({"User", "Administrator", "Guest"})
     public Table<LanguageForm> list(LanguagesSearch search) {
         long count = service.count(search);
         List<Language> languages = service.find(search);

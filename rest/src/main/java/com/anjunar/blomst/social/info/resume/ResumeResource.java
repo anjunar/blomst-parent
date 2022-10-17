@@ -1,140 +1,71 @@
 package com.anjunar.blomst.social.info.resume;
 
 import com.anjunar.blomst.control.users.Resume;
-import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.control.users.user.UserResource;
-import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
-import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
-import com.anjunar.blomst.social.sites.SitesResource;
-import com.anjunar.blomst.social.sites.SitesSearch;
-import com.anjunar.common.rest.api.FormResourceTemplate;
-import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.blomst.social.info.resume.event.EventForm;
+import com.anjunar.blomst.social.info.resume.event.EventResource;
+import com.anjunar.common.rest.MethodPredicate;
+import com.anjunar.common.rest.api.ListResourceTemplate;
+import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
-import com.anjunar.common.rest.mapper.ResourceRestMapper;
-import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("social/info/resume")
-public class ResumeResource implements FormResourceTemplate<ResumeForm> {
+public class ResumeResource implements ListResourceTemplate<EventForm, ResumeSearch> {
+
+    private final ResumeService service;
+
+    private final ResourceEntityMapper entityMapper;
 
     private final EntityManager entityManager;
 
     private final IdentityManager identityManager;
 
-    private final ResourceEntityMapper entityMapper;
-
-    private final ResourceRestMapper restMapper;
-
-
     @Inject
-    public ResumeResource(EntityManager entityManager, IdentityManager identityManager, ResourceEntityMapper entityMapper, ResourceRestMapper restMapper) {
+    public ResumeResource(ResumeService service, ResourceEntityMapper entityMapper, EntityManager entityManager, IdentityManager identityManager) {
+        this.service = service;
+        this.entityMapper = entityMapper;
         this.entityManager = entityManager;
         this.identityManager = identityManager;
-        this.entityMapper = entityMapper;
-        this.restMapper = restMapper;
     }
 
     public ResumeResource() {
         this(null, null, null, null);
     }
 
-    @Path("create")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResumeForm create() {
-        ResumeForm form = new ResumeForm();
-
-        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
-
-        linkTo(methodOn(ResumeResource.class).save(new ResumeForm()))
-                .build(form::addLink);
-
-        JsonObject site = form.find("site", JsonObject.class);
-        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
-                .build(site::addLink);
-
-        return form;
-    }
-
-    @LinkDescription("Read Resume")
     @Override
-    public ResumeForm read(UUID id) {
-        final Resume entity = entityManager.find(Resume.class, id);
+    @RolesAllowed({"Administrator", "User"})
+    public Table<EventForm> list(ResumeSearch search) {
+        List<Resume> resumeList = service.find(search);
+        long count = service.count(search);
 
-        ResumeForm form = entityMapper.map(entity, ResumeForm.class);
+        List<EventForm> resources = new ArrayList<>();
 
-        if (entity.getOwner().equals(identityManager.getUser())) {
-            linkTo(methodOn(ResumeResource.class).update(entity.getId(), new ResumeForm()))
+        for (Resume resume : resumeList) {
+            EventForm form = entityMapper.map(resume, EventForm.class);
+
+            linkTo(methodOn(EventResource.class).read(form.getId()))
                     .build(form::addLink);
-            linkTo(methodOn(ResumeResource.class).delete(entity.getId()))
-                    .build(form::addLink);
+
+            resources.add(form);
         }
 
-        JsonObject site = form.find("site", JsonObject.class);
-        if (site != null) {
-            linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
-                    .build(site::addLink);
-        }
+        Table<EventForm> table = new Table<>(resources, count) {};
 
-        return form;
-    }
+        linkTo(methodOn(EventResource.class).create())
+                .build(table::addLink);
 
-    @LinkDescription("Save Resume")
-    @Override
-    public ResponseOk save(ResumeForm form) {
-        Resume entity = restMapper.map(form, Resume.class);
-
-        entityManager.persist(entity);
-
-        ResponseOk response = new ResponseOk();
-
-        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
-                .withRel("redirect")
-                .build(response::addLink);
-
-        return response;
-    }
-
-    @LinkDescription("Update Resume")
-    @Override
-    public ResponseOk update(UUID id, ResumeForm form) {
-        Resume entity = restMapper.map(form, Resume.class);
-
-        ResponseOk response = new ResponseOk();
-
-        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
-                .withRel("redirect")
-                .build(response::addLink);
-
-        return response;
-    }
-
-    @LinkDescription("Delete Resume")
-    @Override
-    public ResponseOk delete(UUID id) {
-        Resume entity = entityManager.getReference(Resume.class, id);
-        entityManager.remove(entity);
-        ResponseOk response = new ResponseOk();
-
-        linkTo(methodOn(UserResource.class).read(entity.getOwner().getId()))
-                .withRel("redirect")
-                .build(response::addLink);
-
-        return response;
+        return table;
     }
 }

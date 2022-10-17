@@ -1,6 +1,8 @@
 package com.anjunar.blomst.control.users.user;
 
-import com.anjunar.blomst.control.users.Addresses;
+import com.anjunar.blomst.ApplicationResource;
+import com.anjunar.blomst.control.roles.RolesResource;
+import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.users.UsersResource;
 import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.control.users.user.connections.UserConnectionsResource;
@@ -8,39 +10,33 @@ import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.control.users.user.connections.connection.UserConnectionResource;
 import com.anjunar.blomst.security.login.LoginResource;
 import com.anjunar.blomst.security.register.RegisterResource;
-import com.anjunar.blomst.social.info.address.AddressesResource;
-import com.anjunar.blomst.system.languages.LanguagesResource;
-import com.anjunar.blomst.system.languages.LanguagesSearch;
-import com.anjunar.common.rest.mapper.ResourceEntityMapper;
-import com.anjunar.common.rest.mapper.ResourceRestMapper;
-import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.google.common.collect.Sets;
-import com.anjunar.common.filedisk.Image;
-import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.rest.MethodPredicate;
-import com.anjunar.common.rest.MyOwnIdentity;
-import com.anjunar.common.rest.api.FormResourceTemplate;
-import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.schema.schema.JsonArray;
-import com.anjunar.common.security.EmailType;
-import com.anjunar.common.security.IdentityManager;
-import com.anjunar.common.security.User;
-import com.anjunar.blomst.ApplicationResource;
-import com.anjunar.blomst.control.roles.RolesResource;
-import com.anjunar.blomst.control.roles.RolesSearch;
-import com.anjunar.blomst.control.users.Resume;
-import com.anjunar.common.security.UserConnection;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
+import com.anjunar.blomst.social.info.addresses.AddressesResource;
+import com.anjunar.blomst.social.info.addresses.AddressesSearch;
 import com.anjunar.blomst.social.info.resume.ResumeResource;
+import com.anjunar.blomst.social.info.resume.ResumeSearch;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
+import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.rest.MethodPredicate;
+import com.anjunar.common.rest.MyOwnIdentity;
+import com.anjunar.common.rest.api.FormResourceTemplate;
+import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.mapper.ResourceRestMapper;
+import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonObject;
+import com.anjunar.common.security.EmailType;
+import com.anjunar.common.security.IdentityManager;
+import com.anjunar.common.security.User;
+import com.anjunar.common.security.UserConnection;
+import com.google.common.collect.Sets;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -49,6 +45,10 @@ import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -161,27 +161,17 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         linkTo(methodOn(ApplicationResource.class).validate(null))
                 .build(resource::addLink);
 
-        try {
-            Resume resume = service.findResume(user);
-            linkTo(methodOn(ResumeResource.class).read(resume.getId()))
-                    .withRel("resume")
-                    .build(resource::addLink);
-        } catch (NoResultException e) {
-            linkTo(methodOn(ResumeResource.class).create())
-                    .withRel("resume")
-                    .build(resource::addLink);
-        }
+        ResumeSearch resumeSearch = new ResumeSearch();
+        resumeSearch.setOwner(id);
+        linkTo(methodOn(ResumeResource.class).list(resumeSearch))
+                .withRel("resume")
+                .build(resource::addLink);
 
-        try {
-            Addresses addresses = service.findAddress(user);
-            linkTo(methodOn(AddressesResource.class).read(addresses.getId()))
-                    .withRel("addresses")
-                    .build(resource::addLink);
-        } catch (NoResultException e) {
-            linkTo(methodOn(AddressesResource.class).create())
-                    .withRel("addresses")
-                    .build(resource::addLink);
-        }
+        AddressesSearch addressesSearch = new AddressesSearch();
+        addressesSearch.setOwner(id);
+        linkTo(methodOn(AddressesResource.class).list(addressesSearch))
+                .withRel("addresses")
+                .build(resource::addLink);
 
         try {
             UserConnection connection = service.findConnection(identityManager.getUser().getId(), id);
@@ -189,7 +179,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
                     .withRel("connection")
                     .build(resource::addLink);
         } catch (NoResultException e) {
-            if (! identityManager.getUser().getId().equals(id)) {
+            if (!identityManager.getUser().getId().equals(id)) {
                 linkTo(methodOn(UserConnectionResource.class).create(id))
                         .withRel("connect")
                         .build(resource::addLink);
@@ -267,7 +257,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     }
 
     @Override
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update User")
     @MethodPredicate(MyOwnIdentity.class)
     public ResponseOk update(UUID id, UserForm resource) {

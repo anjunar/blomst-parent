@@ -4,6 +4,7 @@ import com.anjunar.blomst.social.chat.ChatMessage;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 
@@ -28,6 +29,7 @@ public class ChatMessagesResource implements ListResourceTemplate<ChatMessageRow
     }
 
     @Override
+    @RolesAllowed({"Administrator", "User"})
     public Table<ChatMessageRow> list(ChatMessagesSearch search) {
         long count = service.count(search);
         List<ChatMessage> chatMessages = service.find(search);

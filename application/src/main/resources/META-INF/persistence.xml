@@ -5,6 +5,7 @@
 
         <class>com.anjunar.common.ddd.AbstractEntity</class>
         <class>com.anjunar.common.ddd.AbstractRight</class>
+        <class>com.anjunar.common.ddd.AbstractColumnRight</class>
 
         <class>com.anjunar.common.filedisk.Image</class>
 
@@ -20,8 +21,6 @@
 
         <class>com.anjunar.blomst.shared.Likeable</class>
 
-        <class>com.anjunar.common.security.EntitySchema</class>
-
         <class>com.anjunar.blomst.social.pages.Page</class>
         <class>com.anjunar.blomst.social.pages.Editor</class>
         <class>com.anjunar.blomst.social.pages.page.Question</class>
@@ -36,12 +35,10 @@
 
         <class>com.anjunar.common.security.UserConnection</class>
         <class>com.anjunar.common.security.Category</class>
-        <class>com.anjunar.blomst.control.users.ResumeItem</class>
         <class>com.anjunar.blomst.control.users.Resume</class>
         <class>com.anjunar.blomst.control.users.ResumeRight</class>
-        <class>com.anjunar.blomst.control.users.Addresses</class>
         <class>com.anjunar.blomst.control.users.Address</class>
-        <class>com.anjunar.blomst.control.users.AddressesRight</class>
+        <class>com.anjunar.blomst.control.users.AddressRight</class>
 
         <class>com.anjunar.blomst.control.notifications.Notification</class>
 
@@ -58,10 +55,11 @@
             <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-<!--
-            <property name="hibernate.cache.use_second_level_cache" value="true" />
-            <property name="hibernate.cache.use_query_cache" value="true" />
--->
+            <!--
+                <property name="hibernate.physical_naming_strategy" value="com.anjunar.blomst.CustomPhysicalNamingStrategy"/>
+                <property name="hibernate.cache.use_second_level_cache" value="true" />
+                <property name="hibernate.cache.use_query_cache" value="true" />
+            -->
         </properties>
     </persistence-unit>
 </persistence>

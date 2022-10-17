@@ -88,7 +88,7 @@ public class PostgresIndexes {
             columnName = property.getKey();
         } else {
             if (Strings.isNullOrEmpty(columnAnnotation.name())) {
-                columnName = property.getKey();
+                columnName = convert(property.getKey());
             } else {
                 columnName = columnAnnotation.name();
             }
@@ -96,7 +96,7 @@ public class PostgresIndexes {
 
         String tableName;
         if (tableAnnotation == null) {
-            tableName = entityClass.getSimpleName();
+            tableName = convert(entityClass.getSimpleName());
         } else {
             if (Strings.isNullOrEmpty(tableAnnotation.name())) {
                 tableName = entityClass.getSimpleName();
@@ -119,4 +119,19 @@ public class PostgresIndexes {
         }
         execute.close();
     }
+
+    public static String convert(String value) {
+        return value;
+    }
+
+/*
+    public static String convert(String value) {
+        final String regex = "([a-z])([A-Z])";
+        final String replacement = "$1_$2";
+        final String newName = value
+                .replaceAll(regex, replacement)
+                .toLowerCase();
+        return newName;
+    }
+*/
 }

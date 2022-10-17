@@ -79,6 +79,7 @@ public class StartUp {
             service.saveRole(guestRole);
 
             patrick = new User();
+            patrick.setNickName("Anjunar");
             patrick.setEnabled(true);
             patrick.setLastName("Bittner");
             patrick.setFirstName("Patrick");
@@ -113,10 +114,7 @@ public class StartUp {
 
         Category category;
         try {
-            category = entityManager.createQuery("select c from Category c where function('jsonPathAsText', c.i18nName, :locale) = :name", Category.class)
-                    .setParameter("locale", Locale.forLanguageTag("en-DE"))
-                    .setParameter("name", "Everybody")
-                    .getSingleResult();
+            category = service.findEveryBody();
         } catch (NoResultException e) {
             category = null;
         }

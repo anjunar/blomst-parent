@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import java.util.UUID;
 
-public interface FormResourceTemplate<F extends AbstractRestEntity> {
+public interface FormResourceTemplate<F extends AbstractSchemaEntity> {
 
     @Produces("application/json")
     @GET

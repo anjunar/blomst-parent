@@ -2,7 +2,6 @@ package com.anjunar.blomst.control.roles.role;
 
 import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.RolesSearch;
-import com.anjunar.blomst.social.info.resume.ResumeResource;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;

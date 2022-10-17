@@ -1,16 +1,16 @@
 package com.anjunar.blomst.control.users;
 
 import com.anjunar.common.ddd.AbstractEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
+import com.anjunar.common.security.User;
+import jakarta.persistence.*;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Address extends AbstractEntity {
+
+    @ManyToOne
+    private User owner;
 
     private String street;
 
@@ -29,6 +29,17 @@ public class Address extends AbstractEntity {
 
     @Column(name = "resume_end")
     private Year end;
+
+    @OneToOne(mappedBy = "source", cascade = CascadeType.ALL)
+    private AddressRight right;
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     public String getStreet() {
         return street;
@@ -92,5 +103,13 @@ public class Address extends AbstractEntity {
 
     public void setY(Float y) {
         this.y = y;
+    }
+
+    public AddressRight getRight() {
+        return right;
+    }
+
+    public void setRight(AddressRight right) {
+        this.right = right;
     }
 }

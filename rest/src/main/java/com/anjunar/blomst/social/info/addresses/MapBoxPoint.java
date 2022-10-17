@@ -1,9 +1,9 @@
-package com.anjunar.blomst.social.info.address;
+package com.anjunar.blomst.social.info.addresses;
 
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 
-public class Point {
+public class MapBoxPoint {
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "X")
     private Float x;

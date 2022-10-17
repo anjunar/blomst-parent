@@ -1,4 +1,4 @@
-package com.anjunar.blomst.social.info.address.client.resources;
+package com.anjunar.blomst.social.info.addresses.client.resources;
 
 import java.util.List;
 

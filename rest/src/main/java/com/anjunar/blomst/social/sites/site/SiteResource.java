@@ -127,7 +127,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         return response;
     }
 
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site")
     @Override
     public ResponseOk update(UUID id, SiteForm form) {
@@ -143,7 +143,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         return response;
     }
 
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Site")
     @Override
     public ResponseOk delete(UUID id) {
