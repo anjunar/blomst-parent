@@ -360,8 +360,9 @@ public class ResourceRestMapper {
             return true;
         }
         Boolean dirty = false;
-        if (jsonObject != null) {
-            dirty = jsonObject.getDirty();
+        JsonNode jsonNode = jsonObject.getProperties().get(propertySource.getKey());
+        if (jsonNode != null) {
+            dirty = jsonNode.getDirty();
             if (dirty == null) {
                 dirty = false;
             }
