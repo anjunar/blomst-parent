@@ -107,7 +107,7 @@ public class AddressResource {
 
         AddressRight right = new AddressRight();
         right.setSource(entity);
-        right.getCategories().addAll(securedForm.getForm()
+        right.getCategories().addAll(securedForm.find("name", JsonObject.class)
                 .getVisibility()
                 .stream()
                 .map(categoryType -> restMapper.map(categoryType, Category.class))
