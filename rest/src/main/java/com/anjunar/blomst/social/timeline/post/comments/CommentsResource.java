@@ -53,17 +53,17 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
         long count = service.count(search);
 
         List<CommentForm> resources = new ArrayList<>();
+        Table<CommentForm> table = new Table<>(resources, count) {};
+
 
         for (Comment comment : comments) {
-            CommentForm resource = mapper.map(comment, CommentForm.class);
+            CommentForm resource = mapper.map(comment, CommentForm.class, table);
 
             resources.add(resource);
 
             linkTo(methodOn(CommentResource.class).read(comment.getId()))
                     .build(resource::addLink);
         }
-
-        Table<CommentForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(CommentResource.class).create(search.getPost(), search.getParent()))
                 .build(table::addLink);

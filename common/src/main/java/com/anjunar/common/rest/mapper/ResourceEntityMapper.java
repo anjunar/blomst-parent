@@ -4,13 +4,20 @@ import com.anjunar.common.ddd.AbstractColumnRight;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.SecuredForm;
-import com.anjunar.common.rest.mapper.annotations.*;
+import com.anjunar.common.rest.api.Table;
+import com.anjunar.common.rest.mapper.annotations.MapperConverter;
+import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
+import com.anjunar.common.rest.mapper.annotations.MapperPolymorphism;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
+import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.*;
+import com.anjunar.common.security.Category;
+import com.anjunar.common.security.IdentityStore;
+import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -22,14 +29,15 @@ import com.google.common.reflect.TypeToken;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.*;
 
 @ApplicationScoped
@@ -96,28 +104,45 @@ public class ResourceEntityMapper {
         return entityManager;
     }
 
-    public <S, D extends AbstractSchemaEntity> D map(S source, Class<D> destinationClass) {
-        return map(source, destinationClass, null);
+    public <S, D> D map(S source, Class<D> destinationClass, Table table) {
+        return map(source, destinationClass, (JsonObject) ((JsonArray) table.getSchema().getProperties().get("rows")).getItems());
     }
 
-    public <S, D extends AbstractSchemaEntity> SecuredForm<D> mapSecuredForm(S source, SecuredForm<D> securedForm) {
+    public <S, D> D map(S source, Class<D> destinationClass, Form<?> form, String property) {
+        return map(source, destinationClass, (JsonObject) ((JsonObject) form.getSchema().getProperties().get("form")).getProperties().get(property));
+    }
+
+    public <S, D> D map(S source, Class<D> destinationClass, SecuredForm<?> table) {
+        return map(source, destinationClass, (JsonObject) table.getSchema().getProperties().get("form"));
+    }
+
+    public <S, D> Form<D> map(S source, Form<D> form) {
+        ResolvedType<? extends Form> typeResolver = TypeResolver.resolve(form.getClass());
+        TypeToken<?> typeToken = typeResolver.getType().resolveType(form.getClass().getSuperclass().getTypeParameters()[0]);
+        Class<D> rawType = (Class<D>) typeToken.getRawType();
+        D result = map(source, rawType, (JsonObject) form.getSchema().getProperties().get("form"));
+        form.setForm(result);
+        return form;
+    }
+
+    public <S, D> SecuredForm<D> map(S source, SecuredForm<D> securedForm) {
         ResolvedType<? extends SecuredForm> typeResolver = TypeResolver.resolve(securedForm.getClass());
         TypeToken<?> typeToken = typeResolver.getType().resolveType(securedForm.getClass().getSuperclass().getTypeParameters()[0]);
         Class<D> rawType = (Class<D>) typeToken.getRawType();
-        D result = map(source, rawType, null);
+        D result = map(source, rawType, (JsonObject) securedForm.getSchema().getProperties().get("form"));
         securedForm.setForm(result);
         loadFormSchema(source, securedForm);
         return securedForm;
     }
 
-    public <S, D extends AbstractSchemaEntity, V> D map(S source, Class<D> destinationClass, Class<V> projection) {
+    public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonObject) {
         D destination = getNewInstance(source, destinationClass);
 
         if (source instanceof OwnerProvider ownerProvider) {
             if (identityStore.getUser().equals(ownerProvider.getOwner())) {
-                loadSchema((OwnerProvider) source, destination);
+                loadSchema((OwnerProvider) source, jsonObject);
             } else {
-                for (Map.Entry<String, JsonNode> entry : destination.getSchema().getProperties().entrySet()) {
+                for (Map.Entry<String, JsonNode> entry : jsonObject.getProperties().entrySet()) {
                     entry.getValue().setVisibility(null);
                 }
             }
@@ -125,46 +150,42 @@ public class ResourceEntityMapper {
 
         BeanModel<S> sourceModel = (BeanModel<S>) BeanIntrospector.create(source.getClass());
         BeanModel<D> destinationModel = BeanIntrospector.create(destinationClass);
-        BeanModel<V> projectionModel;
-        if (projection != null && projection != void.class) {
-            projectionModel = BeanIntrospector.create(projection);
-        } else {
-            projectionModel = (BeanModel<V>) destinationModel;
-        }
 
         for (BeanProperty<S, ?> sourceProperty : sourceModel.getProperties()) {
             BeanProperty<D, Object> destinationProperty = (BeanProperty<D, Object>) destinationModel.get(sourceProperty.getKey());
-            BeanProperty<V, ?> projectionProperty = projectionModel.get(sourceProperty.getKey());
 
             if (Objects.nonNull(destinationProperty)) {
                 Object sourcePropertyInstance = sourceProperty.apply(source);
                 Object destinationPropertyInstance = destinationProperty.apply(destination);
 
                 if (Objects.nonNull(sourcePropertyInstance)) {
-                    if (securityProviders.stream().allMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty)) && Objects.nonNull(projectionProperty)) {
+                    if (securityProviders.stream().allMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty))) {
                         switch (sourcePropertyInstance) {
                             case Collection<?> collection -> processCollection(
                                     (Collection<Object>) sourcePropertyInstance,
                                     sourceProperty,
                                     (Collection<Object>) destinationPropertyInstance,
-                                    destinationProperty
+                                    destinationProperty,
+                                    jsonObject
                             );
                             case Map<?, ?> map -> processMap(
                                     (Map<Object, Object>) sourcePropertyInstance,
                                     sourceProperty,
                                     (Map<Object, Object>) destinationPropertyInstance,
-                                    destinationProperty
+                                    destinationProperty,
+                                    jsonObject
                             );
                             default -> processBean(
                                     sourcePropertyInstance,
                                     sourceProperty,
                                     destinationPropertyInstance,
                                     destinationProperty,
-                                    destination
+                                    destination,
+                                    jsonObject
                             );
                         }
                     } else {
-                        destination.getSchema().remove(destinationProperty.getKey());
+                        jsonObject.remove(destinationProperty.getKey());
                     }
                 }
             }
@@ -172,11 +193,12 @@ public class ResourceEntityMapper {
         return destination;
     }
 
-    private <S, D extends AbstractSchemaEntity> void processBean(Object sourcePropertyInstance,
-                                                                 BeanProperty<S, ?> sourceProperty,
-                                                                 Object destinationPropertyInstance,
-                                                                 BeanProperty<D, Object> destinationProperty,
-                                                                 D destination) {
+    private <S, D> void processBean(Object sourcePropertyInstance,
+                                    BeanProperty<S, ?> sourceProperty,
+                                    Object destinationPropertyInstance,
+                                    BeanProperty<D, Object> destinationProperty,
+                                    D destination,
+                                    JsonObject jsonObject) {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
@@ -190,13 +212,8 @@ public class ResourceEntityMapper {
                         destinationProperty.accept(destination, entity.getId());
                     }
                 } else {
-                    MapperView mapperView = destinationProperty.getAnnotation(MapperView.class);
-                    AbstractSchemaEntity restEntity;
-                    if (mapperView == null) {
-                        restEntity = map(sourcePropertyInstance, (Class<? extends AbstractSchemaEntity>) destinationPropertyType, null);
-                    } else {
-                        restEntity = map(sourcePropertyInstance, (Class<? extends AbstractSchemaEntity>) destinationPropertyType, mapperView.value());
-                    }
+                    JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
+                    Object restEntity = map(sourcePropertyInstance, destinationPropertyType, jsonNode);
                     destinationProperty.accept(destination, restEntity);
                 }
             }
@@ -208,10 +225,11 @@ public class ResourceEntityMapper {
 
     }
 
-    private <S, D extends AbstractSchemaEntity> void processMap(Map<Object, Object> sourcePropertyInstance,
-                                                                BeanProperty<S, ?> sourceProperty,
-                                                                Map<Object, Object> destinationPropertyInstance,
-                                                                BeanProperty<D, Object> destinationProperty) {
+    private <S, D> void processMap(Map<Object, Object> sourcePropertyInstance,
+                                   BeanProperty<S, ?> sourceProperty,
+                                   Map<Object, Object> destinationPropertyInstance,
+                                   BeanProperty<D, Object> destinationProperty,
+                                   JsonObject jsonObject) {
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
                 .resolveType(Map.class.getTypeParameters()[0])
@@ -232,24 +250,17 @@ public class ResourceEntityMapper {
                 .resolveType(Map.class.getTypeParameters()[1])
                 .getRawType();
 
-        MapperMapView mapProjection = destinationProperty.getAnnotation(MapperMapView.class);
-        Class<?> keyProjection = void.class;
-        Class<?> valueProjection = void.class;
-        if (mapProjection != null) {
-            keyProjection = mapProjection.key();
-            valueProjection = mapProjection.value();
-        }
-
         for (Map.Entry<Object, Object> entry : sourcePropertyInstance.entrySet()) {
             if (sourceMapKeyType.equals(destinationMapKeyType)) {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
-                AbstractSchemaEntity restEntity = map(entry.getKey(), (Class<? extends AbstractSchemaEntity>) destinationMapKeyType, keyProjection);
+                JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(entry.getKey());
+                Object restEntity = map(entry.getKey(), destinationMapKeyType, jsonNode);
 
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(restEntity, entry.getValue());
                 } else {
-                    AbstractSchemaEntity restEntity2 = map(entry.getValue(), (Class<? extends AbstractSchemaEntity>) destinationMapValueType, valueProjection);
+                    Object restEntity2 = map(entry.getValue(), destinationMapValueType, jsonNode);
                     destinationPropertyInstance.put(restEntity, restEntity2);
                 }
             }
@@ -257,10 +268,11 @@ public class ResourceEntityMapper {
 
     }
 
-    private <S, D extends AbstractSchemaEntity> void processCollection(Collection<Object> sourcePropertyInstance,
-                                                                       BeanProperty<S, ?> sourceProperty,
-                                                                       Collection<Object> destinationPropertyInstance,
-                                                                       BeanProperty<D, Object> destinationProperty) {
+    private <S, D> void processCollection(Collection<Object> sourcePropertyInstance,
+                                          BeanProperty<S, ?> sourceProperty,
+                                          Collection<Object> destinationPropertyInstance,
+                                          BeanProperty<D, Object> destinationProperty,
+                                          JsonObject jsonObject) {
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
                 .resolveType(Collection.class.getTypeParameters()[0])
@@ -275,23 +287,19 @@ public class ResourceEntityMapper {
             if (sourceCollectionType.equals(destinationCollectionType)) {
                 destinationPropertyInstance.add(element);
             } else {
-                MapperView mapperView = destinationProperty.getAnnotation(MapperView.class);
-                AbstractSchemaEntity restEntity;
-                if (mapperView == null) {
-                    restEntity = map(element, (Class<? extends AbstractSchemaEntity>) destinationCollectionType, null);
-                } else {
-                    restEntity = map(element, (Class<? extends AbstractSchemaEntity>) destinationCollectionType, mapperView.value());
-                }
+                JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
+                JsonArray jsonArray = (JsonArray) jsonNode;
+                Object restEntity = map(element, destinationCollectionType, (JsonObject) jsonArray.getItems());
                 destinationPropertyInstance.add(restEntity);
             }
         }
     }
 
-    private <S, D extends AbstractSchemaEntity> void loadFormSchema(S source, SecuredForm<D> securedForm) {
+    private <S, D> void loadFormSchema(S source, SecuredForm<D> securedForm) {
         BeanModel<?> model = BeanIntrospector.create(source.getClass());
         String entityName = null;
         Entity annotation = model.getAnnotation(Entity.class);
-        if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
+        if (Objects.nonNull(annotation) && !Strings.isNullOrEmpty(annotation.name())) {
             entityName = annotation.name();
         } else {
             entityName = source.getClass().getSimpleName();
@@ -307,7 +315,7 @@ public class ResourceEntityMapper {
                     .getSingleResult();
 
             for (Category category : right.getCategories()) {
-                CategoryType categoryType = map(category, CategoryType.class, null);
+                CategoryType categoryType = map(category, CategoryType.class,(JsonObject) null);
                 categories.add(categoryType);
             }
         } catch (NoResultException e) {
@@ -324,13 +332,13 @@ public class ResourceEntityMapper {
     }
 
 
-    private <S extends AbstractEntity, D extends AbstractSchemaEntity> void loadSchema(OwnerProvider source, D destination) {
-        JsonObject schema = destination.getSchema();
+    private <S extends AbstractEntity> void loadSchema(OwnerProvider source, JsonObject jsonObject) {
+        JsonObject schema = jsonObject;
 
         BeanModel<?> model = BeanIntrospector.create(source.getClass());
         String entityName = null;
         Entity annotation = model.getAnnotation(Entity.class);
-        if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
+        if (Objects.nonNull(annotation) && !Strings.isNullOrEmpty(annotation.name())) {
             entityName = annotation.name();
         } else {
             entityName = source.getClass().getSimpleName();
@@ -358,7 +366,7 @@ public class ResourceEntityMapper {
                                 .getSingleResult();
 
                         for (Category category : right.getCategories()) {
-                            CategoryType categoryType = map(category, CategoryType.class, null);
+                            CategoryType categoryType = map(category, CategoryType.class, (JsonObject) null);
                             categories.add(categoryType);
                         }
                     }

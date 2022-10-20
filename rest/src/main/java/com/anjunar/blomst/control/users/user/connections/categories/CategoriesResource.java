@@ -45,17 +45,17 @@ public class CategoriesResource implements ListResourceTemplate<CategoryForm, Ca
         final long count = service.count(search);
         final List<Category> categories = service.find(search);
         final List<CategoryForm> resources = new ArrayList<>();
+        Table<CategoryForm> table = new Table<>(resources, count) {};
+
 
         for (Category category : categories) {
-            CategoryForm form = mapper.map(category, CategoryForm.class);
+            CategoryForm form = mapper.map(category, CategoryForm.class, table);
 
             linkTo(methodOn(CategoryResource.class).read(form.getId()))
                     .build(form::addLink);
 
             resources.add(form);
         }
-
-        Table<CategoryForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(CategoryResource.class).create())
                 .build(table::addLink);

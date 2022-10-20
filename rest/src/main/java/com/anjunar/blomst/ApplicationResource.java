@@ -17,6 +17,7 @@ import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.blomst.system.SystemResource;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.ValidationResource;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -86,14 +87,14 @@ public class ApplicationResource implements ValidationResource<UserForm> {
 
     @GET
     @Produces("application/json")
-    public UserSelect service() {
+    public Form<UserSelect> service() {
 
         if (identityManager.isLoggedIn()) {
 
-            UserSelect userSelect = mapper.map(identityManager.getUser(), UserSelect.class);
+            Form<UserSelect> userSelect = mapper.map(identityManager.getUser(), new Form<>() {});
 
             PagesSearch search = new PagesSearch();
-            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
+            userSelect.getForm().setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class, userSelect, "language"));
             linkTo(methodOn(PagesResource.class).list(search))
                     .withRel("pages")
                     .build(userSelect::addLink);
@@ -125,15 +126,18 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             return userSelect;
         } else {
             UserSelect userSelect = new UserSelect();
-            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
+            Form<UserSelect> form = new Form<>(userSelect);
+
+            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class, form, "language"));
+
 
             linkTo(methodOn(LoginResource.class).login())
-                    .build(userSelect::addLink);
+                    .build(form::addLink);
 
             linkTo(methodOn(RegisterResource.class).register())
-                    .build(userSelect::addLink);
+                    .build(form::addLink);
 
-            return userSelect;
+            return form;
         }
 
     }

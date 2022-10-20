@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.chat;
 import com.anjunar.blomst.WebSocketMessage;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.chat.messages.message.MessageForm;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.security.User;
 import com.anjunar.common.websocket.OnCloseEvent;
@@ -41,7 +42,7 @@ public class ChatResourceStream {
                 .readValue(message.getMessage(), MessageForm.class);
 
         User user = entityManager.find(User.class, value.getFrom());
-        UserSelect userSelect = entityMapper.map(user, UserSelect.class);
+        Form<UserSelect> userSelect = entityMapper.map(user, new Form<>() {});
         String json = objectMapper.writeValueAsString(userSelect);
 
         for (UUID uuid : value.getTo()) {

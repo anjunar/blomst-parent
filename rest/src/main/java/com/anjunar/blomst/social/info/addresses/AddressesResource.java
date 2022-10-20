@@ -42,17 +42,17 @@ public class AddressesResource implements ListResourceTemplate<AddressForm, Addr
         long count = service.count(search);
 
         List<AddressForm> resources = new ArrayList<>();
+        Table<AddressForm> table = new Table<>(resources, count) {};
+
 
         for (Address address : addresses) {
-            AddressForm form = entityMapper.map(address, AddressForm.class);
+            AddressForm form = entityMapper.map(address, AddressForm.class, table);
 
             linkTo(methodOn(AddressResource.class).read(address.getId()))
                     .build(form::addLink);
 
             resources.add(form);
         }
-
-        Table<AddressForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(AddressResource.class).create())
                 .build(table::addLink);

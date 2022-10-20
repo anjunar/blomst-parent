@@ -7,6 +7,8 @@ import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
@@ -33,7 +35,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("social/communities/community")
-public class CommunityResource implements FormResourceTemplate<CommunityForm> {
+public class CommunityResource implements FormResourceTemplate<Form<CommunityForm>> {
 
     private final EntityManager entityManager;
 
@@ -64,10 +66,12 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Community")
-    public CommunityForm create() {
-        CommunityForm form = new CommunityForm();
+    public Form<CommunityForm> create() {
+        CommunityForm resource = new CommunityForm();
 
-        linkTo(methodOn(CommunityResource.class).save(new CommunityForm()))
+        Form<CommunityForm> form = new Form<>(resource) {};
+
+        linkTo(methodOn(CommunityResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         return form;
@@ -76,10 +80,10 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Community")
     @Override
-    public CommunityForm read(UUID id) {
+    public Form<CommunityForm> read(UUID id) {
         Community community = entityManager.find(Community.class, id);
 
-        CommunityForm form = entityMapper.map(community, CommunityForm.class);
+        Form<CommunityForm> form = entityMapper.map(community, new Form<>() {});
 
         try {
             CommunitiesConnection connection = service.findConnection(identityManager.getUser().getId(), id);
@@ -92,7 +96,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
                     .build(form::addLink);
         }
 
-        linkTo(methodOn(CommunityResource.class).update(id, new CommunityForm()))
+        linkTo(methodOn(CommunityResource.class).update(id, new Form<>()))
                 .build(form::addLink);
         linkTo(methodOn(CommunityResource.class).delete(id))
                 .build(form::addLink);
@@ -115,12 +119,11 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community")
     @Override
-    public ResponseOk save(CommunityForm form) {
+    public ResponseOk save(Form<CommunityForm> form) {
 
         Community entity = restMapper.map(form, Community.class);
 
         entityManager.persist(entity);
-        form.setId(entity.getId());
 
         service.addAdministrator(entity);
 
@@ -136,7 +139,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community")
     @Override
-    public ResponseOk update(UUID id, CommunityForm form) {
+    public ResponseOk update(UUID id, Form<CommunityForm> form) {
 
         if (service.hasRole("Administrator", id)) {
             restMapper.map(form, Community.class);

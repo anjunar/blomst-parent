@@ -51,11 +51,12 @@ public class UserConnectionsResource implements ListResourceTemplate<UserConnect
         final long count = service.count(search);
         final List<UserConnection> connections = service.find(search);
         final List<UserConnectionForm> resources = new ArrayList<>();
+        Table<UserConnectionForm> table = new Table<>(resources, count) {};
 
         List<UserConnection> accepted = service.accepted(search.getFrom());
 
         for (UserConnection connection : connections) {
-            UserConnectionForm form = mapper.map(connection, UserConnectionForm.class);
+            UserConnectionForm form = mapper.map(connection, UserConnectionForm.class, table);
 
             for (UserConnection acceptedConnection : accepted) {
                 if (acceptedConnection.getFrom().equals(connection.getTo())) {
@@ -68,8 +69,6 @@ public class UserConnectionsResource implements ListResourceTemplate<UserConnect
 
             resources.add(form);
         }
-
-        Table<UserConnectionForm> table = new Table<>(resources, count) {};
 
         CategoriesSearch categoriesSearch = new CategoriesSearch();
         categoriesSearch.setOwner(identity.getUser().getId());

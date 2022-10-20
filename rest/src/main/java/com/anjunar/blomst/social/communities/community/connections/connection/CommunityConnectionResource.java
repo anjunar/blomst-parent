@@ -10,6 +10,7 @@ import com.anjunar.blomst.social.communities.community.connections.CommunityConn
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -33,7 +34,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("social/communities/community/connections/connection")
-public class CommunityConnectionResource implements FormResourceTemplate<CommunityConnectionForm> {
+public class CommunityConnectionResource implements FormResourceTemplate<Form<CommunityConnectionForm>> {
 
     private final EntityManager entityManager;
 
@@ -64,21 +65,23 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Community")
-    public CommunityConnectionForm create(@QueryParam("to") UUID to) {
-        CommunityConnectionForm form = new CommunityConnectionForm();
+    public Form<CommunityConnectionForm> create(@QueryParam("to") UUID to) {
+        CommunityConnectionForm resource = new CommunityConnectionForm();
 
-        form.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class));
-        form.setStatus(Status.PENDING);
-        form.setRole(entityMapper.map(service.findUserRole(), RoleForm.class));
-        form.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        Form<CommunityConnectionForm> form = new Form<>(resource) {};
 
-        linkTo(methodOn(CommunityConnectionResource.class).save(new CommunityConnectionForm()))
+
+        resource.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class, form, "to"));
+        resource.setStatus(Status.PENDING);
+        resource.setRole(entityMapper.map(service.findUserRole(), RoleForm.class, form, "role"));
+        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "from"));
+
+        linkTo(methodOn(CommunityConnectionResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         JsonObject role = form.find("role", JsonObject.class);
         linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
                 .build(role::addLink);
-
 
         return form;
     }
@@ -86,12 +89,13 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Community Connection")
     @Override
-    public CommunityConnectionForm read(UUID id) {
+    public Form<CommunityConnectionForm> read(UUID id) {
         CommunitiesConnection entity = entityManager.find(CommunitiesConnection.class, id);
 
-        CommunityConnectionForm form = entityMapper.map(entity, CommunityConnectionForm.class);
+        Form<CommunityConnectionForm> form = entityMapper.map(entity, new Form<>() {
+        });
 
-        linkTo(methodOn(CommunityConnectionResource.class).update(id, new CommunityConnectionForm()))
+        linkTo(methodOn(CommunityConnectionResource.class).update(id, new Form<>()))
                 .build(form::addLink);
         linkTo(methodOn(CommunityConnectionResource.class).delete(id))
                 .build(form::addLink);
@@ -106,7 +110,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community Connection")
     @Override
-    public ResponseOk save(CommunityConnectionForm form) {
+    public ResponseOk save(Form<CommunityConnectionForm> form) {
 
         CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
 
@@ -124,7 +128,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community Connection")
     @Override
-    public ResponseOk update(UUID id, CommunityConnectionForm form) {
+    public ResponseOk update(UUID id, Form<CommunityConnectionForm> form) {
 
         restMapper.map(form, CommunitiesConnection.class);
 

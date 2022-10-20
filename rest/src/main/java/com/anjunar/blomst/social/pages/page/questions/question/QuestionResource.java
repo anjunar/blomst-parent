@@ -11,6 +11,8 @@ import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersRe
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -35,7 +37,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("pages/page/questions/question")
-public class QuestionResource implements FormResourceTemplate<QuestionForm> {
+public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>> {
 
     private final EntityManager entityManager;
 
@@ -63,30 +65,31 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Question")
-    public QuestionForm create(@QueryParam("page") UUID page) {
+    public Form<QuestionForm> create(@QueryParam("page") UUID page) {
         QuestionForm resource = new QuestionForm();
+        Form<QuestionForm> form = new Form<>(resource) {};
+
+        resource.setCreated(LocalDateTime.now());
+        resource.setModified(LocalDateTime.now());
 
         Page pageEntity = entityManager.find(Page.class, page);
+        resource.setPage(entityMapper.map(pageEntity, PageForm.class, form, "page"));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
 
-        resource.setPage(entityMapper.map(pageEntity, PageForm.class));
-        resource.setCreated(LocalDateTime.now());
+        linkTo(methodOn(QuestionResource.class).save(new Form<>()))
+                .build(form::addLink);
 
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
-
-        linkTo(methodOn(QuestionResource.class).save(new QuestionForm()))
-                .build(resource::addLink);
-
-        return resource;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Question")
-    public QuestionForm read(@QueryParam("id") UUID uuid) {
+    public Form<QuestionForm> read(@QueryParam("id") UUID uuid) {
         Question question = entityManager.find(Question.class, uuid);
 
-        QuestionForm resource = entityMapper.map(question, QuestionForm.class);
+        Form<QuestionForm> resource = entityMapper.map(question, new Form<>() {});
 
-        linkTo(methodOn(QuestionResource.class).update(question.getId(), new QuestionForm()))
+        linkTo(methodOn(QuestionResource.class).update(question.getId(), new Form<>()))
                 .build(resource::addLink);
         linkTo(methodOn(QuestionResource.class).delete(question.getId()))
                 .build(resource::addLink);
@@ -111,13 +114,11 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Question")
-    public ResponseOk save(QuestionForm resource) {
+    public ResponseOk save(Form<QuestionForm> resource) {
 
         Question question = restMapper.map(resource, Question.class);
 
         entityManager.persist(question);
-
-        resource.setId(question.getId());
 
         ResponseOk response = new ResponseOk();
 
@@ -132,9 +133,9 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
-    public ResponseOk update(UUID id, QuestionForm resource) {
+    public ResponseOk update(UUID id, Form<QuestionForm> resource) {
 
-        UserSelect owner = resource.getOwner();
+        UserSelect owner = resource.getForm().getOwner();
         if (!owner.getId().equals(identityManager.getUser().getId())) {
             throw new NotAuthorizedException("Not Allowed");
         }

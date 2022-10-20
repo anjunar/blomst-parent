@@ -7,10 +7,8 @@ import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.blomst.system.mail.TemplatesResource;
 import com.anjunar.blomst.system.mail.TemplatesSearch;
 import com.anjunar.common.mail.Template;
+import com.anjunar.common.rest.api.*;
 import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.api.FormResourceTemplate;
-import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
@@ -30,7 +28,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("system/mail/templates/template")
 @ApplicationScoped
-public class TemplateResource implements FormResourceTemplate<TemplateForm> {
+public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>> {
 
     private final EntityManager entityManager;
 
@@ -58,30 +56,33 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @Produces("application/json")
     @RolesAllowed("Administrator")
     @LinkDescription("Create Template")
-    public TemplateForm create() {
+    public Form<TemplateForm> create() {
         TemplateForm resource = new TemplateForm();
 
         resource.setContent(new Editor());
 
-        linkTo(methodOn(TemplateResource.class).save(new TemplateForm()))
-                .build(resource::addLink);
-        JsonObject language = resource.find("language", JsonObject.class);
+        Form<TemplateForm> form = new Form<>(resource) {};
+
+        linkTo(methodOn(TemplateResource.class).save(new Form<>()))
+                .build(form::addLink);
+        JsonObject language = form.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
-        return resource;
+
+        return form;
     }
 
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Read Template")
-    public TemplateForm read(UUID id) {
+    public Form<TemplateForm> read(UUID id) {
 
         Template template = entityManager.find(Template.class, id);
 
-        TemplateForm resource = entityMapper.map(template, TemplateForm.class);
+        Form<TemplateForm> resource = entityMapper.map(template, new Form<>() {});
 
-        linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
+        linkTo(methodOn(TemplateResource.class).update(template.getId(), new Form<>()))
                 .build(resource::addLink);
         linkTo(methodOn(TemplateResource.class).delete(template.getId()))
                 .build(resource::addLink);
@@ -95,13 +96,11 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Template")
-    public ResponseOk save(TemplateForm form) {
+    public ResponseOk save(Form<TemplateForm> form) {
 
         Template template = restMapper.map(form, Template.class);
 
         entityManager.persist(template);
-
-        form.setId(template.getId());
 
         ResponseOk response = new ResponseOk();
 
@@ -115,7 +114,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Template")
-    public ResponseOk update(UUID id, TemplateForm form) {
+    public ResponseOk update(UUID id, Form<TemplateForm> form) {
 
         restMapper.map(form, Template.class);
 

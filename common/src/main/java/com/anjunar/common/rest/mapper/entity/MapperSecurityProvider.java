@@ -21,7 +21,7 @@ public class MapperSecurityProvider implements SecurityProvider {
     }
 
     @Override
-    public <S, D extends AbstractSchemaEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
+    public <S, D> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
         MapperSecurity security = destinationProperty.getAnnotation(MapperSecurity.class);
         if (security == null) {
             return true;

@@ -43,12 +43,14 @@ public class UserSelectResource implements ListResourceTemplate<UserSelect, User
         long count = service.count(search);
 
         List<UserSelect> resources = new ArrayList<>();
+        Table<UserSelect> table = new Table<>(resources, count) {};
+
         for (User user : users) {
-            UserSelect resource = entityMapper.map(user, UserSelect.class);
+            UserSelect resource = entityMapper.map(user, UserSelect.class, table);
             resources.add(resource);
         }
 
-        return new Table<>(resources, count) {};
+        return table;
     }
 
 }

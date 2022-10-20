@@ -13,6 +13,8 @@ import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -66,51 +68,50 @@ public class PageResource {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Page")
-    public PageForm create() {
+    public Form<PageForm> create() {
 
-        PageForm pageForm = new PageForm();
+        PageForm resource = new PageForm();
+        Form<PageForm> form = new Form<>(resource) {};
+        resource.setModifier(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "modifier"));
 
-        pageForm.setModifier(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        linkTo(methodOn(PageResource.class).save(new Form<>()))
+                .build(form::addLink);
 
-        linkTo(methodOn(PageResource.class).save(new PageForm()))
-                .build(pageForm::addLink);
-
-        JsonArray likes = pageForm.find("likes", JsonArray.class);
+        JsonArray likes = form.find("likes", JsonArray.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
-        JsonObject language = pageForm.find("language", JsonObject.class);
+        JsonObject language = form.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
-        return pageForm;
+        return form;
     }
 
     @Produces("application/json")
     @GET
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Page")
-    public PageForm read(@QueryParam("id") UUID id, @QueryParam("revision") Integer revision) {
+    public Form<PageForm> read(@QueryParam("id") UUID id, @QueryParam("revision") Integer revision) {
 
         Page page = entityManager.find(Page.class, id);
+        Form<PageForm> resource = entityMapper.map(page, new Form<>() {});
 
-        PageForm pageForm = entityMapper.map(page, PageForm.class);
-
-        linkTo(methodOn(PageResource.class).update(page.getId(), new PageForm()))
-                .build(pageForm::addLink);
+        linkTo(methodOn(PageResource.class).update(page.getId(), new Form<>()))
+                .build(resource::addLink);
         linkTo(methodOn(PageResource.class).delete(page.getId()))
-                .build(pageForm::addLink);
+                .build(resource::addLink);
 
 
-        JsonObject language = pageForm.find("language", JsonObject.class);
+        JsonObject language = resource.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
-        JsonArray likes = pageForm.find("likes", JsonArray.class);
+        JsonArray likes = resource.find("likes", JsonArray.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
-        JsonObject modifier = pageForm.find("modifier", JsonObject.class);
+        JsonObject modifier = resource.find("modifier", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(modifier::addLink);
 
@@ -118,15 +119,15 @@ public class PageResource {
         search.setPage(id);
         linkTo(methodOn(QuestionsResource.class).list(search))
                 .withRel("questions")
-                .build(pageForm::addLink);
+                .build(resource::addLink);
 
         PageHistorySearch historySearch = new PageHistorySearch();
         historySearch.setId(id.toString());
         linkTo(methodOn(PageHistoryResource.class).list(historySearch))
                 .withRel("history")
-                .build(pageForm::addLink);
+                .build(resource::addLink);
 
-        return pageForm;
+        return resource;
     }
 
     @Consumes("application/json")
@@ -134,15 +135,13 @@ public class PageResource {
     @POST
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Page")
-    public ResponseOk save(PageForm resource) {
+    public ResponseOk save(Form<PageForm> resource) {
 
         Page page = restMapper.map(resource, Page.class);
 
         page.setModifier(identityManager.getUser());
 
         entityManager.persist(page);
-
-        resource.setId(page.getId());
 
         ResponseOk response = new ResponseOk();
 
@@ -158,7 +157,7 @@ public class PageResource {
     @PUT
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Page")
-    public ResponseOk update(@QueryParam("id") UUID id, PageForm resource) {
+    public ResponseOk update(@QueryParam("id") UUID id, Form<PageForm> resource) {
 
         Page page = restMapper.map(resource, Page.class);
 
@@ -176,6 +175,7 @@ public class PageResource {
     @DELETE
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Page")
+    @Produces("application/json")
     public ResponseOk delete(@QueryParam("id") UUID id) {
         Page page = entityManager.find(Page.class, id);
 

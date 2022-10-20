@@ -14,7 +14,6 @@ import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
-import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
 import jakarta.annotation.security.RolesAllowed;
@@ -62,11 +61,10 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @RolesAllowed({"Administrator", "User"})
     public SecuredForm<EventForm> create() {
         EventForm form = new EventForm();
+        SecuredForm<EventForm> securedForm = new SecuredForm<>(form) {};
 
-        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
-        SecuredForm<EventForm> securedForm = new SecuredForm<>() {};
-        securedForm.setForm(form);
+        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, securedForm));
 
         linkTo(methodOn(EventResource.class).save(new SecuredForm<>()))
                 .build(securedForm::addLink);
@@ -88,7 +86,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     public SecuredForm<EventForm> read(UUID id) {
         final Resume entity = entityManager.find(Resume.class, id);
 
-        SecuredForm<EventForm> securedForm = entityMapper.mapSecuredForm(entity, new SecuredForm<>() {});
+        SecuredForm<EventForm> securedForm = entityMapper.map(entity, new SecuredForm<>() {});
 
         if (entity.getOwner().equals(identityManager.getUser())) {
             linkTo(methodOn(EventResource.class).update(entity.getId(), new SecuredForm<>()))
@@ -112,7 +110,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @Override
     @RolesAllowed({"Administrator", "User"})
     public ResponseOk save(SecuredForm<EventForm> form) {
-        Resume entity = restMapper.mapSecuredForm(form, Resume.class);
+        Resume entity = restMapper.map(form, Resume.class);
 
         entityManager.persist(entity);
 
@@ -129,7 +127,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @Override
     @RolesAllowed({"Administrator", "User"})
     public ResponseOk update(UUID id, SecuredForm<EventForm> form) {
-        Resume entity = restMapper.mapSecuredForm(form, Resume.class);
+        Resume entity = restMapper.map(form, Resume.class);
 
         ResponseOk response = new ResponseOk();
 

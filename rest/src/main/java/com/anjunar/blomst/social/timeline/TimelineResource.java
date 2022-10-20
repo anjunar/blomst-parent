@@ -58,28 +58,29 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
         long count = service.count(search);
 
         List<AbstractPostForm> resources = new ArrayList<>();
+        Table<AbstractPostForm> table = new Table<>(resources, count) {};
 
         for (AbstractPost post : posts) {
 
             AbstractPostForm resource = post.accept(new AbstractPostVisitor<>() {
                 @Override
                 public AbstractPostForm visit(ImagePost post) {
-                    return mapper.map(post, ImagePostForm.class);
+                    return mapper.map(post, ImagePostForm.class, table);
                 }
 
                 @Override
                 public AbstractPostForm visit(LinkPost post) {
-                    return mapper.map(post, LinkPostForm.class);
+                    return mapper.map(post, LinkPostForm.class, table);
                 }
 
                 @Override
                 public AbstractPostForm visit(TextPost post) {
-                    return mapper.map(post, TextPostForm.class);
+                    return mapper.map(post, TextPostForm.class, table);
                 }
 
                 @Override
                 public AbstractPostForm visit(SystemPost post) {
-                    return mapper.map(post, SystemPostForm.class);
+                    return mapper.map(post, SystemPostForm.class, table);
                 }
             });
 
@@ -89,8 +90,6 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
                             .build(resource::addLink);
 
         }
-
-        Table<AbstractPostForm> table = new Table<>(resources, count) {};
 
         UUID to;
         if (search.getSource().size() == 1) {

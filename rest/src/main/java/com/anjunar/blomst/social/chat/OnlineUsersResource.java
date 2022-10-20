@@ -42,15 +42,15 @@ public class OnlineUsersResource implements ListResourceTemplate<OnlineUserForm,
         long count = service.count(search);
         List<User> users = service.find(search);
         List<OnlineUserForm> resources = new ArrayList<>();
+        Table<OnlineUserForm> table = new Table<>(resources, count) {};
+
 
         for (User user : users) {
             boolean online = sessions.getPool().containsKey(user.getId().toString());
-            OnlineUserForm onlineUser = entityMapper.map(user, OnlineUserForm.class);
+            OnlineUserForm onlineUser = entityMapper.map(user, OnlineUserForm.class, table);
             onlineUser.setOnline(online);
             resources.add(onlineUser);
         }
-
-        Table<OnlineUserForm> table = new Table<>(resources, count) {};
 
         table.visible("firstName", "lastName", "online", "picture");
 

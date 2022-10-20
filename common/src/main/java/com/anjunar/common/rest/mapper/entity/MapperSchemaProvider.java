@@ -34,7 +34,7 @@ public class MapperSchemaProvider implements SecurityProvider {
     }
 
     @Override
-    public <S, D extends AbstractSchemaEntity> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
+    public <S, D> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty) {
         boolean isAllowed = true;
         if (visibility(destinationProperty) && source instanceof OwnerProvider) {
             isAllowed = isAllowedWithSchema((OwnerProvider) source, sourceProperty);

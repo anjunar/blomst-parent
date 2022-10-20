@@ -25,6 +25,8 @@ import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.MyOwnIdentity;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -60,7 +62,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @RequestScoped
 @Path("control/users/user")
-public class UserResource implements FormResourceTemplate<UserForm> {
+public class UserResource implements FormResourceTemplate<Form<UserForm>> {
 
     private static final Logger log = LoggerFactory.getLogger(RegisterResource.class);
 
@@ -114,33 +116,34 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Path("create")
     @RolesAllowed("Administrator")
     @LinkDescription("Create User")
-    public UserForm create() {
+    public Form<UserForm> create() {
         UserForm resource = new UserForm();
+        Form<UserForm> form = new Form<>() {};
 
-        JsonArray roles = resource.find("roles", JsonArray.class);
+        JsonArray roles = form.find("roles", JsonArray.class);
         linkTo(methodOn(RolesResource.class).list(null))
                 .build(roles::addLink);
-        JsonObject language = resource.find("language", JsonObject.class);
+        JsonObject language = form.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
         linkTo(methodOn(ApplicationResource.class).validate(null))
-                .build(resource::addLink);
+                .build(form::addLink);
         linkTo(methodOn(UserResource.class).save(null))
-                .build(resource::addLink);
+                .build(form::addLink);
 
-        return resource;
+        return form;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read User")
-    public UserForm read(UUID id) {
+    public Form<UserForm> read(UUID id) {
 
         User user = entityManager.find(User.class, id);
 
-        UserForm resource = entityMapper.map(user, UserForm.class);
+        Form<UserForm> resource = entityMapper.map(user, new Form<>() {});
 
-        linkTo(methodOn(UserResource.class).update(id, null))
+        linkTo(methodOn(UserResource.class).update(id, (Form<UserForm>) null))
                 .build(resource::addLink);
         linkTo(methodOn(UserResource.class).delete(id))
                 .build(resource::addLink);
@@ -216,7 +219,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save User")
-    public ResponseOk save(UserForm resource) {
+    public ResponseOk save(Form<UserForm> resource) {
 
         User user = restMapper.map(resource, User.class);
 
@@ -245,8 +248,6 @@ public class UserResource implements FormResourceTemplate<UserForm> {
 
         entityManager.persist(user);
 
-        resource.setId(user.getId());
-
         ResponseOk response = new ResponseOk();
 
         linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
@@ -260,7 +261,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update User")
     @MethodPredicate(MyOwnIdentity.class)
-    public ResponseOk update(UUID id, UserForm resource) {
+    public ResponseOk update(UUID id, Form<UserForm> resource) {
 
         User user = restMapper.map(resource, User.class);
 

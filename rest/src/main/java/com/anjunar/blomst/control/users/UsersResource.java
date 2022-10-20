@@ -51,15 +51,15 @@ public class UsersResource implements ListResourceTemplate<UserForm, UsersSearch
         List<User> users = service.find(search);
 
         List<UserForm> resources = new ArrayList<>();
+        Table<UserForm> table = new Table<>(resources, count) {};
+
         for (User user : users) {
-            UserForm resource = mapper.map(user, UserForm.class);
+            UserForm resource = mapper.map(user, UserForm.class, table);
             resources.add(resource);
 
             linkTo(methodOn(UserResource.class).read(user.getId()))
                     .build(resource::addLink);
         }
-
-        Table<UserForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(UserResource.class).create())
                 .build(table::addLink);

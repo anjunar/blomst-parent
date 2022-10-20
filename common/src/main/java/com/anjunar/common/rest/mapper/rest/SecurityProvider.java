@@ -7,6 +7,6 @@ import com.anjunar.introspector.bean.BeanProperty;
 
 public interface SecurityProvider {
 
-    <S extends AbstractSchemaEntity, D> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty);
+    <S, D> boolean execute(S source, BeanProperty<S, ?> sourceProperty, D destination, BeanProperty<D, Object> destinationProperty);
 
 }

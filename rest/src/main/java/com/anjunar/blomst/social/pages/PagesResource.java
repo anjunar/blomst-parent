@@ -53,16 +53,17 @@ public class PagesResource implements ListResourceTemplate<PageForm, PagesSearch
         List<Page> pages = service.find(search);
 
         List<PageForm> resources = new ArrayList<>();
+        Table<PageForm> table = new Table<>(resources, count) {};
+
+
         for (Page page : pages) {
-            PageForm resource = mapper.map(page, PageForm.class);
+            PageForm resource = mapper.map(page, PageForm.class, table);
 
             linkTo(methodOn(PageResource.class).read(page.getId(), null))
                     .build(resource::addLink);
 
             resources.add(resource);
         }
-
-        Table<PageForm> table = new Table<>(resources, count) {};
 
         JsonArray likes = table.find("likes", JsonArray.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))

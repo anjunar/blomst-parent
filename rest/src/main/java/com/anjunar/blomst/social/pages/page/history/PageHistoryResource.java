@@ -49,11 +49,12 @@ public class PageHistoryResource implements ListResourceTemplate<PageHistoryForm
         List<Number> revisions = auditReader.getRevisions(Page.class, search.getId());
         List<PageHistoryForm> resources = new ArrayList<>();
         List<Number> pages = revisions.subList(search.getIndex(), search.getIndex() + search.getLimit());
+        Table<PageHistoryForm> table = new Table<>(resources, revisions.size()) {};
 
         for (Number revision : pages) {
             Page page = auditReader.find(Page.class, search.getId(), revision);
 
-            PageHistoryForm resource = mapper.map(page, PageHistoryForm.class);
+            PageHistoryForm resource = mapper.map(page, PageHistoryForm.class, table);
 
             linkTo(methodOn(PageResource.class).read(page.getId(), (Integer) revision))
                     .build(resource::addLink);
@@ -61,6 +62,6 @@ public class PageHistoryResource implements ListResourceTemplate<PageHistoryForm
             resources.add(resource);
         }
 
-        return new Table<>(resources, revisions.size()) {};
+        return table;
     }
 }

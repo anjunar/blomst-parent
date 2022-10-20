@@ -53,9 +53,10 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
         List<Question> questions = service.find(search);
 
         List<QuestionForm> resources = new ArrayList<>();
+        Table<QuestionForm> table = new Table<>(resources, count) {};
 
         for (Question question : questions) {
-            QuestionForm resource = mapper.map(question, QuestionForm.class);
+            QuestionForm resource = mapper.map(question, QuestionForm.class, table);
 
             resources.add(resource);
 
@@ -63,8 +64,6 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
                     .build(resource::addLink);
 
         }
-
-        Table<QuestionForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(QuestionResource.class).create(search.getPage()))
                 .build(table::addLink);

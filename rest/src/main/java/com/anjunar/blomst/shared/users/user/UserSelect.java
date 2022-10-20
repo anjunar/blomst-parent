@@ -84,7 +84,10 @@ public class UserSelect extends IdentitySelect {
         if (! Strings.isNullOrEmpty(firstName) && ! Strings.isNullOrEmpty(lastName)) {
             return firstName + " " + lastName;
         }
-        return nickName;
+        if (! Strings.isNullOrEmpty(nickName)) {
+            return nickName;
+        }
+        return super.getName();
     }
 
 }

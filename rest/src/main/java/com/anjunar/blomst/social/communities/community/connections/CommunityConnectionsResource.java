@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.communities.community.connections;
 
+import com.anjunar.blomst.social.communities.community.CommunityForm;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionForm;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -46,9 +47,10 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
         final long count = service.count(search);
         final List<CommunitiesConnection> connections = service.find(search);
         final List<CommunityConnectionForm> resources = new ArrayList<>();
+        Table<CommunityConnectionForm> table = new Table<>(resources, count) {};
 
         for (CommunitiesConnection entity : connections) {
-            CommunityConnectionForm form = mapper.map(entity, CommunityConnectionForm.class);
+            CommunityConnectionForm form = mapper.map(entity, CommunityConnectionForm.class, table);
 
             linkTo(methodOn(CommunityConnectionResource.class).read(entity.getId()))
                     .build(form::addLink);
@@ -56,6 +58,6 @@ public class CommunityConnectionsResource implements ListResourceTemplate<Commun
             resources.add(form);
         }
 
-        return new Table<>(resources, count) {};
+        return table;
     }
 }

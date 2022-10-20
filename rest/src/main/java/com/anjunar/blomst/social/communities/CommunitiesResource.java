@@ -45,17 +45,17 @@ public class CommunitiesResource implements ListResourceTemplate<CommunityForm, 
         final long count = service.count(search);
         final List<Community> communities = service.find(search);
         final List<CommunityForm> resources = new ArrayList<>();
+        Table<CommunityForm> table = new Table<>(resources, count) {};
+
 
         for (final Community community : communities) {
-            CommunityForm form = mapper.map(community, CommunityForm.class);
+            CommunityForm form = mapper.map(community, CommunityForm.class, table);
 
             linkTo(methodOn(CommunityResource.class).read(form.getId()))
                     .build(form::addLink);
 
             resources.add(form);
         }
-
-        Table<CommunityForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(CommunityResource.class).create())
                 .build(table::addLink);

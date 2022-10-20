@@ -52,17 +52,17 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
         List<Answer> replies = service.find(search);
 
         List<AnswerForm> resources = new ArrayList<>();
+        Table<AnswerForm> table = new Table<>(resources, count) {};
+
 
         for (Answer answer : replies) {
-            AnswerForm resource = mapper.map(answer, AnswerForm.class);
+            AnswerForm resource = mapper.map(answer, AnswerForm.class, table);
 
             resources.add(resource);
 
             linkTo(methodOn(AnswerResource.class).read(answer.getId()))
                     .build(resource::addLink);
         }
-
-        Table<AnswerForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(AnswerResource.class).create(search.getQuestion()))
                 .build(table::addLink);

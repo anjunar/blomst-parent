@@ -9,9 +9,7 @@ import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.MethodPredicate;
-import com.anjunar.common.rest.api.Editor;
-import com.anjunar.common.rest.api.FormResourceTemplate;
-import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.api.*;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
@@ -34,7 +32,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("pages/page/questions/question/answers/answer")
-public class AnswerResource implements FormResourceTemplate<AnswerForm> {
+public class AnswerResource implements FormResourceTemplate<Form<AnswerForm>> {
 
     private final EntityManager entityManager;
 
@@ -62,40 +60,42 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Answer")
-    public AnswerForm create(@QueryParam("topic") UUID uuid) {
+    public Form<AnswerForm> create(@QueryParam("topic") UUID uuid) {
         AnswerForm resource = new AnswerForm();
+
+        Form<AnswerForm> form = new Form<>(resource) {};
 
         Question question = entityManager.find(Question.class, uuid);
 
-        resource.setQuestion(entityMapper.map(question, QuestionForm.class));
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        resource.setQuestion(entityMapper.map(question, QuestionForm.class, form, "question"));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
         resource.setEditor(new Editor());
         resource.setViews(0);
 
-        linkTo(methodOn(AnswerResource.class).save(new AnswerForm()))
-                .build(resource::addLink);
+        linkTo(methodOn(AnswerResource.class).save(new Form<>()))
+                .build(form::addLink);
 
-        JsonObject owner = resource.find("owner", JsonObject.class);
+        JsonObject owner = form.find("owner", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
-        JsonArray likes = resource.find("likes", JsonArray.class);
+        JsonArray likes = form.find("likes", JsonArray.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(likes::addLink);
 
-        return resource;
+        return form;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Answer")
-    public AnswerForm read(UUID id) {
+    public Form<AnswerForm> read(UUID id) {
 
         Answer answer = entityManager.find(Answer.class, id);
 
-        AnswerForm resource = entityMapper.map(answer, AnswerForm.class);
+        Form<AnswerForm> resource = entityMapper.map(answer, new Form<>() {});
 
-        linkTo(methodOn(AnswerResource.class).update(answer.getId(), new AnswerForm()))
+        linkTo(methodOn(AnswerResource.class).update(answer.getId(), new Form<>()))
                 .build(resource::addLink);
         linkTo(methodOn(AnswerResource.class).delete(answer.getId()))
                 .build(resource::addLink);
@@ -113,7 +113,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Answer")
-    public ResponseOk save(AnswerForm resource) {
+    public ResponseOk save(Form<AnswerForm> resource) {
 
         Answer answer = restMapper.map(resource, Answer.class);
 
@@ -132,7 +132,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Answer")
     @MethodPredicate(AnswerOwnerPredicate.class)
-    public ResponseOk update(UUID id, AnswerForm resource) {
+    public ResponseOk update(UUID id, Form<AnswerForm> resource) {
 
         restMapper.map(resource, Answer.class);
 

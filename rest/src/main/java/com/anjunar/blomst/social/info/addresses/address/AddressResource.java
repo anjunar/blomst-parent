@@ -2,7 +2,6 @@ package com.anjunar.blomst.social.info.addresses.address;
 
 import com.anjunar.blomst.control.users.Address;
 import com.anjunar.blomst.control.users.AddressRight;
-import com.anjunar.blomst.control.users.user.UserResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
 import com.anjunar.blomst.social.info.addresses.AddressSearchResource;
@@ -79,7 +78,7 @@ public class AddressResource {
     public SecuredForm<AddressForm> read(@QueryParam("id") UUID id) {
         Address entity = entityManager.find(Address.class, id);
 
-        SecuredForm<AddressForm> securedForm = entityMapper.mapSecuredForm(entity, new SecuredForm<>() {});
+        SecuredForm<AddressForm> securedForm = entityMapper.map(entity, new SecuredForm<>() {});
 
         if (entity.getOwner().equals(identityManager.getUser())) {
             linkTo(methodOn(AddressResource.class).update(entity.getId(), new SecuredForm<>()))
@@ -102,7 +101,7 @@ public class AddressResource {
     public ResponseOk save(SecuredForm<AddressSelect> securedForm) {
         AddressForm addressForm = extractAddressData(securedForm.getForm());
 
-        Address entity = restMapper.map(addressForm, Address.class);
+        Address entity = restMapper.map(addressForm, Address.class, securedForm.getSchema(), false, false);
         entity.setOwner(identityManager.getUser());
 
         entityManager.persist(entity);
@@ -112,7 +111,7 @@ public class AddressResource {
         right.getCategories().addAll(securedForm.find("form", JsonObject.class)
                 .getVisibility()
                 .stream()
-                .map(categoryType -> restMapper.map(categoryType, Category.class))
+                .map(categoryType -> entityManager.find(Category.class, categoryType.getId()))
                 .toList()
         );
 
@@ -132,7 +131,7 @@ public class AddressResource {
     @PUT
     @RolesAllowed({"Administrator", "User"})
     public ResponseOk update(@QueryParam("id") UUID id, SecuredForm<AddressForm> securedForm) {
-        Address entity = restMapper.mapSecuredForm(securedForm, Address.class);
+        Address entity = restMapper.map(securedForm, Address.class);
         entity.setOwner(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();

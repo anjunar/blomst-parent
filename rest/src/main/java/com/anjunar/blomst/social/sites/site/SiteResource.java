@@ -7,6 +7,8 @@ import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionResource;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.google.common.collect.Sets;
@@ -31,7 +33,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("social/sites/site")
 @ApplicationScoped
-public class SiteResource implements FormResourceTemplate<SiteForm> {
+public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
 
     private final EntityManager entityManager;
 
@@ -62,10 +64,12 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Site")
-    public SiteForm create() {
-        final SiteForm form = new SiteForm();
+    public Form<SiteForm> create() {
+        final SiteForm resource = new SiteForm();
 
-        linkTo(methodOn(SiteResource.class).save(new SiteForm()))
+        Form<SiteForm> form = new Form<>(resource) {};
+
+        linkTo(methodOn(SiteResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         return form;
@@ -74,10 +78,10 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Site")
     @Override
-    public SiteForm read(UUID id) {
+    public Form<SiteForm> read(UUID id) {
         final Site entity = entityManager.find(Site.class, id);
 
-        SiteForm form = entityMapper.map(entity, SiteForm.class);
+        Form<SiteForm> form = entityMapper.map(entity, new Form<>() {});
 
         try {
             SiteConnection connection = service.findConnection(identityManager.getUser().getId(), id);
@@ -102,7 +106,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
                 .withRel("connections")
                 .build(form::addLink);
 
-        linkTo(methodOn(SiteResource.class).update(id, new SiteForm()))
+        linkTo(methodOn(SiteResource.class).update(id, new Form<>()))
                 .build(form::addLink);
         linkTo(methodOn(SiteResource.class).delete(id))
                 .build(form::addLink);
@@ -113,7 +117,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Site")
     @Override
-    public ResponseOk save(SiteForm form) {
+    public ResponseOk save(Form<SiteForm> form) {
         Site entity = restMapper.map(form, Site.class);
 
         entityManager.persist(entity);
@@ -130,7 +134,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site")
     @Override
-    public ResponseOk update(UUID id, SiteForm form) {
+    public ResponseOk update(UUID id, Form<SiteForm> form) {
 
         restMapper.map(form, Site.class);
 

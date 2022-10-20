@@ -41,10 +41,6 @@ public class Page extends Likeable {
     @ManyToOne
     private Language language;
 
-    @OneToMany()
-//    @Audited(targetAuditMode = NOT_AUDITED)
-    private final Set<Page> links = new HashSet<>();
-
     public String getTitle() {
         return title;
     }
@@ -75,10 +71,6 @@ public class Page extends Likeable {
 
     public void setLanguage(Language language) {
         this.language = language;
-    }
-
-    public Set<Page> getLinks() {
-        return links;
     }
 
 }

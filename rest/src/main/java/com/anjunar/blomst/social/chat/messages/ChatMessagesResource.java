@@ -34,13 +34,12 @@ public class ChatMessagesResource implements ListResourceTemplate<ChatMessageRow
         long count = service.count(search);
         List<ChatMessage> chatMessages = service.find(search);
         List<ChatMessageRow> resources = new ArrayList<>();
+        Table<ChatMessageRow> table = new Table<>(resources, count) {};
 
         for (ChatMessage chatMessage : chatMessages) {
-            ChatMessageRow form = entityMapper.map(chatMessage, ChatMessageRow.class);
+            ChatMessageRow form = entityMapper.map(chatMessage, ChatMessageRow.class, table);
             resources.add(form);
         }
-
-        Table<ChatMessageRow> table = new Table<>(resources, count) {};
 
         table.visible("text", "owner");
 

@@ -45,10 +45,12 @@ public class TemplatesResource implements ListResourceTemplate<TemplateForm, Tem
         long count = service.count(search);
 
         List<TemplateForm> resources = new ArrayList<>();
+        Table<TemplateForm> table = new Table<>(resources, count) {};
+
 
         for (Template template : templates) {
 
-            TemplateForm resource = mapper.map(template, TemplateForm.class);
+            TemplateForm resource = mapper.map(template, TemplateForm.class, table);
 
             linkTo(methodOn(TemplateResource.class).read(template.getId()))
                     .build(resource::addLink);
@@ -56,8 +58,6 @@ public class TemplatesResource implements ListResourceTemplate<TemplateForm, Tem
             resources.add(resource);
 
         }
-
-        Table<TemplateForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(TemplateResource.class).create())
                 .build(table::addLink);

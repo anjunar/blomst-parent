@@ -37,13 +37,14 @@ public class LanguagesResource implements ListResourceTemplate<LanguageForm, Lan
         long count = service.count(search);
         List<Language> languages = service.find(search);
         List<LanguageForm> resources = new ArrayList<>();
+        Table<LanguageForm> table = new Table<>(resources, count) {};
 
         for (Language language : languages) {
-            LanguageForm form = entityMapper.map(language, LanguageForm.class);
+            LanguageForm form = entityMapper.map(language, LanguageForm.class, table);
 
             resources.add(form);
         }
 
-        return new Table<>(resources, count) {};
+        return table;
     }
 }

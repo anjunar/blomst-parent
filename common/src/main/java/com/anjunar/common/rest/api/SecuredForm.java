@@ -10,6 +10,14 @@ public class SecuredForm<E> extends AbstractSchemaEntity {
     @MapperVisibility
     private E form;
 
+    public SecuredForm(E form) {
+        this.form = form;
+    }
+
+    public SecuredForm() {
+        this(null);
+    }
+
     public E getForm() {
         return form;
     }

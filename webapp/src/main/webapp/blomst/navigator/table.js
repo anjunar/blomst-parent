@@ -52,7 +52,7 @@ class Table extends HTMLElement {
 
     onRowClick(event) {
         let row = event.detail;
-        let link = row.$schema.links.read;
+        let link = row.links.read;
         window.location.hash = `/navigator/form?link=${encodeURIComponent(link.url)}`
     }
 

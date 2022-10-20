@@ -44,9 +44,10 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
         final long count = service.count(search);
         final List<Site> sites = service.find(search);
         final List<SiteForm> resources = new ArrayList<>();
+        Table<SiteForm> table = new Table<>(resources, count) {};
 
         for (Site site : sites) {
-            SiteForm form = mapper.map(site, SiteForm.class);
+            SiteForm form = mapper.map(site, SiteForm.class, table);
 
             linkTo(methodOn(SiteResource.class).read(site.getId()))
                     .build(form::addLink);
@@ -54,7 +55,6 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
             resources.add(form);
         }
 
-        Table<SiteForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(SiteResource.class).create())
                 .build(table::addLink);

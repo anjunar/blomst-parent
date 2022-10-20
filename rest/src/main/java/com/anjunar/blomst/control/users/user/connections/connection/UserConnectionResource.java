@@ -8,6 +8,8 @@ import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.system.mail.TemplatesResource;
 import com.anjunar.blomst.system.mail.TemplatesSearch;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -34,7 +36,7 @@ import static jakarta.ws.rs.core.Response.*;
 
 @Path("control/users/user/connections/connection")
 @ApplicationScoped
-public class UserConnectionResource implements FormResourceTemplate<UserConnectionForm> {
+public class UserConnectionResource implements FormResourceTemplate<Form<UserConnectionForm>> {
 
     private final EntityManager entityManager;
 
@@ -65,17 +67,19 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Connection")
-    public UserConnectionForm create(@QueryParam("to") UUID toId) {
+    public Form<UserConnectionForm> create(@QueryParam("to") UUID toId) {
 
-        UserConnectionForm form = new UserConnectionForm();
+        UserConnectionForm resource = new UserConnectionForm();
 
-        form.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        Form<UserConnectionForm> form = new Form<>(resource) {};
+
+        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "from"));
 
         if (Objects.nonNull(toId)) {
-            form.setTo(entityMapper.map(entityManager.find(User.class, toId), UserSelect.class));
+            resource.setTo(entityMapper.map(entityManager.find(User.class, toId), UserSelect.class, form, "to"));
         }
 
-        linkTo(methodOn(UserConnectionResource.class).save(new UserConnectionForm()))
+        linkTo(methodOn(UserConnectionResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         JsonObject category = form.find("category", JsonObject.class);
@@ -88,26 +92,27 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(to::addLink);
 
+
         return form;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Connection")
-    public UserConnectionForm read(UUID id) {
+    public Form<UserConnectionForm> read(UUID id) {
         UserConnection entity = entityManager.find(UserConnection.class, id);
 
-        UserConnectionForm form = entityMapper.map(entity, UserConnectionForm.class);
+        Form<UserConnectionForm> form = entityMapper.map(entity, new Form<>() {});
 
-        form.setFrom(entityMapper.map(entity.getFrom(), UserSelect.class));
-        form.setTo(entityMapper.map(entity.getTo(), UserSelect.class));
+        form.getForm().setFrom(entityMapper.map(entity.getFrom(), UserSelect.class, form, "from"));
+        form.getForm().setTo(entityMapper.map(entity.getTo(), UserSelect.class, form, "to"));
 
         UserConnection acceptedConnection = service.accepted(entity.getFrom().getId(), entity.getTo().getId());
         if (acceptedConnection != null) {
-            form.setAccepted(true);
+            form.getForm().setAccepted(true);
         }
 
-        linkTo(methodOn(UserConnectionResource.class).update(id, new UserConnectionForm()))
+        linkTo(methodOn(UserConnectionResource.class).update(id, new Form<>()))
                 .build(form::addLink);
 
         linkTo(methodOn(UserConnectionResource.class).delete(id))
@@ -125,7 +130,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Connection")
-    public ResponseOk save(UserConnectionForm form) {
+    public ResponseOk save(Form<UserConnectionForm> form) {
 
         UserConnection from = restMapper.map(form, UserConnection.class);
         from.setFrom(identityManager.getUser());
@@ -136,7 +141,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         to.setTo(from.getFrom());
         entityManager.persist(to);
 
-        service.createNotification(form.getTo().getId(), form.getFrom().getId());
+        service.createNotification(form.getForm().getTo().getId(), form.getForm().getFrom().getId());
 
         ResponseOk response = new ResponseOk();
 
@@ -150,7 +155,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Connection")
-    public ResponseOk update(UUID id, UserConnectionForm form) {
+    public ResponseOk update(UUID id, Form<UserConnectionForm> form) {
 
         restMapper.map(form, UserConnection.class);
 

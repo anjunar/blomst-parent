@@ -10,6 +10,7 @@ import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -34,7 +35,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("control/users/user/connections/connection/categories/category")
 @ApplicationScoped
-public class CategoryResource implements FormResourceTemplate<CategoryForm> {
+public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>> {
 
     private final EntityManager entityManager;
 
@@ -60,12 +61,13 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Category")
-    public CategoryForm create() {
-        CategoryForm form = new CategoryForm();
+    public Form<CategoryForm> create() {
+        CategoryForm resource = new CategoryForm();
+        Form<CategoryForm> form = new Form<>(resource) {};
 
-        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
 
-        linkTo(methodOn(CategoryResource.class).save(new CategoryForm()))
+        linkTo(methodOn(CategoryResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         JsonObject owner = form.find("owner", JsonObject.class);
@@ -78,13 +80,13 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Category")
-    public CategoryForm read(UUID id) {
+    public Form<CategoryForm> read(UUID id) {
 
         Category entity = entityManager.find(Category.class, id);
 
-        CategoryForm form = entityMapper.map(entity, CategoryForm.class);
+        Form<CategoryForm> form = entityMapper.map(entity, new Form<>(){});
 
-        linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))
+        linkTo(methodOn(CategoryResource.class).update(id, new Form<>()))
                 .build(form::addLink);
         linkTo(methodOn(CategoryResource.class).delete(id))
                 .build(form::addLink);
@@ -99,7 +101,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Category")
-    public ResponseOk save(CategoryForm form) {
+    public ResponseOk save(Form<CategoryForm> form) {
 
         Category entity = restMapper.map(form, Category.class);
 
@@ -119,7 +121,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Category")
-    public ResponseOk update(UUID id, CategoryForm form) {
+    public ResponseOk update(UUID id, Form<CategoryForm> form) {
 
         restMapper.map(form, Category.class);
 

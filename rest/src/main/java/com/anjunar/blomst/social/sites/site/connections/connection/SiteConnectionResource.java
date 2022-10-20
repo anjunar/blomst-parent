@@ -8,6 +8,8 @@ import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -32,7 +34,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("social/sites/site/connections/connection")
 @ApplicationScoped
-public class SiteConnectionResource implements FormResourceTemplate<SiteConnectionForm> {
+public class SiteConnectionResource implements FormResourceTemplate<Form<SiteConnectionForm>> {
 
     private final EntityManager entityManager;
 
@@ -60,12 +62,13 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Site Connection")
-    public SiteConnectionForm create() {
-        SiteConnectionForm form = new SiteConnectionForm();
+    public Form<SiteConnectionForm> create() {
+        SiteConnectionForm resource = new SiteConnectionForm();
+        Form<SiteConnectionForm> form = new Form<>(resource) {};
 
-        form.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "from"));
 
-        linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
+        linkTo(methodOn(SiteConnectionResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         JsonObject to = form.find("to", JsonObject.class);
@@ -78,12 +81,12 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Site Connection")
     @Override
-    public SiteConnectionForm read(UUID id) {
+    public Form<SiteConnectionForm> read(UUID id) {
 
         SiteConnection entity = entityManager.find(SiteConnection.class, id);
-        SiteConnectionForm form = entityMapper.map(entity, SiteConnectionForm.class);
+        Form<SiteConnectionForm> form = entityMapper.map(entity, new Form<>() {});
 
-        linkTo(methodOn(SiteConnectionResource.class).update(id, new SiteConnectionForm()))
+        linkTo(methodOn(SiteConnectionResource.class).update(id, new Form<>()))
                 .build(form::addLink);
 
         linkTo(methodOn(SiteConnectionResource.class).delete(id))
@@ -95,7 +98,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Site Connection")
     @Override
-    public ResponseOk save(SiteConnectionForm form) {
+    public ResponseOk save(Form<SiteConnectionForm> form) {
 
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
 
@@ -113,7 +116,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site Connection")
     @Override
-    public ResponseOk update(UUID id, SiteConnectionForm form) {
+    public ResponseOk update(UUID id, Form<SiteConnectionForm> form) {
         restMapper.map(form, SiteConnection.class);
 
         ResponseOk response = new ResponseOk();

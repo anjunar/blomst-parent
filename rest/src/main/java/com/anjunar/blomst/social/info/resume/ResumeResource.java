@@ -51,17 +51,16 @@ public class ResumeResource implements ListResourceTemplate<EventForm, ResumeSea
         long count = service.count(search);
 
         List<EventForm> resources = new ArrayList<>();
+        Table<EventForm> table = new Table<>(resources, count) {};
 
         for (Resume resume : resumeList) {
-            EventForm form = entityMapper.map(resume, EventForm.class);
+            EventForm form = entityMapper.map(resume, EventForm.class, table);
 
             linkTo(methodOn(EventResource.class).read(form.getId()))
                     .build(form::addLink);
 
             resources.add(form);
         }
-
-        Table<EventForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(EventResource.class).create())
                 .build(table::addLink);

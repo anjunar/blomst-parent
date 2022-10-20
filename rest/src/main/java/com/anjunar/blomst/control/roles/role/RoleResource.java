@@ -2,6 +2,8 @@ package com.anjunar.blomst.control.roles.role;
 
 import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.RolesSearch;
+import com.anjunar.common.rest.api.AbstractSchemaEntity;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -23,7 +25,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("control/roles/role")
-public class RoleResource implements FormResourceTemplate<RoleForm> {
+public class RoleResource implements FormResourceTemplate<Form<RoleForm>> {
 
     private final EntityManager entityManager;
 
@@ -51,25 +53,27 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Path("create")
     @RolesAllowed("Administrator")
     @LinkDescription("Create Role")
-    public RoleForm create() {
+    public Form<RoleForm> create() {
         RoleForm resource = new RoleForm();
 
-        linkTo(methodOn(RoleResource.class).save(new RoleForm()))
-                        .build(resource::addLink);
+        Form<RoleForm> form = new Form<>() {};
 
-        return resource;
+        linkTo(methodOn(RoleResource.class).save(new Form<>()))
+                        .build(form::addLink);
+
+        return form;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Role")
-    public RoleForm read(UUID id) {
+    public Form<RoleForm> read(UUID id) {
 
         Role role = entityManager.find(Role.class, id);
 
-        RoleForm resource = entityMapper.map(role, RoleForm.class);
+        Form<RoleForm> resource = entityMapper.map(role, new Form<>() {});
 
-        linkTo(methodOn(RoleResource.class).update(role.getId(), new RoleForm()))
+        linkTo(methodOn(RoleResource.class).update(role.getId(), new Form<>()))
                 .build(resource::addLink);
         linkTo(methodOn(RoleResource.class).delete(role.getId()))
                 .build(resource::addLink);
@@ -81,12 +85,11 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Role")
-    public ResponseOk save(RoleForm form) {
+    public ResponseOk save(Form<RoleForm> form) {
 
         Role role = restMapper.map(form, Role.class);
 
         entityManager.persist(role);
-        form.setId(role.getId());
 
         ResponseOk response = new ResponseOk();
 
@@ -100,7 +103,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Role")
-    public ResponseOk update(UUID id, RoleForm form) {
+    public ResponseOk update(UUID id, Form<RoleForm> form) {
 
         restMapper.map(form, Role.class);
 

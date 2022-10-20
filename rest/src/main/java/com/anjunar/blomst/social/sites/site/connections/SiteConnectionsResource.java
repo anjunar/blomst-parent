@@ -50,17 +50,16 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
         final long count = service.count(search);
         final List<SiteConnection> connections = service.find(search);
         final List<SiteConnectionForm> resources = new ArrayList<>();
+        Table<SiteConnectionForm> table = new Table<>(resources, count) {};
 
         for (SiteConnection connection : connections) {
-            SiteConnectionForm form = mapper.map(connection, SiteConnectionForm.class);
+            SiteConnectionForm form = mapper.map(connection, SiteConnectionForm.class, table);
 
             linkTo(methodOn(SiteConnectionResource.class).read(connection.getId()))
                     .build(form::addLink);
 
             resources.add(form);
         }
-
-        Table<SiteConnectionForm> table = new Table<>(resources, count) {};
 
         linkTo(methodOn(SiteConnectionResource.class).create())
                 .build(table::addLink);

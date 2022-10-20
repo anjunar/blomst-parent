@@ -46,8 +46,9 @@ public class RolesResource implements ListResourceTemplate<RoleForm, RolesSearch
         long count = rolesService.count(search);
 
         List<RoleForm> resources = new ArrayList<>();
+        Table<RoleForm> table = new Table<>(resources, count) {};
         for (Role role : roles) {
-            RoleForm resource = mapper.map(role, RoleForm.class);
+            RoleForm resource = mapper.map(role, RoleForm.class, table);
 
             resources.add(resource);
 
@@ -55,7 +56,7 @@ public class RolesResource implements ListResourceTemplate<RoleForm, RolesSearch
                     .build(resource::addLink);
         }
 
-        return new Table<>(resources, count) {};
+        return table;
     }
 }
 

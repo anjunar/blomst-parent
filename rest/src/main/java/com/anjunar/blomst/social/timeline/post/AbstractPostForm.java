@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.timeline.post;
 import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
+import com.anjunar.common.security.User;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -28,7 +29,7 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Source", readOnly = true)
     @MapperPermanent
-    private IdentitySelect source;
+    private UserSelect source;
 
     public abstract <E> E accept(AbstractPostFormVisitor<E> visitor);
 
@@ -48,11 +49,11 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
         this.owner = owner;
     }
 
-    public IdentitySelect getSource() {
+    public UserSelect getSource() {
         return source;
     }
 
-    public void setSource(IdentitySelect source) {
+    public void setSource(UserSelect source) {
         this.source = source;
     }
 

@@ -12,6 +12,7 @@ import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -40,7 +41,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("home/timeline/post")
-public class PostResource implements FormResourceTemplate<AbstractPostForm> {
+public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>> {
 
     private final EntityManager entityManager;
 
@@ -68,7 +69,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Post")
-    public AbstractPostForm create(@QueryParam("type") String type, @QueryParam("source") UUID source) {
+    public Form<AbstractPostForm> create(@QueryParam("type") String type, @QueryParam("source") UUID source) {
 
         AbstractPostForm resource;
 
@@ -83,53 +84,54 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
                 resource = new TextPostForm();
             }
         }
+        Form<AbstractPostForm> form = new Form<>(resource) {};
 
         Identity identity = entityManager.find(Identity.class, source);
         if (identity instanceof User) {
-            resource.setSource(entityMapper.map(identity, UserSelect.class));
+            resource.setSource(entityMapper.map(identity, UserSelect.class, form, "source"));
         } else {
-            resource.setSource(entityMapper.map(identity, IdentitySelect.class));
+            resource.setSource(entityMapper.map(identity, UserSelect.class, form, "source"));
         }
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
 
-        linkTo(methodOn(PostResource.class).save(new TextPostForm()))
-                        .build(resource::addLink);
+        linkTo(methodOn(PostResource.class).save(new Form<>()))
+                        .build(form::addLink);
 
-        return resource;
+        return form;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Post")
-    public AbstractPostForm read(UUID id) {
+    public Form<AbstractPostForm> read(UUID id) {
 
         AbstractPost post = entityManager.find(AbstractPost.class, id);
 
         post.setViews(post.getViews() == null ? 0 : post.getViews() + 1);
 
-        AbstractPostForm resource = post.accept(new AbstractPostVisitor<>() {
+        Form<AbstractPostForm> resource = post.accept(new AbstractPostVisitor<>() {
             @Override
-            public AbstractPostForm visit(ImagePost post) {
-                return entityMapper.map(post, ImagePostForm.class);
+            public Form<AbstractPostForm> visit(ImagePost post) {
+                return entityMapper.map(post, new Form<>() {});
             }
 
             @Override
-            public AbstractPostForm visit(LinkPost post) {
-                return entityMapper.map(post, LinkPostForm.class);
+            public Form<AbstractPostForm> visit(LinkPost post) {
+                return entityMapper.map(post, new Form<>() {});
             }
 
             @Override
-            public AbstractPostForm visit(TextPost post) {
-                return entityMapper.map(post, TextPostForm.class);
+            public Form<AbstractPostForm> visit(TextPost post) {
+                return entityMapper.map(post, new Form<>() {});
             }
 
             @Override
-            public AbstractPostForm visit(SystemPost post) {
-                return entityMapper.map(post, SystemPostForm.class);
+            public Form<AbstractPostForm> visit(SystemPost post) {
+                return entityMapper.map(post, new Form<>() {});
             }
         });
 
-        linkTo(methodOn(PostResource.class).update(post.getId(), new TextPostForm()))
+        linkTo(methodOn(PostResource.class).update(post.getId(), new Form<>()))
                 .build(resource::addLink);
         linkTo(methodOn(PostResource.class).delete(post.getId()))
                 .build(resource::addLink);
@@ -154,9 +156,9 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
-    public ResponseOk save(AbstractPostForm resource) {
+    public ResponseOk save(Form<AbstractPostForm> resource) {
 
-        AbstractPost post = resource.accept(new AbstractPostFormVisitor<>() {
+        AbstractPost post = resource.getForm().accept(new AbstractPostFormVisitor<>() {
             @Override
             public AbstractPost visit(LinkPostForm form) {
                 return new LinkPost();
@@ -206,10 +208,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }
-
         entityManager.persist(post);
-
-        resource.setId(post.getId());
 
         ResponseOk response = new ResponseOk();
 
@@ -224,7 +223,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
-    public ResponseOk update(UUID id, AbstractPostForm resource) {
+    public ResponseOk update(UUID id, Form<AbstractPostForm> resource) {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
         Set<User> rawLikes = Sets.newHashSet(post.getLikes());
 
@@ -253,7 +252,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .withRel("redirect")
                 .build(resource::addLink);
-        linkTo(methodOn(PostResource.class).update(post.getId(), new TextPostForm()))
+        linkTo(methodOn(PostResource.class).update(post.getId(), new Form<>()))
                 .build(resource::addLink);
         linkTo(methodOn(PostResource.class).delete(post.getId()))
                 .build(resource::addLink);
