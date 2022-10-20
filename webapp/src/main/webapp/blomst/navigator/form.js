@@ -5,30 +5,32 @@ import MetaInput from "../../library/simplicity-material/components/meta/meta-in
 import MatDrawer from "../../library/simplicity-material/components/navigation/mat-drawer.js";
 import MatDrawerContent from "../../library/simplicity-material/components/navigation/mat-drawer-content.js";
 import MatDrawerContainer from "../../library/simplicity-material/components/navigation/mat-drawer-container.js";
-import {windowManager} from "../../library/simplicity-material/manager/window-manager.js";
 
 class Table extends HTMLElement {
 
-    model;
+    model = null;
     open = true;
 
     onAction(link) {
-        fetch(link.url, {
-            body: JSON.stringify(this.model),
-            method: link.method,
-            headers: new Headers({'content-type': 'application/json'}),
-        })
-            .then(response => response.json())
-            .then(response => {
-                let read = response.$schema.links.redirect;
-                if (read) {
-                    if (read.type === "table") {
-                        window.location.hash = `#/navigator/table?link=${encodeURIComponent(read.url)}`
-                    } else {
-                        window.location.hash = `#/navigator/form?link=${encodeURIComponent(read.url)}`
-                    }
-                }
+        let form = this.querySelector("meta-form");
+        if (form.validate()) {
+            fetch(link.url, {
+                body: JSON.stringify(this.model),
+                method: link.method,
+                headers: new Headers({'content-type': 'application/json'}),
             })
+                .then(response => response.json())
+                .then(response => {
+                    let read = response.$schema.links.redirect;
+                    if (read) {
+                        if (read.type === "table") {
+                            window.location.hash = `#/navigator/table?link=${encodeURIComponent(read.url)}`
+                        } else {
+                            window.location.hash = `#/navigator/form?link=${encodeURIComponent(read.url)}`
+                        }
+                    }
+                })
+        }
     }
 
     get link() {

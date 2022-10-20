@@ -275,7 +275,18 @@ export const Input = (superclass) => class InputMixin extends superclass {
 
     reset() {
         this.value = this.defaultValue;
+        this.model = this.defaultModel;
         this.dispatchEvent(new Event("input"));
+    }
+
+    validate() {
+        if (this.checkValidity) {
+            if (! this.checkValidity()) {
+                this.dispatchEvent(new Event("input"))
+                return false;
+            }
+        }
+        return true;
     }
 
     addAsyncValidator(value) {

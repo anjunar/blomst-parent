@@ -72,7 +72,6 @@ public class PageResource {
 
         PageForm resource = new PageForm();
         Form<PageForm> form = new Form<>(resource) {};
-        resource.setModifier(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "modifier"));
 
         linkTo(methodOn(PageResource.class).save(new Form<>()))
                 .build(form::addLink);

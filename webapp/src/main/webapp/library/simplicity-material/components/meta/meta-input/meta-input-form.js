@@ -32,6 +32,11 @@ class MetaInputForm extends mix(HTMLElement).with(Input) {
         })
     }
 
+    validate() {
+        let metaForm = this.querySelector("meta-form");
+        return metaForm.validate();
+    }
+
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case "schema" : {

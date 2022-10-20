@@ -32,6 +32,7 @@ class DomForm extends mix(HTMLFormElement).with(Input) {
         }
     }
 
+
     register(component) {
         this.components.push(component)
         component.addEventListener("model", () => {
@@ -91,6 +92,14 @@ class DomForm extends mix(HTMLFormElement).with(Input) {
         for (const component of this.components) {
             component.reset();
         }
+    }
+
+    validate() {
+        let result = [];
+        for (const component of this.components) {
+            result.push(component.validate());
+        }
+        return result.some(item => item === false)
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
