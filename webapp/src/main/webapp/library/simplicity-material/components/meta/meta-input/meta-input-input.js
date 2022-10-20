@@ -21,21 +21,6 @@ class MetaInputInput extends HTMLElement {
             input.minLength = validators.size.min;
         }
 
-        switch (this.schema.type) {
-            case "float" : {
-                input.step = "0.0000001"
-            } break
-            case "double" : {
-                input.step = "0.0000000000001"
-            } break;
-            default : {
-                input.step = "1"
-            }
-        }
-
-        input.checkValidity();
-        input.dispatchEvent(new Event("input"))
-
         Membrane.track(input, {
             property : "dirty",
             element : this,

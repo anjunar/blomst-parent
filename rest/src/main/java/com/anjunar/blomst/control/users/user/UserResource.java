@@ -118,7 +118,7 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
     @LinkDescription("Create User")
     public Form<UserForm> create() {
         UserForm resource = new UserForm();
-        Form<UserForm> form = new Form<>() {};
+        Form<UserForm> form = new Form<>(resource) {};
 
         JsonArray roles = form.find("roles", JsonArray.class);
         linkTo(methodOn(RolesResource.class).list(null))
