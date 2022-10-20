@@ -35,7 +35,7 @@ public class User extends Identity implements OwnerProvider {
     @ManyToMany(fetch = FetchType.EAGER)
     private final Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "source")
+    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
     private Set<UserRight> rights = new HashSet<>();
 
     public String getNickName() {

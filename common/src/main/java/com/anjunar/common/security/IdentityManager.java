@@ -5,6 +5,8 @@ import com.anjunar.common.security.enterprise.Authenticator;
 import com.anjunar.common.security.enterprise.CivilCredential;
 import com.anjunar.common.i18n.i18nResolver;
 
+import com.anjunar.common.security.enterprise.EmailCredential;
+import com.google.common.base.Strings;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.AuthenticationStatus;
@@ -39,6 +41,19 @@ public class IdentityManager implements Serializable {
 
     public IdentityManager() {
         this(null, null, null, null);
+    }
+
+    public boolean authenticate(String email, String password) {
+        EmailCredential credential = new EmailCredential(email, new Password(password));
+
+        AuthenticationStatus authenticate = authenticator.authenticate(credential);
+
+        if (authenticate == AuthenticationStatus.SUCCESS) {
+            User user = findUser(email);
+            identityStore.setUser(user);
+        }
+
+        return authenticate == AuthenticationStatus.SUCCESS;
     }
 
     public boolean authenticate(User user) {

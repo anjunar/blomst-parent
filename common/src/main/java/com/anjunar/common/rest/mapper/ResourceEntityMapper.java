@@ -105,22 +105,22 @@ public class ResourceEntityMapper {
     }
 
     public <S, D> D map(S source, Class<D> destinationClass, Table table) {
-        return map(source, destinationClass, (JsonObject) ((JsonArray) table.getSchema().getProperties().get("rows")).getItems());
+        return map(source, destinationClass, (JsonObject) ((JsonArray) table.getSchema().getProperties().get("rows")).getItems(), true);
     }
 
     public <S, D> D map(S source, Class<D> destinationClass, Form<?> form, String property) {
-        return map(source, destinationClass, (JsonObject) ((JsonObject) form.getSchema().getProperties().get("form")).getProperties().get(property));
+        return map(source, destinationClass, (JsonObject) ((JsonObject) form.getSchema().getProperties().get("form")).getProperties().get(property), false);
     }
 
-    public <S, D> D map(S source, Class<D> destinationClass, SecuredForm<?> table) {
-        return map(source, destinationClass, (JsonObject) table.getSchema().getProperties().get("form"));
+    public <S, D> D map(S source, Class<D> destinationClass, SecuredForm<?> securedForm) {
+        return map(source, destinationClass, (JsonObject) securedForm.getSchema().getProperties().get("form"), false);
     }
 
     public <S, D> Form<D> map(S source, Form<D> form) {
         ResolvedType<? extends Form> typeResolver = TypeResolver.resolve(form.getClass());
         TypeToken<?> typeToken = typeResolver.getType().resolveType(form.getClass().getSuperclass().getTypeParameters()[0]);
         Class<D> rawType = (Class<D>) typeToken.getRawType();
-        D result = map(source, rawType, (JsonObject) form.getSchema().getProperties().get("form"));
+        D result = map(source, rawType, (JsonObject) form.getSchema().getProperties().get("form"), false);
         form.setForm(result);
         return form;
     }
@@ -129,13 +129,13 @@ public class ResourceEntityMapper {
         ResolvedType<? extends SecuredForm> typeResolver = TypeResolver.resolve(securedForm.getClass());
         TypeToken<?> typeToken = typeResolver.getType().resolveType(securedForm.getClass().getSuperclass().getTypeParameters()[0]);
         Class<D> rawType = (Class<D>) typeToken.getRawType();
-        D result = map(source, rawType, (JsonObject) securedForm.getSchema().getProperties().get("form"));
+        D result = map(source, rawType, (JsonObject) securedForm.getSchema().getProperties().get("form"), false);
         securedForm.setForm(result);
         loadFormSchema(source, securedForm);
         return securedForm;
     }
 
-    public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonObject) {
+    public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonObject, boolean isTable) {
         D destination = getNewInstance(source, destinationClass);
 
         if (source instanceof OwnerProvider ownerProvider) {
@@ -185,7 +185,9 @@ public class ResourceEntityMapper {
                             );
                         }
                     } else {
-                        jsonObject.remove(destinationProperty.getKey());
+                        if (! isTable) {
+                            jsonObject.remove(destinationProperty.getKey());
+                        }
                     }
                 }
             }
@@ -213,7 +215,7 @@ public class ResourceEntityMapper {
                     }
                 } else {
                     JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
-                    Object restEntity = map(sourcePropertyInstance, destinationPropertyType, jsonNode);
+                    Object restEntity = map(sourcePropertyInstance, destinationPropertyType, jsonNode, false);
                     destinationProperty.accept(destination, restEntity);
                 }
             }
@@ -255,12 +257,12 @@ public class ResourceEntityMapper {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
                 JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(entry.getKey());
-                Object restEntity = map(entry.getKey(), destinationMapKeyType, jsonNode);
+                Object restEntity = map(entry.getKey(), destinationMapKeyType, jsonNode, false);
 
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(restEntity, entry.getValue());
                 } else {
-                    Object restEntity2 = map(entry.getValue(), destinationMapValueType, jsonNode);
+                    Object restEntity2 = map(entry.getValue(), destinationMapValueType, jsonNode, false);
                     destinationPropertyInstance.put(restEntity, restEntity2);
                 }
             }
@@ -289,7 +291,7 @@ public class ResourceEntityMapper {
             } else {
                 JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
                 JsonArray jsonArray = (JsonArray) jsonNode;
-                Object restEntity = map(element, destinationCollectionType, (JsonObject) jsonArray.getItems());
+                Object restEntity = map(element, destinationCollectionType, (JsonObject) jsonArray.getItems(), false);
                 destinationPropertyInstance.add(restEntity);
             }
         }
@@ -315,7 +317,7 @@ public class ResourceEntityMapper {
                     .getSingleResult();
 
             for (Category category : right.getCategories()) {
-                CategoryType categoryType = map(category, CategoryType.class,(JsonObject) null);
+                CategoryType categoryType = map(category, CategoryType.class,(JsonObject) null, false);
                 categories.add(categoryType);
             }
         } catch (NoResultException e) {
@@ -366,7 +368,7 @@ public class ResourceEntityMapper {
                                 .getSingleResult();
 
                         for (Category category : right.getCategories()) {
-                            CategoryType categoryType = map(category, CategoryType.class, (JsonObject) null);
+                            CategoryType categoryType = map(category, CategoryType.class, (JsonObject) null, false);
                             categories.add(categoryType);
                         }
                     }

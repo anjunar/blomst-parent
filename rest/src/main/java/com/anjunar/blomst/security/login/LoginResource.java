@@ -53,9 +53,7 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @LinkDescription("Do Login")
     public ResponseOk login(LoginForm resource) {
 
-        User user = identityManager.findUser(resource.getEmail());
-
-        if (identityManager.authenticate(user)) {
+        if (identityManager.authenticate(resource.getEmail(), resource.getPassword())) {
             ResponseOk response = new ResponseOk();
 
             linkTo(methodOn(ApplicationResource.class).service())

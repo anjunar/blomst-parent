@@ -126,7 +126,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             return userSelect;
         } else {
             UserSelect userSelect = new UserSelect();
-            Form<UserSelect> form = new Form<>(userSelect);
+            Form<UserSelect> form = new Form<>(userSelect) {};
 
             userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class, form, "language"));
 

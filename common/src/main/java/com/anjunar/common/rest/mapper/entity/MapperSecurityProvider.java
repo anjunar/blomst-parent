@@ -26,11 +26,6 @@ public class MapperSecurityProvider implements SecurityProvider {
         if (security == null) {
             return true;
         }
-        if (source instanceof OwnerProvider ownerProvider) {
-            if (ownerProvider.getOwner().equals(identityStore.getUser())) {
-                return true;
-            }
-        }
         for (String role : security.rolesAllowed()) {
             if (!identityStore.hasRole(role)) {
                 return false;

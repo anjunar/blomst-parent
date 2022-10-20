@@ -2,8 +2,10 @@ package com.anjunar.blomst.security.register;
 
 import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.i18n.Language;
+import com.anjunar.common.mail.Email;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
+import com.anjunar.common.security.EmailType;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
@@ -74,10 +76,13 @@ public class RegisterResource {
 
         User user = new User();
 
-        user.setFirstName(resource.getEmail());
         user.setPassword(resource.getPassword());
         user.setLanguage(language);
         user.setEnabled(true);
+
+        EmailType email = new EmailType();
+        email.setValue(resource.getEmail());
+        user.getEmails().add(email);
 
         try {
             URL picture = getClass()
@@ -105,7 +110,7 @@ public class RegisterResource {
 
         user.getRoles().add(userRole);
 
-        identityManager.authenticate(user);
+        identityManager.authenticate(resource.getEmail(), resource.getPassword());
 
         ResponseOk response = new ResponseOk();
 
