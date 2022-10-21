@@ -3,7 +3,6 @@ package com.anjunar.blomst.social.timeline.post.comments.comment;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
-import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
@@ -20,16 +19,13 @@ public class CommentForm extends AbstractLikeableRestEntity {
     private String text;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Post")
-    @MapperPermanent
     private AbstractPostForm post;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Parent Comment", readOnly = true, cycle = true)
-    @MapperPermanent
     private CommentForm parent;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
-    @MapperPermanent
     private UserSelect owner;
 
     @NotNull

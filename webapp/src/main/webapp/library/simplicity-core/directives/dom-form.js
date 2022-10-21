@@ -99,7 +99,10 @@ class DomForm extends mix(HTMLFormElement).with(Input) {
         for (const component of this.components) {
             result.push(component.validate());
         }
-        return result.some(item => item === false)
+        if (result.length === 0) {
+            return true;
+        }
+        return result.every(item => item === true)
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

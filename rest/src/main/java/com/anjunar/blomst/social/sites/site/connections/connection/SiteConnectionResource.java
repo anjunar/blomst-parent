@@ -1,14 +1,13 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
-import com.anjunar.blomst.control.roles.RolesResource;
-import com.anjunar.blomst.control.roles.RolesSearch;
-import com.anjunar.blomst.control.users.user.UserForm;
+import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.sites.Site;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
+import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -16,6 +15,7 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonObject;
+import com.anjunar.common.security.Identity;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
@@ -26,7 +26,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.anjunar.common.rest.link.WebURLBuilderFactory.linkTo;
@@ -62,18 +64,24 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Site Connection")
-    public Form<SiteConnectionForm> create() {
+    public Form<SiteConnectionForm> create(@QueryParam("to") UUID uuid) {
         SiteConnectionForm resource = new SiteConnectionForm();
         Form<SiteConnectionForm> form = new Form<>(resource) {};
+        form.dirty("from", "to");
 
-        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "from"));
+        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(SiteConnectionResource.class).save(new Form<>()))
                 .build(form::addLink);
 
         JsonObject to = form.find("to", JsonObject.class);
-        linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
-                .build(to::addLink);
+        if (Objects.nonNull(uuid)) {
+            Identity identity = entityManager.find(Site.class, uuid);
+            resource.setTo(entityMapper.map(identity, SiteForm.class));
+        } else {
+            linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
+                    .build(to::addLink);
+        }
 
         return form;
     }
@@ -101,6 +109,7 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
     public ResponseOk save(Form<SiteConnectionForm> form) {
 
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
+        entity.setFrom(identityManager.getUser());
 
         entityManager.persist(entity);
 
@@ -117,7 +126,8 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
     @LinkDescription("Update Site Connection")
     @Override
     public ResponseOk update(UUID id, Form<SiteConnectionForm> form) {
-        restMapper.map(form, SiteConnection.class);
+        SiteConnection entity = restMapper.map(form, SiteConnection.class);
+        entity.setFrom(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
 

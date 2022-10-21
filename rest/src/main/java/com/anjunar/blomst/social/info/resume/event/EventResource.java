@@ -63,8 +63,8 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
         EventForm form = new EventForm();
         SecuredForm<EventForm> securedForm = new SecuredForm<>(form) {};
 
-
         form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, securedForm));
+        securedForm.find("owner", JsonObject.class).setDirty(true);
 
         linkTo(methodOn(EventResource.class).save(new SecuredForm<>()))
                 .build(securedForm::addLink);
@@ -111,6 +111,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @RolesAllowed({"Administrator", "User"})
     public ResponseOk save(SecuredForm<EventForm> form) {
         Resume entity = restMapper.map(form, Resume.class);
+        entity.setOwner(identityManager.getUser());
 
         entityManager.persist(entity);
 
@@ -128,6 +129,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @RolesAllowed({"Administrator", "User"})
     public ResponseOk update(UUID id, SecuredForm<EventForm> form) {
         Resume entity = restMapper.map(form, Resume.class);
+        entity.setOwner(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
 

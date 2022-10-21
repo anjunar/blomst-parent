@@ -94,7 +94,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             Form<UserSelect> userSelect = mapper.map(identityManager.getUser(), new Form<>() {});
 
             PagesSearch search = new PagesSearch();
-            userSelect.getForm().setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class, userSelect, "language"));
+            userSelect.getForm().setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
             linkTo(methodOn(PagesResource.class).list(search))
                     .withRel("pages")
                     .build(userSelect::addLink);
@@ -128,8 +128,7 @@ public class ApplicationResource implements ValidationResource<UserForm> {
             UserSelect userSelect = new UserSelect();
             Form<UserSelect> form = new Form<>(userSelect) {};
 
-            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class, form, "language"));
-
+            userSelect.setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));
 
             linkTo(methodOn(LoginResource.class).login())
                     .build(form::addLink);

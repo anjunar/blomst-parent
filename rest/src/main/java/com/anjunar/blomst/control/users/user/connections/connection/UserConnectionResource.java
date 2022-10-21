@@ -1,14 +1,10 @@
 package com.anjunar.blomst.control.users.user.connections.connection;
 
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.connections.UserConnectionsResource;
 import com.anjunar.blomst.control.users.user.connections.UserConnectionsSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.system.mail.TemplatesResource;
-import com.anjunar.blomst.system.mail.TemplatesSearch;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -72,11 +68,12 @@ public class UserConnectionResource implements FormResourceTemplate<Form<UserCon
         UserConnectionForm resource = new UserConnectionForm();
 
         Form<UserConnectionForm> form = new Form<>(resource) {};
+        form.dirty("from", "to");
 
-        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "from"));
+        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         if (Objects.nonNull(toId)) {
-            resource.setTo(entityMapper.map(entityManager.find(User.class, toId), UserSelect.class, form, "to"));
+            resource.setTo(entityMapper.map(entityManager.find(User.class, toId), UserSelect.class));
         }
 
         linkTo(methodOn(UserConnectionResource.class).save(new Form<>()))
@@ -104,8 +101,8 @@ public class UserConnectionResource implements FormResourceTemplate<Form<UserCon
 
         Form<UserConnectionForm> form = entityMapper.map(entity, new Form<>() {});
 
-        form.getForm().setFrom(entityMapper.map(entity.getFrom(), UserSelect.class, form, "from"));
-        form.getForm().setTo(entityMapper.map(entity.getTo(), UserSelect.class, form, "to"));
+        form.getForm().setFrom(entityMapper.map(entity.getFrom(), UserSelect.class));
+        form.getForm().setTo(entityMapper.map(entity.getTo(), UserSelect.class));
 
         UserConnection acceptedConnection = service.accepted(entity.getFrom().getId(), entity.getTo().getId());
         if (acceptedConnection != null) {

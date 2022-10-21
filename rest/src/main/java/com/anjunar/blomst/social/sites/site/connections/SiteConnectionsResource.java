@@ -61,7 +61,7 @@ public class SiteConnectionsResource implements ListResourceTemplate<SiteConnect
             resources.add(form);
         }
 
-        linkTo(methodOn(SiteConnectionResource.class).create())
+        linkTo(methodOn(SiteConnectionResource.class).create(null))
                 .build(table::addLink);
 
         JsonObject from = table.find("from", JsonObject.class);

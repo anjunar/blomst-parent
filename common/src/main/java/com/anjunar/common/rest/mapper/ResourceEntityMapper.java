@@ -3,7 +3,6 @@ package com.anjunar.common.rest.mapper;
 import com.anjunar.common.ddd.AbstractColumnRight;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.ddd.AbstractRight;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.api.Table;
@@ -108,8 +107,8 @@ public class ResourceEntityMapper {
         return map(source, destinationClass, (JsonObject) ((JsonArray) table.getSchema().getProperties().get("rows")).getItems(), true);
     }
 
-    public <S, D> D map(S source, Class<D> destinationClass, Form<?> form, String property) {
-        return map(source, destinationClass, (JsonObject) ((JsonObject) form.getSchema().getProperties().get("form")).getProperties().get(property), false);
+    public <S, D> D map(S source, Class<D> destinationClass) {
+        return map(source, destinationClass, null, false);
     }
 
     public <S, D> D map(S source, Class<D> destinationClass, SecuredForm<?> securedForm) {
@@ -138,7 +137,7 @@ public class ResourceEntityMapper {
     public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonObject, boolean isTable) {
         D destination = getNewInstance(source, destinationClass);
 
-        if (source instanceof OwnerProvider ownerProvider) {
+        if (source instanceof OwnerProvider ownerProvider && Objects.nonNull(jsonObject)) {
             if (identityStore.getUser().equals(ownerProvider.getOwner())) {
                 loadSchema((OwnerProvider) source, jsonObject);
             } else {
@@ -185,7 +184,7 @@ public class ResourceEntityMapper {
                             );
                         }
                     } else {
-                        if (! isTable) {
+                        if (! isTable && Objects.nonNull(jsonObject)) {
                             jsonObject.remove(destinationProperty.getKey());
                         }
                     }
@@ -214,7 +213,10 @@ public class ResourceEntityMapper {
                         destinationProperty.accept(destination, entity.getId());
                     }
                 } else {
-                    JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
+                    JsonObject jsonNode = null;
+                    if (Objects.nonNull(jsonObject)) {
+                        jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
+                    }
                     Object restEntity = map(sourcePropertyInstance, destinationPropertyType, jsonNode, false);
                     destinationProperty.accept(destination, restEntity);
                 }
@@ -256,9 +258,11 @@ public class ResourceEntityMapper {
             if (sourceMapKeyType.equals(destinationMapKeyType)) {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
-                JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(entry.getKey());
+                JsonObject jsonNode = null;
+                if (Objects.nonNull(jsonObject)) {
+                    jsonNode = (JsonObject) jsonObject.getProperties().get(entry.getKey());
+                }
                 Object restEntity = map(entry.getKey(), destinationMapKeyType, jsonNode, false);
-
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(restEntity, entry.getValue());
                 } else {
@@ -289,9 +293,13 @@ public class ResourceEntityMapper {
             if (sourceCollectionType.equals(destinationCollectionType)) {
                 destinationPropertyInstance.add(element);
             } else {
-                JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
-                JsonArray jsonArray = (JsonArray) jsonNode;
-                Object restEntity = map(element, destinationCollectionType, (JsonObject) jsonArray.getItems(), false);
+                JsonObject items = null;
+                if (Objects.nonNull(jsonObject)) {
+                    JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
+                    JsonArray jsonArray = (JsonArray) jsonNode;
+                    items = (JsonObject) jsonArray.getItems();
+                }
+                Object restEntity = map(element, destinationCollectionType, items, false);
                 destinationPropertyInstance.add(restEntity);
             }
         }

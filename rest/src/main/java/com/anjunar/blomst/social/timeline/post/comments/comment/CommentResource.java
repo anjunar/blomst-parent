@@ -69,15 +69,15 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
 
         User user = identityManager.getUser();
         Form<CommentForm> form = new Form<>(resource) {};
-
+        form.dirty("post", "parent");
 
         AbstractPost post = entityManager.find(AbstractPost.class, postId);
-        resource.setPost(entityMapper.map(post, AbstractPostForm.class, form, "post"));
-        resource.setOwner(entityMapper.map(user, UserSelect.class, form, "owner"));
+        resource.setPost(entityMapper.map(post, AbstractPostForm.class));
+        resource.setOwner(entityMapper.map(user, UserSelect.class));
 
         if (Objects.nonNull(commentId)) {
             Comment parent = entityManager.find(Comment.class, commentId);
-            resource.setParent(entityMapper.map(parent, CommentForm.class, form, "parent"));
+            resource.setParent(entityMapper.map(parent, CommentForm.class));
         }
 
         linkTo(methodOn(CommentResource.class).save(new Form<>()))
@@ -128,6 +128,7 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
     public ResponseOk save(Form<CommentForm> resource) {
 
         Comment comment = restMapper.map(resource, Comment.class);
+        comment.setOwner(identityManager.getUser());
 
         for (User like : comment.getLikes()) {
             if (!like.equals(identityManager.getUser())) {
@@ -155,6 +156,7 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
         Set<User> rawLikes = Sets.newHashSet(rawComment.getLikes());
 
         Comment comment = restMapper.map(resource, Comment.class);
+        comment.setOwner(identityManager.getUser());
 
         Set<User> likes = Sets.newHashSet(comment.getLikes());
         likes.removeAll(rawLikes);

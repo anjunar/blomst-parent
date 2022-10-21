@@ -71,6 +71,7 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @Path("runas")
     @RolesAllowed({"Administrator"})
     @LinkDescription("Run As")
+    @Produces("application/json")
     public ResponseOk runAs(@QueryParam("id") UUID id) {
         User authenticate = identityManager.findUser(id);
 

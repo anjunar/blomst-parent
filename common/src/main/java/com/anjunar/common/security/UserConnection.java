@@ -11,13 +11,13 @@ import jakarta.persistence.ManyToOne;
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class UserConnection extends AbstractEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User from;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User to;
 
     public User getFrom() {

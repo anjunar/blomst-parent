@@ -64,11 +64,13 @@ public class AnswerResource implements FormResourceTemplate<Form<AnswerForm>> {
         AnswerForm resource = new AnswerForm();
 
         Form<AnswerForm> form = new Form<>(resource) {};
+        form.dirty("question", "owner");
 
         Question question = entityManager.find(Question.class, uuid);
 
-        resource.setQuestion(entityMapper.map(question, QuestionForm.class, form, "question"));
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
+        resource.setQuestion(entityMapper.map(question, QuestionForm.class));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
+
         resource.setEditor(new Editor());
         resource.setViews(0);
 
@@ -116,6 +118,7 @@ public class AnswerResource implements FormResourceTemplate<Form<AnswerForm>> {
     public ResponseOk save(Form<AnswerForm> resource) {
 
         Answer answer = restMapper.map(resource, Answer.class);
+        answer.setOwner(identityManager.getUser());
 
         entityManager.persist(answer);
 
@@ -134,7 +137,8 @@ public class AnswerResource implements FormResourceTemplate<Form<AnswerForm>> {
     @MethodPredicate(AnswerOwnerPredicate.class)
     public ResponseOk update(UUID id, Form<AnswerForm> resource) {
 
-        restMapper.map(resource, Answer.class);
+        Answer entity = restMapper.map(resource, Answer.class);
+        entity.setOwner(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
 

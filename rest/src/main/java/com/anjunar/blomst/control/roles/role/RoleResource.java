@@ -55,8 +55,7 @@ public class RoleResource implements FormResourceTemplate<Form<RoleForm>> {
     @LinkDescription("Create Role")
     public Form<RoleForm> create() {
         RoleForm resource = new RoleForm();
-
-        Form<RoleForm> form = new Form<>() {};
+        Form<RoleForm> form = new Form<>(resource) {};
 
         linkTo(methodOn(RoleResource.class).save(new Form<>()))
                         .build(form::addLink);

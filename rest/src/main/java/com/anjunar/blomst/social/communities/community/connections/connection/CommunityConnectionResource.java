@@ -3,13 +3,10 @@ package com.anjunar.blomst.social.communities.community.connections.connection;
 import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.roles.role.RoleForm;
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.*;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
-import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
-import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -69,12 +66,11 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
         CommunityConnectionForm resource = new CommunityConnectionForm();
 
         Form<CommunityConnectionForm> form = new Form<>(resource) {};
+        form.dirty("to", "role");
 
-
-        resource.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class, form, "to"));
+        resource.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class));
         resource.setStatus(Status.PENDING);
-        resource.setRole(entityMapper.map(service.findUserRole(), RoleForm.class, form, "role"));
-        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "from"));
+        resource.setRole(entityMapper.map(service.findUserRole(), RoleForm.class));
 
         linkTo(methodOn(CommunityConnectionResource.class).save(new Form<>()))
                 .build(form::addLink);
@@ -92,8 +88,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     public Form<CommunityConnectionForm> read(UUID id) {
         CommunitiesConnection entity = entityManager.find(CommunitiesConnection.class, id);
 
-        Form<CommunityConnectionForm> form = entityMapper.map(entity, new Form<>() {
-        });
+        Form<CommunityConnectionForm> form = entityMapper.map(entity, new Form<>() {});
 
         linkTo(methodOn(CommunityConnectionResource.class).update(id, new Form<>()))
                 .build(form::addLink);
@@ -113,7 +108,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     public ResponseOk save(Form<CommunityConnectionForm> form) {
 
         CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
-
+        entity.setFrom(identityManager.getUser());
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
@@ -130,7 +125,8 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     @Override
     public ResponseOk update(UUID id, Form<CommunityConnectionForm> form) {
 
-        restMapper.map(form, CommunitiesConnection.class);
+        CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
+        entity.setFrom(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
 

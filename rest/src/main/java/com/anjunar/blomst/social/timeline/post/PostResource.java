@@ -1,14 +1,8 @@
 package com.anjunar.blomst.social.timeline.post;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
-import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.communities.CommunitiesResource;
-import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
@@ -85,14 +79,15 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
             }
         }
         Form<AbstractPostForm> form = new Form<>(resource) {};
+        form.dirty("source");
 
         Identity identity = entityManager.find(Identity.class, source);
         if (identity instanceof User) {
-            resource.setSource(entityMapper.map(identity, UserSelect.class, form, "source"));
+            resource.setSource(entityMapper.map(identity, UserSelect.class));
         } else {
-            resource.setSource(entityMapper.map(identity, UserSelect.class, form, "source"));
+            resource.setSource(entityMapper.map(identity, UserSelect.class));
         }
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
+        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
         linkTo(methodOn(PostResource.class).save(new Form<>()))
                         .build(form::addLink);
@@ -208,6 +203,9 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
                 throw new WebApplicationException(Response.Status.CONFLICT);
             }
         }
+
+        post.setOwner(identityManager.getUser());
+
         entityManager.persist(post);
 
         ResponseOk response = new ResponseOk();
@@ -248,6 +246,8 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
                 return  restMapper.map(resource, SystemPost.class);
             }
         });
+
+        post.setOwner(identityManager.getUser());
 
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .withRel("redirect")

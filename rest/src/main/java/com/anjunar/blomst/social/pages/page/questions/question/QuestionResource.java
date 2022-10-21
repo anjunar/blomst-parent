@@ -9,9 +9,6 @@ import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
-import com.anjunar.blomst.social.timeline.TimelineResource;
-import com.anjunar.blomst.social.timeline.TimelineSearch;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.MethodPredicate;
@@ -68,13 +65,13 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
     public Form<QuestionForm> create(@QueryParam("page") UUID page) {
         QuestionForm resource = new QuestionForm();
         Form<QuestionForm> form = new Form<>(resource) {};
+        form.dirty("page", "owner");
 
         resource.setCreated(LocalDateTime.now());
         resource.setModified(LocalDateTime.now());
 
         Page pageEntity = entityManager.find(Page.class, page);
-        resource.setPage(entityMapper.map(pageEntity, PageForm.class, form, "page"));
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
+        resource.setPage(entityMapper.map(pageEntity, PageForm.class));
 
         linkTo(methodOn(QuestionResource.class).save(new Form<>()))
                 .build(form::addLink);
@@ -117,6 +114,7 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
     public ResponseOk save(Form<QuestionForm> resource) {
 
         Question question = restMapper.map(resource, Question.class);
+        question.setOwner(identityManager.getUser());
 
         entityManager.persist(question);
 
@@ -135,12 +133,8 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
     @LinkDescription("Update Question")
     public ResponseOk update(UUID id, Form<QuestionForm> resource) {
 
-        UserSelect owner = resource.getForm().getOwner();
-        if (!owner.getId().equals(identityManager.getUser().getId())) {
-            throw new NotAuthorizedException("Not Allowed");
-        }
-
-        restMapper.map(resource, Question.class);
+        Question entity = restMapper.map(resource, Question.class);
+        entity.setOwner(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
 

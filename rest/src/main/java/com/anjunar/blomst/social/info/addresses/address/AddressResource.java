@@ -55,8 +55,7 @@ public class AddressResource {
     @RolesAllowed({"Administrator", "User"})
     public SecuredForm<AddressSelect> create() {
         AddressSelect form = new AddressSelect();
-        SecuredForm<AddressSelect> securedForm = new SecuredForm<>() {};
-        securedForm.setForm(form);
+        SecuredForm<AddressSelect> securedForm = new SecuredForm<>(form) {};
 
         JsonObject name = securedForm.find("name", JsonObject.class);
         linkTo(methodOn(AddressSearchResource.class).list(null))

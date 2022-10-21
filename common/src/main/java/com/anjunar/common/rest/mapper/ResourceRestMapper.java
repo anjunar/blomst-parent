@@ -4,18 +4,18 @@ import com.anjunar.common.ddd.AbstractColumnRight;
 import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
-import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
 import com.anjunar.common.rest.mapper.rest.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
-import com.anjunar.common.security.*;
+import com.anjunar.common.security.Category;
+import com.anjunar.common.security.IdentityStore;
+import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
@@ -23,7 +23,10 @@ import com.google.common.base.Strings;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,16 +148,16 @@ public class ResourceRestMapper {
     }
 
     private <S, D> void processBean(S source,
-                                                                 Object sourcePropertyInstance,
-                                                                 BeanProperty<S, ?> sourceProperty,
-                                                                 Object destinationPropertyInstance,
-                                                                 BeanProperty<D, Object> destinationProperty,
-                                                                 D destination,
-                                                                 JsonObject jsonObject) {
+                                    Object sourcePropertyInstance,
+                                    BeanProperty<S, ?> sourceProperty,
+                                    Object destinationPropertyInstance,
+                                    BeanProperty<D, Object> destinationProperty,
+                                    D destination,
+                                    JsonObject jsonObject) {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
-        MapperPermanent mapperPermanent = sourceProperty.getAnnotation(MapperPermanent.class);
+        boolean mapperLoadOnly = AbstractEntity.class.isAssignableFrom(destinationPropertyType);
         MapperConverter mapperConverter = sourceProperty.getAnnotation(MapperConverter.class);
         if (mapperConverter == null) {
             if (sourcePropertyType.equals(destinationPropertyType)) {
@@ -168,7 +171,7 @@ public class ResourceRestMapper {
                     destinationProperty.accept(destination, entity);
                 } else {
                     JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
-                    Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonNode, isDirty(jsonNode, sourceProperty), mapperPermanent != null);
+                    Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonNode, isDirty(jsonNode, sourceProperty), mapperLoadOnly);
                     destinationProperty.accept(destination, restEntity);
                 }
             }
@@ -180,12 +183,10 @@ public class ResourceRestMapper {
     }
 
     private <S, D> void processMap(Map<Object, Object> sourcePropertyInstance,
-                                                                BeanProperty<S, ?> sourceProperty,
-                                                                Map<Object, Object> destinationPropertyInstance,
-                                                                BeanProperty<D, Object> destinationProperty,
-                                                                JsonObject jsonObject) {
-        MapperPermanent mapperPermanent = sourceProperty.getAnnotation(MapperPermanent.class);
-
+                                   BeanProperty<S, ?> sourceProperty,
+                                   Map<Object, Object> destinationPropertyInstance,
+                                   BeanProperty<D, Object> destinationProperty,
+                                   JsonObject jsonObject) {
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
                 .resolveType(Map.class.getTypeParameters()[0])
@@ -206,16 +207,19 @@ public class ResourceRestMapper {
                 .resolveType(Map.class.getTypeParameters()[1])
                 .getRawType();
 
+        boolean mapperLoadOnlyKey = AbstractEntity.class.isAssignableFrom(destinationMapKeyType);
+        boolean mapperLoadOnlyValue = AbstractEntity.class.isAssignableFrom(destinationMapValueType);
+
         for (Map.Entry<Object, Object> entry : sourcePropertyInstance.entrySet()) {
             if (sourceMapKeyType.equals(destinationMapKeyType)) {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
                 JsonArray jsonNode = (JsonArray) jsonObject.getProperties().get(sourceProperty.getKey());
-                Object keyEntity = map(entry.getKey(), (Class<?>) destinationMapKeyType, (JsonObject) jsonNode.getItems(), false, mapperPermanent != null);
+                Object keyEntity = map(entry.getKey(), (Class<?>) destinationMapKeyType, (JsonObject) jsonNode.getItems(), false, mapperLoadOnlyKey);
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(keyEntity, entry.getValue());
                 } else {
-                    Object valueEntity = map(entry.getValue(), (Class<?>) destinationMapValueType, (JsonObject) jsonNode.getItems(), false, mapperPermanent != null);
+                    Object valueEntity = map(entry.getValue(), (Class<?>) destinationMapValueType, (JsonObject) jsonNode.getItems(), false, mapperLoadOnlyValue);
                     destinationPropertyInstance.put(keyEntity, valueEntity);
                 }
             }
@@ -223,11 +227,10 @@ public class ResourceRestMapper {
     }
 
     private <S, D> void processCollection(Collection<Object> sourcePropertyInstance,
-                                                                       BeanProperty<S, ?> sourceProperty,
-                                                                       Collection<Object> destinationPropertyInstance,
-                                                                       BeanProperty<D, Object> destinationProperty,
-                                                                       JsonObject jsonObject) {
-        MapperPermanent mapperPermanent = sourceProperty.getAnnotation(MapperPermanent.class);
+                                          BeanProperty<S, ?> sourceProperty,
+                                          Collection<Object> destinationPropertyInstance,
+                                          BeanProperty<D, Object> destinationProperty,
+                                          JsonObject jsonObject) {
 
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
@@ -239,6 +242,8 @@ public class ResourceRestMapper {
                 .resolveType(Collection.class.getTypeParameters()[0])
                 .getRawType();
 
+        boolean mapperLoadOnly = AbstractEntity.class.isAssignableFrom(destinationCollectionType);
+
         destinationPropertyInstance.clear();
 
         for (Object element : sourcePropertyInstance) {
@@ -246,7 +251,7 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.add(element);
             } else {
                 JsonArray jsonNode = (JsonArray) jsonObject.getProperties().get(sourceProperty.getKey());
-                Object entity = map(element, (Class<?>) destinationCollectionType, (JsonObject) jsonNode.getItems(), false, mapperPermanent != null);
+                Object entity = map(element, (Class<?>) destinationCollectionType, (JsonObject) jsonNode.getItems(), false, mapperLoadOnly);
                 destinationPropertyInstance.add(entity);
             }
         }
@@ -259,7 +264,7 @@ public class ResourceRestMapper {
         BeanModel<?> model = BeanIntrospector.create(destination.getClass());
         String entityName = null;
         Entity annotation = model.getAnnotation(Entity.class);
-        if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
+        if (Objects.nonNull(annotation) && !Strings.isNullOrEmpty(annotation.name())) {
             entityName = annotation.name();
         } else {
             entityName = destination.getClass().getSimpleName();
@@ -300,7 +305,7 @@ public class ResourceRestMapper {
         BeanModel<?> model = BeanIntrospector.create(destination.getClass());
         String entityName = null;
         Entity annotation = model.getAnnotation(Entity.class);
-        if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
+        if (Objects.nonNull(annotation) && !Strings.isNullOrEmpty(annotation.name())) {
             entityName = annotation.name();
         } else {
             entityName = destination.getClass().getSimpleName();
@@ -352,10 +357,6 @@ public class ResourceRestMapper {
     }
 
     private static <S> Boolean isDirty(JsonObject jsonObject, BeanProperty<S, ?> propertySource) {
-        MapperPermanent mapperPermanent = propertySource.getAnnotation(MapperPermanent.class);
-        if (Objects.nonNull(mapperPermanent)) {
-            return true;
-        }
         Boolean dirty = false;
         JsonNode jsonNode = jsonObject.getProperties().get(propertySource.getKey());
         if (jsonNode != null) {

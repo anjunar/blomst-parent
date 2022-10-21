@@ -3,20 +3,15 @@ package com.anjunar.blomst.social.info.resume.event;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.mapper.annotations.MapperPermanent;
-import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.anjunar.common.security.Category;
 
 import java.time.Year;
-import java.util.Set;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class EventForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
-    @MapperPermanent
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Site")

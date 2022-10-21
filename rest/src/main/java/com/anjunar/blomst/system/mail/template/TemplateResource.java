@@ -60,7 +60,6 @@ public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>
         TemplateForm resource = new TemplateForm();
 
         resource.setContent(new Editor());
-
         Form<TemplateForm> form = new Form<>(resource) {};
 
         linkTo(methodOn(TemplateResource.class).save(new Form<>()))

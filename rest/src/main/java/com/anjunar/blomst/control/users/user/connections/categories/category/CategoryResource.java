@@ -1,15 +1,10 @@
 package com.anjunar.blomst.control.users.user.connections.categories.category;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
-import com.anjunar.blomst.control.users.user.UserForm;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesResource;
 import com.anjunar.blomst.control.users.user.connections.categories.CategoriesSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
-import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersSearch;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -65,8 +60,6 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
         CategoryForm resource = new CategoryForm();
         Form<CategoryForm> form = new Form<>(resource) {};
 
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, form, "owner"));
-
         linkTo(methodOn(CategoryResource.class).save(new Form<>()))
                 .build(form::addLink);
 
@@ -104,7 +97,7 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
     public ResponseOk save(Form<CategoryForm> form) {
 
         Category entity = restMapper.map(form, Category.class);
-
+        entity.setOwner(identityManager.getUser());
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
@@ -123,7 +116,8 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
     @LinkDescription("Update Category")
     public ResponseOk update(UUID id, Form<CategoryForm> form) {
 
-        restMapper.map(form, Category.class);
+        Category entity = restMapper.map(form, Category.class);
+        entity.setOwner(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
 

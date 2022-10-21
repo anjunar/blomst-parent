@@ -35,4 +35,11 @@ public class AbstractSchemaEntity {
         return schema.find(widget);
     }
 
+    public void dirty(String... values) {
+        for (String value : values) {
+            JsonNode jsonNode = find(value, JsonNode.class);
+            jsonNode.setDirty(true);
+        }
+    }
+
 }
