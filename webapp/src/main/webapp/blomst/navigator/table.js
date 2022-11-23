@@ -1,9 +1,9 @@
-import {customViews} from "../../library/simplicity-core/simplicity.js";
-import {loader} from "../../library/simplicity-core/processors/loader-processor.js";
-import MetaTable from "../../library/simplicity-material/components/meta/meta-table.js";
-import MatDrawer from "../../library/simplicity-material/components/navigation/mat-drawer.js";
-import MatDrawerContainer from "../../library/simplicity-material/components/navigation/mat-drawer-container.js";
-import MatDrawerContent from "../../library/simplicity-material/components/navigation/mat-drawer-content.js";
+import {customViews} from "../../library/simplicity/simplicity.js";
+import MetaTable from "../../library/simplicity/components/meta/meta-table.js";
+import MatDrawer from "../../library/simplicity/components/navigation/mat-drawer.js";
+import MatDrawerContainer from "../../library/simplicity/components/navigation/mat-drawer-container.js";
+import MatDrawerContent from "../../library/simplicity/components/navigation/mat-drawer-content.js";
+import {loader} from "../../library/simplicity/util/loader.js";
 
 class Table extends HTMLElement {
 

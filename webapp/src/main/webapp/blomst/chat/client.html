@@ -12,7 +12,7 @@
         <input type="text" is="dom-input" bind:model="model.text"/>
     </mat-input-container>
 
-    <button type="button" bind:onclick="send()">Send</button>
+    <button type="button" read:onclick="send()">Send</button>
     <div bind:if="typing">{{{typing.firstName}}} {{{typing.lastName}}} is typing...</div>
 </template>
 </body>

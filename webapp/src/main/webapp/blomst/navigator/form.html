@@ -26,9 +26,9 @@
                 <div style="height: 100%; overflow-x: hidden; overflow-y: auto">
                     <div style="margin: 5px">{{{link}}}</div>
                     <div style="margin: 5px;">
-                        <meta-form bind:model="model" bind:onaction="onAction($event)">
-                            <meta-input bind:for="let [key, model] of model.$schema.properties" bind:property="key" bind:schema="model"></meta-input>
-                            <button type="button" read:for="let link of actions(model.$schema.links)" bind:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
+                        <meta-form bind:model="model" read:onaction="onAction($event)">
+                            <meta-input bind:for="let [key, schema] of model.$schema.properties" bind:property="key" bind:schema="schema"></meta-input>
+                            <button type="button" read:for="let link of actions(model.$schema.links)" read:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
                         </meta-form>
                     </div>
                 </div>

@@ -24,7 +24,7 @@
         <mat-drawer-content>
             <div>
                 <div style="margin: 5px;">{{{link}}}</div>
-                <meta-table style="margin: 5px" bind:items="items" bind:onmodel="onRowClick($event)" bind:onload="onLoad($event)"></meta-table>
+                <meta-table style="margin: 5px" bind:items="items" read:onmodel="onRowClick($event)" read:onload="onLoad($event)"></meta-table>
             </div>
         </mat-drawer-content>
     </mat-drawer-container>
