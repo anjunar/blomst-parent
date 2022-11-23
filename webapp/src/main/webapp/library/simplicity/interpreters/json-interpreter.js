@@ -142,8 +142,9 @@ function processAttributes(node, element, rework, context) {
                     if (observedAttributes?.length > 0) {
                         let attribute = observedAttributes.find(attribute => attribute.name === key);
                         if (attribute) {
-                            if (attribute.binding === "two-way") {
+                            if (attribute.binding === "two-way" && value.expression) {
                                 element.addEventListener(key, (event) => {
+                                    console.log(node)
                                     let $value = event.target[key]
                                     let expression = value.expression + " = " + "$value"
                                     evaluation(expression, value.context, {$value: $value}, true)

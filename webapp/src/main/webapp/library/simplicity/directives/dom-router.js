@@ -105,9 +105,9 @@ class DomRouter extends HTMLElement {
         let file = files[this.level]
 
         if (file && (file !== this.file)) {
-            this.file = file
             viewManager.load(file, queryParams, this.app)
                 .then((view) => {
+                    this.file = file
                     view.render();
                     for (const child of Array.from(this.children)) {
                         child.remove();
