@@ -460,7 +460,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
             },
 
             if() {
-                let activeElement = document.createComment(`if: predicate:${node.predicate.expression}`);
+                let data = `if:`;
+                if (node.predicate?.expression) {
+                    data += `predicate: ${node.predicate.expression}`
+                }
+                let activeElement = document.createComment(data);
                 elements.appendChild(activeElement);
                 let renderedElements = [];
                 function generate(newValue, oldValue) {
