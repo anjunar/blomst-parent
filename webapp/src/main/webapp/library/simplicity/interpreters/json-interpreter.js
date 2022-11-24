@@ -390,7 +390,7 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                 }
             },
             forEach() {
-                let activeElement = document.createComment("for");
+                let activeElement = document.createComment(`for: items:${node.items.expression} item:${node.item}`);
                 elements.appendChild(activeElement);
                 let renderedElements = [];
 
@@ -460,7 +460,7 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
             },
 
             if() {
-                let activeElement = document.createComment("if");
+                let activeElement = document.createComment(`if: predicate:${node.predicate.expression}`);
                 elements.appendChild(activeElement);
                 let renderedElements = [];
                 function generate(newValue, oldValue) {
