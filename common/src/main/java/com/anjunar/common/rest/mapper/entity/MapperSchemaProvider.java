@@ -7,11 +7,10 @@ import com.anjunar.common.security.*;
 import com.anjunar.introspector.bean.BeanIntrospector;
 import com.anjunar.introspector.bean.BeanModel;
 import com.anjunar.introspector.bean.BeanProperty;
+import com.google.common.base.Strings;
 import jakarta.inject.Inject;
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -62,11 +61,11 @@ public class MapperSchemaProvider implements SecurityProvider {
         try {
             BeanModel<? extends OwnerProvider> model = BeanIntrospector.create(entity.getClass());
             String tableName = null;
-            Table annotation = model.getAnnotation(Table.class);
-            if (Objects.nonNull(annotation)) {
+            Entity annotation = model.getAnnotation(Entity.class);
+            if (Objects.nonNull(annotation) && ! Strings.isNullOrEmpty(annotation.name())) {
                 tableName = annotation.name();
             } else {
-                tableName = entity.getClass().getSimpleName();
+                tableName = getObjectFromProxy(entity).getSimpleName();
             }
 
             String columnName = null;
@@ -102,6 +101,13 @@ public class MapperSchemaProvider implements SecurityProvider {
         } catch (NoResultException e) {
             return false;
         }
+    }
+
+    static Class<?> getObjectFromProxy(Object object) {
+        if (object instanceof HibernateProxy proxy) {
+            return proxy.getHibernateLazyInitializer().getImplementation().getClass();
+        }
+        return object.getClass();
     }
 
 }

@@ -208,7 +208,9 @@ public class ResourceEntityMapper {
         if (Objects.nonNull(mapperVisibility)) {
             if (! mapperVisibility.configurable()) {
                 JsonNode jsonNode = jsonObject.getProperties().get(destinationProperty.getKey());
-                jsonNode.setVisibility(null);
+                if (Objects.nonNull(jsonNode)) {
+                    jsonNode.setVisibility(null);
+                }
             }
         }
 

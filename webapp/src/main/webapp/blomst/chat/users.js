@@ -11,7 +11,7 @@ class Users extends HTMLElement {
     user = null;
 
     onlineUsers(query, callback) {
-        fetch(`service/social/chat/online?index=${query.index}&limit=${query.limit}&from=${this.user.id}`)
+        fetch(`service/social/chat/online?index=${query.index}&limit=${query.limit}&from=${this.user.form.id}`)
             .then(response => response.json())
             .then(response => callback(response.rows, response.size, response.$schema))
     }
@@ -19,7 +19,7 @@ class Users extends HTMLElement {
     initialize() {
 
         let onStatus = () => {
-            let table = this.querySelector("table");
+            let table = this.querySelector("mat-table");
             table.load();
         };
 
@@ -54,7 +54,7 @@ class Users extends HTMLElement {
             singleton: true,
             data: {
                 model: {
-                    from: this.user.id,
+                    from: this.user.form.id,
                     to: [event.detail.id],
                     text: ""
                 }

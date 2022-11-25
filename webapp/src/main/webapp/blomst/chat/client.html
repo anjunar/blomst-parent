@@ -13,7 +13,7 @@
     </mat-input-container>
 
     <button type="button" read:onclick="send()">Send</button>
-    <div bind:if="typing">{{{typing.firstName}}} {{{typing.lastName}}} is typing...</div>
+    <div bind:if="typing">{{{typing.form.firstName}}} {{{typing.form.lastName}}} is typing...</div>
 </template>
 </body>
 </html>

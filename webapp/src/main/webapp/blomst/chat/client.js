@@ -22,7 +22,7 @@ class Client extends HTMLElement {
         url.searchParams.set("index", query.index);
         url.searchParams.set("limit", query.limit);
         url.searchParams.set("sort", "created:desc")
-        url.searchParams.set("participants", this.user.id);
+        url.searchParams.set("participants", this.user.form.id);
 
         for (const uuid of this.model.to) {
             url.searchParams.append("participants", uuid);
@@ -35,7 +35,7 @@ class Client extends HTMLElement {
 
     initialize() {
         let onTextMessage = () => {
-            let table = this.querySelector("table");
+            let table = this.querySelector("mat-table");
             table.load();
         };
 
@@ -85,7 +85,7 @@ class Client extends HTMLElement {
         })
             .then(response => response.json())
             .then(_ => {
-                let table = this.querySelector("table");
+                let table = this.querySelector("mat-table");
                 table.load();
                 this.model.text = "";
             })
