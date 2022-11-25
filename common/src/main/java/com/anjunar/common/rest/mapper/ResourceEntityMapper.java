@@ -9,6 +9,7 @@ import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 import com.anjunar.common.rest.mapper.annotations.MapperPolymorphism;
+import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.mapper.entity.SecurityProvider;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.schema.JsonArray;
@@ -202,6 +203,14 @@ public class ResourceEntityMapper {
                                     JsonObject jsonObject) {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
+
+        MapperVisibility mapperVisibility = destinationProperty.getAnnotation(MapperVisibility.class);
+        if (Objects.nonNull(mapperVisibility)) {
+            if (! mapperVisibility.configurable()) {
+                JsonNode jsonNode = jsonObject.getProperties().get(destinationProperty.getKey());
+                jsonNode.setVisibility(null);
+            }
+        }
 
         MapperConverter mapperConverter = destinationProperty.getAnnotation(MapperConverter.class);
         if (mapperConverter == null) {

@@ -22,18 +22,18 @@ public class UserSelect extends IdentitySelect {
     @Size(min = 3, max = 80)
     @NotBlank
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", readOnly = true)
-    @MapperVisibility
+    @MapperVisibility(configurable = false)
     private String firstName;
 
     @Size(min = 3, max = 80)
     @NotBlank
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", readOnly = true)
-    @MapperVisibility
+    @MapperVisibility(configurable = false)
     private String lastName;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate", readOnly = true)
-    @MapperVisibility
+    @MapperVisibility(configurable = false)
     private LocalDate birthDate;
 
     @NotNull
