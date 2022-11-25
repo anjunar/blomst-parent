@@ -313,11 +313,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
 
                         let query;
                         if (selector) {
-                            query = documentFragment.querySelectorAll(node.selector)[index];
+                            query = documentFragment.querySelectorAllBreadthFirst(node.selector)[index];
                         }
 
                         if (name) {
-                            query = documentFragment.querySelectorAll(`[slot=${node.name}]`)[index]
+                            query = documentFragment.querySelectorAllBreadthFirst(`[slot=${node.name}]`)[index]
                         }
 
                         if (tag) {
