@@ -84,6 +84,8 @@ public class RegisterResource {
         email.setValue(resource.getEmail());
         user.getEmails().add(email);
 
+        user.setNickName(resource.getEmail().split("@")[0]);
+
         try {
             URL picture = getClass()
                     .getClassLoader()
