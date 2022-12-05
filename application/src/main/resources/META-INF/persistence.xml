@@ -40,7 +40,8 @@
         <class>com.anjunar.blomst.control.users.Address</class>
         <class>com.anjunar.blomst.control.users.AddressRight</class>
 
-        <class>com.anjunar.blomst.control.notifications.Notification</class>
+        <class>com.anjunar.blomst.control.notifications.AbstractNotification</class>
+        <class>com.anjunar.blomst.control.notifications.ConnectionNotification</class>
 
         <class>com.anjunar.blomst.social.communities.CommunitiesConnection</class>
         <class>com.anjunar.blomst.social.communities.Community</class>

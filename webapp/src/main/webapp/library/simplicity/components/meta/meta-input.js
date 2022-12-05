@@ -491,9 +491,9 @@ class MetaInputJson extends HTMLElement {
 
     property;
     schema;
-    model;
+    model = {};
 
-    preInitialize() {
+    initialize() {
         let form = this.queryUpwards((element) => element instanceof DomForm);
         this.model = form.model[this.property];
     }
@@ -537,7 +537,7 @@ class MetaInputJson extends HTMLElement {
                 <body>
                     <template>
                         <div>
-                            <div style="font-size: small" read:for="let [key, value] of model">
+                            <div style="font-size: small" bind:for="let [key, value] of model">
                                 {{{key}}} : {{{value}}}
                             </div>
                         </div>

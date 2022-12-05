@@ -35,7 +35,7 @@
         <mapping class="com.anjunar.blomst.control.users.ResumeItem"/>
         <mapping class="com.anjunar.blomst.control.users.Resume"/>
 
-        <mapping class="com.anjunar.blomst.control.notifications.Notification"/>
+        <mapping class="com.anjunar.blomst.control.notifications.AbstractNotification"/>
 
         <mapping class="com.anjunar.blomst.social.communities.Community"/>
         <mapping class="com.anjunar.blomst.social.communities.CommunitiesConnection"/>

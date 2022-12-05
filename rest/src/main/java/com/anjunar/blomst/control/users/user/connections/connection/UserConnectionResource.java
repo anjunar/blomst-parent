@@ -133,16 +133,18 @@ public class UserConnectionResource implements FormResourceTemplate<Form<UserCon
         from.setFrom(identityManager.getUser());
         entityManager.persist(from);
 
+/*
         UserConnection to = new UserConnection();
         to.setFrom(from.getTo());
         to.setTo(from.getFrom());
         entityManager.persist(to);
-
-        service.createNotification(form.getForm().getTo().getId(), form.getForm().getFrom().getId());
+*/
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserConnectionsResource.class).list(new UserConnectionsSearch()))
+        UserConnectionsSearch search = new UserConnectionsSearch();
+        search.setFrom(identityManager.getUser().getId());
+        linkTo(methodOn(UserConnectionsResource.class).list(search))
                 .withRel("redirect")
                 .build(response::addLink);
 
@@ -158,7 +160,9 @@ public class UserConnectionResource implements FormResourceTemplate<Form<UserCon
 
         ResponseOk response = new ResponseOk();
 
-        linkTo(methodOn(UserConnectionsResource.class).list(new UserConnectionsSearch()))
+        UserConnectionsSearch search = new UserConnectionsSearch();
+        search.setFrom(identityManager.getUser().getId());
+        linkTo(methodOn(UserConnectionsResource.class).list(search))
                 .withRel("redirect")
                 .build(response::addLink);
 

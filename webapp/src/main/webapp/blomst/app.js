@@ -7,6 +7,7 @@ import MatTaskbar from "../library/simplicity/components/system/mat-taskbar.js";
 import {routes} from "./routes.js"
 import DomA from "../library/simplicity/directives/dom-a.js";
 import {loader} from "../library/simplicity/util/loader.js";
+import Notification from "./system/notification.js";
 
 class HiveApp extends HTMLElement {
 
@@ -31,7 +32,7 @@ class HiveApp extends HTMLElement {
     }
 
     static get components() {
-        return [DomRouter, MatToolbar, MatFooter, MatLanguage, MatTaskbar, DomA];
+        return [DomRouter, MatToolbar, MatFooter, MatLanguage, MatTaskbar, DomA, Notification];
     }
 
     static get template() {

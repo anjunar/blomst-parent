@@ -33,6 +33,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import org.checkerframework.checker.units.qual.degrees;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,7 +150,7 @@ public class ResourceEntityMapper {
         }
 
         BeanModel<S> sourceModel = (BeanModel<S>) BeanIntrospector.create(source.getClass());
-        BeanModel<D> destinationModel = BeanIntrospector.create(destinationClass);
+        BeanModel<D> destinationModel = (BeanModel<D>) BeanIntrospector.create(destination.getClass());
 
         for (BeanProperty<S, ?> sourceProperty : sourceModel.getProperties()) {
             BeanProperty<D, Object> destinationProperty = (BeanProperty<D, Object>) destinationModel.get(sourceProperty.getKey());
@@ -207,9 +208,11 @@ public class ResourceEntityMapper {
         MapperVisibility mapperVisibility = destinationProperty.getAnnotation(MapperVisibility.class);
         if (Objects.nonNull(mapperVisibility)) {
             if (! mapperVisibility.configurable()) {
-                JsonNode jsonNode = jsonObject.getProperties().get(destinationProperty.getKey());
-                if (Objects.nonNull(jsonNode)) {
-                    jsonNode.setVisibility(null);
+                if (Objects.nonNull(jsonObject)) {
+                    JsonNode jsonNode = jsonObject.getProperties().get(destinationProperty.getKey());
+                    if (Objects.nonNull(jsonNode)) {
+                        jsonNode.setVisibility(null);
+                    }
                 }
             }
         }

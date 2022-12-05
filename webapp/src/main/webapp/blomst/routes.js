@@ -10,6 +10,9 @@ export const routes = {
         },
         "system" : {
             file : "blomst/system/activities.js"
+        },
+        "notifications" : {
+            file : "blomst/system/notifications.js"
         }
     }
 }
