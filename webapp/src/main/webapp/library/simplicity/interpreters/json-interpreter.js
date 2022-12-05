@@ -12,13 +12,38 @@ export function bind(context, expression) {
     }
 }
 
-export function variable(implicit, context, property, callback) {
+export function slot(context, options) {
+    return {
+        type : "slot",
+        context,
+        ...options
+    }
+}
+
+export function letStatement(implicit, context, property, callback) {
     return {
         type: "letStatement",
         callback: callback,
         implicit: implicit,
         context : context,
         property: property
+    }
+}
+
+export function forEach(context, options) {
+    return {
+        type : "forEach",
+        context,
+        ...options
+    }
+}
+
+export function variable(value, context, node) {
+    return {
+        type : "variable",
+        value,
+        context,
+        node
     }
 }
 
@@ -310,6 +335,8 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                             notifyElementRemove(child);
                             child.remove();
                         }
+
+                        renderedElements = [];
 
                         let query;
                         if (selector) {
