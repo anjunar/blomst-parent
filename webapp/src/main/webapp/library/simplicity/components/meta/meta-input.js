@@ -490,6 +490,9 @@ class MetaInputInput extends HTMLElement {
             input.maxLength = validators.size.max;
             input.minLength = validators.size.min;
         }
+        if (validators.pattern) {
+            input.pattern = validators.pattern.regexp
+        }
 
         Membrane.track(input, {
             property: "dirty",
@@ -555,6 +558,9 @@ class MetaInputInput extends HTMLElement {
                                     </case>
                                     <case value="email">
                                         <span name="typeMismatch">This must be a valid Email Address</span>
+                                    </case>
+                                    <case value="pattern"> 
+                                        <span name="patternMismatch">This must be a valid {{{validator.regexp}}}</span>
                                     </case>
                                 </switch>
                             </div>

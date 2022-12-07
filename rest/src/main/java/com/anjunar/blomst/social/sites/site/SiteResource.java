@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.sites.site;
 
+import com.anjunar.blomst.social.info.addresses.AddressSearchResource;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsResource;
@@ -11,6 +12,7 @@ import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -66,11 +68,14 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
     @LinkDescription("Create Site")
     public Form<SiteForm> create() {
         final SiteForm resource = new SiteForm();
-
         Form<SiteForm> form = new Form<>(resource) {};
 
         linkTo(methodOn(SiteResource.class).save(new Form<>()))
                 .build(form::addLink);
+
+        JsonObject name = form.find("address", JsonObject.class);
+        linkTo(methodOn(AddressSearchResource.class).list(null))
+                .build(name::addLink);
 
         return form;
     }
@@ -82,6 +87,10 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         final Site entity = entityManager.find(Site.class, id);
 
         Form<SiteForm> form = entityMapper.map(entity, new Form<>() {});
+
+        JsonObject name = form.find("address", JsonObject.class);
+        linkTo(methodOn(AddressSearchResource.class).list(null))
+                .build(name::addLink);
 
         try {
             SiteConnection connection = service.findConnection(identityManager.getUser().getId(), id);
