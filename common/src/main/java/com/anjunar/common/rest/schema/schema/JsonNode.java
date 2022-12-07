@@ -57,6 +57,8 @@ public abstract class JsonNode {
         LAZY_SELECT("lazy-select"),
         TEXTAREA("textarea"),
         EDITOR("editor"),
+
+        LIKE("like"),
         JSON("json");
 
         final String value;

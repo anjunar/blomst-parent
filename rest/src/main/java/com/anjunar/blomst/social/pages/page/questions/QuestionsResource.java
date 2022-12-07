@@ -68,10 +68,6 @@ public class QuestionsResource implements ListResourceTemplate<QuestionForm, Que
         linkTo(methodOn(QuestionResource.class).create(search.getPage()))
                 .build(table::addLink);
 
-        JsonArray likes = table.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject page = table.find("page", JsonObject.class);
         linkTo(methodOn(PagesResource.class).list(new PagesSearch()))
                 .build(page::addLink);

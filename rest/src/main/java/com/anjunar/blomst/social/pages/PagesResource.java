@@ -65,10 +65,6 @@ public class PagesResource implements ListResourceTemplate<PageForm, PagesSearch
             resources.add(resource);
         }
 
-        JsonArray likes = table.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject language = table.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);

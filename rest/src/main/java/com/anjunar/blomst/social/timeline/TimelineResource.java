@@ -111,10 +111,6 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
                 .build(table::addLink);
 
 
-        JsonArray likes = table.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject owner = table.find("owner", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);

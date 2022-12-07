@@ -101,10 +101,6 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
 
-        JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         return resource;
     }
 

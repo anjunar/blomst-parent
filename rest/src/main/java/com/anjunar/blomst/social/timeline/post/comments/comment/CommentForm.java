@@ -1,8 +1,10 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
 import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.shared.likeable.LikesConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
+import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
@@ -29,8 +31,9 @@ public class CommentForm extends AbstractLikeableRestEntity {
     private UserSelect owner;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
-    private final Set<UserSelect> likes = new HashSet<>();
+    @JsonSchema(widget = JsonNode.Widget.LIKE, title = "Likes")
+    @MapperConverter(LikesConverter.class)
+    private boolean likes = false;
 
     public String getText() {
         return text;
@@ -64,8 +67,13 @@ public class CommentForm extends AbstractLikeableRestEntity {
         this.owner = owner;
     }
 
-    public Set<UserSelect> getLikes() {
+    @Override
+    public boolean isLikes() {
         return likes;
     }
 
+    @Override
+    public void setLikes(boolean likes) {
+        this.likes = likes;
+    }
 }

@@ -177,7 +177,7 @@ public class ResourceRestMapper {
             }
         } else {
             MapperConverterType converter = getNewInstance(mapperConverter.value());
-            Object restEntity = converter.updater(sourcePropertyInstance);
+            Object restEntity = converter.updater(sourcePropertyInstance, source);
             destinationProperty.accept(destination, restEntity);
         }
     }

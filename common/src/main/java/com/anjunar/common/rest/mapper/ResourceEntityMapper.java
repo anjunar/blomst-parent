@@ -161,29 +161,36 @@ public class ResourceEntityMapper {
 
                 if (Objects.nonNull(sourcePropertyInstance)) {
                     if (securityProviders.stream().allMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty))) {
-                        switch (sourcePropertyInstance) {
-                            case Collection<?> collection -> processCollection(
-                                    (Collection<Object>) sourcePropertyInstance,
-                                    sourceProperty,
-                                    (Collection<Object>) destinationPropertyInstance,
-                                    destinationProperty,
-                                    jsonObject
-                            );
-                            case Map<?, ?> map -> processMap(
-                                    (Map<Object, Object>) sourcePropertyInstance,
-                                    sourceProperty,
-                                    (Map<Object, Object>) destinationPropertyInstance,
-                                    destinationProperty,
-                                    jsonObject
-                            );
-                            default -> processBean(
-                                    sourcePropertyInstance,
-                                    sourceProperty,
-                                    destinationPropertyInstance,
-                                    destinationProperty,
-                                    destination,
-                                    jsonObject
-                            );
+                        MapperConverter mapperConverter = destinationProperty.getAnnotation(MapperConverter.class);
+                        if (mapperConverter == null) {
+                            switch (sourcePropertyInstance) {
+                                case Collection<?> collection -> processCollection(
+                                        (Collection<Object>) sourcePropertyInstance,
+                                        sourceProperty,
+                                        (Collection<Object>) destinationPropertyInstance,
+                                        destinationProperty,
+                                        jsonObject
+                                );
+                                case Map<?, ?> map -> processMap(
+                                        (Map<Object, Object>) sourcePropertyInstance,
+                                        sourceProperty,
+                                        (Map<Object, Object>) destinationPropertyInstance,
+                                        destinationProperty,
+                                        jsonObject
+                                );
+                                default -> processBean(
+                                        sourcePropertyInstance,
+                                        sourceProperty,
+                                        destinationPropertyInstance,
+                                        destinationProperty,
+                                        destination,
+                                        jsonObject
+                                );
+                            }
+                        } else {
+                            MapperConverterType converter = getNewInstance(mapperConverter.value());
+                            Object restEntity = converter.factory(sourcePropertyInstance);
+                            destinationProperty.accept(destination, restEntity);
                         }
                     } else {
                         if (! isTable && Objects.nonNull(jsonObject)) {
@@ -217,30 +224,22 @@ public class ResourceEntityMapper {
             }
         }
 
-        MapperConverter mapperConverter = destinationProperty.getAnnotation(MapperConverter.class);
-        if (mapperConverter == null) {
-            if (sourcePropertyType.equals(destinationPropertyType)) {
-                destinationProperty.accept(destination, sourcePropertyInstance);
-            } else {
-                if (UUID.class.isAssignableFrom(destinationPropertyType)) {
-                    if (sourcePropertyInstance instanceof AbstractEntity entity) {
-                        destinationProperty.accept(destination, entity.getId());
-                    }
-                } else {
-                    JsonObject jsonNode = null;
-                    if (Objects.nonNull(jsonObject)) {
-                        jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
-                    }
-                    Object restEntity = map(sourcePropertyInstance, destinationPropertyType, jsonNode, false);
-                    destinationProperty.accept(destination, restEntity);
-                }
-            }
+        if (sourcePropertyType.equals(destinationPropertyType)) {
+            destinationProperty.accept(destination, sourcePropertyInstance);
         } else {
-            MapperConverterType converter = getNewInstance(mapperConverter.value());
-            Object restEntity = converter.factory(sourcePropertyInstance);
-            destinationProperty.accept(destination, restEntity);
+            if (UUID.class.isAssignableFrom(destinationPropertyType)) {
+                if (sourcePropertyInstance instanceof AbstractEntity entity) {
+                    destinationProperty.accept(destination, entity.getId());
+                }
+            } else {
+                JsonObject jsonNode = null;
+                if (Objects.nonNull(jsonObject)) {
+                    jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
+                }
+                Object restEntity = map(sourcePropertyInstance, destinationPropertyType, jsonNode, false);
+                destinationProperty.accept(destination, restEntity);
+            }
         }
-
     }
 
     private <S, D> void processMap(Map<Object, Object> sourcePropertyInstance,

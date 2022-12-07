@@ -12,6 +12,7 @@ import MetaForm from "./meta-form.js";
 import MatImageUpload from "../form/mat-image-upload.js";
 import DomSelect from "../../directives/dom-select.js";
 import DomTextarea from "../../directives/dom-textarea.js";
+import MatLike from "../form/mat-like.js";
 
 class MetaInput extends HTMLElement {
 
@@ -50,6 +51,8 @@ class MetaInput extends HTMLElement {
                 return metaInputJson;
             case "form" :
                 return metaInputForm;
+            case "like" :
+                return metaInputLike;
             default :
                 return metaInputInput;
         }
@@ -101,6 +104,88 @@ class MetaInput extends HTMLElement {
 }
 
 export default customComponents.define("meta-input", MetaInput);
+
+class MetaInputLike extends HTMLElement {
+
+    property;
+    schema;
+
+    initialize() {
+        let input = this.querySelector("mat-like");
+
+        Membrane.track(input, {
+            property: "dirty",
+            element: this,
+            handler: (value) => {
+                this.schema.dirty = value
+            }
+        })
+    }
+
+    likes(query, callback) {
+        let link = this.schema.links.list;
+        fetch(`${link.url}&index=${query.index}&limit=${query.limit}`)
+            .then(response => response.json())
+            .then(response => {
+                callback(response.rows, response.size);
+            })
+    }
+
+    onLike(event) {
+        if (event.target.model) {
+            fetch(this.schema.links.like.url, { method : "POST" })
+        } else {
+            fetch(this.schema.links.dislike.url, { method : "POST" })
+        }
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case "schema" : {
+                this.schema = newValue;
+            }
+                break;
+            case "property" : {
+                this.property = newValue;
+            }
+                break;
+        }
+    }
+
+    static get observedAttributes() {
+        return [
+            {
+                name: "schema",
+                binding: "input"
+            }, {
+                name: "property",
+                binding: "input"
+            }
+        ]
+    }
+
+    static get components() {
+        return [MatLike]
+    }
+
+    static get template() {
+        return `<!DOCTYPE html>
+                <html lang="en" xmlns:read="http://www.w3.org/1999/xhtml">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Title</title>
+                </head>
+                <body>
+                    <template>
+                        <mat-like read:name="property" read:onLike="onLike($event)" read:items="likes"></mat-like>
+                    </template>
+                </body>
+                </html>`
+    }
+}
+
+const metaInputLike = customComponents.define("meta-input-like", MetaInputLike);
+
 
 class MetaInputCheckbox extends HTMLElement {
 
@@ -167,7 +252,6 @@ class MetaInputCheckbox extends HTMLElement {
                 </body>
                 </html>`
     }
-
 }
 
 const metaInputCheckbox = customComponents.define("meta-input-checkbox", MetaInputCheckbox);

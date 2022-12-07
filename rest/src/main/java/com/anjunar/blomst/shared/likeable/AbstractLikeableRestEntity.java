@@ -1,21 +1,18 @@
 package com.anjunar.blomst.shared.likeable;
 
-import com.anjunar.blomst.control.users.user.UserForm;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class AbstractLikeableRestEntity extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "Views")
     private Integer views = 0;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
-    private final Set<UserSelect> likes = new HashSet<>();
+    @JsonSchema(widget = JsonNode.Widget.LIKE, title = "Likes")
+    @MapperConverter(LikesConverter.class)
+    private boolean likes = false;
 
     public Integer getViews() {
         return views;
@@ -25,8 +22,11 @@ public class AbstractLikeableRestEntity extends AbstractRestEntity {
         this.views = views;
     }
 
-    public Set<UserSelect> getLikes() {
+    public boolean isLikes() {
         return likes;
     }
 
+    public void setLikes(boolean likes) {
+        this.likes = likes;
+    }
 }

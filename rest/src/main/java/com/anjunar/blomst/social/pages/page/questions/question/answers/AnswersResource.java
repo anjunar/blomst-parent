@@ -67,10 +67,6 @@ public class AnswersResource implements ListResourceTemplate<AnswerForm, Answers
         linkTo(methodOn(AnswerResource.class).create(search.getQuestion()))
                 .build(table::addLink);
 
-        JsonArray likes = table.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject owner = table.find("owner", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);

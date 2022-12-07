@@ -105,9 +105,6 @@ public class AnswerResource implements FormResourceTemplate<Form<AnswerForm>> {
         JsonObject owner = resource.find("owner", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(owner::addLink);
-        JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
 
         return resource;
     }

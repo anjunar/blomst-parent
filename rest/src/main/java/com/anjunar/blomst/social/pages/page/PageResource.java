@@ -1,37 +1,33 @@
 package com.anjunar.blomst.social.pages.page;
 
-import com.anjunar.blomst.control.users.UsersResource;
-import com.anjunar.blomst.control.users.UsersSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
-import com.anjunar.blomst.shared.users.user.UserSelect;
+import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.PagesResource;
 import com.anjunar.blomst.social.pages.PagesSearch;
 import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
+import com.anjunar.blomst.social.pages.page.likes.LikesResource;
+import com.anjunar.blomst.social.pages.page.likes.LikesSearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
-import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.ResponseOk;
+import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonBoolean;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
-import com.anjunar.blomst.social.pages.Page;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.*;
-import java.util.Date;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -76,10 +72,6 @@ public class PageResource {
         linkTo(methodOn(PageResource.class).save(new Form<>()))
                 .build(form::addLink);
 
-        JsonArray likes = form.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject language = form.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
@@ -106,10 +98,6 @@ public class PageResource {
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
                 .build(language::addLink);
 
-        JsonArray likes = resource.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject modifier = resource.find("modifier", JsonObject.class);
         linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
                 .build(modifier::addLink);
@@ -125,6 +113,16 @@ public class PageResource {
         linkTo(methodOn(PageHistoryResource.class).list(historySearch))
                 .withRel("history")
                 .build(resource::addLink);
+
+        JsonBoolean likes = resource.find("likes", JsonBoolean.class);
+        linkTo(methodOn(LikesResource.class).like(id))
+                .build(likes::addLink);
+        linkTo(methodOn(LikesResource.class).dislike(id))
+                .build(likes::addLink);
+        LikesSearch likesSearch = new LikesSearch();
+        likesSearch.setPage(id);
+        linkTo(methodOn(LikesResource.class).list(likesSearch))
+                .build(likes::addLink);
 
         return resource;
     }

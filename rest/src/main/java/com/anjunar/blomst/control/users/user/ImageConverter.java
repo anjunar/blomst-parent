@@ -6,7 +6,7 @@ import com.anjunar.common.filedisk.Image;
 import com.anjunar.common.rest.api.ImageType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 
-public class ImageConverter implements MapperConverterType<Image, ImageType> {
+public class ImageConverter implements MapperConverterType<Image, ImageType, Object> {
 
     @Override
     public ImageType factory(Image harddiskFile) {
@@ -22,7 +22,7 @@ public class ImageConverter implements MapperConverterType<Image, ImageType> {
     }
 
     @Override
-    public Image updater(ImageType imageType) {
+    public Image updater(ImageType imageType, Object context) {
         Image image = new Image();
         Base64Resource process = FileDiskUtils.extractBase64(imageType.getData());
 

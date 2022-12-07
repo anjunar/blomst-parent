@@ -68,10 +68,6 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
         linkTo(methodOn(CommentResource.class).create(search.getPost(), search.getParent()))
                 .build(table::addLink);
 
-        JsonArray likes = table.find("likes", JsonArray.class);
-        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
-                .build(likes::addLink);
-
         JsonObject post = table.find("post", JsonObject.class);
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .build(post::addLink);
