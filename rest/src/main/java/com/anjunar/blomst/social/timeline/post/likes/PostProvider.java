@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.timeline.post.likes;
 
+import com.anjunar.blomst.shared.Likeable_;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.social.timeline.AbstractPost_;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
@@ -18,7 +19,7 @@ public class PostProvider extends AbstractRestPredicateProvider<UUID, User> {
         if (Objects.nonNull(value)) {
             Subquery<User> subQuery = query.subquery(User.class);
             Root<AbstractPost> subFrom = subQuery.from(AbstractPost.class);
-            subQuery.select(subFrom.join(AbstractPost_.likes)).where(builder.equal(subFrom.get(AbstractPost_.id), value));
+            subQuery.select(subFrom.join(Likeable_.likes)).where(builder.equal(subFrom.get(Likeable_.id), value));
             return root.in(subQuery);
         }
         return builder.conjunction();

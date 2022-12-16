@@ -41,6 +41,8 @@ class MetaInput extends HTMLElement {
                 return metaInputLazyMultiSelect;
             case "lazy-select" :
                 return metaInputLazySelect;
+            case "lazy-select-name" :
+                return metaInputLazySelectName;
             case "textarea" :
                 return metaInputTextArea;
             case "repeat" :
@@ -843,7 +845,8 @@ class MetaInputLazySelect extends HTMLElement {
                 <body>
                     <template>
                         <mat-input-container read:placeholder="schema.title">
-                            <dom-lazy-select read:items="domLazySelect(schema)" read:label="domLazySelectLabel(schema)" read:name="property" read:disabled="schema.readOnly" read:id="domLazyId(schema)">
+                            <dom-lazy-select read:items="domLazySelect(schema)" read:label="domLazySelectLabel(schema)" 
+                                             read:name="property" read:disabled="schema.readOnly" read:id="domLazyId(schema)">
                                 <div let="data">{{{domLazySelectOption(schema, data)}}}</div>
                             </dom-lazy-select>
                         </mat-input-container>
@@ -855,6 +858,133 @@ class MetaInputLazySelect extends HTMLElement {
 }
 
 const metaInputLazySelect = customComponents.define("meta-input-lazy-select", MetaInputLazySelect);
+
+class MetaInputLazySelectName extends HTMLElement {
+
+    property;
+    schema;
+
+    initialize() {
+        let input = this.querySelector("dom-lazy-select");
+        if (this.schema.validators.notBlank || this.schema.validators.notNull) {
+            input.required = true;
+        }
+        Membrane.track(input, {
+            property: "dirty",
+            element: this,
+            handler: (value) => {
+                this.schema.dirty = value;
+            }
+        })
+    }
+
+    domLazyId(schema) {
+        return Object
+            .entries(schema.properties)
+            .find(([name, item]) => item.id)[0];
+    }
+
+    domLazySelect(schema) {
+        let link = schema.links.list;
+        return (query, callback) => {
+            let url = new URL(link.url, `${window.location.protocol}//${window.location.host}/`);
+            url.searchParams.set("index", query.index);
+            url.searchParams.set("limit", query.limit);
+            url.searchParams.set("value", query.value)
+
+            fetch(url.toString(), {method: link.method})
+                .then(response => response.json())
+                .then((response) => {
+                    callback(response.rows, response.size)
+                })
+        }
+    }
+
+    domLazySelectOption(meta, data) {
+        return Object
+            .entries(meta.properties)
+            .filter(([name, property]) => property.naming)
+            .map(([name, property]) => data[name])
+            .join(" ")
+    }
+
+    domLazySelectLabel(meta) {
+        return Object
+            .entries(meta.properties)
+            .filter(([name, property]) => property.naming)
+            .map(([name, property]) => name)
+    }
+
+    save(event) {
+        let saveLink = this.schema.links.save;
+        let body = JSON.stringify({form : {value : event.detail, property : this.property}});
+        fetch(saveLink.url, {method : "POST", body : body, headers : {'Content-Type': 'application/json'}})
+    }
+
+    onDelete(data) {
+        let deleteLink = data.links.delete;
+        fetch(deleteLink.url, {method : "DELETE"})
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case "schema" : {
+                this.schema = newValue;
+            }
+                break;
+            case "property" : {
+                this.property = newValue;
+            }
+                break;
+        }
+    }
+
+    static get observedAttributes() {
+        return [
+            {
+                name: "schema",
+                binding: "input"
+            }, {
+                name: "property",
+                binding: "input"
+            }
+        ]
+    }
+
+    static get components() {
+        return [MatInputContainer, DomLazySelect]
+    }
+
+    static get template() {
+        return `<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Title</title>
+                </head>
+                <body>
+                    <template>
+                        <mat-input-container read:placeholder="schema.title">
+                            <dom-lazy-select read:items="domLazySelect(schema)" read:label="domLazySelectLabel(schema)" 
+                                             read:name="property" read:disabled="schema.readOnly" read:id="domLazyId(schema)"
+                                             read:onEnter="save($event)">
+                                <div let="data" style="display: flex; align-items: center">
+                                    <div>{{{domLazySelectOption(schema, data)}}}</div>
+                                    <div style="flex : 1"></div>
+                                    <button class="material-icons" read:onclick="onDelete(data)">delete</button>
+                                    <img read:src="data.owner.picture.data" style="max-width: 50px; max-height: 50px">
+                                </div>
+                            </dom-lazy-select>
+                        </mat-input-container>
+                    </template>
+                </body>
+                </html>`
+    }
+
+}
+
+const metaInputLazySelectName = customComponents.define("meta-input-lazy-select-name", MetaInputLazySelectName);
+
 
 class MetaInputRepeat extends mix(HTMLElement).with(Input) {
 

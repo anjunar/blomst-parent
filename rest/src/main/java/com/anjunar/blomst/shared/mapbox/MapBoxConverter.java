@@ -1,4 +1,4 @@
-package com.anjunar.blomst.shared;
+package com.anjunar.blomst.shared.mapbox;
 
 import com.anjunar.blomst.social.info.addresses.MapBoxAddress;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;

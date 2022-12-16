@@ -42,6 +42,12 @@ public class Postgres14Dialect extends PostgreSQLDialect {
                 typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.BOOLEAN)
         );
 
+        functionRegistry.registerPattern(
+                "array_agg",
+                "array_agg(?1)::char",
+                typeConfiguration.getBasicTypeRegistry().resolve(StandardBasicTypes.BOOLEAN)
+        );
+
 
     }
 }

@@ -1,5 +1,10 @@
 package com.anjunar.blomst.social.sites.site;
 
+import com.anjunar.blomst.shared.Alternative;
+import com.anjunar.blomst.shared.alternatives.AlternativeGroupBy;
+import com.anjunar.blomst.shared.alternatives.AlternativesResource;
+import com.anjunar.blomst.shared.alternatives.AlternativesSearch;
+import com.anjunar.blomst.shared.alternatives.alternative.AlternativeResource;
 import com.anjunar.blomst.social.info.addresses.AddressSearchResource;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
@@ -8,7 +13,6 @@ import com.anjunar.blomst.social.sites.site.connections.SiteConnectionsSearch;
 import com.anjunar.blomst.social.sites.site.connections.connection.SiteConnectionResource;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
@@ -73,9 +77,35 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         linkTo(methodOn(SiteResource.class).save(new Form<>()))
                 .build(form::addLink);
 
-        JsonObject name = form.find("address", JsonObject.class);
+        JsonObject address = form.find("address", JsonObject.class);
         linkTo(methodOn(AddressSearchResource.class).list(null))
+                .build(address::addLink);
+
+        JsonObject name = form.find("name", JsonObject.class);
+        AlternativesSearch nameSearch = new AlternativesSearch();
+        nameSearch.setProperty("name");
+        nameSearch.setEntity("Site");
+        linkTo(methodOn(AlternativesResource.class).list(nameSearch))
                 .build(name::addLink);
+        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+                .build(name::addLink);
+        JsonObject phone = form.find("phone", JsonObject.class);
+        AlternativesSearch phoneSearch = new AlternativesSearch();
+        phoneSearch.setProperty("phone");
+        phoneSearch.setEntity("Site");
+        linkTo(methodOn(AlternativesResource.class).list(phoneSearch))
+                .build(phone::addLink);
+        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+                .build(phone::addLink);
+        JsonObject homepage = form.find("homepage", JsonObject.class);
+        AlternativesSearch homepageSearch = new AlternativesSearch();
+        homepageSearch.setProperty("homepage");
+        homepageSearch.setEntity("Site");
+        linkTo(methodOn(AlternativesResource.class).list(homepageSearch))
+                .build(homepage::addLink);
+        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+                .build(homepage::addLink);
+
 
         return form;
     }
@@ -88,9 +118,35 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
 
         Form<SiteForm> form = entityMapper.map(entity, new Form<>() {});
 
-        JsonObject name = form.find("address", JsonObject.class);
-        linkTo(methodOn(AddressSearchResource.class).list(null))
+        JsonObject name = form.find("name", JsonObject.class);
+        AlternativesSearch nameSearch = new AlternativesSearch();
+        nameSearch.setProperty("name");
+        nameSearch.setEntity("Site");
+        linkTo(methodOn(AlternativesResource.class).list(nameSearch))
                 .build(name::addLink);
+        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+                .build(name::addLink);
+        JsonObject phone = form.find("phone", JsonObject.class);
+        AlternativesSearch phoneSearch = new AlternativesSearch();
+        phoneSearch.setProperty("phone");
+        phoneSearch.setEntity("Site");
+        linkTo(methodOn(AlternativesResource.class).list(phoneSearch))
+                .build(phone::addLink);
+        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+                .build(phone::addLink);
+        JsonObject homepage = form.find("homepage", JsonObject.class);
+        AlternativesSearch homepageSearch = new AlternativesSearch();
+        homepageSearch.setProperty("homepage");
+        homepageSearch.setEntity("Site");
+        linkTo(methodOn(AlternativesResource.class).list(homepageSearch))
+                .build(homepage::addLink);
+        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+                .build(homepage::addLink);
+
+
+        JsonObject address = form.find("address", JsonObject.class);
+        linkTo(methodOn(AddressSearchResource.class).list(null))
+                .build(address::addLink);
 
         try {
             SiteConnection connection = service.findConnection(identityManager.getUser().getId(), id);
@@ -129,6 +185,10 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
     public ResponseOk save(Form<SiteForm> form) {
         Site entity = restMapper.map(form, Site.class);
 
+        entity.getName().setOwner(identityManager.getUser());
+        entity.getHomepage().setOwner(identityManager.getUser());
+        entity.getPhone().setOwner(identityManager.getUser());
+
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
@@ -140,12 +200,40 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         return response;
     }
 
+    private Alternative top1(String property, String entity) {
+        String sql = "select * from Alternative c where c.value in( " +
+                         "SELECT a.value " +
+                            "FROM Alternative a where a.property = :property and a.entity = :entity " +
+                            "GROUP BY a.value " +
+                            "HAVING COUNT (a.value)=( " +
+                                "SELECT MAX(bcount) " +
+                                "FROM ( SELECT b.value, COUNT(b.value) bcount " +
+                                            "FROM Alternative b where b.property = :property and b.entity = :entity " +
+                                            "GROUP BY b.value) as vm)" +
+                       ")";
+        return (Alternative) entityManager.createNativeQuery(sql, Alternative.class)
+                .setParameter("property", property)
+                .setParameter("entity", entity)
+                .setMaxResults(1)
+                .getSingleResult();
+    }
+
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site")
     @Override
     public ResponseOk update(UUID id, Form<SiteForm> form) {
 
-        restMapper.map(form, Site.class);
+        Site entity = restMapper.map(form, Site.class);
+
+        Alternative name = top1("name", "Site");
+
+        Alternative phone = top1("phone", "Site");
+
+        Alternative homepage = top1("homepage", "Site");
+
+        entity.setName(name);
+        entity.setPhone(phone);
+        entity.setHomepage(homepage);
 
         ResponseOk response = new ResponseOk();
 

@@ -20,6 +20,7 @@
         <class>com.anjunar.common.security.UserRight</class>
 
         <class>com.anjunar.blomst.shared.Likeable</class>
+        <class>com.anjunar.blomst.shared.Alternative</class>
 
         <class>com.anjunar.blomst.social.pages.Page</class>
         <class>com.anjunar.blomst.social.pages.Editor</class>

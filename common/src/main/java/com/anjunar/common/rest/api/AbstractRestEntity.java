@@ -23,6 +23,12 @@ public abstract class AbstractRestEntity implements RestEntity, LinksContainer {
     @JsonSchema(ignore = true)
     private final Map<String, Link> links = new LinkedHashMap<>();
 
+    public AbstractRestEntity(UUID id, LocalDateTime created, LocalDateTime modified) {
+        this.id = id;
+        this.created = created;
+        this.modified = modified;
+    }
+
     public AbstractRestEntity() {
         super();
     }

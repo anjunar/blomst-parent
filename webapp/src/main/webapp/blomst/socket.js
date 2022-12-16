@@ -8,13 +8,15 @@ let socket;
     }
 
 
+/*
     let interval = setInterval(() => {
         socket.send("heartbeat()")
     }, 1000 * 60);
+*/
 
     let onBeforeUnload = () => {
         socket.close();
-        window.clearInterval(interval);
+        // window.clearInterval(interval);
         window.removeEventListener("beforeunload", onBeforeUnload);
         socket.removeEventListener("message", onMessage)
     };
@@ -30,7 +32,7 @@ let socket;
 
     socket.onerror = () => {
         socket.close();
-        window.clearInterval(interval);
+        // window.clearInterval(interval);
         window.removeEventListener("beforeunload", onBeforeUnload)
         socket.removeEventListener("message", onMessage)
     }

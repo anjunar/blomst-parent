@@ -55,6 +55,7 @@ public abstract class JsonNode {
         REPEAT("repeat"),
         LAZY_MULTI_SELECT("lazy-multi-select"),
         LAZY_SELECT("lazy-select"),
+        LAZY_SELECT_NAME("lazy-select-name"),
         TEXTAREA("textarea"),
         EDITOR("editor"),
 
