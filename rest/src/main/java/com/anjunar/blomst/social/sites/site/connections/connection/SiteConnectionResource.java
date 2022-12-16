@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
+import com.anjunar.blomst.shared.site.SiteSelect;
 import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.Site;
@@ -77,7 +78,7 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
         JsonObject to = form.find("to", JsonObject.class);
         if (Objects.nonNull(uuid)) {
             Identity identity = entityManager.find(Site.class, uuid);
-            resource.setTo(entityMapper.map(identity, SiteForm.class));
+            resource.setTo(entityMapper.map(identity, SiteSelect.class));
         } else {
             linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
                     .build(to::addLink);

@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.sites.site.connections.connection;
 
+import com.anjunar.blomst.shared.site.SiteSelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
@@ -13,7 +14,7 @@ public class SiteConnectionForm extends AbstractRestEntity {
     private UserSelect from;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
-    private SiteForm to;
+    private SiteSelect to;
 
     public UserSelect getFrom() {
         return from;
@@ -23,11 +24,11 @@ public class SiteConnectionForm extends AbstractRestEntity {
         this.from = from;
     }
 
-    public SiteForm getTo() {
+    public SiteSelect getTo() {
         return to;
     }
 
-    public void setTo(SiteForm to) {
+    public void setTo(SiteSelect to) {
         this.to = to;
     }
 

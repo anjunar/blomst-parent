@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.sites;
 
+import com.anjunar.blomst.shared.site.SiteSelect;
 import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.blomst.social.sites.site.SiteResource;
 import com.anjunar.common.rest.link.LinkDescription;
@@ -20,7 +21,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("social/sites")
 @ApplicationScoped
-public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch> {
+public class SitesResource implements ListResourceTemplate<SiteSelect, SitesSearch> {
 
     private final SitesService service;
 
@@ -40,14 +41,14 @@ public class SitesResource implements ListResourceTemplate<SiteForm, SitesSearch
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Table Site")
     @Override
-    public Table<SiteForm> list(SitesSearch search) {
+    public Table<SiteSelect> list(SitesSearch search) {
         final long count = service.count(search);
         final List<Site> sites = service.find(search);
-        final List<SiteForm> resources = new ArrayList<>();
-        Table<SiteForm> table = new Table<>(resources, count) {};
+        final List<SiteSelect> resources = new ArrayList<>();
+        Table<SiteSelect> table = new Table<>(resources, count) {};
 
         for (Site site : sites) {
-            SiteForm form = mapper.map(site, SiteForm.class, table);
+            SiteSelect form = mapper.map(site, SiteSelect.class, table);
 
             linkTo(methodOn(SiteResource.class).read(site.getId()))
                     .build(form::addLink);
