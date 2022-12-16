@@ -971,7 +971,7 @@ class MetaInputLazySelectName extends HTMLElement {
                                 <div let="data" style="display: flex; align-items: center">
                                     <div>{{{domLazySelectOption(schema, data)}}}</div>
                                     <div style="flex : 1"></div>
-                                    <button class="material-icons" read:onclick="onDelete(data)">delete</button>
+                                    <button read:if="data.links.delete" class="material-icons" read:onclick="onDelete(data)">delete</button>
                                     <img read:src="data.owner.picture.data" style="max-width: 50px; max-height: 50px">
                                 </div>
                             </dom-lazy-select>
