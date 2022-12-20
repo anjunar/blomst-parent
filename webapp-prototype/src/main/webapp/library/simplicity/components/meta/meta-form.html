@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:bind="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        meta-form {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <template>
+        <form is="dom-form" bind:model="model">
+            <slot></slot>
+        </form>
+    </template>
+</body>
+</html>

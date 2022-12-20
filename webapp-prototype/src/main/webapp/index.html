@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Blomst 1.06 alpha</title>
+    <script>
+        if (window.location.host.indexOf("poseidon") > -1) {
+            let title = document.querySelector("title");
+            title.textContent = "Poseidon 1.05 alpha"
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import {bootstrap} from "./library/simplicity/bootstrap.js";
+
+        bootstrap({
+            app: "blomst/app.js",
+            mode : "development",
+            library : "library",
+            preFetch : false, // Experimental,
+            history : false
+        })
+
+    </script>
+</head>
+<body style="height: calc(100vh - 36px); overflow: hidden"></body>
+</html>

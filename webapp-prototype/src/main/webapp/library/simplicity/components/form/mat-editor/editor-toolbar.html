@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        editor-toolbar {
+            display: block;
+        }
+
+        editor-toolbar .row {
+            margin: 2px;
+            align-items: stretch;
+            vertical-align: top;
+            flex : 1
+        }
+
+    </style>
+</head>
+<body>
+<template>
+    <div>
+        <mat-tabs bind:page="page">
+            <mat-tab>Font</mat-tab>
+            <mat-tab>Colors</mat-tab>
+            <mat-tab>Justify</mat-tab>
+            <mat-tab>Tools</mat-tab>
+            <mat-tab>Inserts</mat-tab>
+        </mat-tabs>
+        <mat-pages bind:page="page">
+            <mat-page>
+                <toolbar-font class="row" bind:contents="contents"></toolbar-font>
+            </mat-page>
+            <mat-page>
+                <toolbar-colors class="row" bind:contents="contents"></toolbar-colors>
+            </mat-page>
+            <mat-page>
+                <toolbar-justify class="row" bind:contents="contents"></toolbar-justify>
+            </mat-page>
+            <mat-page>
+                <toolbar-tools class="row" bind:contents="contents"></toolbar-tools>
+            </mat-page>
+            <mat-page>
+                <toolbar-inserts class="row" bind:contents="contents"></toolbar-inserts>
+            </mat-page>
+        </mat-pages>
+    </div>
+</template>
+</body>
+</html>

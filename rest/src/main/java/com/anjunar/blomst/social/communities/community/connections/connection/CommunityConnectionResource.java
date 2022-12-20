@@ -3,6 +3,8 @@ package com.anjunar.blomst.social.communities.community.connections.connection;
 import com.anjunar.blomst.control.roles.RolesResource;
 import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.control.roles.role.RoleForm;
+import com.anjunar.blomst.shared.users.UserSelectResource;
+import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.*;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
@@ -68,6 +70,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
         Form<CommunityConnectionForm> form = new Form<>(resource) {};
         form.dirty("to", "role");
 
+        resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
         resource.setTo(entityMapper.map(entityManager.find(Community.class, to), CommunityForm.class));
         resource.setStatus(Status.PENDING);
         resource.setRole(entityMapper.map(service.findUserRole(), RoleForm.class));
@@ -78,6 +81,10 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
         JsonObject role = form.find("role", JsonObject.class);
         linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
                 .build(role::addLink);
+
+        JsonObject from = form.find("from", JsonObject.class);
+        linkTo(methodOn(UserSelectResource.class).list(new UserSelectSearch()))
+                .build(from::addLink);
 
         return form;
     }

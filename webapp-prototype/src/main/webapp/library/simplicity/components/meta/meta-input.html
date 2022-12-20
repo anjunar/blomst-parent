@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:read="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <template>
+        <div style="display: flex; width: 100%">
+            <div read:variable="container" style="flex: 1"></div>
+            <div read:if="schema.visibility" >
+                <mat-input-container placeholder="Visibility">
+                    <dom-lazy-select read:items="category" bind:model="schema.visibility" multiselect="true" style="width: 200px">
+                        <div let="category">{{{category.name}}}</div>
+                    </dom-lazy-select>
+                </mat-input-container>
+            </div>
+        </div>
+
+    </template>
+</body>
+</html>
