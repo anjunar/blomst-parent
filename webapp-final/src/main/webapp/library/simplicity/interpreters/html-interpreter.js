@@ -477,6 +477,7 @@ function processNode(node, isSvg = false) {
             if (customElement.template?.html) {
                 objects.push(`type : "component"`)
                 objects.push(`tag : "${node.localName}"`)
+                objects.push(`implicit : implicit`);
                 let is = node.getAttribute("is");
                 if (is) {
                     objects.push(`is : "${is}"`)
@@ -526,7 +527,7 @@ function iterateChildren(children, isSvg = false) {
 
 export function compile(template) {
     let children = template.content.childNodes;
-    let header = `function (context) { return [${iterateChildren(children)}]; }`
+    let header = `function (context, implicit) { return [${iterateChildren(children)}]; }`
     let loader = `function main(letStatement, bind, interpolation, forEach, variable, slot) {return ${header} }`
     let ast;
     try {

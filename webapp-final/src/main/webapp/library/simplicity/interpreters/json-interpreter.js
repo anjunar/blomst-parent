@@ -272,7 +272,7 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
             },
             component() {
                 let constructor = customElements.get(node.is || node.tag);
-                let element = new constructor({content : node.content, app : root.app});
+                let element = new constructor({content : node.content, app : root.app, implicit : node.implicit});
                 processAttributes(node, element, rework, context);
                 element.render();
                 mapping.set(element, node);
@@ -329,11 +329,25 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                 let placeholder = document.createComment(data);
                 elements.appendChild(placeholder);
 
+                let oldIndex = 0;
+
                 function generate(implicit, index = 0, selector, tag, name, source) {
                     function content(jsonAST, documentFragment, mapping) {
                         for (const child of renderedElements) {
-                            notifyElementRemove(child);
-                            child.remove();
+                            child.addEventListener("animationend",() => {
+                                child.remove();
+                                notifyElementRemove(child);
+                            })
+
+                            child.classList.remove("left-added")
+                            child.classList.remove("right-added")
+
+                            if (oldIndex - index > 0) {
+                                child.classList.add("left-removed")
+                            } else {
+                                child.classList.add("right-removed")
+                            }
+
                         }
 
                         renderedElements = [];
@@ -365,6 +379,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                                 let ast = mapping.get(query);
                                 let fragment = processJsonAST(root, [ast], context, rework, mapping);
                                 for (const child of fragment.children) {
+                                    if (oldIndex - index > 0) {
+                                        child.classList.add("left-added");
+                                    } else {
+                                        child.classList.add("right-added");
+                                    }
                                     renderedElements.push(child);
                                 }
                                 placeholder.after(fragment);
@@ -372,6 +391,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                         } else {
                             let fragment = processJsonAST(root, jsonAST, context, rework, mapping);
                             for (const child of fragment.children) {
+                                if (oldIndex - index > 0) {
+                                    child.classList.add("left-added");
+                                } else {
+                                    child.classList.add("right-added");
+                                }
                                 renderedElements.push(child);
                             }
                             placeholder.after(fragment);
@@ -379,6 +403,8 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                     }
 
                     getContent(root, implicit, content, source || node.context, rework);
+
+                    oldIndex = index;
                 }
 
                 let results = {}
@@ -390,7 +416,7 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                             if (source) {
                                 source = proxyFactory({$scope : [source]})
                             }
-                            generate(results.implicit, results.index, results.selector, results.tag, results.name, source);
+                            generate(results.implicit || value.implicit, results.index, results.selector, results.tag, results.name, source);
                         }
                     })
                 }
@@ -636,17 +662,19 @@ export function contentChildren(node) {
 
 function cssNodeToString(node, indent = 0) {
     return Object.entries(node).map(([selector, block]) => {
-        switch (selector) {
-            case "@import" :
-                return "@import '" + block + "';";
-            case "@media" :
-                return `@media ${block.condition} {\n${cssNodeToString(block.block,  1)}\n}`
-            case "@keyframe" :
-                return `@keyframe ${block.name} {\n${cssNodeToString(block.block, 1)}\n}`
-            default : {
-                return `${"\t".repeat(indent)}${selector} {\n${Object.entries(block).map(([name, value]) => `${"\t".repeat(indent + 1)}${toKebabCase(name)} : ${value}`).join(";\n")}\n${"\t".repeat(indent)}}`
-            }
+        if (selector.startsWith("@import")) {
+            return "@import '" + block + "';";
         }
+
+        if (selector.startsWith("@media")) {
+            return `${selector} {\n${cssNodeToString(block,  1)}\n}`
+        }
+
+        if (selector.startsWith("@keyframes")) {
+            return `${selector} {\n${cssNodeToString(block, 1)}\n}`
+        }
+
+        return `${"\t".repeat(indent)}${selector} {\n${Object.entries(block).map(([name, value]) => `${"\t".repeat(indent + 1)}${toKebabCase(name)} : ${value}`).join(";\n")}\n${"\t".repeat(indent)}}`
     }).join("\n\n")
 }
 

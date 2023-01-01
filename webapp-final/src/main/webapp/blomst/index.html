@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:read="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <template>
+    <div style="display: flex; height: 100%;width: 100%; align-items: center; justify-content: center;">
+      <div style="flex-grow : 1; max-width: 600px; min-width: 400px; height: 800px; background-color: var(--main-dark1-color);">
+
+          <mat-carousel style="height: 100%" read:items="query">
+
+              <mat-carousel-item>
+                  <div let="data" style="padding: 10px;">
+                      <section>
+                          <header style="display: flex">
+                              <div style="width: 50px; height: 50px; border-radius: 10%; overflow: hidden">
+                                  <img read:src="data.owner.picture.data" style="max-width: 50px;">
+                              </div>
+                              <div>
+                                  <h4 style="margin: 4px">
+                                      {{{data.owner.name}}}
+                                  </h4>
+                                  <p style="margin: 4px; font-size: x-small; color: var(--main-grey-color)">
+                                      {{{dateTimeFormat(data.created)}}}
+                                  </p>
+                              </div>
+                          </header>
+                          <div style="margin-top: 10px">
+                              {{{data.text}}}
+                          </div>
+
+                          <div read:if="data['@type'] === 'Image'">
+                              <img read:src="data.image.data" style="width: 100%">
+                          </div>
+
+                          <footer>
+
+                          </footer>
+                      </section>
+
+                  </div>
+
+              </mat-carousel-item>
+
+          </mat-carousel>
+
+      </div>
+    </div>
+  </template>
+</body>
+</html>

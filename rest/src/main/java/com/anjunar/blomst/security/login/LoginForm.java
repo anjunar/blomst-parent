@@ -1,5 +1,6 @@
 package com.anjunar.blomst.security.login;
 
+import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.LinksContainer;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -10,17 +11,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
-public class LoginForm extends AbstractSchemaEntity implements LinksContainer {
+public class LoginForm extends AbstractRestEntity implements LinksContainer {
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Email")
     @NotBlank
     @Email
-    private String email = "";
+    private String email;
 
     @JsonSchema(widget = JsonNode.Widget.PASSWORD, title = "Password")
-    @Size(min = 3)
+    @Size(min = 3, max = 80)
     @NotBlank
-    private String password = "";
+    private String password;
 
     public String getEmail() {
         return email;

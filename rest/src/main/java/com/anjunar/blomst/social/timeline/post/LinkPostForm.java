@@ -31,9 +31,6 @@ public class LinkPostForm extends AbstractPostForm {
     @JsonSchema(widget = JsonNode.Widget.TEL, title = "Description")
     private String description;
 
-    @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
-    private ImageType image;
-
     @Override
     public <E> E accept(AbstractPostFormVisitor<E> visitor) {
         return visitor.visit(this);
@@ -61,14 +58,6 @@ public class LinkPostForm extends AbstractPostForm {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public ImageType getImage() {
-        return image;
-    }
-
-    public void setImage(ImageType image) {
-        this.image = image;
     }
 
 }

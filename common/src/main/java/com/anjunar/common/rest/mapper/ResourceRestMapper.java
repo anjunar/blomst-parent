@@ -170,9 +170,14 @@ public class ResourceRestMapper {
                     Object entity = entityManager.find(destinationPropertyType, uuid);
                     destinationProperty.accept(destination, entity);
                 } else {
-                    JsonObject jsonNode = (JsonObject) jsonObject.getProperties().get(sourceProperty.getKey());
-                    Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonNode, isDirty(jsonNode, sourceProperty), mapperLoadOnly);
-                    destinationProperty.accept(destination, restEntity);
+                    JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
+                    if (jsonNode instanceof JsonObject jsonObjectX) {
+                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonObjectX, isDirty(jsonObjectX, sourceProperty), mapperLoadOnly);
+                        destinationProperty.accept(destination, restEntity);
+                    } else {
+                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, new JsonObject(), true, mapperLoadOnly);
+                        destinationProperty.accept(destination, restEntity);
+                    }
                 }
             }
         } else {

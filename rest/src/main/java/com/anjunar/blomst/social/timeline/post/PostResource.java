@@ -38,7 +38,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("home/timeline/post")
-public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>> {
+public class PostResource implements FormResourceTemplate<Form<? extends AbstractPostForm>> {
 
     private final EntityManager entityManager;
 
@@ -66,22 +66,26 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
     @Path("create")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Create Post")
-    public Form<AbstractPostForm> create(@QueryParam("type") String type, @QueryParam("source") UUID source) {
+    public Form<? extends AbstractPostForm> create(@QueryParam("type") String type, @QueryParam("source") UUID source) {
 
         AbstractPostForm resource;
+        Form<? extends AbstractPostForm> form;
 
         switch (type) {
             case "image" -> {
                 resource = new ImagePostForm();
+                form = new Form<ImagePostForm>((ImagePostForm) resource) {};
             }
             case "link" -> {
                 resource = new LinkPostForm();
+                form = new Form<LinkPostForm>((LinkPostForm) resource) {};
             }
             default -> {
                 resource = new TextPostForm();
+                form = new Form<TextPostForm>((TextPostForm) resource) {};
             }
         }
-        Form<AbstractPostForm> form = new Form<>(resource) {};
+
         form.dirty("source");
 
         Identity identity = entityManager.find(Identity.class, source);
@@ -101,31 +105,31 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read Post")
-    public Form<AbstractPostForm> read(UUID id) {
+    public Form<? extends AbstractPostForm> read(UUID id) {
 
         AbstractPost post = entityManager.find(AbstractPost.class, id);
 
         post.setViews(post.getViews() == null ? 0 : post.getViews() + 1);
 
-        Form<AbstractPostForm> resource = post.accept(new AbstractPostVisitor<>() {
+        Form<? extends AbstractPostForm> resource = post.accept(new AbstractPostVisitor<>() {
             @Override
-            public Form<AbstractPostForm> visit(ImagePost post) {
-                return entityMapper.map(post, new Form<>() {});
+            public Form<? extends AbstractPostForm> visit(ImagePost post) {
+                return entityMapper.map(post, new Form<ImagePostForm>() {});
             }
 
             @Override
-            public Form<AbstractPostForm> visit(LinkPost post) {
-                return entityMapper.map(post, new Form<>() {});
+            public Form<? extends AbstractPostForm> visit(LinkPost post) {
+                return entityMapper.map(post, new Form<LinkPostForm>() {});
             }
 
             @Override
-            public Form<AbstractPostForm> visit(TextPost post) {
-                return entityMapper.map(post, new Form<>() {});
+            public Form<? extends AbstractPostForm> visit(TextPost post) {
+                return entityMapper.map(post, new Form<TextPostForm>() {});
             }
 
             @Override
-            public Form<AbstractPostForm> visit(SystemPost post) {
-                return entityMapper.map(post, new Form<>() {});
+            public Form<? extends AbstractPostForm> visit(SystemPost post) {
+                return entityMapper.map(post, new Form<SystemPostForm>() {});
             }
         });
 
@@ -160,7 +164,7 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
-    public ResponseOk save(Form<AbstractPostForm> resource) {
+    public ResponseOk save(Form<? extends AbstractPostForm> resource) {
 
         AbstractPost post = resource.getForm().accept(new AbstractPostFormVisitor<>() {
             @Override
@@ -230,7 +234,7 @@ public class PostResource implements FormResourceTemplate<Form<AbstractPostForm>
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
-    public ResponseOk update(UUID id, Form<AbstractPostForm> resource) {
+    public ResponseOk update(UUID id, Form<? extends AbstractPostForm> resource) {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
         Set<User> rawLikes = Sets.newHashSet(post.getLikes());
 

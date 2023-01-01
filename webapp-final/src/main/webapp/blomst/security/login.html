@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:read="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <template>
+        <meta-form bind:model="model.form">
+            <meta-input property="email" read:schema="model.$schema.properties.form.properties.email"></meta-input>
+            <meta-input property="password" read:schema="model.$schema.properties.form.properties.password"></meta-input>
+        </meta-form>
+        <button type="button" read:for="let link of actions(model.form.links)" read:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
+    </template>
+</body>
+</html>

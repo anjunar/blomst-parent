@@ -1,6 +1,7 @@
 package com.anjunar.blomst.security.login;
 
 import com.anjunar.blomst.ApplicationResource;
+import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.LoginResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -18,7 +19,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("security")
 @RequestScoped
-public class LoginResource implements LoginResourceTemplate<LoginForm> {
+public class LoginResource implements LoginResourceTemplate<Form<LoginForm>> {
 
     private final IdentityManager identityManager;
 
@@ -36,13 +37,13 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @Produces("application/json")
     @Path("login")
     @LinkDescription("Create Login")
-    public LoginForm login() {
+    public Form<LoginForm> login() {
         LoginForm loginForm = new LoginForm();
 
-        linkTo(methodOn(LoginResource.class).login(new LoginForm()))
+        linkTo(methodOn(LoginResource.class).login(new Form<>()))
                 .build(loginForm::addLink);
 
-        return loginForm;
+        return new Form<>(loginForm) {};
     }
 
     @Override
@@ -51,9 +52,10 @@ public class LoginResource implements LoginResourceTemplate<LoginForm> {
     @Produces("application/json")
     @Path("login")
     @LinkDescription("Do Login")
-    public ResponseOk login(LoginForm resource) {
+    public ResponseOk login(Form<LoginForm> resource) {
+        identityManager.logout();
 
-        if (identityManager.authenticate(resource.getEmail(), resource.getPassword())) {
+        if (identityManager.authenticate(resource.getForm().getEmail(), resource.getForm().getPassword())) {
             ResponseOk response = new ResponseOk();
 
             linkTo(methodOn(ApplicationResource.class).service())
