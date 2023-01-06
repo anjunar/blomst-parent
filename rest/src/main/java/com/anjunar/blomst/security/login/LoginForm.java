@@ -16,12 +16,12 @@ public class LoginForm extends AbstractRestEntity implements LinksContainer {
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Email")
     @NotBlank
     @Email
-    private String email;
+    private String email = "";
 
     @JsonSchema(widget = JsonNode.Widget.PASSWORD, title = "Password")
     @Size(min = 3, max = 80)
     @NotBlank
-    private String password;
+    private String password = "";
 
     public String getEmail() {
         return email;

@@ -51,9 +51,8 @@ class DomForm extends mix(HTMLFormElement).with(Input) {
                 scoped : true,
                 handler : (value) => {
                     component.model = value;
-                    // Don't set value for Input, because Validations are not working then
-                    // component.value = value;
-                    component.dispatchEvent(new CustomEvent("input"));
+                    component.value = value;
+                    component.dispatchEvent(new CustomEvent("model"));
                     this.asyncValidationHandler();
                 }
             })

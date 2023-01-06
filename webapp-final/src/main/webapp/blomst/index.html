@@ -1,45 +1,124 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:read="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:read="http://www.w3.org/1999/xhtml" xmlns:bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+        .flip-card {
+            background-color: transparent;
+            /*width: 300px;*/
+            /*height: 200px;*/
+            perspective: 1000px; /* Remove this if you don't want the 3D effect */
+        }
+
+        /* This container is needed to position the front and back side */
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        /* Do an horizontal flip when you move the mouse over the flip box container */
+        .flip-card .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Position the front and back side */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+        }
+
+        /* Style the front side (fallback if image is missing) */
+        .flip-card-front {
+            height: 100%;
+        }
+
+        /* Style the back side */
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
 </head>
 <body>
   <template>
     <div style="display: flex; height: 100%;width: 100%; align-items: center; justify-content: center;">
       <div style="flex-grow : 1; max-width: 600px; min-width: 400px; height: 800px; background-color: var(--main-dark1-color);">
 
-          <mat-carousel style="height: 100%" read:items="query">
+          <mat-carousel style="height: 100%" read:items="postQuery">
 
               <mat-carousel-item>
-                  <div let="data" style="padding: 10px;">
-                      <section>
-                          <header style="display: flex">
-                              <div style="width: 50px; height: 50px; border-radius: 10%; overflow: hidden">
-                                  <img read:src="data.owner.picture.data" style="max-width: 50px;">
+                  <div let="data" class="container" style="height: 100%">
+                      <div class="flip-card-inner">
+                          <div class="flip-card-front">
+                              <div style="padding: 10px; height: 100%">
+                                  <section style="display: flex; align-content: space-around; flex-direction: column; height: 100%">
+                                      <header style="display: flex">
+                                          <div style="width: 50px; height: 50px; border-radius: 10%; overflow: hidden">
+                                              <img read:src="data.owner.picture.data" style="max-width: 50px;">
+                                          </div>
+                                          <div>
+                                              <h4 style="margin: 4px">
+                                                  {{{data.owner.name}}}
+                                              </h4>
+                                              <p style="margin: 4px; font-size: x-small; color: var(--main-grey-color)">
+                                                  {{{dateTimeFormat(data.created)}}}
+                                              </p>
+                                          </div>
+                                      </header>
+
+                                      <div style="flex: 1;" read:if="data['@type'] === 'Text'">
+                                      </div>
+
+                                      <div style="margin-top: 10px">
+                                          {{{data.text}}}
+                                      </div>
+
+                                      <div read:if="data['@type'] === 'Image'" style="flex: 1;"></div>
+
+                                      <div read:if="data['@type'] === 'Image'">
+                                          <img read:src="data.image.data" style="width: 100%">
+                                      </div>
+                                      <div style="flex: 1;"></div>
+
+                                      <footer>
+                                          <button style="padding: 10px; border-radius : 50%; background-color: var(--main-green-color); font-size: xx-large"
+                                                  type="button" read:onclick="onClickAdd(data.id)" class="material-icons">comment</button>
+                                      </footer>
+                                  </section>
+
                               </div>
-                              <div>
-                                  <h4 style="margin: 4px">
-                                      {{{data.owner.name}}}
-                                  </h4>
-                                  <p style="margin: 4px; font-size: x-small; color: var(--main-grey-color)">
-                                      {{{dateTimeFormat(data.created)}}}
-                                  </p>
-                              </div>
-                          </header>
-                          <div style="margin-top: 10px">
-                              {{{data.text}}}
                           </div>
+                          <div class="flip-card-back">
+                              <section style="display: flex; align-content: space-around; flex-direction: column; height: 100%">
 
-                          <div read:if="data['@type'] === 'Image'">
-                              <img read:src="data.image.data" style="width: 100%">
+                                  <mat-list read:items="commentQuery(data.id)">
+                                      <div let="data">
+                                          {{{data.text}}}
+                                      </div>
+                                  </mat-list>
+
+                                  <div bind:if="comment">
+                                      <meta-form bind:model="comment.form" read:schema="comment.$schema.properties.form">
+                                          <meta-input property="text"></meta-input>
+                                      </meta-form>
+                                  </div>
+
+                                  <div style="flex: 1;"></div>
+
+                                  <footer>
+                                      <button style="padding: 10px; border-radius : 50%; background-color: var(--main-green-color); font-size: xx-large"
+                                              type="button" read:onclick="onClickRemove()" class="material-icons">settings_backup_restore</button>
+                                  </footer>
+                              </section>
                           </div>
-
-                          <footer>
-
-                          </footer>
-                      </section>
-
+                      </div>
                   </div>
 
               </mat-carousel-item>

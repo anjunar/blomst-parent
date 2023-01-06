@@ -93,7 +93,11 @@ function bindingFactory(node, activeElement, rework, generate) {
             }
         } else {
             function simpleCallback() {
-                generate(node);
+                if (node instanceof Function) {
+                    generate(node());
+                } else {
+                    generate(node);
+                }
             }
             try {
                 simpleCallback();
@@ -334,20 +338,8 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                 function generate(implicit, index = 0, selector, tag, name, source) {
                     function content(jsonAST, documentFragment, mapping) {
                         for (const child of renderedElements) {
-                            child.addEventListener("animationend",() => {
-                                child.remove();
-                                notifyElementRemove(child);
-                            })
-
-                            child.classList.remove("left-added")
-                            child.classList.remove("right-added")
-
-                            if (oldIndex - index > 0) {
-                                child.classList.add("left-removed")
-                            } else {
-                                child.classList.add("right-removed")
-                            }
-
+                            child.remove();
+                            notifyElementRemove(child);
                         }
 
                         renderedElements = [];
@@ -379,11 +371,6 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                                 let ast = mapping.get(query);
                                 let fragment = processJsonAST(root, [ast], context, rework, mapping);
                                 for (const child of fragment.children) {
-                                    if (oldIndex - index > 0) {
-                                        child.classList.add("left-added");
-                                    } else {
-                                        child.classList.add("right-added");
-                                    }
                                     renderedElements.push(child);
                                 }
                                 placeholder.after(fragment);
@@ -391,11 +378,6 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                         } else {
                             let fragment = processJsonAST(root, jsonAST, context, rework, mapping);
                             for (const child of fragment.children) {
-                                if (oldIndex - index > 0) {
-                                    child.classList.add("left-added");
-                                } else {
-                                    child.classList.add("right-added");
-                                }
                                 renderedElements.push(child);
                             }
                             placeholder.after(fragment);
@@ -647,9 +629,13 @@ export function compileHTML(root, ast, context) {
     let rework = [];
     let fragment = processJsonAST(root, ast, context, rework);
     for (const callback of rework) {
-        callback();
-    }
-    return fragment;
+        try {
+            callback();
+        } catch (e) {
+            console.log("Rework error " + callback.toString())
+        }
+
+    }return fragment;
 }
 
 export function contentChildren(node) {

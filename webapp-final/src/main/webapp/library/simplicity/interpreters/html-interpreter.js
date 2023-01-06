@@ -106,7 +106,7 @@ const ifStatement = {
         let expression = node.getAttribute("read:if") || node.getAttribute("bind:if");
 
         if (node.hasAttribute("read:if")) {
-            return `{ type : "if", predicate : ${addContext(expression)}, callback() { return ${processNode(node, isSvg)} } }`
+            return `{ type : "if", predicate : function() { return ${addContext(expression)}}, callback() { return ${processNode(node, isSvg)} } }`
         } else {
             return `{ type : "if", predicate : bind(context, "${expression}"), callback() { return ${processNode(node, isSvg)} } }`
         }
@@ -399,9 +399,15 @@ function attributes(attributes = []) {
                     if (!processor) {
                         throw new Error("Attribute Processor not found for attribute: " + namespace[1] + " on Element: " + attribute.ownerElement.localName)
                     }
-                    return processor.process(attribute, namespace[1], previousValue, (value) => {
-                        return addContext(value, false);
-                    });
+                    if (namespace[1].startsWith("on")) {
+                        return processor.process(attribute, namespace[1], previousValue, (value) => {
+                            return addContext(value, false);
+                        });
+                    } else {
+                        return processor.process(attribute, namespace[1], previousValue, (value) => {
+                            return `function() { return ${addContext(value, false)} }`;
+                        });
+                    }
                 }
                 default : {
                     let processor = attributeProcessors.find(processor => processor.name(attribute).test(namespace[0]));
