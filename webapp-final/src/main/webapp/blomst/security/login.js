@@ -29,11 +29,6 @@ class Login extends HTMLElement {
         }
     }
 
-    actions(links) {
-        return Object.values(links)
-            .filter((link) => link.method !== "GET")
-    }
-
     static get components() {
         return [MetaForm, MetaInput];
     }

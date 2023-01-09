@@ -245,6 +245,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                     }
                 }
                 processAttributes(node, element, rework, context);
+                if (node.script) {
+                    rework.push(() => {
+                        node.script.call(context, element);
+                    })
+                }
             },
             svg() {
                 let element = document.createElementNS("http://www.w3.org/2000/svg", node.tag);
@@ -257,6 +262,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                     }
                 }
                 processAttributes(node, element, rework, context);
+                if (node.script) {
+                    rework.push(() => {
+                        node.script.call(context, element);
+                    })
+                }
             },
             dom() {
                 let element = node.dom;
@@ -281,6 +291,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                 element.render();
                 mapping.set(element, node);
                 elements.appendChild(element);
+                if (node.script) {
+                    rework.push(() => {
+                        node.script.call(context, element);
+                    })
+                }
             },
 
             directive() {
@@ -295,6 +310,11 @@ function processJsonAST(root, nodes, context, rework = [], mapping = new Map()) 
                         let documentFragment = processJsonAST(root, node.children, context, rework, mapping);
                         element.appendChild(documentFragment);
                     }
+                }
+                if (node.script) {
+                    rework.push(() => {
+                        node.script.call(context, element);
+                    })
                 }
             },
 
@@ -632,7 +652,9 @@ export function compileHTML(root, ast, context) {
         try {
             callback();
         } catch (e) {
-            console.log("Rework error " + callback.toString())
+            window.setTimeout(() => {
+                callback();
+            }, 300)
         }
 
     }return fragment;

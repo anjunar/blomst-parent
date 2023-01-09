@@ -10,7 +10,7 @@
             <meta-input property="email"></meta-input>
             <meta-input property="password"></meta-input>
         </meta-form>
-        <button type="button" read:for="let link of actions(model.form.links)" read:onclick="onAction(link)" style="margin: 5px">{{{link.rel}}}</button>
+        <button type="button" read:onclick="onAction(model.form.links.login)" style="margin: 5px">Login</button>
     </template>
 </body>
 </html>

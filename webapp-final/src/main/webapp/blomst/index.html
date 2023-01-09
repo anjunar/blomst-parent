@@ -106,7 +106,16 @@
 
                                   <div bind:if="comment">
                                       <meta-form bind:model="comment.form" read:schema="comment.$schema.properties.form">
-                                          <meta-input property="text"></meta-input>
+                                          <meta-input property="text">
+                                              <script>
+                                                  function main(element) {
+                                                      let textarea = element.querySelector("textarea")
+                                                      textarea.addEventListener("keyup", (event) => {
+                                                          this.commentSave(event);
+                                                      })
+                                                  }
+                                              </script>
+                                          </meta-input>
                                       </meta-form>
                                   </div>
 

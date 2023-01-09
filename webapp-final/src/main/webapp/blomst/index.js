@@ -29,10 +29,12 @@ class Blomst extends HTMLElement {
         }
     }
 
-    commentSave(event, id) {
+    commentSave(event) {
         let value = event.target.value;
         if (event.key === "Enter") {
-            fetch(`service/home/timeline/post/comments/comment`)
+            fetch(`service/home/timeline/post/comments/comment`, {method : "POST", body : JSON.stringify(this.comment)})
+                .then(response => response.json())
+                .then(response => console.log(response))
         }
     }
 
