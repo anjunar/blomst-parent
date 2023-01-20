@@ -489,8 +489,10 @@ function processNode(node, isSvg = false) {
                     objects.push(`is : "${is}"`)
                 }
                 objects.push(`content(implicit) { return [${iterateChildren(node.childNodes, isSvg)}] }`)
-                let script = node.querySelector("script");
-                objects.push(`script : ${script.trim()}`)
+                let script = node.querySelector(node.localName + " > script");
+                if (script) {
+                    objects.push(`script : ${script.innerHTML.trim()}`);
+                }
             } else {
                 objects.push(`type : "directive"`)
                 objects.push(`tag : "${node.localName}"`)
@@ -499,16 +501,20 @@ function processNode(node, isSvg = false) {
                     objects.push(`is : "${is}"`)
                 }
                 objects.push(`children : [${iterateChildren(node.childNodes, isSvg)}]`)
-                let script = node.querySelector("script");
-                objects.push(`script : ${script.trim()}`)
+                let script = node.querySelector(node.localName + " > script");
+                if (script) {
+                    objects.push(`script : ${script.innerHTML.trim()}`);
+                }
             }
         } else {
             if (node.localName === "svg" || isSvg) {
                 objects.push(`type : "svg"`)
                 objects.push(`tag : "${node.localName}"`)
                 objects.push(`children : [${iterateChildren(node.childNodes, true)}]`);
-                let script = node.querySelector("script");
-                objects.push(`script : ${script.trim()}`)
+                let script = node.querySelector(node.localName + " > script");
+                if (script) {
+                    objects.push(`script : ${script.innerHTML.trim()}`);
+                }
             } else {
                 if (node.localName === "template") {
                     objects.push(`type : "template"`)
@@ -517,8 +523,10 @@ function processNode(node, isSvg = false) {
                     objects.push(`type : "element"`)
                     objects.push(`tag : "${node.localName}"`)
                     objects.push(`children : [${iterateChildren(node.childNodes, isSvg)}]`);
-                    let script = node.querySelector("script");
-                    objects.push(`script : ${script.trim()}`);
+                    let script = node.querySelector(node.localName + " > script");
+                    if (script) {
+                        objects.push(`script : ${script.innerHTML.trim()}`);
+                    }
                 }
             }
         }

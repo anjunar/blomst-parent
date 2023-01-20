@@ -3,13 +3,13 @@ package com.anjunar.blomst.security.login;
 import com.anjunar.blomst.ApplicationResource;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.link.LinkDescription;
-import com.anjunar.common.rest.api.LoginResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.*;
 
 import java.util.UUID;
@@ -19,56 +19,64 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("security")
 @RequestScoped
-public class LoginResource implements LoginResourceTemplate<Form<LoginForm>> {
+public class LoginResource {
 
     private final IdentityManager identityManager;
 
+    private final EntityManager entityManager;
+
+
     @Inject
-    public LoginResource(IdentityManager identityManager) {
+    public LoginResource(IdentityManager identityManager, EntityManager entityManager) {
         this.identityManager = identityManager;
+        this.entityManager = entityManager;
     }
 
     public LoginResource() {
-        this(null);
+        this(null, null);
     }
 
-    @Override
     @GET
     @Produces("application/json")
     @Path("login")
     @LinkDescription("Create Login")
     public Form<LoginForm> login() {
         LoginForm loginForm = new LoginForm();
+        Form<LoginForm> form = new Form<>(loginForm) {};
 
         linkTo(methodOn(LoginResource.class).login(new Form<>()))
-                .build(loginForm::addLink);
+                .build(form::addLink);
 
-        return new Form<>(loginForm) {};
+        return form;
     }
 
-    @Override
     @POST
     @Consumes("application/json")
     @Produces("application/json")
     @Path("login")
     @LinkDescription("Do Login")
-    public ResponseOk login(Form<LoginForm> resource) {
+    public LoginResponse login(Form<LoginForm> resource) {
         identityManager.logout();
 
-        if (identityManager.authenticate(resource.getForm().getEmail(), resource.getForm().getPassword())) {
-            ResponseOk response = new ResponseOk();
+        User user = entityManager.createQuery("select u from User u join u.emails e where e.value = :email and u.password = :password ", User.class)
+                .setParameter("email", resource.getForm().getEmail())
+                .setParameter("password", resource.getForm().getPassword())
+                .getSingleResult();
+
+        if (identityManager.authenticate(user)) {
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(user.getToken());
 
             linkTo(methodOn(ApplicationResource.class).service())
                     .withRel("redirect")
-                    .build(response::addLink);
+                    .build(loginResponse::addLink);
 
-            return response;
+            return loginResponse;
         } else {
             throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);
         }
     }
 
-    @Override
     @POST
     @Path("runas")
     @RolesAllowed({"Administrator"})

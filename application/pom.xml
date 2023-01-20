@@ -193,7 +193,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.anjunar.blomst</groupId>
-                    <artifactId>webapp-protoype</artifactId>
+                    <artifactId>webapp-prototype</artifactId>
                     <type>war</type>
                 </dependency>
             </dependencies>
@@ -245,6 +245,14 @@
                         <version>6.1.5.Final</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>19</source>
+                    <target>19</target>
+                </configuration>
             </plugin>
 
         </plugins>
