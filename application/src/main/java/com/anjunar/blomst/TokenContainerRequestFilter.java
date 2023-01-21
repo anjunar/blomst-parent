@@ -7,12 +7,17 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 @Provider
 public class TokenContainerRequestFilter implements ContainerRequestFilter {
+
+    private final static Logger log = LoggerFactory.getLogger(TokenContainerRequestFilter.class);
 
     private final EntityManager entityManager;
 
@@ -30,6 +35,8 @@ public class TokenContainerRequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+
+        log.info("MediaType : " + containerRequestContext.getMediaType());
 
         String token = containerRequestContext.getHeaderString("token");
         if (! Strings.isNullOrEmpty(token)) {
