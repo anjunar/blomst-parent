@@ -64,6 +64,8 @@ public class LoginResource {
                 .getSingleResult();
 
         if (identityManager.authenticate(user)) {
+
+            entityManager.refresh(user);
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setToken(user.getToken());
 

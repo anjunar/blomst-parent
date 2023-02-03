@@ -43,7 +43,7 @@ public class TokenServletFilter implements Filter {
 
                     if (key.equals("token")) {
                         try {
-                            if (authenticate(value)) {
+                            if (! authenticate(value)) {
                                 if (response instanceof HttpServletResponse httpServletResponse) {
                                     httpServletResponse.setStatus(403);
                                 }
