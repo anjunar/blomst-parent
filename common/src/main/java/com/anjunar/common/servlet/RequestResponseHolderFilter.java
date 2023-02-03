@@ -8,9 +8,8 @@ import java.io.IOException;
 /**
  * This filter stores the current request and response in the {@link RequestResponseHolder}.
  */
-@WebFilter("*")
-public class RequestResponseHolderFilter implements Filter
-{
+@WebFilter(filterName = "responseHolder", urlPatterns = "*")
+public class RequestResponseHolderFilter implements Filter {
 
     @Override
     public void init(FilterConfig config) throws ServletException

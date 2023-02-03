@@ -12,9 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Objects;
 
-@WebFilter(urlPatterns = "/service/*")
+@WebFilter(filterName = "token", urlPatterns = "/service/*")
 public class TokenServletFilter implements Filter {
 
     private final IdentityManager identityManager;

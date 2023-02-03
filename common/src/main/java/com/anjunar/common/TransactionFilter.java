@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-@WebFilter("/service/*")
+@WebFilter(filterName = "transaction", urlPatterns = "/service/*")
 public class TransactionFilter implements Filter {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionFilter.class);

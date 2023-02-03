@@ -8,7 +8,7 @@ import jakarta.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.util.Locale;
 
-@WebFilter("/service/*")
+@WebFilter(filterName = "i18n", urlPatterns = "/service/*")
 public class I18nFilter implements Filter {
 
     private final IdentityManager identityManager;
