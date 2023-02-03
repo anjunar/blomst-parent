@@ -80,6 +80,8 @@ copy to $JBOSS_HOME/modules
 
 service:jmx:http-remoting-jmx://localhost:9990
 
+setcap 'cap_net_bind_service=+ep' /usr/lib/jvm/jdk-19/bin/java
+
 https://github.com/wildfly/quickstart/tree/main/messaging-clustering-singleton
 https://www.how2shout.com/linux/how-to-install-wildfly-application-server-on-debian-11-bullseye
 https://linuxize.com/post/how-to-install-postgresql-on-debian-10/
