@@ -57,6 +57,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [{
   path: "navigator/form",
+  runGuardsAndResolvers: 'always',
   component: _navigator_app_navigator_form_app_navigator_form_component__WEBPACK_IMPORTED_MODULE_0__.AppNavigatorFormComponent,
   resolve: {
     model: _navigator_app_navigator_resolver__WEBPACK_IMPORTED_MODULE_1__.AppNavigatorResolver

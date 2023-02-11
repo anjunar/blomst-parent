@@ -7,6 +7,7 @@ import {AppNavigatorTableComponent} from "./navigator/app-navigator-table/app-na
 const routes: Routes = [
   {
     path: "navigator/form",
+    runGuardsAndResolvers: 'always',
     component: AppNavigatorFormComponent,
     resolve: {
       model: AppNavigatorResolver
@@ -22,5 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
