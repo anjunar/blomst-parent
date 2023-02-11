@@ -20,6 +20,10 @@ import {AppRoutingStrategyService} from "./app-routing-strategy.service";
     AppRoutingModule,
     Angular2SimplicityModule
   ],
+  providers: [{
+    provide: RouteReuseStrategy,
+    useClass: AppRoutingStrategyService
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
