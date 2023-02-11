@@ -43,7 +43,7 @@ export class AppNavigatorTableComponent implements OnInit {
   }
 
   onRowClick(model : any) {
-    this.router.navigate(["form"], {queryParams : {link : btoa(model.links.read.url)}})
+    this.router.navigate(["/form"], {queryParams : {link : btoa(model.links.read.url)}})
   }
 
   onLoad(model : any) {
