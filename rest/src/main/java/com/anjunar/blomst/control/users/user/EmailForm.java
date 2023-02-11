@@ -1,15 +1,14 @@
 package com.anjunar.blomst.control.users.user;
 
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
-public class EmailForm extends AbstractSchemaEntity {
+public class EmailForm {
 
-    @JsonSchema(widget = JsonNode.Widget.EMAIL, title = "Email")
+    @JsonSchema(widget = JsonNode.Widget.EMAIL, title = "Email", naming = true)
     @Email
     @NotBlank
     private String value;
