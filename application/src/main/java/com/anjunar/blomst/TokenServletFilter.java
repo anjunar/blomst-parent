@@ -39,7 +39,12 @@ public class TokenServletFilter implements Filter {
                 for (String queryParam : queryParams) {
                     String[] segments = queryParam.split("=");
                     String key = segments[0];
-                    String value = segments[1];
+                    String value;
+                    if (segments.length == 2) {
+                        value = segments[1];
+                    } else {
+                        value = "";
+                    }
 
                     if (key.equals("token")) {
                         try {

@@ -23,7 +23,8 @@ public class ObjectMapperFactory {
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-//                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
                 .setTimeZone(TimeZone.getDefault());
 
         SimpleModule simpleModule = new SimpleModule();

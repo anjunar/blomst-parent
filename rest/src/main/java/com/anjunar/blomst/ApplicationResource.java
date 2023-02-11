@@ -16,11 +16,14 @@ import com.anjunar.blomst.social.sites.SitesSearch;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.blomst.system.SystemResource;
+import com.anjunar.blomst.system.languages.LanguagesResource;
+import com.anjunar.blomst.system.languages.LanguagesSearch;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.ValidationResource;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import jakarta.inject.Inject;
@@ -92,6 +95,10 @@ public class ApplicationResource implements ValidationResource<UserForm> {
         if (identityManager.isLoggedIn()) {
 
             Form<UserSelect> userSelect = mapper.map(identityManager.getUser(), new Form<>() {});
+
+            JsonObject language = userSelect.find("language", JsonObject.class);
+            linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
+                    .build(language::addLink);
 
             PagesSearch search = new PagesSearch();
             userSelect.getForm().setLanguage(mapper.map(identityManager.getLanguage(), LanguageForm.class));

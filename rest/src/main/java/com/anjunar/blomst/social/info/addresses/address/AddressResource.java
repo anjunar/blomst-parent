@@ -100,7 +100,7 @@ public class AddressResource {
     public ResponseOk save(SecuredForm<AddressSelect> securedForm) {
         AddressForm addressForm = extractAddressData(securedForm.getForm());
 
-        Address entity = restMapper.map(addressForm, Address.class, securedForm.getSchema(), false, false);
+        Address entity = restMapper.map(addressForm, Address.class, securedForm.getSchema(), false);
         entity.setOwner(identityManager.getUser());
 
         entityManager.persist(entity);

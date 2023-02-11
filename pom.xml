@@ -15,8 +15,7 @@
         <module>domain</module>
         <module>rest</module>
         <module>common</module>
-        <module>webapp-final</module>
-        <module>webapp-prototype</module>
+        <module>webapp</module>
     </modules>
 
     <properties>
@@ -319,14 +318,7 @@
 
             <dependency>
                 <groupId>com.anjunar.blomst</groupId>
-                <artifactId>webapp-prototype</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <type>war</type>
-            </dependency>
-
-            <dependency>
-                <groupId>com.anjunar.blomst</groupId>
-                <artifactId>webapp-final</artifactId>
+                <artifactId>webapp</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <type>war</type>
             </dependency>

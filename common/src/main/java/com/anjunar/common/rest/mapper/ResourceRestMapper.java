@@ -57,16 +57,16 @@ public class ResourceRestMapper {
     }
 
     public <S, D> D map(Form<S> source, Class<D> destinationClass) {
-        return map(source.getForm(), destinationClass, (JsonObject) source.getSchema().getProperties().get("form"), false, false);
+        return map(source.getForm(), destinationClass, (JsonObject) source.getSchema().getProperties().get("form"), false);
     }
 
     public <S, D> D map(SecuredForm<S> source, Class<D> destinationClass) {
-        D result = map(source.getForm(), destinationClass, (JsonObject) source.getSchema().getProperties().get("form"), false, false);
+        D result = map(source.getForm(), destinationClass, (JsonObject) source.getSchema().getProperties().get("form"), false);
         saveFormSchema(source, result);
         return result;
     }
 
-    public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonNode, boolean isDirty, boolean loadOnly) {
+    public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonNode, boolean loadOnly) {
         D destination;
         if (source instanceof AbstractRestEntity restEntity) {
             UUID id = restEntity.getId();
@@ -97,7 +97,7 @@ public class ResourceRestMapper {
                 Object sourcePropertyInstance = sourceProperty.apply(source);
                 Object destinationPropertyInstance = destinationProperty.apply(destination);
 
-                if (Objects.nonNull(sourcePropertyInstance) && (isDirty(jsonNode, sourceProperty) || isDirty)) {
+                if (Objects.nonNull(sourcePropertyInstance)) {
                     if (securityProviders.stream().anyMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty))) {
                         switch (sourcePropertyInstance) {
                             case Collection<?> collection -> processCollection(
@@ -172,10 +172,10 @@ public class ResourceRestMapper {
                 } else {
                     JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
                     if (jsonNode instanceof JsonObject jsonObjectX) {
-                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonObjectX, isDirty(jsonObjectX, sourceProperty), mapperLoadOnly);
+                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonObjectX, mapperLoadOnly);
                         destinationProperty.accept(destination, restEntity);
                     } else {
-                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, new JsonObject(), true, mapperLoadOnly);
+                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, new JsonObject(), mapperLoadOnly);
                         destinationProperty.accept(destination, restEntity);
                     }
                 }
@@ -220,11 +220,11 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
                 JsonArray jsonNode = (JsonArray) jsonObject.getProperties().get(sourceProperty.getKey());
-                Object keyEntity = map(entry.getKey(), (Class<?>) destinationMapKeyType, (JsonObject) jsonNode.getItems(), false, mapperLoadOnlyKey);
+                Object keyEntity = map(entry.getKey(), (Class<?>) destinationMapKeyType, (JsonObject) jsonNode.getItems(), mapperLoadOnlyKey);
                 if (sourceMapValueType.equals(destinationMapValueType)) {
                     destinationPropertyInstance.put(keyEntity, entry.getValue());
                 } else {
-                    Object valueEntity = map(entry.getValue(), (Class<?>) destinationMapValueType, (JsonObject) jsonNode.getItems(), false, mapperLoadOnlyValue);
+                    Object valueEntity = map(entry.getValue(), (Class<?>) destinationMapValueType, (JsonObject) jsonNode.getItems(), mapperLoadOnlyValue);
                     destinationPropertyInstance.put(keyEntity, valueEntity);
                 }
             }
@@ -256,7 +256,7 @@ public class ResourceRestMapper {
                 destinationPropertyInstance.add(element);
             } else {
                 JsonArray jsonNode = (JsonArray) jsonObject.getProperties().get(sourceProperty.getKey());
-                Object entity = map(element, (Class<?>) destinationCollectionType, (JsonObject) jsonNode.getItems(), false, mapperLoadOnly);
+                Object entity = map(element, (Class<?>) destinationCollectionType, (JsonObject) jsonNode.getItems(), mapperLoadOnly);
                 destinationPropertyInstance.add(entity);
             }
         }
@@ -360,18 +360,5 @@ public class ResourceRestMapper {
             }
         }
     }
-
-    private static <S> Boolean isDirty(JsonObject jsonObject, BeanProperty<S, ?> propertySource) {
-        Boolean dirty = false;
-        JsonNode jsonNode = jsonObject.getProperties().get(propertySource.getKey());
-        if (jsonNode != null) {
-            dirty = jsonNode.getDirty();
-            if (dirty == null) {
-                dirty = false;
-            }
-        }
-        return dirty;
-    }
-
 
 }

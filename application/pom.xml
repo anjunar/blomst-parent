@@ -17,6 +17,12 @@
 
         <dependency>
             <groupId>com.anjunar.blomst</groupId>
+            <artifactId>webapp</artifactId>
+            <type>war</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.anjunar.blomst</groupId>
             <artifactId>rest</artifactId>
         </dependency>
 
@@ -186,29 +192,6 @@
 
 
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>Protoype</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.anjunar.blomst</groupId>
-                    <artifactId>webapp-prototype</artifactId>
-                    <type>war</type>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>Final</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.anjunar.blomst</groupId>
-                    <artifactId>webapp-final</artifactId>
-                    <type>war</type>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
     <build>
         <finalName>com.anjunar.blomst.client.main.war</finalName>
