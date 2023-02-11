@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
 import {Link} from "angular2-simplicity";
+import {AppNavigatorResolver} from "../app-navigator.resolver";
 
 @Component({
   selector: 'app-navigator-form',
@@ -13,7 +14,9 @@ export class AppNavigatorFormComponent {
 
   model : any;
 
-  constructor(private router : Router, private route : ActivatedRoute, protected service : AppNavigatorService) {
+  header! : string
+
+  constructor(private router : Router, private route : ActivatedRoute, private service : AppNavigatorService) {
     let data :any = route.data;
     this.model = data["value"].model
     service.links = Object
@@ -23,8 +26,11 @@ export class AppNavigatorFormComponent {
         prev[key] = value;
         return prev;
       }, {} as any)
-  }
 
+    route.queryParams.subscribe(params => {
+      this.header = atob(params["link"])
+    })
+  }
 
   onSubmit(event : {link : {key : string, value : Link}, model : any}) {
     let body = JSON.stringify(event.model);

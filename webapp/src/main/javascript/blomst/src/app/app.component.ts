@@ -1,5 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {AppNavigatorService} from "./navigator/app-navigator.service";
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,10 @@ export class AppComponent {
 
   toBase64(value : any) {
     return btoa(value)
+  }
+
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
   }
 
 }

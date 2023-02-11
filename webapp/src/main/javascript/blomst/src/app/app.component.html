@@ -29,7 +29,7 @@
   <as-drawer [open]="open">
     <nav>
       <ul>
-        <li *ngFor="let entry of links | keyvalue">
+        <li *ngFor="let entry of links | keyvalue : originalOrder">
           <a [routerLink]="'navigator/' + $any(entry).value.type" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
         </li>
       </ul>

@@ -13,6 +13,8 @@ export class AppNavigatorTableComponent implements OnInit {
 
   link!: string;
 
+  header! : string;
+
   loader! : (query: TableQuery, callback: (rows: any[], size: number, schema: any) => void) => void;
 
   constructor(private router : Router, private route: ActivatedRoute, protected service: AppNavigatorService) {
@@ -28,6 +30,10 @@ export class AppNavigatorTableComponent implements OnInit {
           callback(response.rows, response.size, response.$schema)
         })
     };
+
+    route.queryParams.subscribe(params => {
+      this.header = atob(params["link"])
+    })
   }
 
   ngOnInit(): void {
