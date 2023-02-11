@@ -88691,25 +88691,25 @@ class AsMetaTableComponent {
     return Object.entries(properties).filter(([key, value]) => value.naming).map(([key, value]) => key);
   }
   lazySelectName(properties, model) {
-    if (model) {
-      let label = this.lazySelectLabel(properties);
-      return label.map(value => model[value]).join(" ");
+    if (!model) {
+      return "";
     }
-    return "";
+    let label = this.lazySelectLabel(properties);
+    return label.map(value => model[value]).join(" ");
   }
   lazyMultiSelectName(properties, model) {
-    if (model) {
-      let label = this.lazySelectLabel(properties);
-      return model.map(model => label.map(value => model[value]).join(" ")).join(" ");
+    if (!model) {
+      return "";
     }
-    return "";
+    let label = this.lazySelectLabel(properties);
+    return model.map(model => label.map(value => model[value]).join(" ")).join(" ");
   }
   repeat(properties, model) {
-    if (model) {
-      let label = Object.entries(properties).filter(([key, value]) => value.naming).map(([key, value]) => key);
-      return model.map(model => label.map(value => model[value]).join(" ")).join(" ");
+    if (!model) {
+      return "";
     }
-    return "";
+    let label = Object.entries(properties).filter(([key, value]) => value.naming).map(([key, value]) => key);
+    return model.map(model => label.map(value => model[value]).join(" ")).join(" ");
   }
 }
 AsMetaTableComponent.ɵfac = function AsMetaTableComponent_Factory(t) {
