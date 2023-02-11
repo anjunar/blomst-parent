@@ -2,7 +2,7 @@
 <as-toolbar style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position: absolute; z-index: 9999">
   <div left style="display: flex">
     <a class="material-icons" (click)="open = ! open">home</a>
-    <a routerLink="navigator/form" [queryParams]="{link : service}"  routerLinkActive="active" class="normal">Navigator</a>
+    <a routerLink="form" [queryParams]="{link : service}"  routerLinkActive="active" class="normal">Navigator</a>
   </div>
   <div middle>Blomst v0.9.0</div>
   <div right>
@@ -30,7 +30,7 @@
     <nav>
       <ul>
         <li *ngFor="let entry of links | keyvalue : originalOrder">
-          <a [routerLink]="'navigator/' + $any(entry).value.type" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
+          <a [routerLink]="[$any(entry).value.type]" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
         </li>
       </ul>
     </nav>
