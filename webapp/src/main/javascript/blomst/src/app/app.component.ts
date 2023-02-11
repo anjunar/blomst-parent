@@ -11,8 +11,17 @@ import {KeyValue} from "@angular/common";
 export class AppComponent {
 
   open = true;
+  name = "Blomst"
 
-  constructor(private navigator : AppNavigatorService) {}
+  constructor(private navigator : AppNavigatorService) {
+    if (window.location.host.indexOf("poseidon") > -1) {
+      this.name = "Poseidon"
+    }
+    let title = document.querySelector("title");
+    if (title) {
+      title.textContent = this.name;
+    }
+  }
 
   get service() {
     return btoa("service")

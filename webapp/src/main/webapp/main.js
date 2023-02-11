@@ -132,9 +132,17 @@ class AppComponent {
   constructor(navigator) {
     this.navigator = navigator;
     this.open = true;
+    this.name = "Blomst";
     this.originalOrder = (a, b) => {
       return 0;
     };
+    if (window.location.host.indexOf("poseidon") > -1) {
+      this.name = "Poseidon";
+    }
+    let title = document.querySelector("title");
+    if (title) {
+      title.textContent = this.name;
+    }
   }
   get service() {
     return btoa("service");
@@ -153,7 +161,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ
   type: AppComponent,
   selectors: [["app-root"]],
   decls: 30,
-  vars: 8,
+  vars: 9,
   consts: [[2, "height", "38px"], [2, "box-shadow", "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "position", "absolute", "z-index", "9999"], ["left", "", 2, "display", "flex"], [1, "material-icons", 3, "click"], ["routerLink", "/navigator/form", "routerLinkActive", "active", 1, "normal", 3, "queryParams"], ["middle", ""], ["right", ""], [1, "browsers"], ["href", "https://www.google.de/chrome", "target", "_blank"], ["src", "assets/app-root/chrome_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "5px", "vertical-align", "bottom"], ["href", "https://www.microsoft.com/de-de/edge", "target", "_blank"], ["src", "assets/app-root/edge.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://www.mozilla.org", "target", "_blank"], ["src", "assets/app-root/firefox_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://github.com/anjunar/simplicity", "target", "_blank"], ["src", "assets/app-root/github-circle-white-transparent.svg"], [2, "height", "calc(100% - 38px)"], [3, "open"], [4, "ngFor", "ngForOf"], [2, "position", "relative", "height", "calc(100% - 38px)"], ["left", ""], [3, "routerLink", "queryParams"]],
   template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
@@ -168,7 +176,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6, "Navigator");
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "div", 5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](8, "Blomst v0.9.0");
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](8);
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](9, "div", 6)(10, "div", 7)(11, "a", 8);
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](12, "img", 9);
@@ -195,11 +203,13 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ
     }
     if (rf & 2) {
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("queryParams", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](6, _c1, ctx.service));
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](15);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("queryParams", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](7, _c1, ctx.service));
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](3);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.name);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](12);
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("open", ctx.open);
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](3);
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipeBind2"](24, 3, ctx.links, ctx.originalOrder));
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipeBind2"](24, 4, ctx.links, ctx.originalOrder));
     }
   },
   dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_2__.NgForOf, _angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterOutlet, _angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterLink, _angular_router__WEBPACK_IMPORTED_MODULE_3__.RouterLinkActive, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsToolbarComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsDrawerComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsDrawerContainerComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsDrawerContentComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsFooterComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsTaskbarComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__.AsViewportComponent, _angular_common__WEBPACK_IMPORTED_MODULE_2__.KeyValuePipe],
