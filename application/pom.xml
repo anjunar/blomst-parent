@@ -31,13 +31,6 @@
             <artifactId>domain</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.ocpsoft.rewrite/rewrite-servlet -->
-        <dependency>
-            <groupId>org.ocpsoft.rewrite</groupId>
-            <artifactId>rewrite-servlet</artifactId>
-            <version>5.0.0.Alpha1</version>
-        </dependency>
-
         <dependency>
             <groupId>jakarta.websocket</groupId>
             <artifactId>jakarta.websocket-api</artifactId>
