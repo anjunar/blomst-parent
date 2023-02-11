@@ -56,13 +56,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const routes = [{
-  path: "form",
+  path: "navigator/form",
   component: _navigator_app_navigator_form_app_navigator_form_component__WEBPACK_IMPORTED_MODULE_0__.AppNavigatorFormComponent,
   resolve: {
     model: _navigator_app_navigator_resolver__WEBPACK_IMPORTED_MODULE_1__.AppNavigatorResolver
   }
 }, {
-  path: "table",
+  path: "navigator/table",
   component: _navigator_app_navigator_table_app_navigator_table_component__WEBPACK_IMPORTED_MODULE_2__.AppNavigatorTableComponent
 }];
 class AppRoutingModule {}
@@ -122,7 +122,7 @@ function AppComponent_li_23_Template(rf, ctx) {
     const entry_r1 = ctx.$implicit;
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](3, _c0, "/" + entry_r1.value.type))("queryParams", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](5, _c1, ctx_r0.toBase64(entry_r1.value.url)));
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](3, _c0, "/navigator/" + entry_r1.value.type))("queryParams", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](5, _c1, ctx_r0.toBase64(entry_r1.value.url)));
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](entry_r1.key);
   }
@@ -153,7 +153,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ
   selectors: [["app-root"]],
   decls: 30,
   vars: 8,
-  consts: [[2, "height", "38px"], [2, "box-shadow", "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "position", "absolute", "z-index", "9999"], ["left", "", 2, "display", "flex"], [1, "material-icons", 3, "click"], ["routerLink", "/form", "routerLinkActive", "active", 1, "normal", 3, "queryParams"], ["middle", ""], ["right", ""], [1, "browsers"], ["href", "https://www.google.de/chrome", "target", "_blank"], ["src", "assets/app-root/chrome_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "5px", "vertical-align", "bottom"], ["href", "https://www.microsoft.com/de-de/edge", "target", "_blank"], ["src", "assets/app-root/edge.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://www.mozilla.org", "target", "_blank"], ["src", "assets/app-root/firefox_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://github.com/anjunar/simplicity", "target", "_blank"], ["src", "assets/app-root/github-circle-white-transparent.svg"], [2, "height", "calc(100% - 38px)"], [3, "open"], [4, "ngFor", "ngForOf"], [2, "position", "relative", "height", "calc(100% - 38px)"], ["left", ""], [3, "routerLink", "queryParams"]],
+  consts: [[2, "height", "38px"], [2, "box-shadow", "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "position", "absolute", "z-index", "9999"], ["left", "", 2, "display", "flex"], [1, "material-icons", 3, "click"], ["routerLink", "/navigator/form", "routerLinkActive", "active", 1, "normal", 3, "queryParams"], ["middle", ""], ["right", ""], [1, "browsers"], ["href", "https://www.google.de/chrome", "target", "_blank"], ["src", "assets/app-root/chrome_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "5px", "vertical-align", "bottom"], ["href", "https://www.microsoft.com/de-de/edge", "target", "_blank"], ["src", "assets/app-root/edge.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://www.mozilla.org", "target", "_blank"], ["src", "assets/app-root/firefox_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://github.com/anjunar/simplicity", "target", "_blank"], ["src", "assets/app-root/github-circle-white-transparent.svg"], [2, "height", "calc(100% - 38px)"], [3, "open"], [4, "ngFor", "ngForOf"], [2, "position", "relative", "height", "calc(100% - 38px)"], ["left", ""], [3, "routerLink", "queryParams"]],
   template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "div", 0);
@@ -390,7 +390,7 @@ class AppNavigatorTableComponent {
     this.link = atob(queryParam);
   }
   onRowClick(model) {
-    this.router.navigate(["/form"], {
+    this.router.navigate(["/navigator/form"], {
       queryParams: {
         link: btoa(model.links.read.url)
       }

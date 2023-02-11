@@ -6,14 +6,14 @@ import {AppNavigatorTableComponent} from "./navigator/app-navigator-table/app-na
 
 const routes: Routes = [
   {
-    path: "form",
+    path: "navigator/form",
     component: AppNavigatorFormComponent,
     resolve: {
       model: AppNavigatorResolver
     }
   },
   {
-    path: "table",
+    path: "navigator/table",
     component: AppNavigatorTableComponent
   }
 ];
