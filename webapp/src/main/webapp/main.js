@@ -1,6 +1,39 @@
 "use strict";
 (self["webpackChunkblomst"] = self["webpackChunkblomst"] || []).push([["main"],{
 
+/***/ 7386:
+/*!*************************************************!*\
+  !*** ./src/app/app-routing-strategy.service.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AppRoutingStrategyService": () => (/* binding */ AppRoutingStrategyService)
+/* harmony export */ });
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
+
+
+class AppRoutingStrategyService extends _angular_router__WEBPACK_IMPORTED_MODULE_0__.BaseRouteReuseStrategy {
+  shouldReuseRoute(future, curr) {
+    return false;
+  }
+}
+AppRoutingStrategyService.ɵfac = /*@__PURE__*/function () {
+  let ɵAppRoutingStrategyService_BaseFactory;
+  return function AppRoutingStrategyService_Factory(t) {
+    return (ɵAppRoutingStrategyService_BaseFactory || (ɵAppRoutingStrategyService_BaseFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵgetInheritedFactory"](AppRoutingStrategyService)))(t || AppRoutingStrategyService);
+  };
+}();
+AppRoutingStrategyService.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({
+  token: AppRoutingStrategyService,
+  factory: AppRoutingStrategyService.ɵfac,
+  providedIn: 'root'
+});
+
+/***/ }),
+
 /***/ 158:
 /*!***************************************!*\
   !*** ./src/app/app-routing.module.ts ***!
@@ -182,13 +215,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppModule": () => (/* binding */ AppModule)
 /* harmony export */ });
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/platform-browser */ 4497);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/platform-browser */ 4497);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app-routing.module */ 158);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ 5041);
-/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular2-simplicity */ 9533);
+/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! angular2-simplicity */ 9533);
 /* harmony import */ var _navigator_app_navigator_form_app_navigator_form_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./navigator/app-navigator-form/app-navigator-form.component */ 7807);
 /* harmony import */ var _navigator_app_navigator_table_app_navigator_table_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./navigator/app-navigator-table/app-navigator-table.component */ 3395);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _app_routing_strategy_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app-routing-strategy.service */ 7386);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 2560);
+
+
 
 
 
@@ -200,17 +237,21 @@ class AppModule {}
 AppModule.ɵfac = function AppModule_Factory(t) {
   return new (t || AppModule)();
 };
-AppModule.ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({
+AppModule.ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineNgModule"]({
   type: AppModule,
   bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent]
 });
-AppModule.ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({
-  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_6__.Angular2SimplicityModule]
+AppModule.ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineInjector"]({
+  providers: [{
+    provide: _angular_router__WEBPACK_IMPORTED_MODULE_6__.RouteReuseStrategy,
+    useClass: _app_routing_strategy_service__WEBPACK_IMPORTED_MODULE_4__.AppRoutingStrategyService
+  }],
+  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__.Angular2SimplicityModule]
 });
 (function () {
-  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](AppModule, {
+  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵsetNgModuleScope"](AppModule, {
     declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent, _navigator_app_navigator_form_app_navigator_form_component__WEBPACK_IMPORTED_MODULE_2__.AppNavigatorFormComponent, _navigator_app_navigator_table_app_navigator_table_component__WEBPACK_IMPORTED_MODULE_3__.AppNavigatorTableComponent],
-    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_6__.Angular2SimplicityModule]
+    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__.Angular2SimplicityModule]
   });
 })();
 
