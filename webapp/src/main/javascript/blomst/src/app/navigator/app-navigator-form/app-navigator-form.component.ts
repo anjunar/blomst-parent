@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
-import {Link} from "angular2-simplicity";
+import {Link, SelectQuery} from "angular2-simplicity";
 import {AppNavigatorResolver} from "../app-navigator.resolver";
 
 @Component({
@@ -30,6 +30,19 @@ export class AppNavigatorFormComponent {
     route.queryParams.subscribe(params => {
       this.header = atob(params["link"])
     })
+  }
+
+  loader(query : SelectQuery, callback : (rows : any[], size: number) => void) : void {
+    let link = "service/control/users/user/connections/connection/categories";
+    const url = new URL(window.location.origin + "/" + link);
+    url.searchParams.append("index", query.index + "")
+    url.searchParams.append("limit", query.limit + "")
+
+    fetch(url.toString())
+      .then(response => response.json())
+      .then(response => {
+        callback(response.rows, response.size)
+      })
   }
 
   onSubmit(event : {link : {key : string, value : Link}, model : any}) {

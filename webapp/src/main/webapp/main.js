@@ -237,7 +237,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _navigator_app_navigator_table_app_navigator_table_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./navigator/app-navigator-table/app-navigator-table.component */ 3395);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _app_routing_strategy_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app-routing-strategy.service */ 7386);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 2508);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 2560);
+
 
 
 
@@ -260,12 +262,12 @@ AppModule.ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵd
     provide: _angular_router__WEBPACK_IMPORTED_MODULE_6__.RouteReuseStrategy,
     useClass: _app_routing_strategy_service__WEBPACK_IMPORTED_MODULE_4__.AppRoutingStrategyService
   }],
-  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__.Angular2SimplicityModule]
+  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__.Angular2SimplicityModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.ReactiveFormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule]
 });
 (function () {
   (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵsetNgModuleScope"](AppModule, {
     declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent, _navigator_app_navigator_form_app_navigator_form_component__WEBPACK_IMPORTED_MODULE_2__.AppNavigatorFormComponent, _navigator_app_navigator_table_app_navigator_table_component__WEBPACK_IMPORTED_MODULE_3__.AppNavigatorTableComponent],
-    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__.Angular2SimplicityModule]
+    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__.Angular2SimplicityModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.ReactiveFormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule]
   });
 })();
 
@@ -285,10 +287,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _app_navigator_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-navigator.service */ 1341);
 /* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-simplicity */ 9533);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ 2508);
 
 
 
 
+
+function AppNavigatorFormComponent_ng_template_2_ng_template_2_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](0);
+  }
+  if (rf & 2) {
+    const item_r3 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate1"](" ", item_r3.name, " ");
+  }
+}
+function AppNavigatorFormComponent_ng_template_2_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "as-input-container", 1)(1, "as-lazy-select", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function AppNavigatorFormComponent_ng_template_2_Template_as_lazy_select_ngModelChange_1_listener($event) {
+      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵrestoreView"](_r5);
+      const node_r1 = restoredCtx.$implicitly;
+      return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵresetView"](node_r1.value.visibility = $event);
+    });
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, AppNavigatorFormComponent_ng_template_2_ng_template_2_Template, 1, 1, "ng-template");
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
+  }
+  if (rf & 2) {
+    const node_r1 = ctx.$implicitly;
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", node_r1.value.visibility)("items", ctx_r0.loader)("multiSelect", true);
+  }
+}
 class AppNavigatorFormComponent {
   constructor(router, route, service) {
     this.router = router;
@@ -305,6 +337,15 @@ class AppNavigatorFormComponent {
     }, {});
     route.queryParams.subscribe(params => {
       this.header = atob(params["link"]);
+    });
+  }
+  loader(query, callback) {
+    let link = "service/control/users/user/connections/connection/categories";
+    const url = new URL(window.location.origin + "/" + link);
+    url.searchParams.append("index", query.index + "");
+    url.searchParams.append("limit", query.limit + "");
+    fetch(url.toString()).then(response => response.json()).then(response => {
+      callback(response.rows, response.size);
     });
   }
   onSubmit(event) {
@@ -335,9 +376,9 @@ AppNavigatorFormComponent.ɵfac = function AppNavigatorFormComponent_Factory(t) 
 AppNavigatorFormComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
   type: AppNavigatorFormComponent,
   selectors: [["app-navigator-form"]],
-  decls: 2,
+  decls: 3,
   vars: 2,
-  consts: [[3, "model", "submit"]],
+  consts: [[3, "model", "submit"], ["placeholder", "Visibility"], [3, "ngModel", "items", "multiSelect", "ngModelChange"]],
   template: function AppNavigatorFormComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](0);
@@ -345,6 +386,7 @@ AppNavigatorFormComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("submit", function AppNavigatorFormComponent_Template_as_meta_form_submit_1_listener($event) {
         return ctx.onSubmit($event);
       });
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, AppNavigatorFormComponent_ng_template_2_Template, 3, 3, "ng-template");
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     }
     if (rf & 2) {
@@ -353,7 +395,7 @@ AppNavigatorFormComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("model", ctx.model);
     }
   },
-  dependencies: [angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__.AsMetaFormComponent],
+  dependencies: [angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__.AsInputContainerComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__.AsLazySelectComponent, angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__.AsMetaFormComponent, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NgModel],
   styles: ["\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsInNvdXJjZVJvb3QiOiIifQ== */"],
   encapsulation: 2
 });

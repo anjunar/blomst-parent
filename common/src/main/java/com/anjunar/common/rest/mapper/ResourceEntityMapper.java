@@ -6,6 +6,7 @@ import com.anjunar.common.ddd.AbstractRight;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.api.Table;
+import com.anjunar.common.rest.link.WebURLBuilderFactory;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 import com.anjunar.common.rest.mapper.annotations.MapperPolymorphism;

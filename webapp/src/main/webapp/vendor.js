@@ -81927,7 +81927,7 @@ function AsMetaFormComponent_button_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate"](link_r4.key);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_2_ng_container_2_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_ng_container_2_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainer"](0);
   }
@@ -81938,11 +81938,11 @@ const _c25 = function (a0, a1) {
     form: a1
   };
 };
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_2_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "div", 9);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_2_ng_container_2_Template, 1, 0, "ng-container", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "div", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_ng_container_2_Template, 1, 0, "ng-container", 1);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
@@ -81957,51 +81957,51 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_2_Templat
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngTemplateOutlet", _r2)("ngTemplateOutletContext", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpureFunction2"](3, _c25, entry_r10.value, form_r8.get(entry_r10.key)));
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_div_2_ng_container_1_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_div_2_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainer"](0);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_div_2_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_div_2_Template(rf, ctx) {
   if (rf & 1) {
-    const _r31 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 13);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_div_2_ng_container_1_Template, 1, 0, "ng-container", 1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](2, "button", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_div_2_Template_button_click_2_listener() {
-      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r31);
-      const item_r27 = restoredCtx.$implicit;
+    const _r33 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_div_2_ng_container_1_Template, 1, 0, "ng-container", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](2, "button", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_div_2_Template_button_click_2_listener() {
+      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r33);
+      const item_r29 = restoredCtx.$implicit;
       const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2).$implicit;
       const form_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().form;
-      const ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r29.remove(form_r8.get(entry_r10.key), item_r27));
+      const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r31.remove(form_r8.get(entry_r10.key), item_r29));
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](3, "delete");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
-    const item_r27 = ctx.$implicit;
+    const item_r29 = ctx.$implicit;
     const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2).$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
     const _r2 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngTemplateOutlet", _r2)("ngTemplateOutletContext", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpureFunction2"](2, _c25, entry_r10.value.items, item_r27));
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngTemplateOutlet", _r2)("ngTemplateOutletContext", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpureFunction2"](2, _c25, entry_r10.value.items, item_r29));
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_Template(rf, ctx) {
   if (rf & 1) {
-    const _r36 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
+    const _r38 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_div_2_Template, 4, 5, "div", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "div", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_div_2_Template, 4, 5, "div", 14);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "button", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_Template_button_click_3_listener() {
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r36);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "button", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_Template_button_click_3_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r38);
       const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
       const form_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().form;
-      const ctx_r34 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r34.add(form_r8.get(entry_r10.key), entry_r10.value.items));
+      const ctx_r36 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r36.add(form_r8.get(entry_r10.key), entry_r10.value.items));
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, "add");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
@@ -82016,10 +82016,10 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_Templat
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngForOf", form_r8.get(entry_r10.key).controls);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "as-editor", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "as-editor", 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
   if (rf & 2) {
@@ -82029,22 +82029,22 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_Templat
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_ng_template_3_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_ng_template_3_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](0);
   }
   if (rf & 2) {
-    const item_r42 = ctx.$implicit;
+    const item_r44 = ctx.$implicit;
     const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2).$implicit;
-    const ctx_r41 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx_r41.lazySelectName(entry_r10.value.properties, item_r42), " ");
+    const ctx_r43 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx_r43.lazySelectName(entry_r10.value.properties, item_r44), " ");
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15)(2, "as-lazy-select", 16);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](3, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_ng_template_3_Template, 1, 1, "ng-template");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17)(2, "as-lazy-select", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](3, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_ng_template_3_Template, 1, 1, "ng-template");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
@@ -82058,22 +82058,22 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_Templat
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_ng_template_3_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_8_ng_template_3_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](0);
   }
   if (rf & 2) {
-    const item_r46 = ctx.$implicit;
+    const item_r48 = ctx.$implicit;
     const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2).$implicit;
-    const ctx_r45 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx_r45.lazySelectName(entry_r10.value.items.properties, item_r46), " ");
+    const ctx_r47 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx_r47.lazySelectName(entry_r10.value.items.properties, item_r48), " ");
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_8_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15)(2, "as-lazy-select", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](3, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_ng_template_3_Template, 1, 1, "ng-template");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17)(2, "as-lazy-select", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](3, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_8_ng_template_3_Template, 1, 1, "ng-template");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
@@ -82087,10 +82087,10 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_Templat
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_Template(rf, ctx) {
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_9_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "as-image-upload", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "as-image-upload", 20);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
   if (rf & 2) {
@@ -82100,66 +82100,19 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_Templat
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
   }
 }
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_8_Template(rf, ctx) {
-  if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 20);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 21);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a length of $(actualLength), but must be minimum length of $(requiredLength) ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](7, "as-error", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](8, " This Field has a length of $(actualLength), but must be maximum length of $(requiredLength) ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
-  }
-  if (rf & 2) {
-    const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("placeholder", entry_r10.value.title);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControlName", entry_r10.key);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
-  }
-}
-function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_9_Template(rf, ctx) {
-  if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 23);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 20);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 24);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field as to be an email Address ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
-  }
-  if (rf & 2) {
-    const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("placeholder", entry_r10.value.title);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControlName", entry_r10.key);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
-  }
-}
 function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_10_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 25);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 22);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a value of $(actual) and need a minimum amount of $(min) ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a length of $(actualLength), but must be minimum length of $(requiredLength) ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](7, "as-error", 27);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](8, " This Field need a value of $(actual) and a maximum amount of $(max) ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](7, "as-error", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](8, " This Field has a length of $(actualLength), but must be maximum length of $(requiredLength) ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
@@ -82175,10 +82128,13 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_10_Templa
 function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_11_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 28);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 22);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field as to be an email Address ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
@@ -82194,16 +82150,16 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_11_Templa
 function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_12_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 29);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 22);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 21);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a length of $(actualLength), but must be minimum length of $(requiredLength) ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 28);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a value of $(actual) and need a minimum amount of $(min) ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](7, "as-error", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](8, " This Field has a length of $(actualLength), but must be maximum length of $(requiredLength) ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](7, "as-error", 29);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](8, " This Field need a value of $(actual) and a maximum amount of $(max) ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
@@ -82219,12 +82175,73 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_12_Templa
 function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_13_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 30);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 22);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
+  }
+  if (rf & 2) {
+    const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("placeholder", entry_r10.value.title);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControlName", entry_r10.key);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
+  }
+}
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_14_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 22);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a length of $(actualLength), but must be minimum length of $(requiredLength) ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](7, "as-error", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](8, " This Field has a length of $(actualLength), but must be maximum length of $(requiredLength) ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
+  }
+  if (rf & 2) {
+    const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("placeholder", entry_r10.value.title);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControlName", entry_r10.key);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
+  }
+}
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_15_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-checkbox-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
+  }
+  if (rf & 2) {
+    const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("placeholder", entry_r10.value.title);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControlName", entry_r10.key);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
+  }
+}
+function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_16_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "as-input-container", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "input", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "as-error", 22);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, " This Field is required ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "as-error", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " This Field has a length of $(actualLength), but must be minimum length of $(requiredLength) ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
@@ -82238,26 +82255,58 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_13_Templa
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵattribute"]("name", entry_r10.key);
   }
 }
+function AsMetaFormComponent_ng_template_5_ng_container_1_div_17_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainer"](0);
+  }
+}
+const _c26 = function (a0, a1) {
+  return {
+    $implicitly: a0,
+    form: a1
+  };
+};
+function AsMetaFormComponent_ng_template_5_ng_container_1_div_17_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, AsMetaFormComponent_ng_template_5_ng_container_1_div_17_ng_container_1_Template, 1, 0, "ng-container", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+  }
+  if (rf & 2) {
+    const entry_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().$implicit;
+    const form_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]().form;
+    const ctx_r24 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngTemplateOutlet", ctx_r24.security)("ngTemplateOutletContext", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpureFunction2"](2, _c26, entry_r10, form_r8));
+  }
+}
 function AsMetaFormComponent_ng_template_5_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0)(1, 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_2_Template, 3, 6, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](3, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_3_Template, 5, 2, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](4, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_Template, 2, 2, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](5, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_Template, 4, 5, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](6, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_Template, 4, 6, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](7, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_Template, 2, 3, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](8, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_8_Template, 9, 3, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](9, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_9_Template, 7, 3, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](10, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_10_Template, 9, 3, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](11, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_11_Template, 5, 3, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](12, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_12_Template, 9, 3, "ng-container", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](13, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_13_Template, 7, 3, "ng-container", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](1, "div", 6)(2, "div", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerStart"](3, 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](4, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_4_Template, 3, 6, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](5, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_5_Template, 5, 2, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](6, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_6_Template, 2, 2, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](7, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_7_Template, 4, 5, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](8, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_8_Template, 4, 6, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](9, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_9_Template, 2, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](10, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_10_Template, 9, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](11, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_11_Template, 7, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](12, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_12_Template, 9, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](13, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_13_Template, 5, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](14, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_14_Template, 9, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](15, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_15_Template, 3, 3, "ng-container", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](16, AsMetaFormComponent_ng_template_5_ng_container_1_ng_container_16_Template, 7, 3, "ng-container", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](17, AsMetaFormComponent_ng_template_5_ng_container_1_div_17_Template, 2, 5, "div", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementContainerEnd"]();
   }
   if (rf & 2) {
     const entry_r10 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngSwitch", entry_r10.value.widget);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngSwitchCase", "form");
@@ -82281,12 +82330,16 @@ function AsMetaFormComponent_ng_template_5_ng_container_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngSwitchCase", "date");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngSwitchCase", "password");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngSwitchCase", "checkbox");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", entry_r10.value.visibility);
   }
 }
 function AsMetaFormComponent_ng_template_5_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, AsMetaFormComponent_ng_template_5_ng_container_1_Template, 14, 12, "ng-container", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, AsMetaFormComponent_ng_template_5_ng_container_1_Template, 18, 14, "ng-container", 5);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipe"](2, "keyvalue");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
   }
@@ -88605,6 +88658,15 @@ AsMetaFormComponent.ɵfac = function AsMetaFormComponent_Factory(t) {
 AsMetaFormComponent.ɵcmp = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({
   type: AsMetaFormComponent,
   selectors: [["as-meta-form"]],
+  contentQueries: function AsMetaFormComponent_ContentQueries(rf, ctx, dirIndex) {
+    if (rf & 1) {
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵcontentQuery"](dirIndex, _angular_core__WEBPACK_IMPORTED_MODULE_3__.TemplateRef, 5);
+    }
+    if (rf & 2) {
+      let _t;
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.security = _t.first);
+    }
+  },
   inputs: {
     model: "model"
   },
@@ -88614,7 +88676,7 @@ AsMetaFormComponent.ɵcmp = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODUL
   },
   decls: 7,
   vars: 8,
-  consts: [[3, "formGroup"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["type", "button", 3, "disabled", "click", 4, "ngFor", "ngForOf"], ["type", "button", 3, "disabled", "click"], ["fields", ""], [4, "ngFor", "ngForOf"], [3, "ngSwitch"], [4, "ngSwitchCase"], [4, "ngSwitchDefault"], [3, "formGroupName"], [3, "formArrayName"], ["style", "display: flex", 4, "ngFor", "ngForOf"], ["type", "button", 1, "material-icons", 3, "click"], [2, "display", "flex"], [2, "height", "300px", 3, "formControlName"], [3, "placeholder"], [2, "width", "100%", 3, "formControlName", "items", "label"], [2, "width", "100%", 3, "formControlName", "items", "label", "multiSelect"], [2, "width", "320px", "height", "200px", 3, "formControlName", "placeholder"], ["type", "text", 3, "formControlName"], ["name", "required"], ["name", "minlength"], ["name", "maxlength"], ["type", "email", 3, "formControlName"], ["name", "email"], ["type", "number", 3, "formControlName"], ["name", "min"], ["name", "max"], ["type", "date", 3, "formControlName"], ["type", "password", 3, "formControlName"]],
+  consts: [[3, "formGroup"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["type", "button", 3, "disabled", "click", 4, "ngFor", "ngForOf"], ["type", "button", 3, "disabled", "click"], ["fields", ""], [4, "ngFor", "ngForOf"], [2, "display", "flex"], [2, "flex", "1"], [3, "ngSwitch"], [4, "ngSwitchCase"], [4, "ngSwitchDefault"], [4, "ngIf"], [3, "formGroupName"], [3, "formArrayName"], ["style", "display: flex", 4, "ngFor", "ngForOf"], ["type", "button", 1, "material-icons", 3, "click"], [2, "height", "300px", 3, "formControlName"], [3, "placeholder"], [2, "width", "100%", 3, "formControlName", "items", "label"], [2, "width", "100%", 3, "formControlName", "items", "label", "multiSelect"], [2, "width", "320px", "height", "200px", 3, "formControlName", "placeholder"], ["type", "text", 3, "formControlName"], ["name", "required"], ["name", "minlength"], ["name", "maxlength"], ["type", "email", 3, "formControlName"], ["name", "email"], ["type", "number", 3, "formControlName"], ["name", "min"], ["name", "max"], ["type", "date", 3, "formControlName"], ["type", "password", 3, "formControlName"], ["type", "checkbox", 3, "formControlName"]],
   template: function AsMetaFormComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "form", 0);
@@ -88639,7 +88701,7 @@ AsMetaFormComponent.ɵcmp = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODUL
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("disabled", ctx.form.pristine);
     }
   },
-  dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.NgTemplateOutlet, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgForOf, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NumberValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormGroupDirective, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormControlName, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormGroupName, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormArrayName, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgSwitch, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgSwitchCase, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgSwitchDefault, AsEditorComponent, AsImageUploadComponent, AsInputContainerComponent, AsInputDirective, AsLazySelectComponent, AsErrorDirective, _angular_common__WEBPACK_IMPORTED_MODULE_5__.KeyValuePipe],
+  dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.NgTemplateOutlet, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NumberValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.CheckboxControlValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormGroupDirective, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormControlName, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormGroupName, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormArrayName, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgSwitch, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgSwitchCase, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgSwitchDefault, AsEditorComponent, AsImageUploadComponent, AsInputContainerComponent, AsInputDirective, AsCheckboxContainerComponent, AsLazySelectComponent, AsErrorDirective, _angular_common__WEBPACK_IMPORTED_MODULE_5__.KeyValuePipe],
   styles: ["as-meta-form{display:block}\n"],
   encapsulation: 2
 });
@@ -88649,7 +88711,7 @@ AsMetaFormComponent.ɵcmp = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODUL
     args: [{
       selector: 'as-meta-form',
       encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ViewEncapsulation.None,
-      template: "<form [formGroup]=\"form\">\r\n  <ng-container *ngTemplateOutlet=\"fields; context : {$implicit : model.$schema, form : form}\"></ng-container>\r\n\r\n  <button *ngFor=\"let link of links\" type=\"button\" [disabled]=\"! form.valid\" (click)=\"onSubmit(link)\">{{link.key}}</button>\r\n  <button type=\"button\" [disabled]=\"form.pristine\" (click)=\"onReset()\">Reset</button>\r\n</form>\r\n\r\n<ng-template #fields let-node let-form=\"form\">\r\n  <div [formGroup]=\"form\">\r\n    <ng-container *ngFor=\"let entry of node.properties | keyvalue : originalOrder\">\r\n      <ng-container [ngSwitch]=\"$any(entry).value.widget\">\r\n        <ng-container *ngSwitchCase=\"'form'\">\r\n          <div [formGroupName]=\"$any(entry).key\" >\r\n            <ng-container *ngTemplateOutlet=\"fields; context : {$implicit : entry.value, form : form.get($any(entry).key)}\"></ng-container>\r\n          </div>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'repeat'\">\r\n          <div [formArrayName]=\"$any(entry).key\">\r\n            <div *ngFor=\"let item of form.get($any(entry).key).controls;\" style=\"display: flex\">\r\n              <ng-container *ngTemplateOutlet=\"fields; context : {$implicit : $any(entry).value.items, form : item}\"></ng-container>\r\n              <button type=\"button\" class=\"material-icons\" (click)=\"remove(form.get($any(entry).key), item)\">delete</button>\r\n            </div>\r\n          </div>\r\n          <button type=\"button\" class=\"material-icons\" (click)=\"add(form.get($any(entry).key), $any(entry).value.items)\">add</button>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'editor'\">\r\n          <as-editor [formControlName]=\"$any(entry).key\" style=\"height: 300px\" [attr.name]=\"$any(entry).key\"></as-editor>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'lazy-select'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <as-lazy-select style=\"width: 100%\" [attr.name]=\"$any(entry).key\" [formControlName]=\"$any(entry).key\" [items]=\"lazySelectLoader($any(entry).value.links?.list)\" [label]=\"lazySelectLabel($any(entry).value.properties)\">\r\n              <ng-template let-item>\r\n                {{lazySelectName($any(entry).value.properties, item)}}\r\n              </ng-template>\r\n            </as-lazy-select>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'lazy-multi-select'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <as-lazy-select style=\"width: 100%\" [attr.name]=\"$any(entry).key\" [formControlName]=\"$any(entry).key\" [items]=\"lazySelectLoader($any(entry).value.links?.list)\" [label]=\"lazySelectLabel($any(entry).value.items.properties)\" [multiSelect]=\"true\">\r\n              <ng-template let-item>\r\n                {{lazySelectName($any(entry).value.items.properties, item)}}\r\n              </ng-template>\r\n            </as-lazy-select>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'image'\">\r\n          <as-image-upload style=\"width: 320px; height: 200px\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\" [placeholder]=\"$any(entry).value.title\"></as-image-upload>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'text'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <input type=\"text\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n            <as-error name=\"required\">\r\n              This Field is required\r\n            </as-error>\r\n            <as-error name=\"minlength\">\r\n              This Field has a length of $(actualLength), but must be minimum length of $(requiredLength)\r\n            </as-error>\r\n            <as-error name=\"maxlength\">\r\n              This Field has a length of $(actualLength), but must be maximum length of $(requiredLength)\r\n            </as-error>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'email'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <input type=\"email\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n            <as-error name=\"required\">\r\n              This Field is required\r\n            </as-error>\r\n            <as-error name=\"email\">\r\n              This Field as to be an email Address\r\n            </as-error>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'number'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <input type=\"number\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n            <as-error name=\"required\">\r\n              This Field is required\r\n            </as-error>\r\n            <as-error name=\"min\">\r\n              This Field has a value of $(actual) and need a minimum amount of $(min)\r\n            </as-error>\r\n            <as-error name=\"max\">\r\n              This Field need a value of $(actual) and a maximum amount of $(max)\r\n            </as-error>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'date'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <input type=\"date\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n            <as-error name=\"required\">\r\n              This Field is required\r\n            </as-error>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchCase=\"'password'\">\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <input type=\"password\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n            <as-error name=\"required\">\r\n              This Field is required\r\n            </as-error>\r\n            <as-error name=\"minlength\">\r\n              This Field has a length of $(actualLength), but must be minimum length of $(requiredLength)\r\n            </as-error>\r\n            <as-error name=\"maxlength\">\r\n              This Field has a length of $(actualLength), but must be maximum length of $(requiredLength)\r\n            </as-error>\r\n          </as-input-container>\r\n        </ng-container>\r\n        <ng-container *ngSwitchDefault>\r\n          <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n            <input type=\"text\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n            <as-error name=\"required\">\r\n              This Field is required\r\n            </as-error>\r\n            <as-error name=\"minlength\">\r\n              This Field has a length of $(actualLength), but must be minimum length of $(requiredLength)\r\n            </as-error>\r\n          </as-input-container>\r\n        </ng-container>\r\n      </ng-container>\r\n    </ng-container>\r\n  </div>\r\n</ng-template>\r\n",
+      template: "<form [formGroup]=\"form\">\r\n  <ng-container *ngTemplateOutlet=\"fields; context : {$implicit : model.$schema, form : form}\"></ng-container>\r\n\r\n  <button *ngFor=\"let link of links\" type=\"button\" [disabled]=\"! form.valid\" (click)=\"onSubmit(link)\">{{link.key}}</button>\r\n  <button type=\"button\" [disabled]=\"form.pristine\" (click)=\"onReset()\">Reset</button>\r\n</form>\r\n\r\n<ng-template #fields let-node let-form=\"form\">\r\n  <div [formGroup]=\"form\">\r\n    <ng-container *ngFor=\"let entry of node.properties | keyvalue : originalOrder\">\r\n      <div style=\"display: flex\">\r\n        <div style=\"flex: 1\">\r\n          <ng-container [ngSwitch]=\"$any(entry).value.widget\">\r\n            <ng-container *ngSwitchCase=\"'form'\">\r\n              <div [formGroupName]=\"$any(entry).key\" >\r\n                <ng-container *ngTemplateOutlet=\"fields; context : {$implicit : entry.value, form : form.get($any(entry).key)}\"></ng-container>\r\n              </div>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'repeat'\">\r\n              <div [formArrayName]=\"$any(entry).key\">\r\n                <div *ngFor=\"let item of form.get($any(entry).key).controls;\" style=\"display: flex\">\r\n                  <ng-container *ngTemplateOutlet=\"fields; context : {$implicit : $any(entry).value.items, form : item}\"></ng-container>\r\n                  <button type=\"button\" class=\"material-icons\" (click)=\"remove(form.get($any(entry).key), item)\">delete</button>\r\n                </div>\r\n              </div>\r\n              <button type=\"button\" class=\"material-icons\" (click)=\"add(form.get($any(entry).key), $any(entry).value.items)\">add</button>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'editor'\">\r\n              <as-editor [formControlName]=\"$any(entry).key\" style=\"height: 300px\" [attr.name]=\"$any(entry).key\"></as-editor>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'lazy-select'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <as-lazy-select style=\"width: 100%\" [attr.name]=\"$any(entry).key\" [formControlName]=\"$any(entry).key\" [items]=\"lazySelectLoader($any(entry).value.links?.list)\" [label]=\"lazySelectLabel($any(entry).value.properties)\">\r\n                  <ng-template let-item>\r\n                    {{lazySelectName($any(entry).value.properties, item)}}\r\n                  </ng-template>\r\n                </as-lazy-select>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'lazy-multi-select'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <as-lazy-select style=\"width: 100%\" [attr.name]=\"$any(entry).key\" [formControlName]=\"$any(entry).key\" [items]=\"lazySelectLoader($any(entry).value.links?.list)\" [label]=\"lazySelectLabel($any(entry).value.items.properties)\" [multiSelect]=\"true\">\r\n                  <ng-template let-item>\r\n                    {{lazySelectName($any(entry).value.items.properties, item)}}\r\n                  </ng-template>\r\n                </as-lazy-select>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'image'\">\r\n              <as-image-upload style=\"width: 320px; height: 200px\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\" [placeholder]=\"$any(entry).value.title\"></as-image-upload>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'text'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"text\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n                <as-error name=\"required\">\r\n                  This Field is required\r\n                </as-error>\r\n                <as-error name=\"minlength\">\r\n                  This Field has a length of $(actualLength), but must be minimum length of $(requiredLength)\r\n                </as-error>\r\n                <as-error name=\"maxlength\">\r\n                  This Field has a length of $(actualLength), but must be maximum length of $(requiredLength)\r\n                </as-error>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'email'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"email\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n                <as-error name=\"required\">\r\n                  This Field is required\r\n                </as-error>\r\n                <as-error name=\"email\">\r\n                  This Field as to be an email Address\r\n                </as-error>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'number'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"number\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n                <as-error name=\"required\">\r\n                  This Field is required\r\n                </as-error>\r\n                <as-error name=\"min\">\r\n                  This Field has a value of $(actual) and need a minimum amount of $(min)\r\n                </as-error>\r\n                <as-error name=\"max\">\r\n                  This Field need a value of $(actual) and a maximum amount of $(max)\r\n                </as-error>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'date'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"date\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n                <as-error name=\"required\">\r\n                  This Field is required\r\n                </as-error>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'password'\">\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"password\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n                <as-error name=\"required\">\r\n                  This Field is required\r\n                </as-error>\r\n                <as-error name=\"minlength\">\r\n                  This Field has a length of $(actualLength), but must be minimum length of $(requiredLength)\r\n                </as-error>\r\n                <as-error name=\"maxlength\">\r\n                  This Field has a length of $(actualLength), but must be maximum length of $(requiredLength)\r\n                </as-error>\r\n              </as-input-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchCase=\"'checkbox'\">\r\n              <as-checkbox-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"checkbox\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n              </as-checkbox-container>\r\n            </ng-container>\r\n            <ng-container *ngSwitchDefault>\r\n              <as-input-container [placeholder]=\"$any(entry).value.title\">\r\n                <input type=\"text\" [formControlName]=\"$any(entry).key\" [attr.name]=\"$any(entry).key\">\r\n                <as-error name=\"required\">\r\n                  This Field is required\r\n                </as-error>\r\n                <as-error name=\"minlength\">\r\n                  This Field has a length of $(actualLength), but must be minimum length of $(requiredLength)\r\n                </as-error>\r\n              </as-input-container>\r\n            </ng-container>\r\n          </ng-container>\r\n        </div>\r\n        <div *ngIf=\"$any(entry).value.visibility\">\r\n          <ng-container *ngTemplateOutlet=\"security; context : {$implicitly : entry, form : form}\"></ng-container>\r\n        </div>\r\n      </div>\r\n    </ng-container>\r\n  </div>\r\n</ng-template>\r\n",
       styles: ["as-meta-form{display:block}\n"]
     }]
   }], function () {
@@ -88665,6 +88727,10 @@ AsMetaFormComponent.ɵcmp = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODUL
     }],
     submit: [{
       type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Output
+    }],
+    security: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ContentChild,
+      args: [_angular_core__WEBPACK_IMPORTED_MODULE_3__.TemplateRef]
     }]
   });
 })();

@@ -8,6 +8,7 @@ import {AppNavigatorFormComponent} from './navigator/app-navigator-form/app-navi
 import {AppNavigatorTableComponent} from './navigator/app-navigator-table/app-navigator-table.component'
 import {RouteReuseStrategy} from "@angular/router";
 import {AppRoutingStrategyService} from "./app-routing-strategy.service";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -15,11 +16,13 @@ import {AppRoutingStrategyService} from "./app-routing-strategy.service";
     AppNavigatorFormComponent,
     AppNavigatorTableComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    Angular2SimplicityModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        Angular2SimplicityModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
   providers: [{
     provide: RouteReuseStrategy,
     useClass: AppRoutingStrategyService

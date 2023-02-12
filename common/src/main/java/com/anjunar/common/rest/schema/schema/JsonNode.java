@@ -101,6 +101,7 @@ public abstract class JsonNode {
 
     private Boolean visible;
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Set<CategoryType> visibility;
 
     private final LinkedHashMap<String, Link> links = new LinkedHashMap<>();
