@@ -1,0 +1,27 @@
+<div style="display: flex; align-content: center; justify-content: center; flex-wrap: wrap; height: 100%">
+  <div style="height: fit-content">
+    <h1>
+      Register
+    </h1>
+    <hr/>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <as-input-container placeholder="Nick Name" style="margin-top: 10px">
+        <input type="text" name="nickname" formControlName="nickname">
+      </as-input-container>
+      <as-input-container placeholder="Email">
+        <input type="text" name="email" formControlName="email">
+      </as-input-container>
+      <as-input-container placeholder="Password">
+        <input type="password" name="password" formControlName="password" style="width: 250px">
+      </as-input-container>
+      <as-input-container placeholder="Confirm">
+        <input type="password" name="confirm" formControlName="password" style="width: 250px">
+      </as-input-container>
+      <div style="display: flex; align-content: baseline">
+        <div style="flex: 1"></div>
+        <button type="submit" class="normal" style="margin-right: 5px">Register</button>
+        <a routerLink="/security/login" style="font-size: small; line-height: 24px; vertical-align: baseline">Login</a>
+      </div>
+    </form>
+  </div>
+</div>

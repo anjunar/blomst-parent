@@ -58,10 +58,15 @@ public class LoginResource {
     public LoginResponse login(Form<LoginForm> resource) {
         identityManager.logout();
 
-        User user = entityManager.createQuery("select u from User u join u.emails e where e.value = :email and u.password = :password ", User.class)
-                .setParameter("email", resource.getForm().getEmail())
-                .setParameter("password", resource.getForm().getPassword())
-                .getSingleResult();
+        User user = null;
+        try {
+            user = entityManager.createQuery("select u from User u join u.emails e where e.value = :email and u.password = :password ", User.class)
+                    .setParameter("email", resource.getForm().getEmail())
+                    .setParameter("password", resource.getForm().getPassword())
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);
+        }
 
         if (identityManager.authenticate(user)) {
 

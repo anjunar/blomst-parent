@@ -15,6 +15,10 @@ import jakarta.validation.constraints.Size;
 @NaturalId
 public class RegisterForm implements LinksContainer {
 
+    @Size(min = 3, max = 80)
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Nickname")
+    private String nickname;
+
     @Email
     @NotBlank
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Email")
@@ -28,6 +32,14 @@ public class RegisterForm implements LinksContainer {
     @JsonSchema(ignore = true)
     @JsonProperty(value = "$schema")
     private final JsonObject schema = JsonSchemaGenerator.generateObject(RegisterForm.class);
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public String getEmail() {
         return email;

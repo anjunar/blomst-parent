@@ -162,7 +162,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ
   selectors: [["app-root"]],
   decls: 30,
   vars: 9,
-  consts: [[2, "height", "38px"], [2, "box-shadow", "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "position", "absolute", "z-index", "9999"], ["left", "", 2, "display", "flex"], [1, "material-icons", 3, "click"], ["routerLink", "/navigator/form", "routerLinkActive", "active", 1, "normal", 3, "queryParams"], ["middle", ""], ["right", ""], [1, "browsers"], ["href", "https://www.google.de/chrome", "target", "_blank"], ["src", "assets/app-root/chrome_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "5px", "vertical-align", "bottom"], ["href", "https://www.microsoft.com/de-de/edge", "target", "_blank"], ["src", "assets/app-root/edge.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://www.mozilla.org", "target", "_blank"], ["src", "assets/app-root/firefox_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://github.com/anjunar/simplicity", "target", "_blank"], ["src", "assets/app-root/github-circle-white-transparent.svg"], [2, "height", "calc(100% - 38px)"], [3, "open"], [4, "ngFor", "ngForOf"], [2, "position", "relative", "height", "calc(100% - 38px)"], ["left", ""], [3, "routerLink", "queryParams"]],
+  consts: [[2, "height", "38px"], [2, "box-shadow", "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "position", "absolute", "z-index", "9999"], ["left", "", 2, "display", "flex"], [1, "material-icons", 3, "click"], ["routerLink", "/navigator/form", "routerLinkActive", "active", 1, "material-icons", "normal", 3, "queryParams"], ["middle", ""], ["right", ""], [1, "browsers"], ["href", "https://www.google.de/chrome", "target", "_blank"], ["src", "assets/app-root/chrome_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "5px", "vertical-align", "bottom"], ["href", "https://www.microsoft.com/de-de/edge", "target", "_blank"], ["src", "assets/app-root/edge.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://www.mozilla.org", "target", "_blank"], ["src", "assets/app-root/firefox_logo.png", 2, "height", "32px", "width", "32px", "margin-right", "12px", "vertical-align", "bottom"], ["href", "https://github.com/anjunar/simplicity", "target", "_blank"], ["src", "assets/app-root/github-circle-white-transparent.svg"], [2, "height", "calc(100% - 38px)"], [3, "open"], [4, "ngFor", "ngForOf"], [2, "position", "relative", "height", "calc(100% - 38px)"], ["left", ""], [3, "routerLink", "queryParams"]],
   template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "div", 0);
@@ -173,7 +173,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](4, "home");
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "a", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6, "Navigator");
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6, "navigation");
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](8);
@@ -308,14 +308,14 @@ function AppNavigatorFormComponent_ng_template_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "as-input-container", 1)(1, "as-lazy-select", 2);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function AppNavigatorFormComponent_ng_template_2_Template_as_lazy_select_ngModelChange_1_listener($event) {
       const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵrestoreView"](_r5);
-      const node_r1 = restoredCtx.$implicitly;
+      const node_r1 = restoredCtx.$implicit;
       return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵresetView"](node_r1.value.visibility = $event);
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, AppNavigatorFormComponent_ng_template_2_ng_template_2_Template, 1, 1, "ng-template");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
-    const node_r1 = ctx.$implicitly;
+    const node_r1 = ctx.$implicit;
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", node_r1.value.visibility)("items", ctx_r0.loader)("multiSelect", true);
