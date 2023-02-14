@@ -1,4 +1,4 @@
-import {Component, HostListener, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, ViewEncapsulation} from '@angular/core';
 import {AsWindowComponent} from "angular2-simplicity";
 
 @Component({
@@ -9,18 +9,32 @@ import {AsWindowComponent} from "angular2-simplicity";
 })
 export class SettingsComponent {
 
+  handler! : () => void
+
   constructor(private window : AsWindowComponent) {
     window.element.addEventListener("click", (event : Event) => {
       event.stopPropagation()
     })
+
+    this.handler = () => {
+      this.onDocumentClick();
+    }
+
+    window.destroy.subscribe(() => {
+      document.removeEventListener("click", this.handler)
+    })
+
+    document.addEventListener("click", this.handler)
   }
 
   get service() {
     return btoa("service")
   }
 
-  @HostListener("window:click")
   onDocumentClick() {
     this.window.close();
   }
+
+
+
 }

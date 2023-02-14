@@ -39,11 +39,10 @@ export class AppComponent extends AppMain implements OnInit {
     private startUp : AppStartupService,
     windowManager : WindowManagerService,
     contextManager : ContextManagerService,
-    resolver : ComponentFactoryResolver,
     injector : Injector,
     application : ApplicationRef)
   {
-    super(windowManager, contextManager, resolver, injector, application)
+    super(windowManager, contextManager, injector, application)
 
     if (window.location.host.indexOf("poseidon") > -1) {
       this.name = "Poseidon"
@@ -96,7 +95,7 @@ export class AppComponent extends AppMain implements OnInit {
     };
 
     let windowRef = this.windowManager.create(SettingsComponent, options);
-
+    return false;
   }
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
