@@ -55,6 +55,9 @@ export class AppComponent extends AppMain implements OnInit {
     if (! this.isLoggedIn) {
       router.navigate(["/security/login"])
     }
+
+    let matchMedia = window.matchMedia("(max-width: 800px)");
+    this.open = ! matchMedia.matches;
   }
 
   get isLoggedIn() {

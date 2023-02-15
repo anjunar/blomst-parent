@@ -182,8 +182,12 @@ public class ResourceRestMapper {
             }
         } else {
             MapperConverterType converter = getNewInstance(mapperConverter.value());
-            Object restEntity = converter.updater(sourcePropertyInstance, source);
-            destinationProperty.accept(destination, restEntity);
+            Object restEntity = converter.updater(sourcePropertyInstance, destination);
+            if (destinationProperty.isReadOnly()) {
+                // No Operation because it seems to be a Collection
+            } else {
+                destinationProperty.accept(destination, restEntity);
+            }
         }
     }
 

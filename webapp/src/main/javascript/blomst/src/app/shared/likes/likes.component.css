@@ -1,0 +1,7 @@
+app-likes {
+  display: block;
+}
+
+app-likes a.container:hover {
+  text-decoration: underline;
+}

@@ -73583,7 +73583,7 @@ class HammerGesturesPlugin extends EventManagerPlugin {
     super(doc);
     this._config = _config;
     this.console = console;
-    this.loader = loader;
+    this.postsLoader = loader;
     this._loaderPromise = null;
   }
   supports(eventName) {

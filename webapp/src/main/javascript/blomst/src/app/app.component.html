@@ -10,7 +10,6 @@
     </a>
   </div>
 </as-toolbar>
-<as-viewport style="position: relative; height: 100%;">
   <as-drawer-container style="height: calc(100% - 38px)">
     <as-drawer [open]="open && isLoggedIn">
       <nav>
@@ -22,10 +21,11 @@
       </nav>
     </as-drawer>
     <as-drawer-content>
-      <router-outlet></router-outlet>
+      <as-viewport style="position: relative; height: 100%;">
+        <router-outlet></router-outlet>
+      </as-viewport>
     </as-drawer-content>
   </as-drawer-container>
-</as-viewport>
 <as-footer>
   <as-taskbar left></as-taskbar>
 </as-footer>

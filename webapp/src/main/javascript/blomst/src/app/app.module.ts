@@ -15,6 +15,7 @@ import { RegisterComponent } from './control/register/register.component';
 import { SettingsComponent } from './control/settings/settings.component';
 import { FormComponent } from './navigator/form/form.component';
 import { TableComponent } from './navigator/table/table.component';
+import { LikesComponent } from './shared/likes/likes.component';
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -31,7 +32,8 @@ function appConfigFactory(service : AppStartupService) {
     RegisterComponent,
     SettingsComponent,
     FormComponent,
-    TableComponent
+    TableComponent,
+    LikesComponent
   ],
   imports: [
     BrowserModule,
