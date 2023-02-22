@@ -2,7 +2,7 @@
 <as-meta-form [model]="model" (submit)="onSubmit($event)">
   <ng-template let-node>
     <as-input-container placeholder="Visibility">
-      <as-lazy-select [(ngModel)]="$any(node).value.visibility" [items]="loader" [multiSelect]="true">
+      <as-lazy-select [(ngModel)]="$any(node).value.visibility" (items)="loader($event)" [multiSelect]="true">
         <ng-template let-item>
           {{item.name}}
         </ng-template>

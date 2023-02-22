@@ -1,5 +1,7 @@
 package com.anjunar.blomst.social.pages.page;
 
+import com.anjunar.blomst.shared.likes.LikesResource;
+import com.anjunar.blomst.shared.likes.LikesSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.social.pages.Page;
@@ -7,8 +9,6 @@ import com.anjunar.blomst.social.pages.PagesResource;
 import com.anjunar.blomst.social.pages.PagesSearch;
 import com.anjunar.blomst.social.pages.page.history.PageHistoryResource;
 import com.anjunar.blomst.social.pages.page.history.PageHistorySearch;
-import com.anjunar.blomst.social.pages.page.likes.LikesResource;
-import com.anjunar.blomst.social.pages.page.likes.LikesSearch;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.system.languages.LanguagesResource;
@@ -18,7 +18,6 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
-import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonBoolean;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;

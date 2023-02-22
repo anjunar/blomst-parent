@@ -1,4 +1,4 @@
-package com.anjunar.blomst.social.timeline.post.likes;
+package com.anjunar.blomst.shared.likes;
 
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityManager;

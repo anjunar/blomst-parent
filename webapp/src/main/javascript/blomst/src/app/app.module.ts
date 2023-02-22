@@ -16,6 +16,8 @@ import { SettingsComponent } from './control/settings/settings.component';
 import { FormComponent } from './navigator/form/form.component';
 import { TableComponent } from './navigator/table/table.component';
 import { LikesComponent } from './shared/likes/likes.component';
+import { HumanizePipe } from './shared/humanize.pipe';
+import { LikesPopupComponent } from './shared/likes/likes-popup/likes-popup.component';
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -33,7 +35,9 @@ function appConfigFactory(service : AppStartupService) {
     SettingsComponent,
     FormComponent,
     TableComponent,
-    LikesComponent
+    LikesComponent,
+    HumanizePipe,
+    LikesPopupComponent
   ],
   imports: [
     BrowserModule,

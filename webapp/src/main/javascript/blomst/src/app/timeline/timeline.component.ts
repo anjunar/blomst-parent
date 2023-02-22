@@ -13,20 +13,20 @@ export class TimelineComponent {
 
   @ViewChild(LikesComponent) likes! : LikesComponent
 
-  postsLoader(query : InfinityQuery, callback : (rows : any) => void) {
+  postsLoader(event : {query : InfinityQuery, callback : (rows : any) => void}) {
     let link = "service/home/timeline";
     const url = new URL(window.location.origin + "/" + link);
-    url.searchParams.append("index", query.index + "")
-    url.searchParams.append("limit", query.limit + "")
+    url.searchParams.append("index", event.query.index + "")
+    url.searchParams.append("limit", event.query.limit + "")
 
     fetch(url.toString())
       .then(response => response.json())
       .then(response => {
-        callback(response.rows)
+        event.callback(response.rows || [])
       })
  }
 
- onLike(post : any) {
+  onLike(post : any) {
    this.likes.model.likes = ! this.likes.model.likes
 
    let method = "POST";
@@ -34,13 +34,9 @@ export class TimelineComponent {
    let body = JSON.stringify({form : post});
 
    fetch("service/home/timeline/post", {method : method, headers : headers, body : body})
- }
-
- humanize(value : string) {
-   let now = moment(new Date())
-   let then = moment(value);
-   let duration = moment.duration(now.diff(then));
-   return duration.humanize();
+     .then(() => {
+       this.likes.onFetchLikes();
+     })
  }
 
 }

@@ -1,9 +1,8 @@
-package com.anjunar.blomst.social.pages.page.likes;
+package com.anjunar.blomst.shared.likes;
 
 import com.anjunar.blomst.shared.Likeable;
 import com.anjunar.blomst.shared.likeable.AbstractLikeableResource;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-@Path("pages/page/likes")
+@Path("shared/likes")
 public class LikesResource extends AbstractLikeableResource implements ListResourceTemplate<UserSelect, LikesSearch> {
 
     private final LikesService service;
@@ -43,7 +42,7 @@ public class LikesResource extends AbstractLikeableResource implements ListResou
 
     @Override
     protected Likeable load(UUID id) {
-        return entityManager.find(Page.class, id);
+        return entityManager.find(AbstractPost.class, id);
     }
 
     @Override

@@ -11,26 +11,13 @@ export class SettingsComponent {
 
   handler! : () => void
 
-  constructor(private window : AsWindowComponent) {
-    window.element.addEventListener("click", (event : Event) => {
-      event.stopPropagation()
-    })
-
-    this.handler = () => {
-      this.onDocumentClick();
-    }
-
-    window.destroy.subscribe(() => {
-      document.removeEventListener("click", this.handler)
-    })
-
-    document.addEventListener("click", this.handler)
-  }
+  constructor(private window : AsWindowComponent) {}
 
   get service() {
     return btoa("service")
   }
 
+  @HostListener("document:click")
   onDocumentClick() {
     this.window.close();
   }

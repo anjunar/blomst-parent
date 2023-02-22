@@ -14,22 +14,7 @@ export class TableComponent {
 
   header! : string;
 
-  loader! : (query: TableQuery, callback: (rows: any[], size: number, schema: any) => void) => void;
-
   constructor(private router : Router, private route: ActivatedRoute, protected service: AppNavigatorService) {
-    this.loader = (query: TableQuery, callback: (rows: any[], size: number, schema: any) => void): void => {
-
-      const url = new URL(window.location.origin + "/" + this.link);
-      url.searchParams.append("index", query.index + "")
-      url.searchParams.append("limit", query.limit + "")
-
-      fetch(url.toString())
-        .then(response => response.json())
-        .then(response => {
-          callback(response.rows, response.size, response.$schema)
-        })
-    };
-
     route.queryParams.subscribe(params => {
       this.header = atob(params["link"])
     })
@@ -40,6 +25,19 @@ export class TableComponent {
     let queryParam = queryParams.value["link"];
     this.link = atob(queryParam);
   }
+
+  loader(event : {query: TableQuery, callback: (rows: any[], size: number, schema: any) => void}): void {
+
+    const url = new URL(window.location.origin + "/" + this.link);
+    url.searchParams.append("index", event.query.index + "")
+    url.searchParams.append("limit", event.query.limit + "")
+
+    fetch(url.toString())
+      .then(response => response.json())
+      .then(response => {
+        event.callback(response.rows, response.size, response.$schema)
+      })
+  };
 
   onRowClick(model : any) {
     this.router.navigate(["/navigator/form"], {queryParams : {link : btoa(model.links.read.url)}})

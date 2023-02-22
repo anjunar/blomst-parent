@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: center">
-  <as-infinity-scroll [items]="postsLoader">
+  <as-infinity-scroll (items)="postsLoader($event)">
     <ng-template let-item>
       <div style="max-width: 680px; min-width : 400px; background-color: var(--main-dark2-color); padding: 10px">
         <div style="display: flex; align-items: center; margin-bottom: 5px">
@@ -8,7 +8,7 @@
           </div>
           <div style="margin-left: 5px;">
             <div>{{item.owner.name}}</div>
-            <div>{{humanize(item.owner.modified)}}</div>
+            <div>{{item.owner.modified | humanize}}</div>
           </div>
         </div>
         <div [innerHTML]="item.text" style="margin-bottom: 5px"></div>

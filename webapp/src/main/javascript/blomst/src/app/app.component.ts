@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ApplicationRef,
   Component,
   ComponentFactoryResolver,
@@ -26,7 +27,7 @@ import {Router} from "@angular/router";
   styleUrls: ['app.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent extends AppMain implements OnInit {
+export class AppComponent extends AppMain implements AfterViewInit {
 
   open = true;
   name = "Blomst"
@@ -69,8 +70,13 @@ export class AppComponent extends AppMain implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
     this.initialize();
   }
+
+
 
   get image() {
     return this.startUp.model.form.picture?.data;

@@ -1,4 +1,4 @@
-package com.anjunar.blomst.social.pages.page.likes;
+package com.anjunar.blomst.shared.likes;
 
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.Page_;

@@ -1,0 +1,14 @@
+<div content>
+  <as-infinity-scroll (items)="usersLoader($event)" [scrollOnViewport]="false">
+    <ng-template let-user>
+      <div style="display: flex; align-items: center; margin: 5px">
+        <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden">
+          <img [src]="user.picture.data" style="max-width: 40px; max-height: 40px">
+        </div>
+        <div style="margin-left: 5px;">
+          <div>{{user.name}}</div>
+        </div>
+      </div>
+    </ng-template>
+  </as-infinity-scroll>
+</div>

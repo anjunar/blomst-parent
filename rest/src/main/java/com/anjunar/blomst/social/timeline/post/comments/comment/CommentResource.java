@@ -1,5 +1,7 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
+import com.anjunar.blomst.shared.likes.LikesResource;
+import com.anjunar.blomst.shared.likes.LikesSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
@@ -8,8 +10,6 @@ import com.anjunar.blomst.social.timeline.Comment;
 import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
-import com.anjunar.blomst.social.timeline.post.comments.comment.likes.LikesResource;
-import com.anjunar.blomst.social.timeline.post.comments.comment.likes.LikesSearch;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.FormResourceTemplate;
@@ -17,7 +17,6 @@ import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
-import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonBoolean;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.security.IdentityManager;
