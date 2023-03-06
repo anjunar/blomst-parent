@@ -5,9 +5,13 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("UserConnection")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class UserConnectionForm extends AbstractRestEntity {
 
     @NotNull

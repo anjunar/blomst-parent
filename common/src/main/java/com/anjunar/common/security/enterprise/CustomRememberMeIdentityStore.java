@@ -16,6 +16,7 @@ import jakarta.security.enterprise.identitystore.RememberMeIdentityStore;
 import jakarta.transaction.Transactional;
 import java.security.Key;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -63,6 +64,8 @@ public class CustomRememberMeIdentityStore implements RememberMeIdentityStore {
     @Override
     public void removeLoginToken(String token) {
         User user = identity.findUserByToken(token);
-        user.setToken("");
+        if (Objects.nonNull(user)) {
+            user.setToken("");
+        }
     }
 }

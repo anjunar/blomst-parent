@@ -37,7 +37,7 @@ export class FormComponent {
     url.searchParams.append("index", event.query.index + "")
     url.searchParams.append("limit", event.query.limit + "")
 
-    fetch(url.toString())
+    secureFetch(url.toString())
       .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size)
@@ -45,10 +45,8 @@ export class FormComponent {
   }
 
   onSubmit(event : {link : {key : string, value : Link}, model : any}) {
-    let body = JSON.stringify(event.model);
     let method = event.link.value.method;
-    let headers = {"content-type" : "application/json"};
-    fetch(event.link.value.url, {method : method, body : body, headers : headers})
+    secureFetch(event.link.value.url, method, event.model)
       .then((response) => response.json())
       .then((response) => {
         if (response.$schema.links.redirect) {

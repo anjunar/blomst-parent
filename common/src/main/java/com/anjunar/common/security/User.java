@@ -1,7 +1,7 @@
 package com.anjunar.common.security;
 
+import com.anjunar.common.filedisk.Media;
 import com.anjunar.common.i18n.Language;
-import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import org.hibernate.annotations.Filter;
 
 import jakarta.persistence.*;
@@ -37,6 +37,9 @@ public class User extends Identity implements OwnerProvider {
 
     @OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
     private Set<UserRight> rights = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Media background;
 
     public String getNickName() {
         return nickName;
@@ -117,5 +120,13 @@ public class User extends Identity implements OwnerProvider {
     @Override
     public User getOwner() {
         return this;
+    }
+
+    public Media getBackground() {
+        return background;
+    }
+
+    public void setBackground(Media background) {
+        this.background = background;
     }
 }

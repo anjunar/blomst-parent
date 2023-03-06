@@ -1,5 +1,6 @@
 package com.anjunar.common.rest.search;
 
+import com.anjunar.common.ddd.AbstractEntity;
 import com.anjunar.common.security.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -10,7 +11,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 public abstract class AbstractVisibilityPredicateProvider<V, E> extends AbstractRestPredicateProvider<V, E> {
-    protected static Subquery<UUID> generateUserConnectionCategory(CriteriaBuilder builder, Root<User> root, CriteriaQuery<?> query) {
+
+    protected static Subquery<UUID> generateUserConnectionCategory(CriteriaBuilder builder, Root<? extends AbstractEntity> root, CriteriaQuery<?> query) {
         Subquery<UUID> firstSubQuery = query.subquery(UUID.class);
         Root<UserConnection> firstSubFrom = firstSubQuery.from(UserConnection.class);
         firstSubQuery.select(firstSubFrom.get(UserConnection_.category).get(Category_.id))

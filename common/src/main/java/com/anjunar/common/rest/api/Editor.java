@@ -2,14 +2,17 @@ package com.anjunar.common.rest.api;
 
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Editor {
 
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "HTML")
-    private String html;
+    @JsonInclude
+    private String html = "";
 
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text",naming = true)
-    private String text;
+    @JsonInclude
+    private String text = "";
 
     public String getHtml() {
         return html;
@@ -25,13 +28,6 @@ public class Editor {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public static Editor factory(String content, String text) {
-        Editor editor = new Editor();
-        editor.setHtml(content);
-        editor.setText(text);
-        return editor;
     }
 
 }

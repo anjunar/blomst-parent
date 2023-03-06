@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.info.addresses;
 import com.anjunar.blomst.social.info.addresses.client.MapBoxService;
 import com.anjunar.blomst.social.info.addresses.client.resources.Feature;
 import com.anjunar.blomst.social.info.addresses.client.resources.FeatureCollection;
+import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.api.Table;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;

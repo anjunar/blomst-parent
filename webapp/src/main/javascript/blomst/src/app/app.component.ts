@@ -1,6 +1,7 @@
 import {
+  AfterContentChecked, AfterViewChecked,
   AfterViewInit,
-  ApplicationRef,
+  ApplicationRef, ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   Injector,
@@ -12,7 +13,7 @@ import {AppNavigatorService} from "./navigator/app-navigator.service";
 import {KeyValue} from "@angular/common";
 import {AppStartupService} from "./app-startup.service";
 import {
-  AppMain,
+  AppMain, AsScrollAreaComponent,
   AsViewportComponent,
   ContextManagerService,
   WindowManagerService,
@@ -20,6 +21,7 @@ import {
 } from "angular2-simplicity";
 import {SettingsComponent} from "./control/settings/settings.component";
 import {Router} from "@angular/router";
+import {ChangeDetection} from "@angular/cli/lib/config/workspace-schema";
 
 @Component({
   selector: 'app-root',
@@ -33,11 +35,13 @@ export class AppComponent extends AppMain implements AfterViewInit {
   name = "Blomst"
 
   @ViewChild(AsViewportComponent) viewPort! : AsViewportComponent
+  @ViewChild(AsScrollAreaComponent) scroll! : AsScrollAreaComponent
 
   constructor(
     private router : Router,
     private navigator: AppNavigatorService,
     private startUp : AppStartupService,
+    private changeDetectionRef : ChangeDetectorRef,
     windowManager : WindowManagerService,
     contextManager : ContextManagerService,
     injector : Injector,
@@ -69,14 +73,9 @@ export class AppComponent extends AppMain implements AfterViewInit {
     return this.viewPort;
   }
 
-  ngOnInit(): void {
-  }
-
   ngAfterViewInit(): void {
     this.initialize();
   }
-
-
 
   get image() {
     return this.startUp.model.form.picture?.data;

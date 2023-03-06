@@ -1,4 +1,20 @@
 <div content>
-  <a routerLink="/navigator/form" [queryParams]="{link : service}"  class="normal" style="width: 100%">Navigator</a>
-  <a routerLink="/security/logout" class="normal" style="width: 100%">Logout</a>
+  <div style="margin: 10px">
+    <div style="display: flex; align-items: center; margin-bottom: 8px">
+      <img style="height: 64px; width: 64px;border-radius: 50%" [src]="startupService.model.form.picture.data">
+      <div style="margin-left: 8px">{{startupService.model.form.nickName}}</div>
+    </div>
+    <a routerLink="/navigator/form" [queryParams]="{link : service}" class="left" style="margin-bottom: 8px">
+      <div style="display: flex; align-items: center">
+        <span class="material-icons" style="margin-right: 8px">assistant_direction</span>
+        Navigator
+      </div>
+    </a>
+    <a routerLink="/security/logout" class="left" style="margin-bottom: 8px">
+      <div style="display: flex; align-items: center">
+        <span class="material-icons" style="margin-right: 8px">logout</span>
+        Logout
+      </div>
+    </a>
+  </div>
 </div>

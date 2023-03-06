@@ -4,9 +4,9 @@ import com.anjunar.common.rest.schema.schema.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(DecimalMaxValidator.class),
+        @JsonSubTypes.Type(value = DecimalMaxValidator.class),
         @JsonSubTypes.Type(DecimalMinValidator.class),
         @JsonSubTypes.Type(DigitsValidator.class),
         @JsonSubTypes.Type(EmailValidator.class),

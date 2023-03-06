@@ -6,10 +6,10 @@ import com.anjunar.common.rest.schema.schema.JsonNode;
 public class MapBoxPoint {
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "X")
-    private Float x;
+    private Float x = 0.0f;
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "Y")
-    private Float y;
+    private Float y = 0.0f;
 
     public Float getX() {
         return x;

@@ -1,0 +1,12 @@
+<div content>
+  <form [formGroup]="form">
+    <div formGroupName="form" style="background-color: var(--main-background-color)">
+      <as-editor formControlName="editor" name="editor" style="width: 400px; height: 280px"></as-editor>
+      <as-video-upload formControlName="video" style="width: 400px; height: 280px"></as-video-upload>
+    </div>
+  </form>
+</div>
+<div footer>
+  <button type="button" (click)="onSubmit()">Okay</button>
+</div>
+

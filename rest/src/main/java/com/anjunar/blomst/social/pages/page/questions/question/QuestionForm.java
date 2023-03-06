@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.pages.page.questions.question;
 
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.PageForm;
 import com.anjunar.common.rest.api.Editor;

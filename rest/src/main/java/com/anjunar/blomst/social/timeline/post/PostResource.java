@@ -30,6 +30,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -60,6 +62,12 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
         this(null, null, null, null);
     }
 
+    @POST
+    @Consumes({MediaType.MULTIPART_FORM_DATA})
+    public Response upload(Map<String, InputStream> files) {
+        return Response.ok().build();
+    }
+
     @Produces("application/json")
     @GET
     @Path("create")
@@ -75,9 +83,9 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
                 resource = new ImagePostForm();
                 form = new Form<ImagePostForm>((ImagePostForm) resource) {};
             }
-            case "link" -> {
-                resource = new LinkPostForm();
-                form = new Form<LinkPostForm>((LinkPostForm) resource) {};
+            case "video" -> {
+                resource = new VideoPostForm();
+                form = new Form<VideoPostForm>((VideoPostForm) resource) {};
             }
             default -> {
                 resource = new TextPostForm();
@@ -93,7 +101,9 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
         } else {
             resource.setSource(entityMapper.map(identity, UserSelect.class));
         }
-        resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        if (identityManager.isLoggedIn()) {
+            resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
+        }
 
         linkTo(methodOn(PostResource.class).save(new Form<>()))
                         .build(form::addLink);
@@ -117,18 +127,13 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
             }
 
             @Override
-            public Form<? extends AbstractPostForm> visit(LinkPost post) {
-                return entityMapper.map(post, new Form<LinkPostForm>() {});
+            public Form<? extends AbstractPostForm> visit(VideoPost post) {
+                return entityMapper.map(post, new Form<VideoPostForm>() {});
             }
 
             @Override
             public Form<? extends AbstractPostForm> visit(TextPost post) {
                 return entityMapper.map(post, new Form<TextPostForm>() {});
-            }
-
-            @Override
-            public Form<? extends AbstractPostForm> visit(SystemPost post) {
-                return entityMapper.map(post, new Form<SystemPostForm>() {});
             }
         });
 
@@ -167,8 +172,8 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
 
         AbstractPost post = resource.getForm().accept(new AbstractPostFormVisitor<>() {
             @Override
-            public AbstractPost visit(LinkPostForm form) {
-                return new LinkPost();
+            public AbstractPost visit(VideoPostForm form) {
+                return new VideoPost();
             }
 
             @Override
@@ -181,10 +186,6 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
                 return new TextPost();
             }
 
-            @Override
-            public AbstractPost visit(SystemPostForm post) {
-                return new SystemPost();
-            }
         });
 
 
@@ -195,8 +196,8 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
             }
 
             @Override
-            public AbstractPost visit(LinkPost post) {
-                return restMapper.map(resource, LinkPost.class);
+            public AbstractPost visit(VideoPost post) {
+                return restMapper.map(resource, VideoPost.class);
             }
 
             @Override
@@ -204,10 +205,6 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
                 return restMapper.map(resource, TextPost.class);
             }
 
-            @Override
-            public AbstractPost visit(SystemPost post) {
-                return restMapper.map(resource, SystemPost.class);
-            }
         });
 
         for (User like : post.getLikes()) {
@@ -244,18 +241,13 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
             }
 
             @Override
-            public AbstractPost visit(LinkPost post) {
-                return  restMapper.map(resource, LinkPost.class);
+            public AbstractPost visit(VideoPost post) {
+                return  restMapper.map(resource, VideoPost.class);
             }
 
             @Override
             public AbstractPost visit(TextPost post) {
                 return  restMapper.map(resource, TextPost.class);
-            }
-
-            @Override
-            public AbstractPost visit(SystemPost post) {
-                return  restMapper.map(resource, SystemPost.class);
             }
         });
 
@@ -288,11 +280,12 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
     }
 
     @Override
-    @RolesAllowed({"Administrator", "User", "Guest"})
+    @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(OwnerPostIdentity.class)
     @Produces(MediaType.APPLICATION_JSON)
     @LinkDescription("Delete Post")
-    public ResponseOk delete(UUID id) {
+    @DELETE
+    public ResponseOk delete(@QueryParam("id") UUID id) {
         AbstractPost userPost = entityManager.getReference(AbstractPost.class, id);
         entityManager.remove(userPost);
         ResponseOk response = new ResponseOk();

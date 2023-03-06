@@ -7,6 +7,6 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 export class AppNavigatorResolver implements Resolve<Promise<any>> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
     let link = atob(route.queryParams["link"]);
-    return fetch(link).then(response => response.json());
+    return secureFetch(link).then(response => response.json());
   }
 }

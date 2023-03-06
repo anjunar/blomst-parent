@@ -17,9 +17,8 @@ public class AddressesSearch extends AbstractRestSearch {
     private List<String> sort;
 
     @QueryParam("owner")
-    @RestPredicate(GenericManyToOneProvider.class)
+    @RestPredicate(OwnerProvider.class)
     private UUID owner;
-
 
     public List<String> getSort() {
         return sort;

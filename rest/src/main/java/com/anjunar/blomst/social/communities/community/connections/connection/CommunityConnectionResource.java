@@ -93,7 +93,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     @LinkDescription("Create Community Connection")
     @Override
     public Form<CommunityConnectionForm> read(UUID id) {
-        CommunitiesConnection entity = entityManager.find(CommunitiesConnection.class, id);
+        CommunityConnection entity = entityManager.find(CommunityConnection.class, id);
 
         Form<CommunityConnectionForm> form = entityMapper.map(entity, new Form<>() {});
 
@@ -114,7 +114,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     @Override
     public ResponseOk save(Form<CommunityConnectionForm> form) {
 
-        CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
+        CommunityConnection entity = restMapper.map(form, CommunityConnection.class);
         entity.setFrom(identityManager.getUser());
         entityManager.persist(entity);
 
@@ -132,7 +132,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     @Override
     public ResponseOk update(UUID id, Form<CommunityConnectionForm> form) {
 
-        CommunitiesConnection entity = restMapper.map(form, CommunitiesConnection.class);
+        CommunityConnection entity = restMapper.map(form, CommunityConnection.class);
         entity.setFrom(identityManager.getUser());
 
         ResponseOk response = new ResponseOk();
@@ -148,7 +148,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Form<Co
     @LinkDescription("Delete Community Connection")
     @Override
     public ResponseOk delete(UUID id) {
-        CommunitiesConnection entity = entityManager.getReference(CommunitiesConnection.class, id);
+        CommunityConnection entity = entityManager.getReference(CommunityConnection.class, id);
         entityManager.remove(entity);
         ResponseOk response = new ResponseOk();
 

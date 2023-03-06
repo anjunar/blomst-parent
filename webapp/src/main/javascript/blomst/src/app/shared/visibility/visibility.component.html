@@ -1,0 +1,10 @@
+<div content>
+  <as-input-container placeholder="Visibility" style="width: 100%">
+    <as-lazy-select (items)="onLoad($event)" [(ngModel)]="model" (ngModelChange)="onChange($event)" [multiSelect]="true" style="width: 100%">
+      <ng-template let-category>
+        <div>{{category.name}}</div>
+      </ng-template>
+    </as-lazy-select>
+  </as-input-container>
+</div>
+

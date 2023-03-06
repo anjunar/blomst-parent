@@ -54,7 +54,7 @@ public class MapperSchemaProvider implements SecurityProvider {
                 .setParameter("name", "Administrator")
                 .getSingleResult();
 
-        if (identityStore.getUser().getRoles().contains(role)) {
+        if (Objects.nonNull(identityStore.getUser()) && identityStore.getUser().getRoles().contains(role)) {
             return true;
         }
 

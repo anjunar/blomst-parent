@@ -5,7 +5,6 @@ import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.social.timeline.post.*;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
-import com.anjunar.common.rest.schema.schema.JsonArray;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.anjunar.common.rest.api.Table;
 import com.anjunar.common.rest.api.ListResourceTemplate;
@@ -69,8 +68,8 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
                 }
 
                 @Override
-                public AbstractPostForm visit(LinkPost post) {
-                    return mapper.map(post, LinkPostForm.class, table);
+                public AbstractPostForm visit(VideoPost post) {
+                    return mapper.map(post, VideoPostForm.class, table);
                 }
 
                 @Override
@@ -78,10 +77,6 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
                     return mapper.map(post, TextPostForm.class, table);
                 }
 
-                @Override
-                public AbstractPostForm visit(SystemPost post) {
-                    return mapper.map(post, SystemPostForm.class, table);
-                }
             });
 
             resources.add(resource);

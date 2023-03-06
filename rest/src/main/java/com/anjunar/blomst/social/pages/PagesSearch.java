@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.pages;
 
-import com.anjunar.blomst.shared.likeable.AbstractLikeableSearch;
+import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
 import com.anjunar.common.rest.search.provider.GenericLikeProvider;

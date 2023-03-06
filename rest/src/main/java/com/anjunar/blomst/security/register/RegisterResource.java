@@ -1,8 +1,7 @@
 package com.anjunar.blomst.security.register;
 
-import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.filedisk.Media;
 import com.anjunar.common.i18n.Language;
-import com.anjunar.common.mail.Email;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.security.EmailType;
@@ -93,13 +92,13 @@ public class RegisterResource {
             InputStream inputStream = picture.openStream();
             byte[] bytes = new byte[inputStream.available()];
             IOUtils.readFully(inputStream, bytes);
-            Image image = new Image();
-            image.setName("user.png");
-            image.setData(bytes);
-            image.setLastModified(LocalDateTime.now());
-            image.setType("image");
-            image.setSubType("png");
-            user.setPicture(image);
+            Media media = new Media();
+            media.setName("user.png");
+            media.setData(bytes);
+            media.setLastModified(LocalDateTime.now());
+            media.setType("image");
+            media.setSubType("png");
+            user.setPicture(media);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
         }

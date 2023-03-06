@@ -66923,7 +66923,7 @@ function _throwInvalidValueAccessorError(dir) {
 }
 function isPropertyUpdated(changes, viewModel) {
   if (!changes.hasOwnProperty('model')) return false;
-  const change = changes['model'];
+  const change = changes['user'];
   if (change.isFirstChange()) return true;
   return !Object.is(viewModel, change.currentValue);
 }

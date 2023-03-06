@@ -4,12 +4,19 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("Address")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class AddressForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
     private UserSelect owner;
+
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Description", readOnly = true)
+    private String description;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Street", readOnly = true)
     private String street;
@@ -35,6 +42,14 @@ public class AddressForm extends AbstractRestEntity {
 
     public void setOwner(UserSelect owner) {
         this.owner = owner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getStreet() {

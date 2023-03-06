@@ -3,13 +3,14 @@ package com.anjunar.blomst.control.users.user;
 import com.anjunar.blomst.control.roles.role.RoleForm;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.ImageType;
+import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import jakarta.validation.constraints.Email;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,6 +23,8 @@ import java.util.Set;
 
 @NaturalId
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("User")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class UserForm extends AbstractRestEntity {
 
     @NotBlank
@@ -52,7 +55,11 @@ public class UserForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
     @MapperConverter(ImageConverter.class)
-    private ImageType picture = new ImageType();
+    private MediaType picture = new MediaType();
+
+    @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Background")
+    @MapperConverter(ImageConverter.class)
+    private MediaType background = new MediaType();
 
     @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
     @MapperVisibility
@@ -111,12 +118,20 @@ public class UserForm extends AbstractRestEntity {
         this.password = password;
     }
 
-    public ImageType getPicture() {
+    public MediaType getPicture() {
         return picture;
     }
 
-    public void setPicture(ImageType picture) {
+    public void setPicture(MediaType picture) {
         this.picture = picture;
+    }
+
+    public MediaType getBackground() {
+        return background;
+    }
+
+    public void setBackground(MediaType background) {
+        this.background = background;
     }
 
     public List<EmailForm> getEmails() {

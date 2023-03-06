@@ -3,10 +3,14 @@ package com.anjunar.blomst.control.roles.role;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("Role")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class RoleForm extends AbstractRestEntity {
 
     @NotBlank

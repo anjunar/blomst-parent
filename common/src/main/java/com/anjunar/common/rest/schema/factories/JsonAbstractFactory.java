@@ -39,10 +39,6 @@ public abstract class JsonAbstractFactory<J extends JsonNode> {
             if (! jsonSchema.widget().equals(JsonNode.Widget.NO_WIDGET)) {
                 jsonNode.setWidget(jsonSchema.widget());
             }
-            MapperVisibility visibility = property.getAnnotation(MapperVisibility.class);
-            if (Objects.nonNull(visibility)) {
-                jsonNode.setVisibility(new HashSet<>());
-            }
             if (jsonSchema.readOnly()) {
                 jsonNode.setReadOnly(true);
             }

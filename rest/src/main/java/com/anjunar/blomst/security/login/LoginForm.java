@@ -2,11 +2,15 @@ package com.anjunar.blomst.security.login;
 
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("User")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class LoginForm {
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Email")

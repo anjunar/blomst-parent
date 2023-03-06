@@ -5,8 +5,8 @@ import com.anjunar.blomst.social.info.addresses.address.AddressForm;
 import com.anjunar.blomst.social.info.addresses.address.AddressResource;
 import com.anjunar.common.rest.api.ListResourceTemplate;
 import com.anjunar.common.rest.api.Table;
-import com.anjunar.common.rest.link.WebURLBuilderFactory;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
+import com.anjunar.common.security.IdentityManager;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,14 +25,17 @@ public class AddressesResource implements ListResourceTemplate<AddressForm, Addr
 
     private final ResourceEntityMapper entityMapper;
 
+    private final IdentityManager identityManager;
+
     @Inject
-    public AddressesResource(AddressesService service, ResourceEntityMapper entityMapper) {
+    public AddressesResource(AddressesService service, ResourceEntityMapper entityMapper, IdentityManager identityManager) {
         this.service = service;
         this.entityMapper = entityMapper;
+        this.identityManager = identityManager;
     }
 
     public AddressesResource() {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override
@@ -54,8 +57,10 @@ public class AddressesResource implements ListResourceTemplate<AddressForm, Addr
             resources.add(form);
         }
 
-        linkTo(methodOn(AddressResource.class).create())
-                .build(table::addLink);
+        if (search.getOwner().equals(identityManager.getUser().getId())) {
+            linkTo(methodOn(AddressResource.class).create())
+                    .build(table::addLink);
+        }
 
         return table;
     }

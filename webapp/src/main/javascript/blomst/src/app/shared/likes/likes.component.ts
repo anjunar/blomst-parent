@@ -44,7 +44,7 @@ export class LikesComponent implements OnInit {
     url.searchParams.append("limit", "0")
     url.searchParams.append("post", this.model.id)
 
-    return fetch(url.toString())
+    return secureFetch(url.toString())
       .then(response => response.json())
       .then(response => {
         this.size = response.size

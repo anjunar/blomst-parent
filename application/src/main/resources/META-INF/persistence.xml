@@ -7,7 +7,7 @@
         <class>com.anjunar.common.ddd.AbstractRight</class>
         <class>com.anjunar.common.ddd.AbstractColumnRight</class>
 
-        <class>com.anjunar.common.filedisk.Image</class>
+        <class>com.anjunar.common.filedisk.Media</class>
 
         <class>com.anjunar.common.mail.Template</class>
 
@@ -29,7 +29,7 @@
 
         <class>com.anjunar.blomst.social.timeline.Comment</class>
         <class>com.anjunar.blomst.social.timeline.AbstractPost</class>
-        <class>com.anjunar.blomst.social.timeline.LinkPost</class>
+        <class>com.anjunar.blomst.social.timeline.VideoPost</class>
         <class>com.anjunar.blomst.social.timeline.ImagePost</class>
         <class>com.anjunar.blomst.social.timeline.TextPost</class>
         <class>com.anjunar.blomst.social.timeline.SystemPost</class>
@@ -44,7 +44,7 @@
         <class>com.anjunar.blomst.control.notifications.AbstractNotification</class>
         <class>com.anjunar.blomst.control.notifications.ConnectionNotification</class>
 
-        <class>com.anjunar.blomst.social.communities.CommunitiesConnection</class>
+        <class>com.anjunar.blomst.social.communities.CommunityConnection</class>
         <class>com.anjunar.blomst.social.communities.Community</class>
 
         <class>com.anjunar.blomst.social.sites.Site</class>

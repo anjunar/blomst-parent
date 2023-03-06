@@ -4,11 +4,15 @@ import com.anjunar.blomst.control.users.user.ImageConverter;
 import com.anjunar.blomst.shared.mapbox.MapBoxConverter;
 import com.anjunar.blomst.social.info.addresses.MapBoxAddress;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.ImageType;
+import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("Site")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class SiteSelect extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Name", naming = true)
@@ -29,7 +33,7 @@ public class SiteSelect extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Image")
     @MapperConverter(ImageConverter.class)
-    private ImageType picture;
+    private MediaType picture;
 
     public String getName() {
         return name;
@@ -63,11 +67,11 @@ public class SiteSelect extends AbstractRestEntity {
         this.address = address;
     }
 
-    public ImageType getPicture() {
+    public MediaType getPicture() {
         return picture;
     }
 
-    public void setPicture(ImageType picture) {
+    public void setPicture(MediaType picture) {
         this.picture = picture;
     }
 }

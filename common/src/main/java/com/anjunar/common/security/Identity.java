@@ -1,7 +1,7 @@
 package com.anjunar.common.security;
 
 import com.anjunar.common.ddd.AbstractEntity;
-import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.filedisk.Media;
 
 import jakarta.persistence.*;
 
@@ -12,7 +12,7 @@ public abstract class Identity extends AbstractEntity {
     private boolean enabled;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Image picture;
+    private Media picture;
 
     public boolean isEnabled() {
         return enabled;
@@ -22,11 +22,11 @@ public abstract class Identity extends AbstractEntity {
         this.enabled = enabled;
     }
 
-    public Image getPicture() {
+    public Media getPicture() {
         return picture;
     }
 
-    public void setPicture(Image picture) {
+    public void setPicture(Media picture) {
         this.picture = picture;
     }
 }

@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 public @interface MethodPredicate {
 
-    @Nonbinding Class<?> value() default Object.class;
+    @Nonbinding Class<? extends MethodPredicateHandler> value() default MethodPredicateHandler.class;
 
 }

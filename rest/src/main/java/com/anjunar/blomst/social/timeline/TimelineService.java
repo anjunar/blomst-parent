@@ -1,9 +1,9 @@
 package com.anjunar.blomst.social.timeline;
 
+import com.anjunar.blomst.social.communities.CommunityConnection;
 import com.anjunar.common.ddd.AbstractCriteriaSearchService;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.UserConnection;
-import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.sites.SiteConnection;
 
 import jakarta.inject.Inject;
@@ -25,7 +25,7 @@ public class TimelineService extends AbstractCriteriaSearchService<AbstractPost,
     }
 
     public Set<UUID> connections() {
-        List<CommunitiesConnection> communitiesConnections = entityManager.createQuery("select c from CommunitiesConnection c where c.from = :user", CommunitiesConnection.class)
+        List<CommunityConnection> communityConnections = entityManager.createQuery("select c from CommunitiesConnection c where c.from = :user", CommunityConnection.class)
                 .setParameter("user", identityManager.getUser())
                 .getResultList();
 
@@ -38,7 +38,7 @@ public class TimelineService extends AbstractCriteriaSearchService<AbstractPost,
                 .getResultList();
 
         Set<UUID> result = new HashSet<>();
-        for (CommunitiesConnection connection : communitiesConnections) {
+        for (CommunityConnection connection : communityConnections) {
             result.add(connection.getTo().getId());
         }
         for (UserConnection userConnection : userConnections) {

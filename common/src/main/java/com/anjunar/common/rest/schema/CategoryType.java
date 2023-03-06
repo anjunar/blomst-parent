@@ -3,9 +3,13 @@ package com.anjunar.common.rest.schema;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@JsonTypeName("Category")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class CategoryType extends AbstractRestEntity {
 
     @NotBlank

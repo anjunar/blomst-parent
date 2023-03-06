@@ -1,16 +1,19 @@
 package com.anjunar.blomst.control.users;
 
 import com.anjunar.common.ddd.AbstractEntity;
+import com.anjunar.common.security.OwnerProvider;
 import com.anjunar.common.security.User;
 import jakarta.persistence.*;
 
 import java.time.Year;
 
 @Entity
-public class Address extends AbstractEntity {
+public class Address extends AbstractEntity implements OwnerProvider {
 
     @ManyToOne
     private User owner;
+
+    private String description;
 
     private String street;
 
@@ -39,6 +42,14 @@ public class Address extends AbstractEntity {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String name) {
+        this.description = name;
     }
 
     public String getStreet() {

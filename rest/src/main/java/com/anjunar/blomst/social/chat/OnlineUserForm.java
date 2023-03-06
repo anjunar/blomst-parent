@@ -2,12 +2,16 @@ package com.anjunar.blomst.social.chat;
 
 import com.anjunar.blomst.control.users.user.ImageConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
-import com.anjunar.common.rest.api.ImageType;
+import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("User")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class OnlineUserForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true)
@@ -21,7 +25,7 @@ public class OnlineUserForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
     @MapperConverter(ImageConverter.class)
-    private ImageType picture;
+    private MediaType picture;
 
     public String getFirstName() {
         return firstName;
@@ -47,11 +51,11 @@ public class OnlineUserForm extends AbstractRestEntity {
         this.online = online;
     }
 
-    public ImageType getPicture() {
+    public MediaType getPicture() {
         return picture;
     }
 
-    public void setPicture(ImageType picture) {
+    public void setPicture(MediaType picture) {
         this.picture = picture;
     }
 

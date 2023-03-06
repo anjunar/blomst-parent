@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 
 import java.util.UUID;
 
-public class MyOwnIdentity {
+public class MyOwnIdentity implements MethodPredicateHandler {
 
     private final IdentityManager identityManager;
 

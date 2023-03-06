@@ -1,0 +1,16 @@
+<div content>
+  <as-input-container placeholder="Click here..." style="width: 100%">
+    <as-lazy-select [(ngModel)]="address" (items)="onAddressLoad($event)" trackBy="name" label="name" style="width: 100%">
+      <ng-template let-address>
+        {{address.name}}
+      </ng-template>
+    </as-lazy-select>
+  </as-input-container>
+  <div *ngIf="address">
+    <as-input-container placeholder="Description">
+      <input type="text" [(ngModel)]="address.description">
+    </as-input-container>
+  </div>
+  <button type="button" (click)="onDocumentClick()" class="normal">Okay</button>
+</div>
+

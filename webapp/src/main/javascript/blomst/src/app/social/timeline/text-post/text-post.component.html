@@ -1,0 +1,10 @@
+<div content>
+  <form [formGroup]="form">
+    <div formGroupName="form" style="background-color: var(--main-background-color)">
+      <as-editor formControlName="editor" name="editor" style="width: 400px; height: 280px"></as-editor>
+    </div>
+  </form>
+</div>
+<div footer>
+  <button type="button" (click)="onSubmit()">Okay</button>
+</div>

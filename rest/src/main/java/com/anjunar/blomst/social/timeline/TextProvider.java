@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.timeline;
 
+import com.anjunar.blomst.social.pages.Editor_;
 import com.anjunar.common.i18n.Detector;
 import com.anjunar.common.rest.search.AbstractRestPredicateProvider;
 import com.anjunar.common.security.IdentityManager;
@@ -21,6 +22,6 @@ public class TextProvider extends AbstractRestPredicateProvider<String, Abstract
 
         String language = Detector.detectLanguageOf(value);
 
-        return builder.equal(builder.function("distance", Boolean.class, root.get(AbstractPost_.text), builder.literal(language.toLowerCase()), builder.literal(value)), true);
+        return builder.equal(builder.function("distance", Boolean.class, root.get(AbstractPost_.editor).get(Editor_.text), builder.literal(language.toLowerCase()), builder.literal(value)), true);
     }
 }

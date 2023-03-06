@@ -1,5 +1,5 @@
-import {Component, HostListener, ViewEncapsulation} from '@angular/core';
-import {AsDialogComponent, AsWindowComponent, InfinityQuery} from "angular2-simplicity";
+import {AfterViewInit, Component, HostListener, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AsDialogComponent, AsScrollAreaComponent, AsWindowComponent, InfinityQuery} from "angular2-simplicity";
 
 @Component({
   selector: 'app-likes-popup',
@@ -7,11 +7,13 @@ import {AsDialogComponent, AsWindowComponent, InfinityQuery} from "angular2-simp
   styleUrls: ['likes-popup.component.css'],
   encapsulation : ViewEncapsulation.None
 })
-export class LikesPopupComponent {
+export class LikesPopupComponent implements AfterViewInit {
 
   postId!: string;
 
-   constructor(private window : AsDialogComponent) {}
+  @ViewChild(AsScrollAreaComponent) scrollArea! : AsScrollAreaComponent
+
+  constructor(private dialog : AsDialogComponent) {}
 
   usersLoader(event : {query : InfinityQuery, callback : (rows : any[]) => void}) {
     let link = "service/shared/likes";
@@ -20,12 +22,21 @@ export class LikesPopupComponent {
     url.searchParams.append("index", event.query.index + "")
     url.searchParams.append("limit", event.query.limit + "")
 
-    fetch(url.toString())
+    secureFetch(url.toString())
       .then(response => response.json())
       .then(response => {
         event.callback(response.rows || [])
       })
   }
 
+  onUserClick() {
+    this.dialog.close();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.scrollArea.checkScrollBars()
+    })
+  }
 
 }

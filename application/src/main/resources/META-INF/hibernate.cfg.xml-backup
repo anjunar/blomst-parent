@@ -8,7 +8,7 @@
 
         <mapping class="com.anjunar.common.ddd.AbstractEntity"/>
 
-        <mapping class="com.anjunar.common.filedisk.Image"/>
+        <mapping class="com.anjunar.common.filedisk.Media"/>
 
         <mapping class="com.anjunar.common.mail.Template"/>
 
@@ -27,7 +27,7 @@
         <mapping class="com.anjunar.blomst.social.timeline.AbstractPost"/>
         <mapping class="com.anjunar.blomst.social.timeline.TextPost"/>
         <mapping class="com.anjunar.blomst.social.timeline.ImagePost"/>
-        <mapping class="com.anjunar.blomst.social.timeline.LinkPost"/>
+        <mapping class="com.anjunar.blomst.social.timeline.VideoPost"/>
         <mapping class="com.anjunar.blomst.social.timeline.SystemPost"/>
 
         <mapping class="com.anjunar.common.security.Category"/>
@@ -38,7 +38,7 @@
         <mapping class="com.anjunar.blomst.control.notifications.AbstractNotification"/>
 
         <mapping class="com.anjunar.blomst.social.communities.Community"/>
-        <mapping class="com.anjunar.blomst.social.communities.CommunitiesConnection"/>
+        <mapping class="com.anjunar.blomst.social.communities.CommunityConnection"/>
 
         <mapping class="com.anjunar.blomst.social.sites.Site"/>
         <mapping class="com.anjunar.blomst.social.sites.SiteConnection"/>

@@ -1,23 +1,19 @@
 package com.anjunar.blomst.social.communities.community;
 
-import com.anjunar.blomst.control.roles.RolesResource;
-import com.anjunar.blomst.control.roles.RolesSearch;
 import com.anjunar.blomst.social.communities.CommunitiesResource;
 import com.anjunar.blomst.social.communities.CommunitiesSearch;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsResource;
 import com.anjunar.blomst.social.communities.community.connections.CommunityConnectionsSearch;
 import com.anjunar.blomst.social.communities.community.connections.connection.CommunityConnectionResource;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
-import com.anjunar.common.rest.schema.schema.JsonObject;
 import com.google.common.collect.Sets;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.security.IdentityManager;
-import com.anjunar.blomst.social.communities.CommunitiesConnection;
+import com.anjunar.blomst.social.communities.CommunityConnection;
 import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
@@ -86,7 +82,7 @@ public class CommunityResource implements FormResourceTemplate<Form<CommunityFor
         Form<CommunityForm> form = entityMapper.map(community, new Form<>() {});
 
         try {
-            CommunitiesConnection connection = service.findConnection(identityManager.getUser().getId(), id);
+            CommunityConnection connection = service.findConnection(identityManager.getUser().getId(), id);
             linkTo(methodOn(CommunityConnectionResource.class).read(connection.getId()))
                     .withRel("connection")
                     .build(form::addLink);

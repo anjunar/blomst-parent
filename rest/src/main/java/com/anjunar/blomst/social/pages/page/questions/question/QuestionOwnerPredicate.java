@@ -1,12 +1,13 @@
 package com.anjunar.blomst.social.pages.page.questions.question;
 
 import com.anjunar.blomst.social.pages.page.Question;
+import com.anjunar.common.rest.MethodPredicateHandler;
 import com.anjunar.common.security.IdentityManager;
 
 import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
-public class QuestionOwnerPredicate {
+public class QuestionOwnerPredicate implements MethodPredicateHandler {
 
     private final IdentityManager identityManager;
 

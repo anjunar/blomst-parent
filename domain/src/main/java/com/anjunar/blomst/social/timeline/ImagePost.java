@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.timeline;
 
-import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.filedisk.Media;
 import org.hibernate.annotations.Filter;
 
 import jakarta.persistence.*;
@@ -10,19 +10,19 @@ import jakarta.persistence.*;
 public class ImagePost extends AbstractPost {
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Image image;
+    private Media media;
 
     @Override
     public <E> E accept(AbstractPostVisitor<E> visitor) {
         return visitor.visit(this);
     }
 
-    public Image getImage() {
-        return image;
+    public Media getImage() {
+        return media;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImage(Media media) {
+        this.media = media;
     }
 
 }

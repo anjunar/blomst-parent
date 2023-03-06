@@ -8,6 +8,7 @@ import com.anjunar.blomst.social.info.addresses.AddressSearchResource;
 import com.anjunar.blomst.social.info.addresses.AddressesResource;
 import com.anjunar.blomst.social.info.addresses.AddressesSearch;
 import com.anjunar.blomst.social.info.addresses.MapBoxAddress;
+import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.api.ResponseOk;
 import com.anjunar.common.rest.api.SecuredForm;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
@@ -61,7 +62,7 @@ public class AddressResource {
         linkTo(methodOn(AddressSearchResource.class).list(null))
                 .build(name::addLink);
 
-        linkTo(methodOn(AddressResource.class).save(new SecuredForm<>()))
+        linkTo(methodOn(AddressResource.class).save(new MapBoxAddress()))
                 .build(securedForm::addLink);
 
         JsonObject visibility = securedForm.find("form", JsonObject.class);
@@ -74,6 +75,7 @@ public class AddressResource {
     @Produces("application/json")
     @GET
     @RolesAllowed({"Administrator", "User"})
+    @MethodPredicate(AddressPredicate.class)
     public SecuredForm<AddressForm> read(@QueryParam("id") UUID id) {
         Address entity = entityManager.find(Address.class, id);
 
@@ -97,24 +99,18 @@ public class AddressResource {
     @Produces("application/json")
     @POST
     @RolesAllowed({"Administrator", "User"})
-    public ResponseOk save(SecuredForm<AddressSelect> securedForm) {
-        AddressForm addressForm = extractAddressData(securedForm.getForm());
+    public ResponseOk save(MapBoxAddress securedForm) {
+        AddressForm addressForm = extractAddressData(securedForm);
 
         Address entity = restMapper.map(addressForm, Address.class, securedForm.getSchema(), false);
         entity.setOwner(identityManager.getUser());
 
         entityManager.persist(entity);
 
-        AddressRight right = new AddressRight();
-        right.setSource(entity);
-        right.getCategories().addAll(securedForm.find("form", JsonObject.class)
-                .getVisibility()
-                .stream()
-                .map(categoryType -> entityManager.find(Category.class, categoryType.getId()))
-                .toList()
-        );
+        AddressRight addressRight = new AddressRight();
+        addressRight.setSource(entity);
 
-        entityManager.persist(right);
+        entityManager.persist(addressRight);
 
         ResponseOk response = new ResponseOk();
 
@@ -129,6 +125,7 @@ public class AddressResource {
     @Produces("application/json")
     @PUT
     @RolesAllowed({"Administrator", "User"})
+    @MethodPredicate(AddressPredicate.class)
     public ResponseOk update(@QueryParam("id") UUID id, SecuredForm<AddressForm> securedForm) {
         Address entity = restMapper.map(securedForm, Address.class);
         entity.setOwner(identityManager.getUser());
@@ -145,7 +142,8 @@ public class AddressResource {
     @DELETE
     @Produces("application/json")
     @RolesAllowed({"Administrator", "User"})
-    public ResponseOk delete(UUID id) {
+    @MethodPredicate(AddressPredicate.class)
+    public ResponseOk delete(@QueryParam("id") UUID id) {
         Address entity = entityManager.getReference(Address.class, id);
         entityManager.remove(entity);
         ResponseOk response = new ResponseOk();
@@ -157,12 +155,13 @@ public class AddressResource {
         return response;
     }
 
-    private static AddressForm extractAddressData(AddressSelect item) {
+    private static AddressForm extractAddressData(MapBoxAddress item) {
         AddressForm addressForm = new AddressForm();
-        MapBoxAddress row = item.getName();
-        String[] segments = row.getName().split(",");
-        addressForm.setX(row.getPoint().getX());
-        addressForm.setY(row.getPoint().getY());
+        String row = item.getName();
+        String[] segments = row.split(",");
+        addressForm.setX(item.getPoint().getX());
+        addressForm.setY(item.getPoint().getY());
+        addressForm.setDescription(item.getDescription());
         if (segments.length == 3) {
             addressForm.setStreet(segments[0].trim());
 

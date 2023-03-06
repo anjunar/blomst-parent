@@ -4,6 +4,8 @@ import com.anjunar.blomst.system.languages.language.LanguageForm;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.common.base.Strings;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +14,8 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("User")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class UserSelect extends IdentitySelect {
 
     @Size(min = 3, max = 80)

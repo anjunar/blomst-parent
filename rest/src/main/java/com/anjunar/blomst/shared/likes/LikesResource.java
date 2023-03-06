@@ -1,7 +1,7 @@
 package com.anjunar.blomst.shared.likes;
 
 import com.anjunar.blomst.shared.Likeable;
-import com.anjunar.blomst.shared.likeable.AbstractLikeableResource;
+import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableResource;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.common.rest.api.ListResourceTemplate;

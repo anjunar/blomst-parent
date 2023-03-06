@@ -6,11 +6,15 @@ import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("Template")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class TemplateForm extends AbstractRestEntity {
 
     @Size(min = 3, max = 80)

@@ -1,12 +1,13 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
 import com.anjunar.blomst.social.timeline.Comment;
+import com.anjunar.common.rest.MethodPredicateHandler;
 import com.anjunar.common.security.IdentityManager;
 
 import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
-public class OwnerCommentIdentity {
+public class OwnerCommentIdentity implements MethodPredicateHandler {
 
     private final IdentityManager identityManager;
 

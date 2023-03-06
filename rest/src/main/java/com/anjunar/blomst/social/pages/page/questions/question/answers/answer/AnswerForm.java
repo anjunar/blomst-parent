@@ -1,15 +1,19 @@
 package com.anjunar.blomst.social.pages.page.questions.question.answers.answer;
 
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.questions.question.QuestionForm;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("Answer")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class AnswerForm extends AbstractLikeableRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "Editor")

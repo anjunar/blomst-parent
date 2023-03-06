@@ -1,6 +1,6 @@
 package com.anjunar.blomst;
 
-import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.filedisk.Media;
 import com.anjunar.common.i18n.Language;
 import com.anjunar.common.security.*;
 import jakarta.persistence.EntityManager;
@@ -19,7 +19,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 
 @ApplicationScoped
@@ -99,13 +98,13 @@ public class StartUp {
                 InputStream inputStream = picture.openStream();
                 byte[] bytes = new byte[inputStream.available()];
                 IOUtils.readFully(inputStream, bytes);
-                Image image = new Image();
-                image.setName("user.png");
-                image.setData(bytes);
-                image.setLastModified(LocalDateTime.now());
-                image.setType("image");
-                image.setSubType("png");
-                patrick.setPicture(image);
+                Media media = new Media();
+                media.setName("user.png");
+                media.setData(bytes);
+                media.setLastModified(LocalDateTime.now());
+                media.setType("image");
+                media.setSubType("png");
+                patrick.setPicture(media);
             } catch (IOException e) {
                 e.printStackTrace();
             }

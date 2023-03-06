@@ -3,8 +3,12 @@ package com.anjunar.blomst.social.communities.community;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("Community")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class CommunityForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Name", naming = true)

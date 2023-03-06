@@ -101,8 +101,7 @@ public abstract class JsonNode {
 
     private Boolean visible;
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    private Set<CategoryType> visibility;
+    private Boolean visibility;
 
     private final LinkedHashMap<String, Link> links = new LinkedHashMap<>();
 
@@ -192,12 +191,11 @@ public abstract class JsonNode {
         this.visible = visible;
     }
 
-    public Set<CategoryType> getVisibility() {
+    public Boolean getVisibility() {
         return visibility;
     }
 
-    public void setVisibility(Set<CategoryType> visibility) {
+    public void setVisibility(Boolean visibility) {
         this.visibility = visibility;
     }
-
 }

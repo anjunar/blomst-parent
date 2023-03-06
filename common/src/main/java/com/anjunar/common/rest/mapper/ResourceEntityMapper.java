@@ -142,7 +142,7 @@ public class ResourceEntityMapper {
 
         if (source instanceof OwnerProvider ownerProvider && Objects.nonNull(jsonObject)) {
             if (identityStore.getUser().equals(ownerProvider.getOwner())) {
-                loadSchema((OwnerProvider) source, jsonObject);
+                loadSchema((OwnerProvider) source, destinationClass, jsonObject);
             } else {
                 for (Map.Entry<String, JsonNode> entry : jsonObject.getProperties().entrySet()) {
                     entry.getValue().setVisibility(null);
@@ -320,92 +320,20 @@ public class ResourceEntityMapper {
     }
 
     private <S, D> void loadFormSchema(S source, SecuredForm<D> securedForm) {
-        BeanModel<?> model = BeanIntrospector.create(source.getClass());
-        String entityName = null;
-        Entity annotation = model.getAnnotation(Entity.class);
-        if (Objects.nonNull(annotation) && !Strings.isNullOrEmpty(annotation.name())) {
-            entityName = annotation.name();
-        } else {
-            entityName = source.getClass().getSimpleName();
-        }
-
-        try {
-            JsonObject jsonObject = securedForm.find("form", JsonObject.class);
-            Set<CategoryType> categories = jsonObject.getVisibility();
-            EntityManager entityManager = entityManager();
-
-            AbstractRight<?> right = entityManager.createQuery("select s from " + entityName + "Right s where s.source = :source", AbstractRight.class)
-                    .setParameter("source", source)
-                    .getSingleResult();
-
-            for (Category category : right.getCategories()) {
-                CategoryType categoryType = map(category, CategoryType.class,(JsonObject) null, false);
-                categories.add(categoryType);
-            }
-        } catch (NoResultException e) {
-            try {
-                Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
-                AbstractRight schemaItem = (AbstractRight) right.getDeclaredConstructor().newInstance();
-                schemaItem.setSource(source);
-                entityManager.persist(schemaItem);
-            } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
-                     IllegalAccessException | NoSuchMethodException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
+        JsonObject jsonObject = securedForm.find("form", JsonObject.class);
+        jsonObject.setVisibility(true);
     }
 
 
-    private <S extends AbstractEntity> void loadSchema(OwnerProvider source, JsonObject jsonObject) {
-        JsonObject schema = jsonObject;
+    private <S extends AbstractEntity> void loadSchema(OwnerProvider source, Class<?> destinationClass, JsonObject jsonObject) {
 
-        BeanModel<?> model = BeanIntrospector.create(source.getClass());
-        String entityName = null;
-        Entity annotation = model.getAnnotation(Entity.class);
-        if (Objects.nonNull(annotation) && !Strings.isNullOrEmpty(annotation.name())) {
-            entityName = annotation.name();
-        } else {
-            entityName = source.getClass().getSimpleName();
-        }
+        BeanModel<?> destinationModel = BeanIntrospector.create(destinationClass);
 
-        for (Map.Entry<String, JsonNode> entry : schema.getProperties().entrySet()) {
-            String columnName = null;
-            BeanProperty<?, ?> property = model.get(entry.getKey());
-            if (Objects.nonNull(property)) {
-                Column column = property.getAnnotation(Column.class);
-                if (Objects.nonNull(column)) {
-                    columnName = column.name();
-                } else {
-                    columnName = entry.getKey();
-                }
-
-                try {
-                    if (entry.getValue().getVisibility() != null) {
-                        Set<CategoryType> categories = entry.getValue().getVisibility();
-                        EntityManager entityManager = entityManager();
-
-                        AbstractRight<?> right = entityManager.createQuery("select s from " + entityName + "Right s where s.source = :source and s.column = :column", AbstractRight.class)
-                                .setParameter("source", source)
-                                .setParameter("column", columnName)
-                                .getSingleResult();
-
-                        for (Category category : right.getCategories()) {
-                            CategoryType categoryType = map(category, CategoryType.class, (JsonObject) null, false);
-                            categories.add(categoryType);
-                        }
-                    }
-                } catch (NoResultException e) {
-                    try {
-                        Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
-                        AbstractColumnRight schemaItem = (AbstractColumnRight) right.getDeclaredConstructor().newInstance();
-                        schemaItem.setSource(source);
-                        schemaItem.setColumn(columnName);
-                        entityManager.persist(schemaItem);
-                    } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
-                             IllegalAccessException | NoSuchMethodException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
+        for (Map.Entry<String, JsonNode> entry : jsonObject.getProperties().entrySet()) {
+            BeanProperty<?, ?> destinationProperty = destinationModel.get(entry.getKey());
+            MapperVisibility visibility = destinationProperty.getAnnotation(MapperVisibility.class);
+            if (Objects.nonNull(visibility)) {
+                entry.getValue().setVisibility(true);
             }
         }
     }

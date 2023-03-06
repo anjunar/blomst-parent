@@ -1,3 +1,7 @@
 app-likes-popup {
   display: block;
 }
+
+app-likes-popup a:hover {
+  text-decoration: underline;
+}

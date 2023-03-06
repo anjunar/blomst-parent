@@ -1,7 +1,7 @@
 package com.anjunar.blomst.social.timeline.post.comments.comment;
 
-import com.anjunar.blomst.shared.likeable.AbstractLikeableRestEntity;
-import com.anjunar.blomst.shared.likeable.LikesConverter;
+import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableRestEntity;
+import com.anjunar.blomst.shared.likes.likeable.LikesConverter;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
@@ -9,9 +9,6 @@ import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
 public class CommentForm extends AbstractLikeableRestEntity {

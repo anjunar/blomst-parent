@@ -1,6 +1,7 @@
 package com.anjunar.blomst.social.timeline;
 
 import com.anjunar.blomst.shared.Likeable;
+import com.anjunar.blomst.social.pages.Editor;
 import com.anjunar.common.ddd.PostgresIndex;
 import com.anjunar.common.i18n.Detector;
 import com.anjunar.common.security.Identity;
@@ -15,11 +16,8 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractPost extends Likeable {
 
-    @PostgresIndex(type = PostgresIndex.Type.TEXT)
-    @Column(columnDefinition = "TEXT")
-    private String text;
-
-    private String language;
+    @Embedded
+    private Editor editor;
 
     @ManyToOne
     private User owner;
@@ -30,28 +28,14 @@ public abstract class AbstractPost extends Likeable {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 
-    @PrePersist
-    @PreUpdate
-    private void prePersist() {
-        language = Detector.detectLanguageOf(text);
-    }
-
     public abstract <E> E accept(AbstractPostVisitor<E> visitor);
 
-    public String getLanguage() {
-        return language;
+    public Editor getEditor() {
+        return editor;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setEditor(Editor editor) {
+        this.editor = editor;
     }
 
     public User getOwner() {

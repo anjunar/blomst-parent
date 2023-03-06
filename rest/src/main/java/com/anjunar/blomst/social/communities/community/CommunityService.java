@@ -1,8 +1,8 @@
 package com.anjunar.blomst.social.communities.community;
 
+import com.anjunar.blomst.social.communities.CommunityConnection;
 import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.Role;
-import com.anjunar.blomst.social.communities.CommunitiesConnection;
 import com.anjunar.blomst.social.communities.Community;
 import com.anjunar.blomst.social.communities.Status;
 
@@ -30,7 +30,7 @@ public class CommunityService {
     }
 
     public void addAdministrator(Community entity) {
-        CommunitiesConnection connection = new CommunitiesConnection();
+        CommunityConnection connection = new CommunityConnection();
         connection.setFrom(identityManager.getUser());
         connection.setTo(entity);
         connection.setStatus(Status.OK);
@@ -45,7 +45,7 @@ public class CommunityService {
 
     public boolean hasRole(String name, UUID community) {
         try {
-            CommunitiesConnection connection = entityManager.createQuery("select c from CommunitiesConnection c where c.from = :from and c.to.id = :to", CommunitiesConnection.class)
+            CommunityConnection connection = entityManager.createQuery("select c from CommunitiesConnection c where c.from = :from and c.to.id = :to", CommunityConnection.class)
                     .setParameter("from", identityManager.getUser())
                     .setParameter("to", community)
                     .getSingleResult();
@@ -56,8 +56,8 @@ public class CommunityService {
         }
     }
 
-    public CommunitiesConnection findConnection(UUID from, UUID to) {
-        return entityManager.createQuery("select c from CommunitiesConnection c where c.from.id = :from and c.to.id = :to", CommunitiesConnection.class)
+    public CommunityConnection findConnection(UUID from, UUID to) {
+        return entityManager.createQuery("select c from CommunitiesConnection c where c.from.id = :from and c.to.id = :to", CommunityConnection.class)
                 .setParameter("from", from)
                 .setParameter("to", to)
                 .getSingleResult();

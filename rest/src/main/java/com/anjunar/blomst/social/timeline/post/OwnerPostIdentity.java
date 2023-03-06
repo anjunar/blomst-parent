@@ -1,12 +1,13 @@
 package com.anjunar.blomst.social.timeline.post;
 
 import com.anjunar.blomst.social.timeline.AbstractPost;
+import com.anjunar.common.rest.MethodPredicateHandler;
 import com.anjunar.common.security.IdentityManager;
 
 import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
-public class OwnerPostIdentity {
+public class OwnerPostIdentity implements MethodPredicateHandler {
 
     private final IdentityManager identityManager;
 

@@ -2,12 +2,13 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AppNavigatorResolver} from "./navigator/app-navigator.resolver";
 import {AppResolver} from "./app.resolver";
-import {TimelineComponent} from "./timeline/timeline.component";
-import {RegisterComponent} from "./control/register/register.component";
-import {LogoutComponent} from "./control/logout/logout.component";
-import {LoginComponent} from "./control/login/login.component";
+import {TimelineComponent} from "./social/timeline/timeline.component";
+import {RegisterComponent} from "./security/register/register.component";
+import {LogoutComponent} from "./security/logout/logout.component";
+import {LoginComponent} from "./security/login/login.component";
 import {FormComponent} from "./navigator/form/form.component";
 import {TableComponent} from "./navigator/table/table.component";
+import {UserComponent} from "./control/user/user.component";
 
 const routes: Routes = [
   {
@@ -21,7 +22,10 @@ const routes: Routes = [
       model : AppResolver
     },
     data : {
-      url : "service/security/register"
+      urls : [{
+        name : "model",
+        value : "service/security/register"
+      }]
     }
   },
   {
@@ -35,7 +39,12 @@ const routes: Routes = [
       model : AppResolver
     },
     data : {
-      url : "service/security/login"
+      urls : [
+        {
+          name : "model",
+          value : "service/security/login"
+        }
+      ]
     }
   },
   {
@@ -49,8 +58,22 @@ const routes: Routes = [
   {
     path: "navigator/table",
     component: TableComponent
+  },
+  {
+    path : ":user",
+    component : UserComponent,
+    resolve : {
+      model : AppResolver
+    },
+    data : {
+      urls : [{
+        name : "user",
+        value : "service/control/users/user/{user}"
+      }]
+    }
   }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

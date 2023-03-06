@@ -22,10 +22,9 @@ import com.anjunar.blomst.social.timeline.TimelineResource;
 import com.anjunar.blomst.social.timeline.TimelineSearch;
 import com.anjunar.blomst.system.languages.LanguagesResource;
 import com.anjunar.blomst.system.languages.LanguagesSearch;
-import com.anjunar.common.filedisk.Image;
+import com.anjunar.common.filedisk.Media;
 import com.anjunar.common.rest.MethodPredicate;
 import com.anjunar.common.rest.MyOwnIdentity;
-import com.anjunar.common.rest.api.AbstractSchemaEntity;
 import com.anjunar.common.rest.api.Form;
 import com.anjunar.common.rest.api.FormResourceTemplate;
 import com.anjunar.common.rest.api.ResponseOk;
@@ -47,6 +46,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,6 +134,20 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
         return form;
     }
 
+    @GET
+    @Path("{nickname}")
+    @Produces("application/json")
+    public Form<UserForm> read(@PathParam("nickname") String nickname) {
+        try {
+            User user = entityManager.createQuery("select u from User u where lower(u.nickName) = :nickname", User.class)
+                    .setParameter("nickname", nickname.toLowerCase())
+                    .getSingleResult();
+            return getUser(user);
+        } catch (NoResultException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
+
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Read User")
@@ -141,11 +155,15 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
 
         User user = entityManager.find(User.class, id);
 
+        return getUser(user);
+    }
+
+    private Form<UserForm> getUser(User user) {
         Form<UserForm> resource = entityMapper.map(user, new Form<>() {});
 
-        linkTo(methodOn(UserResource.class).update(id, (Form<UserForm>) null))
+        linkTo(methodOn(UserResource.class).update(user.getId(), (Form<UserForm>) null))
                 .build(resource::addLink);
-        linkTo(methodOn(UserResource.class).delete(id))
+        linkTo(methodOn(UserResource.class).delete(user.getId()))
                 .build(resource::addLink);
 
         JsonArray roles = resource.find("roles", JsonArray.class);
@@ -159,56 +177,56 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
                     .build(language::addLink);
         }
 
-        linkTo(methodOn(LoginResource.class).runAs(id))
+        linkTo(methodOn(LoginResource.class).runAs(user.getId()))
                 .build(resource::addLink);
         linkTo(methodOn(ApplicationResource.class).validate(null))
                 .build(resource::addLink);
 
         ResumeSearch resumeSearch = new ResumeSearch();
-        resumeSearch.setOwner(id);
+        resumeSearch.setOwner(user.getId());
         linkTo(methodOn(ResumeResource.class).list(resumeSearch))
                 .withRel("resume")
                 .build(resource::addLink);
 
         AddressesSearch addressesSearch = new AddressesSearch();
-        addressesSearch.setOwner(id);
+        addressesSearch.setOwner(user.getId());
         linkTo(methodOn(AddressesResource.class).list(addressesSearch))
                 .withRel("addresses")
                 .build(resource::addLink);
 
         try {
-            UserConnection connection = service.findConnection(identityManager.getUser().getId(), id);
+            UserConnection connection = service.findConnection(identityManager.getUser().getId(), user.getId());
             linkTo(methodOn(UserConnectionResource.class).read(connection.getId()))
                     .withRel("connection")
                     .build(resource::addLink);
         } catch (NoResultException e) {
-            if (!identityManager.getUser().getId().equals(id)) {
-                linkTo(methodOn(UserConnectionResource.class).create(id))
+            if (!identityManager.getUser().getId().equals(user.getId())) {
+                linkTo(methodOn(UserConnectionResource.class).create(user.getId()))
                         .withRel("connect")
                         .build(resource::addLink);
             }
         }
 
         TimelineSearch timelineSearch = new TimelineSearch();
-        timelineSearch.setSource(Sets.newHashSet(id));
+        timelineSearch.setSource(Sets.newHashSet(user.getId()));
         linkTo(methodOn(TimelineResource.class).list(timelineSearch))
                 .withRel("timeline")
                 .build(resource::addLink);
 
         UserConnectionsSearch userConnectionsSearch = new UserConnectionsSearch();
-        userConnectionsSearch.setFrom(id);
+        userConnectionsSearch.setFrom(user.getId());
         linkTo(methodOn(UserConnectionsResource.class).list(userConnectionsSearch))
                 .withRel("user-connections")
                 .build(resource::addLink);
 
         CommunityConnectionsSearch communityConnectionsSearch = new CommunityConnectionsSearch();
-        communityConnectionsSearch.setFrom(id);
+        communityConnectionsSearch.setFrom(user.getId());
         linkTo(methodOn(CommunityConnectionsResource.class).list(communityConnectionsSearch))
                 .withRel("community-connections")
                 .build(resource::addLink);
 
         SiteConnectionsSearch siteConnectionsSearch = new SiteConnectionsSearch();
-        siteConnectionsSearch.setFrom(id);
+        siteConnectionsSearch.setFrom(user.getId());
         linkTo(methodOn(SiteConnectionsResource.class).list(siteConnectionsSearch))
                 .withRel("site-connections")
                 .build(resource::addLink);
@@ -233,13 +251,13 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
                 InputStream inputStream = picture.openStream();
                 byte[] bytes = new byte[inputStream.available()];
                 IOUtils.readFully(inputStream, bytes);
-                Image image = new Image();
-                image.setName("user.png");
-                image.setData(bytes);
-                image.setLastModified(LocalDateTime.now());
-                image.setType("image");
-                image.setSubType("png");
-                user.setPicture(image);
+                Media media = new Media();
+                media.setName("user.png");
+                media.setData(bytes);
+                media.setLastModified(LocalDateTime.now());
+                media.setType("image");
+                media.setSubType("png");
+                user.setPicture(media);
             }
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());

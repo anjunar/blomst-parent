@@ -8,16 +8,23 @@ import {RouteReuseStrategy} from "@angular/router";
 import {AppRoutingStrategyService} from "./app-routing-strategy.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppStartupService} from "./app-startup.service";
-import { TimelineComponent } from './timeline/timeline.component';
-import { LoginComponent } from './control/login/login.component';
-import { LogoutComponent } from './control/logout/logout.component';
-import { RegisterComponent } from './control/register/register.component';
+import { TimelineComponent } from './social/timeline/timeline.component';
+import { LoginComponent } from './security/login/login.component';
+import { LogoutComponent } from './security/logout/logout.component';
+import { RegisterComponent } from './security/register/register.component';
 import { SettingsComponent } from './control/settings/settings.component';
 import { FormComponent } from './navigator/form/form.component';
 import { TableComponent } from './navigator/table/table.component';
 import { LikesComponent } from './shared/likes/likes.component';
 import { HumanizePipe } from './shared/humanize.pipe';
 import { LikesPopupComponent } from './shared/likes/likes-popup/likes-popup.component';
+import { UserComponent } from './control/user/user.component';
+import { VisibilityComponent } from './shared/visibility/visibility.component';
+import { AddressComponent } from './control/user/address/address.component';
+import { OptionsComponent } from './social/timeline/options/options.component';
+import { TextPostComponent } from './social/timeline/text-post/text-post.component';
+import { ImagePostComponent } from './social/timeline/image-post/image-post.component';
+import { VideoPostComponent } from './social/timeline/video-post/video-post.component';
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -37,7 +44,14 @@ function appConfigFactory(service : AppStartupService) {
     TableComponent,
     LikesComponent,
     HumanizePipe,
-    LikesPopupComponent
+    LikesPopupComponent,
+    UserComponent,
+    VisibilityComponent,
+    AddressComponent,
+    OptionsComponent,
+    TextPostComponent,
+    ImagePostComponent,
+    VideoPostComponent
   ],
   imports: [
     BrowserModule,

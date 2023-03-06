@@ -4,9 +4,37 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 @Injectable({
   providedIn: 'root'
 })
-export class AppResolver implements Resolve<boolean> {
+export class AppResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    return fetch(route.data["url"])
-      .then(response => response.json())
+    let urls : any[] = route.data["urls"];
+    let regex = /\{(\w+)\}/g;
+    let processed : string[] = [];
+
+    for (const url of urls) {
+      let entries = Object.entries(route.params);
+      if (entries.length > 0) {
+        for (const [key, value] of entries) {
+          processed.push(url.value.replace(regex, (match : string, group : string) => {
+            let newVar = route.paramMap.get(group);
+            return newVar as string
+          }));
+        }
+      } else {
+        processed.push(url.value)
+      }
+    }
+
+    let promises = [];
+    for (const url of processed) {
+      promises.push(secureFetch(url)
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          }
+          throw new Error("")
+        }))
+    }
+
+    return Promise.all(promises);
   }
 }
