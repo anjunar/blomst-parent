@@ -12,6 +12,8 @@ export class VideoPostComponent {
   model! : any
   form! : MetaFormGroup
 
+  progress : number = 0;
+
   constructor(private service : AsMetaFormService, private window : AsDialogComponent) {}
 
   ngOnInit(): void {
@@ -19,10 +21,20 @@ export class VideoPostComponent {
   }
 
   onSubmit() {
-    secureFetch("service/home/timeline/post", "POST", this.form.getValue())
-      .then(response => {
-        this.window.close();
-      })
+    let request = new XMLHttpRequest();
+
+    request.open("POST", "service/home/timeline/post");
+    request.setRequestHeader("Content-Type", "application/json");
+
+    request.upload.addEventListener('progress', (event) => {
+      this.progress = Math.round((event.loaded / event.total) * 100);
+    })
+
+    request.addEventListener("loadend", () => {
+      this.window.close();
+    })
+
+    request.send(JSON.stringify(this.form.getValue()));
   }
 
 }

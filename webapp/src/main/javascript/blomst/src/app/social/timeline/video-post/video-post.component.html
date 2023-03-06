@@ -7,6 +7,10 @@
   </form>
 </div>
 <div footer>
-  <button type="button" (click)="onSubmit()">Okay</button>
+  <div style="display: flex">
+    <button type="button" (click)="onSubmit()">Okay</button>
+    <div style="flex: 1;"></div>
+    <div>{{progress}} Percent uploaded</div>
+  </div>
 </div>
 
