@@ -7,9 +7,9 @@ import {
 import {LikesComponent} from "../../shared/likes/likes.component";
 import {AppStartupService} from "../../app-startup.service";
 import {OptionsComponent} from "./options/options.component";
-import {TextPostComponent} from "./text-post/text-post.component";
-import {ImagePostComponent} from "./image-post/image-post.component";
-import {VideoPostComponent} from "./video-post/video-post.component";
+import {TextPostComponent} from "./post/text-post/text-post.component";
+import {ImagePostComponent} from "./post/image-post/image-post.component";
+import {VideoPostComponent} from "./post/video-post/video-post.component";
 
 @Component({
   selector: 'app-timeline',

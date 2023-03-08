@@ -6,7 +6,7 @@
   <div middle>{{name}}</div>
   <div right>
     <a style="cursor: pointer" (click)="onUserSettings($event)">
-      <img *ngIf="image" style="height: 32px; width: 32px;border-radius: 50%" [src]="image">
+      <img *ngIf="image" style="height: 32px; width: 32px;border-radius: 50%" [src]="'service/shared/media/' + image">
     </a>
   </div>
 </as-toolbar>

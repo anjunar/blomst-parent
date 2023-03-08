@@ -1,0 +1,7 @@
+<div content>
+  <as-infinity-scroll (items)="onLoad($event)">
+    <ng-template [typedTemplate]="typeToken" let-comment>
+      {{comment.text}}
+    </ng-template>
+  </as-infinity-scroll>
+</div>

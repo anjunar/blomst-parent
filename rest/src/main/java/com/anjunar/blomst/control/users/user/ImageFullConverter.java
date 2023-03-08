@@ -3,14 +3,14 @@ package com.anjunar.blomst.control.users.user;
 import com.anjunar.common.filedisk.Base64Resource;
 import com.anjunar.common.filedisk.FileDiskUtils;
 import com.anjunar.common.filedisk.Media;
-import com.anjunar.common.rest.api.Thumbnail;
 import com.anjunar.common.rest.api.MediaType;
+import com.anjunar.common.rest.api.Thumbnail;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
 import com.google.common.base.Strings;
 
 import java.util.Objects;
 
-public class ImageConverter implements MapperConverterType<Media, MediaType, Object> {
+public class ImageFullConverter implements MapperConverterType<Media, MediaType, Object> {
 
     @Override
     public MediaType factory(Media harddiskFile) {
@@ -21,12 +21,14 @@ public class ImageConverter implements MapperConverterType<Media, MediaType, Obj
         image.setId(harddiskFile.getId());
         image.setName(harddiskFile.getName());
         image.setLastModified(harddiskFile.getLastModified());
+        image.setData(FileDiskUtils.buildBase64(harddiskFile.getType(), harddiskFile.getSubType(), harddiskFile.getData()));
 
         if (Objects.nonNull(harddiskFile.getThumbnail())) {
             Thumbnail cropped = new Thumbnail();
             cropped.setId(harddiskFile.getThumbnail().getId());
             cropped.setName(harddiskFile.getThumbnail().getName());
             cropped.setLastModified(harddiskFile.getThumbnail().getLastModified());
+            cropped.setData(FileDiskUtils.buildBase64(harddiskFile.getThumbnail().getType(), harddiskFile.getThumbnail().getSubType(), harddiskFile.getThumbnail().getData()));
             image.setThumbnail(cropped);
         }
         return image;

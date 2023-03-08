@@ -1,7 +1,7 @@
 <div style="display: flex; justify-content: center">
   <div style="width: max(400px, 680px);margin-bottom: 16px; background-color: var(--main-dark2-color); padding: 8px">
     <div style="display: flex">
-      <img [src]="service.model.form.picture.data" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 8px">
+      <img [src]="'service/shared/media/' + service.model.form.picture.id" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 8px">
       <as-input-container style="flex: 1" [placeholder]="'What do you do, ' + service.model.form.nickName + '?'">
         <input type="text" ngModel>
       </as-input-container>
@@ -34,7 +34,7 @@
     <ng-template let-item>
       <div style="max-width: 680px; min-width : 400px; background-color: var(--main-dark2-color); padding: 10px; margin-bottom: 20px">
         <div style="display: flex; align-items: center; margin-bottom: 5px">
-          <img [src]="item.owner.picture.data" style="max-width: 48px; max-height: 48px; border-radius: 50%">
+          <img [src]="'service/shared/media/' + item.owner.picture.id" style="max-width: 48px; max-height: 48px; border-radius: 50%">
           <div style="display: flex; width: 100%">
             <div style="margin-left: 5px;">
               <div>{{item.owner.name}}</div>
@@ -47,9 +47,9 @@
           </div>
         </div>
         <div [innerHTML]="item.editor.html" style="margin-bottom: 5px"></div>
-        <img *ngIf="item.image" [src]="item.image.data" style="width: 100%">
+        <img *ngIf="item.image" [src]="'service/shared/media/' + item.image.id" style="width: 100%">
         <div *ngIf="item.video" style="text-align: center">
-          <video [src]="item.video.data" autoplay controls style="display: inline-block; height: 400px"></video>
+          <video [src]="'service/shared/media/' + item.video.id" controls style="display: inline-block; height: 400px"></video>
         </div>
 
         <div style="margin-top: 10px; margin-bottom: 10px">

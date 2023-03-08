@@ -19,12 +19,10 @@ public class ImageConverter implements MapperConverterType<Media, MediaType, Obj
             image.setId(harddiskFile.getThumbnail().getId());
             image.setName(harddiskFile.getThumbnail().getName());
             image.setLastModified(harddiskFile.getThumbnail().getLastModified());
-            image.setData(FileDiskUtils.buildBase64(harddiskFile.getThumbnail().getType(), harddiskFile.getThumbnail().getSubType(), harddiskFile.getThumbnail().getData()));
         } else {
             image.setId(harddiskFile.getId());
             image.setName(harddiskFile.getName());
             image.setLastModified(harddiskFile.getLastModified());
-            image.setData(FileDiskUtils.buildBase64(harddiskFile.getType(), harddiskFile.getSubType(), harddiskFile.getData()));
         }
         return image;
     }

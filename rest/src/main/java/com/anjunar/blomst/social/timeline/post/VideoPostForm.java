@@ -14,7 +14,7 @@ public class VideoPostForm extends AbstractPostForm {
     private final static Logger log = LoggerFactory.getLogger(VideoPostForm.class);
 
     @MapperConverter(ImageConverter.class)
-    private MediaType video = new MediaType();
+    private MediaType video;
 
     @Override
     public <E> E accept(AbstractPostFormVisitor<E> visitor) {

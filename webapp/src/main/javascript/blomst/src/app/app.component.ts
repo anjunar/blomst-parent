@@ -78,7 +78,7 @@ export class AppComponent extends AppMain implements AfterViewInit {
   }
 
   get image() {
-    return this.startUp.model.form.picture?.data;
+    return this.startUp.model.form.picture?.id;
   }
 
   get links() {

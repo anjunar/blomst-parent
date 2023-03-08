@@ -54,11 +54,11 @@ public class UserForm extends AbstractRestEntity {
     private String password;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(ImageFullConverter.class)
     private MediaType picture = new MediaType();
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Background")
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(ImageFullConverter.class)
     private MediaType background = new MediaType();
 
     @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
