@@ -1,13 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {AppView, Form} from "../../app.classes";
+import {AppView} from "../../app.classes";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AsMetaFormService, MetaFormGroup, WindowManagerService} from "angular2-simplicity";
-
-interface Register {
-  email: string,
-  password: string
-  confirm: string
-}
+import {Form, RegisterForm} from "../../rest.classes";
 
 @Component({
   selector: 'app-register',
@@ -17,7 +12,7 @@ interface Register {
 })
 export class RegisterComponent extends AppView {
 
-  model!: Form<Register>
+  model!: Form<RegisterForm>
   form!: MetaFormGroup
 
   constructor(

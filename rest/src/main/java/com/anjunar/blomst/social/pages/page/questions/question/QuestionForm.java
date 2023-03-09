@@ -34,10 +34,6 @@ public class QuestionForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
     private UserSelect owner;
 
-    @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Likes")
-    private final Set<UserSelect> likes = new HashSet<>();
-
     public PageForm getPage() {
         return page;
     }
@@ -68,10 +64,6 @@ public class QuestionForm extends AbstractLikeableRestEntity {
 
     public void setOwner(UserSelect owner) {
         this.owner = owner;
-    }
-
-    public Set<UserSelect> getLikes() {
-        return likes;
     }
 
 }

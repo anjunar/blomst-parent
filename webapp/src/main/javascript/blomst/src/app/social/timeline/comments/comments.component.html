@@ -1,7 +1,14 @@
-<div content>
-  <as-infinity-scroll (items)="onLoad($event)">
-    <ng-template [typedTemplate]="typeToken" let-comment>
-      {{comment.text}}
-    </ng-template>
-  </as-infinity-scroll>
+<div content style="height: fit-content">
+  <as-scroll-area>
+    <as-infinity-scroll (items)="onLoad($event)">
+      <ng-template [typedTemplate]="typeToken" let-comment>
+        <app-comment [model]="comment" [create]="create"></app-comment>
+      </ng-template>
+    </as-infinity-scroll>
+  </as-scroll-area>
+  <form [formGroup]="formGroup">
+    <fieldset formGroupName="form">
+      <textarea formControlName="text" (keyup)="onKeyUp($event)"></textarea>
+    </fieldset>
+  </form>
 </div>

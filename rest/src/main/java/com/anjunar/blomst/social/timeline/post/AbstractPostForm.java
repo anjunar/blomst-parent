@@ -1,5 +1,6 @@
 package com.anjunar.blomst.social.timeline.post;
 
+import com.anjunar.blomst.shared.users.user.IdentitySelect;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.validators.Dom;
@@ -28,7 +29,7 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Source", readOnly = true)
-    private UserSelect source;
+    private IdentitySelect source;
 
     public abstract <E> E accept(AbstractPostFormVisitor<E> visitor);
 
@@ -48,11 +49,11 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
         this.owner = owner;
     }
 
-    public UserSelect getSource() {
+    public IdentitySelect getSource() {
         return source;
     }
 
-    public void setSource(UserSelect source) {
+    public void setSource(IdentitySelect source) {
         this.source = source;
     }
 

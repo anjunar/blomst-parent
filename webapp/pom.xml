@@ -7,6 +7,20 @@
         <groupId>com.anjunar.blomst</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.anjunar.blomst</groupId>
+            <artifactId>rest</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.anjunar.blomst</groupId>
+            <artifactId>domain</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -16,6 +30,26 @@
                     <source>19</source>
                     <target>19</target>
                     <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>3.1.1185</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsonLibrary>jackson2</jsonLibrary>
+                    <classesFromAutomaticJaxrsApplication>true</classesFromAutomaticJaxrsApplication>
+                    <outputKind>module</outputKind>
+                    <outputFile>src/main/javascript/blomst/src/app/rest.classes.d.ts</outputFile>
                 </configuration>
             </plugin>
         </plugins>

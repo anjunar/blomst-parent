@@ -1,6 +1,5 @@
 package com.anjunar.blomst;
 
-import com.google.common.collect.Sets;
 import com.google.common.reflect.ClassPath;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.Path;
@@ -28,7 +27,7 @@ public class SimplicityApplication extends Application {
                             return String.class;
                         }
                     })
-                    .filter((clazz) -> clazz.isAnnotationPresent(Path.class) && ! clazz.isInterface())
+                    .filter((clazz) -> clazz.isAnnotationPresent(Path.class) && !clazz.isInterface())
                     .collect(Collectors.toSet());
         } catch (IOException e) {
             throw new RuntimeException(e);

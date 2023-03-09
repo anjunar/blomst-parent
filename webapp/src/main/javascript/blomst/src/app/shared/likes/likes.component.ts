@@ -1,11 +1,7 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {AsViewportComponent, WindowManagerService} from "angular2-simplicity";
 import {LikesPopupComponent} from "./likes-popup/likes-popup.component";
-
-interface Likeable {
-  id : string
-  likes : boolean
-}
+import {AbstractLikeableRestEntity} from "../../rest.classes";
 
 @Component({
   selector: 'app-likes',
@@ -15,7 +11,7 @@ interface Likeable {
 })
 export class LikesComponent implements OnInit {
 
-  @Input() model! : Likeable
+  @Input() model! : AbstractLikeableRestEntity
 
   size = 0;
 
@@ -29,8 +25,8 @@ export class LikesComponent implements OnInit {
     event.stopPropagation()
     let options = {
       dialog : true,
-      width : 320,
-      height : 200,
+      width : "320px",
+      height : "200px",
       header : "People who liked...",
     };
     let windowRef = this.windowManager.create(LikesPopupComponent, options);
@@ -42,7 +38,23 @@ export class LikesComponent implements OnInit {
     const url = new URL(window.location.origin + "/" + link);
     url.searchParams.append("index", "0")
     url.searchParams.append("limit", "0")
-    url.searchParams.append("post", this.model.id)
+
+    let model = this.model as any;
+
+    switch (model["@type"]) {
+      case "VideoPost" : {
+        url.searchParams.append("post", this.model.id)
+      } break;
+      case "TextPost" : {
+        url.searchParams.append("post", this.model.id)
+      } break;
+      case "ImagePost" : {
+        url.searchParams.append("post", this.model.id)
+      } break;
+      case "Comment" : {
+        url.searchParams.append("comment", this.model.id)
+      } break;
+    }
 
     return secureFetch(url.toString())
       .then(response => response.json())

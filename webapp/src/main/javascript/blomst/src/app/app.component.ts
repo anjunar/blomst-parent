@@ -94,12 +94,12 @@ export class AppComponent extends AppMain implements AfterViewInit {
 
     let options : WindowOptions = {
       header : "Setting",
-      top : 1,
-      right : 10,
+      top : "1px",
+      right : "10px",
       draggable : false,
       resizeable : false,
-      width : 300,
-      height : 200
+      width : "300px",
+      height : "200px"
     };
 
     let windowRef = this.windowManager.create(SettingsComponent, options);

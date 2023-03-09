@@ -27,6 +27,7 @@ import { ImagePostComponent } from './social/timeline/post/image-post/image-post
 import { VideoPostComponent } from './social/timeline/post/video-post/video-post.component';
 import { CommentsComponent } from './social/timeline/comments/comments.component';
 import { TypedTemplateDirective } from './typed-template.directive';
+import { CommentComponent } from './social/timeline/comments/comment/comment.component';
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -36,6 +37,7 @@ function appConfigFactory(service : AppStartupService) {
 
 @NgModule({
   declarations: [
+    TypedTemplateDirective,
     AppComponent,
     TimelineComponent,
     LoginComponent,
@@ -55,7 +57,7 @@ function appConfigFactory(service : AppStartupService) {
     ImagePostComponent,
     VideoPostComponent,
     CommentsComponent,
-    TypedTemplateDirective
+    CommentComponent
   ],
   imports: [
     BrowserModule,

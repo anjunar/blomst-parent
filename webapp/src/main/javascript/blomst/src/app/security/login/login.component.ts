@@ -1,14 +1,9 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {AppView, Form} from "../../app.classes";
-import {FormGroup} from "@angular/forms";
+import {AppView} from "../../app.classes";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AsMetaFormService, MetaFormGroup, updateValues, WindowManagerService} from "angular2-simplicity";
 import {AppStartupService} from "../../app-startup.service";
-
-interface Login {
-  email : string,
-  password : string
-}
+import {Form, LoginForm} from "../../rest.classes";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +13,7 @@ interface Login {
 })
 export class LoginComponent extends AppView {
 
-  model! : Form<Login>
+  model! : Form<LoginForm>
   form! : MetaFormGroup
 
   constructor(

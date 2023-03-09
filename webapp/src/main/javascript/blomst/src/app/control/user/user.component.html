@@ -27,25 +27,25 @@
                 <as-input-container placeholder="Nick Name">
                   <input type="text" formControlName="nickName">
                 </as-input-container>
-                <div style="display: flex; width: 100%;" *ngIf="properties.firstName">
+                <div style="display: flex; width: 100%;" *ngIf="properties['firstName']">
                   <as-input-container style="flex: 1" placeholder="First Name">
                     <input type="text" formControlName="firstName">
                   </as-input-container>
                   <button class="material-icons" (click)="onVisibilityColumnClick($event, 'firstName', user.form)">security</button>
                 </div>
-                <div style="display: flex; width: 100%;" *ngIf="properties.lastName">
+                <div style="display: flex; width: 100%;" *ngIf="properties['lastName']">
                   <as-input-container style="flex: 1" placeholder="Last Name">
                     <input type="text" formControlName="lastName">
                   </as-input-container>
                   <button class="material-icons" (click)="onVisibilityColumnClick($event, 'lastName', user.form)">security</button>
                 </div>
-                <div style="display: flex; width: 100%;" *ngIf="properties.birthDate">
+                <div style="display: flex; width: 100%;" *ngIf="properties['birthDate']">
                   <as-input-container style="flex: 1" placeholder="Birthdate">
                     <input type="date" formControlName="birthDate">
                   </as-input-container>
                   <button class="material-icons" (click)="onVisibilityColumnClick($event, 'birthDate', user.form)">security</button>
                 </div>
-                <div *ngIf="properties.roles">
+                <div *ngIf="properties['roles']">
                   <as-input-container placeholder="Roles">
                     <as-lazy-select (items)="onRolesLoad($event)" formControlName="roles" [multiSelect]="true">
                       <ng-template let-role>
@@ -54,7 +54,7 @@
                     </as-lazy-select>
                   </as-input-container>
                 </div>
-                <div style="display: flex; width: 100%; align-items: flex-start" *ngIf="properties.emails">
+                <div style="display: flex; width: 100%; align-items: flex-start" *ngIf="properties['emails']">
                   <div formArrayName="emails" style="flex: 1;">
                     <div *ngFor="let email of emails.controls" [formGroup]="$any(email)" style="display: flex">
                       <as-input-container style="flex: 1" placeholder="Email">
@@ -63,7 +63,7 @@
                       <button type="button" class="material-icons" (click)="removeEmail(email)">delete</button>
                     </div>
                     <div style="display: flex; align-items: center">
-                      <button type="button" class="material-icons" (click)="addEmail(properties.emails)">add</button>
+                      <button type="button" class="material-icons" (click)="addEmail(properties['emails'])">add</button>
                       <div style="font-size: small;">Add Email</div>
                     </div>
                   </div>
@@ -72,7 +72,7 @@
               </div>
               <div style="display: flex;">
                 <div style="flex: 1;"></div>
-                <button *ngIf="user.$schema.links.update" type="submit" class="normal">Submit</button>
+                <button *ngIf="user.$schema.links['update']" type="submit" class="normal">Submit</button>
               </div>
 
               <as-lazy-list (items)="onAddressesLoad($event)" #addresses>

@@ -7,10 +7,14 @@ import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
+@JsonTypeName("Comment")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class CommentForm extends AbstractLikeableRestEntity {
 
     @Size(max = 1000)

@@ -2,11 +2,6 @@ import {VisibilityComponent} from "./shared/visibility/visibility.component";
 import {WindowManagerService} from "angular2-simplicity";
 import {ActivatedRoute} from "@angular/router";
 
-export interface Form<E> {
-  $schema : any
-  form : E
-}
-
 export class AppView {
 
   constructor(protected route: ActivatedRoute, protected windowManager: WindowManagerService) {
@@ -30,7 +25,7 @@ export class AppView {
     secureFetch(url)
       .then(response => response.json())
       .then(response => {
-        let windowRef = this.windowManager.create(VisibilityComponent, {header: "Visibility", width: 300});
+        let windowRef = this.windowManager.create(VisibilityComponent, {header: "Visibility", width: "300px"});
         windowRef.instance.property = property;
         windowRef.instance.clazz = model["@type"];
         windowRef.instance.id = model.id;
@@ -46,7 +41,7 @@ export class AppView {
     secureFetch(url)
       .then(response => response.json())
       .then(response => {
-        let windowRef = this.windowManager.create(VisibilityComponent, {header: "Visibility", width: 300});
+        let windowRef = this.windowManager.create(VisibilityComponent, {header: "Visibility", width: "300px"});
         windowRef.instance.clazz = model["@type"];
         windowRef.instance.id = model.id;
         windowRef.instance.model = response;
