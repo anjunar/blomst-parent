@@ -99,7 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _navigator_app_navigator_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navigator/app-navigator.service */ 1341);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 124);
-/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular2-simplicity */ 9533);
+/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ng2-simplicity */ 9533);
 
 
 
@@ -232,7 +232,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/platform-browser */ 4497);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app-routing.module */ 158);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ 5041);
-/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! angular2-simplicity */ 9533);
+/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ng2-simplicity */ 9533);
 /* harmony import */ var _navigator_app_navigator_form_app_navigator_form_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./navigator/app-navigator-form/app-navigator-form.component */ 7807);
 /* harmony import */ var _navigator_app_navigator_table_app_navigator_table_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./navigator/app-navigator-table/app-navigator-table.component */ 3395);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 124);
@@ -286,7 +286,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _app_navigator_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-navigator.service */ 1341);
-/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-simplicity */ 9533);
+/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ng2-simplicity */ 9533);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ 2508);
 
 
@@ -415,7 +415,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _app_navigator_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-navigator.service */ 1341);
-/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-simplicity */ 9533);
+/* harmony import */ var angular2_simplicity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ng2-simplicity */ 9533);
 
 
 

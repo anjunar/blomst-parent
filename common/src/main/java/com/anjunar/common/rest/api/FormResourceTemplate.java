@@ -4,11 +4,11 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import java.util.UUID;
 
-public interface FormResourceTemplate<F extends AbstractSchemaEntity> {
+public interface FormResourceTemplate<F extends AbstractRestEntity> {
 
     @Produces("application/json")
     @GET
-    F read(@QueryParam("id") UUID id);
+    Form<? extends F> read(@QueryParam("id") UUID id);
 
     @Consumes("application/json")
     @Produces("application/json")

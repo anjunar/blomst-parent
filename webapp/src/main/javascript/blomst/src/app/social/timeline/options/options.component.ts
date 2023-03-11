@@ -1,5 +1,5 @@
 import {Component, HostListener, ViewEncapsulation} from '@angular/core';
-import {AsInfiniteScrollComponent, AsWindowComponent} from "angular2-simplicity";
+import {AsInfiniteScrollComponent, AsWindowComponent} from "ng2-simplicity";
 
 @Component({
   selector: 'app-options',

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, HostListener, Output, ViewEncapsulation} from '@angular/core';
-import {AsWindowComponent, generateURL, SelectQuery} from "angular2-simplicity";
+import {AsWindowComponent, generateURL, SelectQuery} from "ng2-simplicity";
 import {AppStartupService} from "../../../app-startup.service";
 
 @Component({

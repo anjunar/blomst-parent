@@ -37,7 +37,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("social/sites/site/connections/connection")
 @ApplicationScoped
-public class SiteConnectionResource implements FormResourceTemplate<Form<SiteConnectionForm>> {
+public class SiteConnectionResource implements FormResourceTemplate<SiteConnectionForm> {
 
     private final EntityManager entityManager;
 
@@ -72,7 +72,7 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
 
         resource.setFrom(entityMapper.map(identityManager.getUser(), UserSelect.class));
 
-        linkTo(methodOn(SiteConnectionResource.class).save(new Form<>()))
+        linkTo(methodOn(SiteConnectionResource.class).save(new SiteConnectionForm()))
                 .build(form::addLink);
 
         JsonObject to = form.find("to", JsonObject.class);
@@ -95,7 +95,7 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
         SiteConnection entity = entityManager.find(SiteConnection.class, id);
         Form<SiteConnectionForm> form = entityMapper.map(entity, new Form<>() {});
 
-        linkTo(methodOn(SiteConnectionResource.class).update(id, new Form<>()))
+        linkTo(methodOn(SiteConnectionResource.class).update(id, new SiteConnectionForm()))
                 .build(form::addLink);
 
         linkTo(methodOn(SiteConnectionResource.class).delete(id))
@@ -107,7 +107,7 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Site Connection")
     @Override
-    public ResponseOk save(Form<SiteConnectionForm> form) {
+    public ResponseOk save(SiteConnectionForm form) {
 
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
         entity.setFrom(identityManager.getUser());
@@ -126,7 +126,7 @@ public class SiteConnectionResource implements FormResourceTemplate<Form<SiteCon
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site Connection")
     @Override
-    public ResponseOk update(UUID id, Form<SiteConnectionForm> form) {
+    public ResponseOk update(UUID id, SiteConnectionForm form) {
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
         entity.setFrom(identityManager.getUser());
 

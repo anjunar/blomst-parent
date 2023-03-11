@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="main" transaction-type="JTA">
+<!--        <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>-->
         <jta-data-source>java:jboss/datasources/blomst</jta-data-source>
 
         <class>com.anjunar.common.ddd.AbstractEntity</class>
@@ -32,7 +33,6 @@
         <class>com.anjunar.blomst.social.timeline.VideoPost</class>
         <class>com.anjunar.blomst.social.timeline.ImagePost</class>
         <class>com.anjunar.blomst.social.timeline.TextPost</class>
-        <class>com.anjunar.blomst.social.timeline.SystemPost</class>
 
         <class>com.anjunar.common.security.UserConnection</class>
         <class>com.anjunar.common.security.Category</class>

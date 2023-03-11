@@ -56,15 +56,11 @@ public class ResourceRestMapper {
         this(null, null, null);
     }
 
-    public <S, D> D map(Form<S> source, Class<D> destinationClass) {
-        return map(source.getForm(), destinationClass, (JsonObject) source.getSchema().getProperties().get("form"), false);
+    public <S, D> D map(S source, Class<D> destinationClass) {
+        return map(source, destinationClass, false);
     }
 
-    public <S, D> D map(SecuredForm<S> source, Class<D> destinationClass) {
-        return map(source.getForm(), destinationClass, (JsonObject) source.getSchema().getProperties().get("form"), false);
-    }
-
-    public <S, D> D map(S source, Class<D> destinationClass, JsonObject jsonNode, boolean loadOnly) {
+    public <S, D> D map(S source, Class<D> destinationClass, boolean loadOnly) {
         D destination;
         if (source instanceof AbstractRestEntity restEntity) {
             UUID id = restEntity.getId();
@@ -102,15 +98,13 @@ public class ResourceRestMapper {
                                     (Collection<Object>) sourcePropertyInstance,
                                     sourceProperty,
                                     (Collection<Object>) destinationPropertyInstance,
-                                    destinationProperty,
-                                    jsonNode
+                                    destinationProperty
                             );
                             case Map<?, ?> map -> processMap(
                                     (Map<Object, Object>) sourcePropertyInstance,
                                     sourceProperty,
                                     (Map<Object, Object>) destinationPropertyInstance,
-                                    destinationProperty,
-                                    jsonNode
+                                    destinationProperty
                             );
                             default -> processBean(
                                     source,
@@ -118,8 +112,7 @@ public class ResourceRestMapper {
                                     sourceProperty,
                                     destinationPropertyInstance,
                                     destinationProperty,
-                                    destination,
-                                    jsonNode
+                                    destination
                             );
                         }
                     }
@@ -144,8 +137,7 @@ public class ResourceRestMapper {
                                     BeanProperty<S, ?> sourceProperty,
                                     Object destinationPropertyInstance,
                                     BeanProperty<D, Object> destinationProperty,
-                                    D destination,
-                                    JsonObject jsonObject) {
+                                    D destination) {
         Class<?> sourcePropertyType = sourceProperty.getType().getRawType();
         Class<?> destinationPropertyType = destinationProperty.getType().getRawType();
 
@@ -162,14 +154,8 @@ public class ResourceRestMapper {
                     Object entity = entityManager.find(destinationPropertyType, uuid);
                     destinationProperty.accept(destination, entity);
                 } else {
-                    JsonNode jsonNode = jsonObject.getProperties().get(sourceProperty.getKey());
-                    if (jsonNode instanceof JsonObject jsonObjectX) {
-                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, jsonObjectX, mapperLoadOnly);
-                        destinationProperty.accept(destination, restEntity);
-                    } else {
-                        Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, new JsonObject(), mapperLoadOnly);
-                        destinationProperty.accept(destination, restEntity);
-                    }
+                    Object restEntity = map(sourcePropertyInstance, (Class<?>) destinationPropertyType, mapperLoadOnly);
+                    destinationProperty.accept(destination, restEntity);
                 }
             }
         } else {
@@ -186,8 +172,7 @@ public class ResourceRestMapper {
     private <S, D> void processMap(Map<Object, Object> sourcePropertyInstance,
                                    BeanProperty<S, ?> sourceProperty,
                                    Map<Object, Object> destinationPropertyInstance,
-                                   BeanProperty<D, Object> destinationProperty,
-                                   JsonObject jsonObject) {
+                                   BeanProperty<D, Object> destinationProperty) {
         Class<?> sourceMapKeyType = sourceProperty
                 .getType()
                 .resolveType(Map.class.getTypeParameters()[0])
@@ -215,14 +200,8 @@ public class ResourceRestMapper {
             if (sourceMapKeyType.equals(destinationMapKeyType)) {
                 destinationPropertyInstance.put(entry.getKey(), entry.getValue());
             } else {
-                JsonArray jsonNode = (JsonArray) jsonObject.getProperties().get(sourceProperty.getKey());
-                Object keyEntity = map(entry.getKey(), (Class<?>) destinationMapKeyType, (JsonObject) jsonNode.getItems(), mapperLoadOnlyKey);
-                if (sourceMapValueType.equals(destinationMapValueType)) {
-                    destinationPropertyInstance.put(keyEntity, entry.getValue());
-                } else {
-                    Object valueEntity = map(entry.getValue(), (Class<?>) destinationMapValueType, (JsonObject) jsonNode.getItems(), mapperLoadOnlyValue);
-                    destinationPropertyInstance.put(keyEntity, valueEntity);
-                }
+                Object valueEntity = map(entry.getValue(), (Class<?>) destinationMapValueType, mapperLoadOnlyValue);
+                destinationPropertyInstance.put(entry.getKey(), valueEntity);
             }
         }
     }
@@ -230,8 +209,7 @@ public class ResourceRestMapper {
     private <S, D> void processCollection(Collection<Object> sourcePropertyInstance,
                                           BeanProperty<S, ?> sourceProperty,
                                           Collection<Object> destinationPropertyInstance,
-                                          BeanProperty<D, Object> destinationProperty,
-                                          JsonObject jsonObject) {
+                                          BeanProperty<D, Object> destinationProperty) {
 
         Class<?> sourceCollectionType = sourceProperty
                 .getType()
@@ -251,8 +229,7 @@ public class ResourceRestMapper {
             if (sourceCollectionType.equals(destinationCollectionType)) {
                 destinationPropertyInstance.add(element);
             } else {
-                JsonArray jsonNode = (JsonArray) jsonObject.getProperties().get(sourceProperty.getKey());
-                Object entity = map(element, (Class<?>) destinationCollectionType, (JsonObject) jsonNode.getItems(), mapperLoadOnly);
+                Object entity = map(element, (Class<?>) destinationCollectionType, mapperLoadOnly);
                 destinationPropertyInstance.add(entity);
             }
         }

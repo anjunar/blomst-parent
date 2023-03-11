@@ -30,7 +30,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("control/users/user/connections/connection/categories/category")
 @ApplicationScoped
-public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>> {
+public class CategoryResource implements FormResourceTemplate<CategoryForm> {
 
     private final EntityManager entityManager;
 
@@ -60,7 +60,7 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
         CategoryForm resource = new CategoryForm();
         Form<CategoryForm> form = new Form<>(resource) {};
 
-        linkTo(methodOn(CategoryResource.class).save(new Form<>()))
+        linkTo(methodOn(CategoryResource.class).save(new CategoryForm()))
                 .build(form::addLink);
 
         JsonObject owner = form.find("owner", JsonObject.class);
@@ -79,7 +79,7 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
 
         Form<CategoryForm> form = entityMapper.map(entity, new Form<>(){});
 
-        linkTo(methodOn(CategoryResource.class).update(id, new Form<>()))
+        linkTo(methodOn(CategoryResource.class).update(id, new CategoryForm()))
                 .build(form::addLink);
         linkTo(methodOn(CategoryResource.class).delete(id))
                 .build(form::addLink);
@@ -94,7 +94,7 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Category")
-    public ResponseOk save(Form<CategoryForm> form) {
+    public ResponseOk save(CategoryForm form) {
 
         Category entity = restMapper.map(form, Category.class);
         entity.setOwner(identityManager.getUser());
@@ -114,7 +114,7 @@ public class CategoryResource implements FormResourceTemplate<Form<CategoryForm>
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Category")
-    public ResponseOk update(UUID id, Form<CategoryForm> form) {
+    public ResponseOk update(UUID id, CategoryForm form) {
 
         Category entity = restMapper.map(form, Category.class);
         entity.setOwner(identityManager.getUser());

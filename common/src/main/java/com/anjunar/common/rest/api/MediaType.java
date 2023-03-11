@@ -18,6 +18,8 @@ public class MediaType extends AbstractRestEntity {
     @JsonInclude
     private String data = "";
 
+    private String url;
+
     private Thumbnail thumbnail = new Thumbnail();
 
     public String getName() {
@@ -42,6 +44,14 @@ public class MediaType extends AbstractRestEntity {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Thumbnail getThumbnail() {

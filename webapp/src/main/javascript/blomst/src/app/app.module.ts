@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {Angular2SimplicityModule} from "angular2-simplicity";
+import {Angular2SimplicityModule} from "ng2-simplicity";
 import {RouteReuseStrategy} from "@angular/router";
 import {AppRoutingStrategyService} from "./app-routing-strategy.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";

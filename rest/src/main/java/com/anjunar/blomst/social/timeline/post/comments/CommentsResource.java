@@ -13,6 +13,7 @@ import com.anjunar.blomst.social.timeline.Comment;
 
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.schema.schema.JsonArray;
+import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.rest.schema.schema.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -68,11 +69,11 @@ public class CommentsResource implements ListResourceTemplate<CommentForm, Comme
         linkTo(methodOn(CommentResource.class).create(search.getPost(), search.getParent()))
                 .build(table::addLink);
 
-        JsonObject post = table.find("post", JsonObject.class);
+        JsonNode post = table.find("post", JsonNode.class);
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .build(post::addLink);
 
-        JsonObject parent = table.find("parent", JsonObject.class);
+        JsonNode parent = table.find("parent", JsonNode.class);
         linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
                 .build(parent::addLink);
 

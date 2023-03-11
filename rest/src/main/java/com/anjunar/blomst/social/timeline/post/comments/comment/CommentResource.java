@@ -5,9 +5,8 @@ import com.anjunar.blomst.shared.likes.LikesSearch;
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.timeline.AbstractPost;
 import com.anjunar.blomst.social.timeline.Comment;
-import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
+import com.anjunar.blomst.social.timeline.post.AbstractPostReference;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsSearch;
 import com.anjunar.common.rest.MethodPredicate;
@@ -38,7 +37,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("/home/timeline/post/comments/comment")
-public class CommentResource implements FormResourceTemplate<Form<CommentForm>> {
+public class CommentResource implements FormResourceTemplate<CommentForm> {
 
     private final EntityManager entityManager;
 
@@ -71,18 +70,19 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
 
         User user = identityManager.getUser();
         Form<CommentForm> form = new Form<>(resource) {};
-        form.dirty("post", "parent");
 
-        AbstractPost post = entityManager.find(AbstractPost.class, postId);
-        resource.setPost(entityMapper.map(post, AbstractPostForm.class));
+        AbstractPostReference post = new AbstractPostReference();
+        post.setId(postId);
+        resource.setPost(post);
         resource.setOwner(entityMapper.map(user, UserSelect.class));
 
         if (Objects.nonNull(commentId)) {
-            Comment parent = entityManager.find(Comment.class, commentId);
-            resource.setParent(entityMapper.map(parent, CommentForm.class));
+            CommentReference commentReference = new CommentReference();
+            commentReference.setId(commentId);
+            resource.setParent(commentReference);
         }
 
-        linkTo(methodOn(CommentResource.class).save(new Form<>()))
+        linkTo(methodOn(CommentResource.class).save(new CommentForm()))
                 .build(form::addLink);
 
         return form;
@@ -97,7 +97,7 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
 
         Form<CommentForm> resource = entityMapper.map(comment, new Form<>() {});
 
-        linkTo(methodOn(CommentResource.class).update(comment.getId(), new Form<>()))
+        linkTo(methodOn(CommentResource.class).update(comment.getId(), new CommentForm()))
                 .build(resource::addLink);
         linkTo(methodOn(CommentResource.class).delete(comment.getId()))
                 .build(resource::addLink);
@@ -130,7 +130,7 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Comment")
-    public ResponseOk save(Form<CommentForm> resource) {
+    public ResponseOk save(CommentForm resource) {
 
         Comment comment = restMapper.map(resource, Comment.class);
         comment.setOwner(identityManager.getUser());
@@ -156,7 +156,7 @@ public class CommentResource implements FormResourceTemplate<Form<CommentForm>> 
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerCommentIdentity.class)
     @LinkDescription("Update Comment")
-    public ResponseOk update(UUID id, Form<CommentForm> resource) {
+    public ResponseOk update(UUID id, CommentForm resource) {
         Comment rawComment = entityManager.find(Comment.class, id);
         Set<User> rawLikes = Sets.newHashSet(rawComment.getLikes());
 

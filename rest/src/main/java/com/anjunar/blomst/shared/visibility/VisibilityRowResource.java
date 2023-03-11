@@ -92,7 +92,7 @@ public class VisibilityRowResource {
         Set<Category> categories = new HashSet<>();
 
         for (CategoryForm form : forms) {
-            categories.add(restMapper.map(form, Category.class, null, false));
+            categories.add(restMapper.map(form, Category.class));
         }
 
         columnRight.getCategories().clear();

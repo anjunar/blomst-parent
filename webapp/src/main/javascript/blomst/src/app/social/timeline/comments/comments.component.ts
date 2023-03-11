@@ -5,7 +5,7 @@ import {
   generateURL,
   InfinityQuery,
   MetaFormGroup
-} from "angular2-simplicity";
+} from "ng2-simplicity";
 import {CommentForm, Form} from "../../../rest.classes";
 
 @Component({
@@ -25,12 +25,13 @@ export class CommentsComponent implements OnInit {
 
   typeToken!: { $implicit: CommentForm };
 
-  constructor(private service : AsMetaFormService) {
-  }
+  constructor(private service : AsMetaFormService) {}
 
   ngOnInit(): void {
+/*
     this.formGroup = this.service.create(this.create.$schema.properties, this.create)
     this.create = JSON.parse(JSON.stringify(this.create));
+*/
   }
 
   onLoad(event: { query: InfinityQuery, callback: (rows: any) => void }) : void {

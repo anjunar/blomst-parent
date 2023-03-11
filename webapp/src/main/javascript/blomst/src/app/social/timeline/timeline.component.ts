@@ -3,7 +3,7 @@ import {
   AsInfiniteScrollComponent,
   InfinityQuery, Window,
   WindowManagerService
-} from "angular2-simplicity";
+} from "ng2-simplicity";
 import {LikesComponent} from "../../shared/likes/likes.component";
 import {AppStartupService} from "../../app-startup.service";
 import {OptionsComponent} from "./options/options.component";
@@ -11,7 +11,12 @@ import {TextPostComponent} from "./post/text-post/text-post.component";
 import {ImagePostComponent} from "./post/image-post/image-post.component";
 import {VideoPostComponent} from "./post/video-post/video-post.component";
 import {CommentsComponent} from "./comments/comments.component";
-import {AbstractPostForm} from "../../rest.classes";
+import {AbstractPostForm, AbstractPostFormUnion, MediaType} from "../../rest.classes";
+
+interface Post extends AbstractPostForm {
+  image: MediaType;
+  video: MediaType;
+}
 
 @Component({
   selector: 'app-timeline',
@@ -24,9 +29,11 @@ export class TimelineComponent {
   @Input() owner!: string
 
   @ViewChild(LikesComponent) likes!: LikesComponent
-  @ViewChild(AsInfiniteScrollComponent) infinite! : AsInfiniteScrollComponent
+  @ViewChild(AsInfiniteScrollComponent) infinite!: AsInfiniteScrollComponent
 
-  constructor(public service: AppStartupService, private windowManager: WindowManagerService, private elementRef : ElementRef) {
+  typeToken!: { $implicit: Post };
+
+  constructor(public service: AppStartupService, private windowManager: WindowManagerService, private elementRef: ElementRef) {
     this.owner = service.model.form.id;
   }
 
@@ -47,7 +54,7 @@ export class TimelineComponent {
       })
   }
 
-  onLike(post: AbstractPostForm) {
+  onLike(post: AbstractPostFormUnion) {
     this.likes.model.likes = !this.likes.model.likes
 
     let method = "POST";
@@ -71,7 +78,7 @@ export class TimelineComponent {
     this.onPostClick("text", TextPostComponent);
   }
 
-  onCommentClick(value : AbstractPostForm) {
+  onCommentClick(value: AbstractPostFormUnion) {
 
     let clientRect = this.elementRef.nativeElement.getBoundingClientRect();
 
@@ -80,15 +87,15 @@ export class TimelineComponent {
       .then(response => {
 
         let options = {
-          header : "Comments",
-          dialog : true,
-          width : "100%",
-          minWidth : "380px",
-          maxWidth : "640px",
-          centerFn : (window : Window) => {
+          header: "Comments",
+          dialog: true,
+          width: "100%",
+          minWidth: "380px",
+          maxWidth: "640px",
+          centerFn: (window: Window) => {
             return {
-              top : `100px`,
-              left : `calc(50% - ${window.element.offsetWidth / 2}px + ${clientRect.left / 2}px)`
+              top: `100px`,
+              left: `calc(50% - ${window.element.offsetWidth / 2}px + ${clientRect.left / 2}px)`
             }
           }
         };
@@ -99,11 +106,11 @@ export class TimelineComponent {
       })
   }
 
-  private onPostClick(value: string, component : any) {
+  private onPostClick(value: string, component: any) {
     secureFetch(`service/home/timeline/post/create?type=${value}&source=${this.owner}`)
       .then(response => response.json())
       .then(response => {
-        let windowRef = <any> this.windowManager.create(component, {
+        let windowRef = <any>this.windowManager.create(component, {
           header: "Post",
           dialog: true,
           width: "400px"
@@ -112,13 +119,13 @@ export class TimelineComponent {
       })
   }
 
-  onOptionsClick(event : MouseEvent, id : string) {
+  onOptionsClick(event: MouseEvent, id: string) {
     event.stopPropagation();
     let windowRef = this.windowManager.create(OptionsComponent, {
-      header : "Options",
-      width : "100px",
-      top : event.clientY + "px",
-      left : event.clientX - 100 + "px"
+      header: "Options",
+      width: "100px",
+      top: event.clientY + "px",
+      left: event.clientX - 100 + "px"
     });
 
     windowRef.instance.infinite = this.infinite

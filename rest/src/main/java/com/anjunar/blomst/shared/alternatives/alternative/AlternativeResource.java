@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @ApplicationScoped
 @Path("social/sites/site/alternatives/alternative")
-public class AlternativeResource implements FormResourceTemplate<Form<AlternativeForm>> {
+public class AlternativeResource implements FormResourceTemplate<AlternativeForm> {
 
     private final EntityManager entityManager;
 
@@ -50,11 +50,11 @@ public class AlternativeResource implements FormResourceTemplate<Form<Alternativ
     }
 
     @Override
-    public ResponseOk save(Form<AlternativeForm> form) {
+    public ResponseOk save(AlternativeForm form) {
 
         Alternative entity = restMapper.map(form, Alternative.class);
-        entity.setValue(form.getForm().getValue());
-        entity.setProperty(form.getForm().getProperty());
+        entity.setValue(form.getValue());
+        entity.setProperty(form.getProperty());
         entity.setEntity(Site.class.getSimpleName());
         entity.setOwner(identityStore.getUser());
 
@@ -64,12 +64,12 @@ public class AlternativeResource implements FormResourceTemplate<Form<Alternativ
     }
 
     @Override
-    public ResponseOk update(UUID id, Form<AlternativeForm> form) {
+    public ResponseOk update(UUID id, AlternativeForm form) {
 
         Alternative entity = restMapper.map(form, Alternative.class);
 
-        entity.setValue(form.getForm().getValue());
-        entity.setProperty(form.getForm().getProperty());
+        entity.setValue(form.getValue());
+        entity.setProperty(form.getProperty());
         entity.setEntity(Site.class.getSimpleName());
         entity.setOwner(identityStore.getUser());
 

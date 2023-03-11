@@ -1,5 +1,5 @@
 import {Component, HostListener, ViewEncapsulation} from '@angular/core';
-import {AsWindowComponent, generateURL, SelectQuery} from "angular2-simplicity";
+import {AsWindowComponent, generateURL, SelectQuery} from "ng2-simplicity";
 
 @Component({
   selector: 'app-visibility',

@@ -1,12 +1,6 @@
 {{header}}
 <as-meta-form [model]="model" (submit)="onSubmit($event)">
-  <ng-template let-node>
-    <as-input-container placeholder="Visibility">
-      <as-lazy-select [(ngModel)]="$any(node).value.visibility" (items)="loader($event)" [multiSelect]="true">
-        <ng-template let-item>
-          {{item.name}}
-        </ng-template>
-      </as-lazy-select>
-    </as-input-container>
+  <ng-template let-node let-model="model">
+    <button type="button" class="material-icons" (click)="onVisibilityColumnClick($event, $any(node).key, model)">security</button>
   </ng-template>
 </as-meta-form>

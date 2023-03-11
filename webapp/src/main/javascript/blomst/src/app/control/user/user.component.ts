@@ -9,7 +9,7 @@ import {
   MetaFormGroup,
   SelectQuery,
   WindowManagerService
-} from "angular2-simplicity";
+} from "ng2-simplicity";
 import {FormArray, FormGroup} from "@angular/forms";
 import {AddressComponent} from "./address/address.component";
 import * as mapbox from "mapbox-gl"

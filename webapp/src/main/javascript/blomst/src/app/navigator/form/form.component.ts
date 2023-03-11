@@ -1,7 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
-import {Link, SelectQuery} from "angular2-simplicity";
+import {Link, SelectQuery, WindowManagerService} from "ng2-simplicity";
+import {VisibilityComponent} from "../../shared/visibility/visibility.component";
 
 @Component({
   selector: 'app-form',
@@ -15,7 +16,7 @@ export class FormComponent {
 
   header! : string
 
-  constructor(private router : Router, private route : ActivatedRoute, private service : AppNavigatorService) {
+  constructor(private router : Router, private route : ActivatedRoute, private service : AppNavigatorService, private windowManager : WindowManagerService) {
     let data :any = route.data;
     this.model = data["value"].model
     service.links = Object
@@ -31,22 +32,25 @@ export class FormComponent {
     })
   }
 
-  loader(event : {query : SelectQuery, callback : (rows : any[], size: number) => void}) : void {
-    let link = "service/control/users/user/connections/connection/categories";
-    const url = new URL(window.location.origin + "/" + link);
-    url.searchParams.append("index", event.query.index + "")
-    url.searchParams.append("limit", event.query.limit + "")
+  onVisibilityColumnClick(event: Event, property: string, model : any) {
+    event.stopPropagation();
 
-    secureFetch(url.toString())
+    let url = `service/shared/visibility/column?property=${property}&class=${model["@type"]}&id=${model.id}`;
+
+    secureFetch(url)
       .then(response => response.json())
       .then(response => {
-        event.callback(response.rows, response.size)
+        let windowRef = this.windowManager.create(VisibilityComponent, {header: "Visibility", width: "300px"});
+        windowRef.instance.property = property;
+        windowRef.instance.clazz = model["@type"];
+        windowRef.instance.id = model.id;
+        windowRef.instance.model = response;
       })
   }
 
   onSubmit(event : {link : {key : string, value : Link}, model : any}) {
     let method = event.link.value.method;
-    secureFetch(event.link.value.url, method, event.model)
+    secureFetch(event.link.value.url, method, event.model.form)
       .then((response) => response.json())
       .then((response) => {
         if (response.$schema.links.redirect) {

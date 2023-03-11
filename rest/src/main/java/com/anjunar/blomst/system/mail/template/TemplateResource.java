@@ -28,7 +28,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @Path("system/mail/templates/template")
 @ApplicationScoped
-public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>> {
+public class TemplateResource implements FormResourceTemplate<TemplateForm> {
 
     private final EntityManager entityManager;
 
@@ -62,7 +62,7 @@ public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>
         resource.setContent(new Editor());
         Form<TemplateForm> form = new Form<>(resource) {};
 
-        linkTo(methodOn(TemplateResource.class).save(new Form<>()))
+        linkTo(methodOn(TemplateResource.class).save(new TemplateForm()))
                 .build(form::addLink);
         JsonObject language = form.find("language", JsonObject.class);
         linkTo(methodOn(LanguagesResource.class).list(new LanguagesSearch()))
@@ -81,7 +81,7 @@ public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>
 
         Form<TemplateForm> resource = entityMapper.map(template, new Form<>() {});
 
-        linkTo(methodOn(TemplateResource.class).update(template.getId(), new Form<>()))
+        linkTo(methodOn(TemplateResource.class).update(template.getId(), new TemplateForm()))
                 .build(resource::addLink);
         linkTo(methodOn(TemplateResource.class).delete(template.getId()))
                 .build(resource::addLink);
@@ -95,7 +95,7 @@ public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Template")
-    public ResponseOk save(Form<TemplateForm> form) {
+    public ResponseOk save(TemplateForm form) {
 
         Template template = restMapper.map(form, Template.class);
 
@@ -113,7 +113,7 @@ public class TemplateResource implements FormResourceTemplate<Form<TemplateForm>
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Template")
-    public ResponseOk update(UUID id, Form<TemplateForm> form) {
+    public ResponseOk update(UUID id, TemplateForm form) {
 
         restMapper.map(form, Template.class);
 

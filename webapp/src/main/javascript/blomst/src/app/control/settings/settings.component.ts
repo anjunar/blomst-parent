@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostListener, OnDestroy, ViewEncapsulation} from '@angular/core';
-import {AsWindowComponent} from "angular2-simplicity";
+import {AsWindowComponent} from "ng2-simplicity";
 import {AppStartupService} from "../../app-startup.service";
 
 @Component({

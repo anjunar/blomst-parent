@@ -102,7 +102,7 @@ public class AddressResource {
     public ResponseOk save(MapBoxAddress securedForm) {
         AddressForm addressForm = extractAddressData(securedForm);
 
-        Address entity = restMapper.map(addressForm, Address.class, securedForm.getSchema(), false);
+        Address entity = restMapper.map(addressForm, Address.class);
         entity.setOwner(identityManager.getUser());
 
         entityManager.persist(entity);

@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {AppView} from "../../app.classes";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AsMetaFormService, MetaFormGroup, WindowManagerService} from "angular2-simplicity";
+import {AsMetaFormService, MetaFormGroup, WindowManagerService} from "ng2-simplicity";
 import {Form, RegisterForm} from "../../rest.classes";
 
 @Component({

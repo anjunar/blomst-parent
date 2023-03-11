@@ -5,6 +5,7 @@ import com.anjunar.blomst.shared.users.UserSelectSearch;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.Page;
 import com.anjunar.blomst.social.pages.page.PageForm;
+import com.anjunar.blomst.social.pages.page.PageReference;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsResource;
 import com.anjunar.blomst.social.pages.page.questions.QuestionsSearch;
 import com.anjunar.blomst.social.pages.page.questions.question.answers.AnswersResource;
@@ -34,7 +35,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("pages/page/questions/question")
-public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>> {
+public class QuestionResource implements FormResourceTemplate<QuestionForm> {
 
     private final EntityManager entityManager;
 
@@ -71,9 +72,11 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
         resource.setModified(LocalDateTime.now());
 
         Page pageEntity = entityManager.find(Page.class, page);
-        resource.setPage(entityMapper.map(pageEntity, PageForm.class));
+        PageReference pageReference = new PageReference();
+        pageReference.setId(pageEntity.getId());
+        resource.setPage(pageReference);
 
-        linkTo(methodOn(QuestionResource.class).save(new Form<>()))
+        linkTo(methodOn(QuestionResource.class).save(new QuestionForm()))
                 .build(form::addLink);
 
         return form;
@@ -86,7 +89,7 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
 
         Form<QuestionForm> resource = entityMapper.map(question, new Form<>() {});
 
-        linkTo(methodOn(QuestionResource.class).update(question.getId(), new Form<>()))
+        linkTo(methodOn(QuestionResource.class).update(question.getId(), new QuestionForm()))
                 .build(resource::addLink);
         linkTo(methodOn(QuestionResource.class).delete(question.getId()))
                 .build(resource::addLink);
@@ -107,7 +110,7 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Question")
-    public ResponseOk save(Form<QuestionForm> resource) {
+    public ResponseOk save(QuestionForm resource) {
 
         Question question = restMapper.map(resource, Question.class);
         question.setOwner(identityManager.getUser());
@@ -127,7 +130,7 @@ public class QuestionResource implements FormResourceTemplate<Form<QuestionForm>
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
-    public ResponseOk update(UUID id, Form<QuestionForm> resource) {
+    public ResponseOk update(UUID id, QuestionForm resource) {
 
         Question entity = restMapper.map(resource, Question.class);
         entity.setOwner(identityManager.getUser());

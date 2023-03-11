@@ -2,8 +2,9 @@ package com.anjunar.blomst.social.timeline.post.comments.comment;
 
 import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.likes.likeable.LikesConverter;
+import com.anjunar.blomst.shared.users.user.UserReference;
 import com.anjunar.blomst.shared.users.user.UserSelect;
-import com.anjunar.blomst.social.timeline.post.AbstractPostForm;
+import com.anjunar.blomst.social.timeline.post.AbstractPostReference;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -21,11 +22,11 @@ public class CommentForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text", naming = true)
     private String text;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Post")
-    private AbstractPostForm post;
+    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Post", readOnly = true)
+    private AbstractPostReference post;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Parent Comment", readOnly = true, cycle = true)
-    private CommentForm parent;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Parent Comment", readOnly = true)
+    private CommentReference parent;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
@@ -44,19 +45,19 @@ public class CommentForm extends AbstractLikeableRestEntity {
         this.text = text;
     }
 
-    public AbstractPostForm getPost() {
+    public AbstractPostReference getPost() {
         return post;
     }
 
-    public void setPost(AbstractPostForm post) {
+    public void setPost(AbstractPostReference post) {
         this.post = post;
     }
 
-    public CommentForm getParent() {
+    public CommentReference getParent() {
         return parent;
     }
 
-    public void setParent(CommentForm parent) {
+    public void setParent(CommentReference parent) {
         this.parent = parent;
     }
 

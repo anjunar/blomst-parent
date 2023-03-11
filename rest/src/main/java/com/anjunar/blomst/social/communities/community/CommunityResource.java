@@ -31,7 +31,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("social/communities/community")
-public class CommunityResource implements FormResourceTemplate<Form<CommunityForm>> {
+public class CommunityResource implements FormResourceTemplate<CommunityForm> {
 
     private final EntityManager entityManager;
 
@@ -67,7 +67,7 @@ public class CommunityResource implements FormResourceTemplate<Form<CommunityFor
 
         Form<CommunityForm> form = new Form<>(resource) {};
 
-        linkTo(methodOn(CommunityResource.class).save(new Form<>()))
+        linkTo(methodOn(CommunityResource.class).save(new CommunityForm()))
                 .build(form::addLink);
 
         return form;
@@ -92,7 +92,7 @@ public class CommunityResource implements FormResourceTemplate<Form<CommunityFor
                     .build(form::addLink);
         }
 
-        linkTo(methodOn(CommunityResource.class).update(id, new Form<>()))
+        linkTo(methodOn(CommunityResource.class).update(id, new CommunityForm()))
                 .build(form::addLink);
         linkTo(methodOn(CommunityResource.class).delete(id))
                 .build(form::addLink);
@@ -115,7 +115,7 @@ public class CommunityResource implements FormResourceTemplate<Form<CommunityFor
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community")
     @Override
-    public ResponseOk save(Form<CommunityForm> form) {
+    public ResponseOk save(CommunityForm form) {
 
         Community entity = restMapper.map(form, Community.class);
 
@@ -135,7 +135,7 @@ public class CommunityResource implements FormResourceTemplate<Form<CommunityFor
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community")
     @Override
-    public ResponseOk update(UUID id, Form<CommunityForm> form) {
+    public ResponseOk update(UUID id, CommunityForm form) {
 
         if (service.hasRole("Administrator", id)) {
             restMapper.map(form, Community.class);

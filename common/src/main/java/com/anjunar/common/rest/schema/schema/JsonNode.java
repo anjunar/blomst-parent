@@ -60,7 +60,8 @@ public abstract class JsonNode {
         EDITOR("editor"),
 
         LIKE("like"),
-        JSON("json");
+        JSON("json"),
+        REFERENCE("reference");
 
         final String value;
 

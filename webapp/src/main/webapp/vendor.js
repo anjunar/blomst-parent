@@ -81319,7 +81319,7 @@ const VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.Version('15.1.4')
 
 /***/ 9533:
 /*!***************************************************************************!*\
-  !*** ./node_modules/angular2-simplicity/fesm2020/angular2-simplicity.mjs ***!
+  !*** ./node_modules/ng2-simplicity/fesm2020/ng2-simplicity.mjs ***!
   \***************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 

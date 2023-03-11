@@ -14,7 +14,6 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
-@JsonTypeName("User")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class UserSelect extends IdentitySelect {
 

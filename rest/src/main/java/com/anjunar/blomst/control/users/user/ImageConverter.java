@@ -21,6 +21,7 @@ public class ImageConverter implements MapperConverterType<Media, MediaType, Obj
         image.setId(harddiskFile.getId());
         image.setName(harddiskFile.getName());
         image.setLastModified(harddiskFile.getLastModified());
+        image.setUrl("service/shared/media/" + harddiskFile.getId().toString());
 
         if (Objects.nonNull(harddiskFile.getThumbnail())) {
             Thumbnail cropped = new Thumbnail();

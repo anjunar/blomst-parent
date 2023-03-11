@@ -3,6 +3,7 @@ package com.anjunar.blomst.social.pages.page.questions.question;
 import com.anjunar.blomst.shared.likes.likeable.AbstractLikeableRestEntity;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.pages.page.PageForm;
+import com.anjunar.blomst.social.pages.page.PageReference;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -18,8 +19,8 @@ import java.util.Set;
 public class QuestionForm extends AbstractLikeableRestEntity {
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Page", readOnly = true)
-    private PageForm page;
+    @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Page", readOnly = true)
+    private PageReference page;
 
     @Size(min = 3, max = 80)
     @NotBlank
@@ -34,11 +35,11 @@ public class QuestionForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
     private UserSelect owner;
 
-    public PageForm getPage() {
+    public PageReference getPage() {
         return page;
     }
 
-    public void setPage(PageForm page) {
+    public void setPage(PageReference page) {
         this.page = page;
     }
 

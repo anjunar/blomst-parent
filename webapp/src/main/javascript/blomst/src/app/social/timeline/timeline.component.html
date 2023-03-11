@@ -31,7 +31,7 @@
 
 <div style="display: flex; justify-content: center">
   <as-infinity-scroll (items)="postsLoader($event)">
-    <ng-template let-item>
+    <ng-template [typedTemplate]="typeToken" let-item>
       <div style="max-width: 680px; min-width : 400px; background-color: var(--main-dark2-color); padding: 10px; margin-bottom: 20px">
         <div style="display: flex; align-items: center; margin-bottom: 5px">
           <img [src]="'service/shared/media/' + item.owner.picture.id" style="max-width: 48px; max-height: 48px; border-radius: 50%">
@@ -63,6 +63,9 @@
           <button class="normal" (click)="onCommentClick(item)">Comment</button>
           <button class="normal">Share</button>
         </div>
+
+        <app-comments [postId]="item.id"></app-comments>
+
       </div>
     </ng-template>
   </as-infinity-scroll>

@@ -18,7 +18,7 @@ import {
   ContextManagerService,
   WindowManagerService,
   WindowOptions
-} from "angular2-simplicity";
+} from "ng2-simplicity";
 import {SettingsComponent} from "./control/settings/settings.component";
 import {Router} from "@angular/router";
 import {ChangeDetection} from "@angular/cli/lib/config/workspace-schema";

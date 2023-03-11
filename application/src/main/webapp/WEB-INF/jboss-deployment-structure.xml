@@ -1,7 +1,7 @@
 <jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.1">
 
     <deployment>
-        <module-alias name="deployment.de.anjunar.hive"/>
+        <module-alias name="deployment.com.anjunar.blomst"/>
 
         <dependencies>
             <module name="com.mysql.jdbc"/>

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {AsViewportComponent, WindowManagerService} from "angular2-simplicity";
+import {AsViewportComponent, WindowManagerService} from "ng2-simplicity";
 import {LikesPopupComponent} from "./likes-popup/likes-popup.component";
 import {AbstractLikeableRestEntity} from "../../rest.classes";
 

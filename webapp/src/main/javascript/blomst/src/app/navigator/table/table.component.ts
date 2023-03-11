@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {TableQuery} from "angular2-simplicity";
+import {TableQuery} from "ng2-simplicity";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
 

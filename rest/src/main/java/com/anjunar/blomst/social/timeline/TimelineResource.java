@@ -76,7 +76,6 @@ public class TimelineResource implements ListResourceTemplate<AbstractPostForm, 
                 public AbstractPostForm visit(TextPost post) {
                     return mapper.map(post, TextPostForm.class, table);
                 }
-
             });
 
             resources.add(resource);

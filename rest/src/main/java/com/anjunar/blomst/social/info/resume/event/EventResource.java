@@ -8,9 +8,7 @@ import com.anjunar.blomst.social.info.resume.ResumeResource;
 import com.anjunar.blomst.social.info.resume.ResumeSearch;
 import com.anjunar.blomst.social.sites.SitesResource;
 import com.anjunar.blomst.social.sites.SitesSearch;
-import com.anjunar.common.rest.api.FormResourceTemplate;
-import com.anjunar.common.rest.api.ResponseOk;
-import com.anjunar.common.rest.api.SecuredForm;
+import com.anjunar.common.rest.api.*;
 import com.anjunar.common.rest.link.LinkDescription;
 import com.anjunar.common.rest.mapper.ResourceEntityMapper;
 import com.anjunar.common.rest.mapper.ResourceRestMapper;
@@ -32,7 +30,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @ApplicationScoped
 @Path("social/info/resume/event")
-public class EventResource implements FormResourceTemplate<SecuredForm<EventForm>> {
+public class EventResource implements SecuredFormResourceTemplate<EventForm> {
 
     private final EntityManager entityManager;
 
@@ -63,10 +61,10 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
         EventForm form = new EventForm();
         SecuredForm<EventForm> securedForm = new SecuredForm<>(form) {};
 
-        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class, securedForm));
+        form.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
         securedForm.find("owner", JsonObject.class).setDirty(true);
 
-        linkTo(methodOn(EventResource.class).save(new SecuredForm<>()))
+        linkTo(methodOn(EventResource.class).save(new EventForm()))
                 .build(securedForm::addLink);
 
         JsonObject site = securedForm.find("site", JsonObject.class);
@@ -89,7 +87,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
         SecuredForm<EventForm> securedForm = entityMapper.map(entity, new SecuredForm<>() {});
 
         if (entity.getOwner().equals(identityManager.getUser())) {
-            linkTo(methodOn(EventResource.class).update(entity.getId(), new SecuredForm<>()))
+            linkTo(methodOn(EventResource.class).update(entity.getId(), new EventForm()))
                     .build(securedForm::addLink);
             linkTo(methodOn(EventResource.class).delete(entity.getId()))
                     .build(securedForm::addLink);
@@ -109,7 +107,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @LinkDescription("Save Resume")
     @Override
     @RolesAllowed({"Administrator", "User"})
-    public ResponseOk save(SecuredForm<EventForm> form) {
+    public ResponseOk save(EventForm form) {
         Resume entity = restMapper.map(form, Resume.class);
         entity.setOwner(identityManager.getUser());
 
@@ -127,7 +125,7 @@ public class EventResource implements FormResourceTemplate<SecuredForm<EventForm
     @LinkDescription("Update Resume")
     @Override
     @RolesAllowed({"Administrator", "User"})
-    public ResponseOk update(UUID id, SecuredForm<EventForm> form) {
+    public ResponseOk update(UUID id, EventForm form) {
         Resume entity = restMapper.map(form, Resume.class);
         entity.setOwner(identityManager.getUser());
 

@@ -44,7 +44,7 @@ public class LoginResource {
         LoginForm loginForm = new LoginForm();
         Form<LoginForm> form = new Form<>(loginForm) {};
 
-        linkTo(methodOn(LoginResource.class).login(new Form<>()))
+        linkTo(methodOn(LoginResource.class).login(new LoginForm()))
                 .build(form::addLink);
 
         return form;
@@ -55,14 +55,14 @@ public class LoginResource {
     @Produces("application/json")
     @Path("login")
     @LinkDescription("Do Login")
-    public LoginResponse login(Form<LoginForm> resource) {
+    public LoginResponse login(LoginForm resource) {
         identityManager.logout();
 
         User user = null;
         try {
             user = entityManager.createQuery("select u from User u join u.emails e where e.value = :email and u.password = :password ", User.class)
-                    .setParameter("email", resource.getForm().getEmail())
-                    .setParameter("password", resource.getForm().getPassword())
+                    .setParameter("email", resource.getEmail())
+                    .setParameter("password", resource.getPassword())
                     .getSingleResult();
         } catch (Exception e) {
             throw new WebApplicationException(jakarta.ws.rs.core.Response.Status.FORBIDDEN);

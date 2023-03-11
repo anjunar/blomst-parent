@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, HostListener, ViewChild, ViewEncapsulation} from '@angular/core';
-import {AsDialogComponent, AsScrollAreaComponent, AsWindowComponent, InfinityQuery} from "angular2-simplicity";
+import {AsDialogComponent, AsScrollAreaComponent, AsWindowComponent, InfinityQuery} from "ng2-simplicity";
 
 @Component({
   selector: 'app-likes-popup',

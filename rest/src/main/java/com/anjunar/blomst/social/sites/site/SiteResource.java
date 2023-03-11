@@ -4,6 +4,7 @@ import com.anjunar.blomst.shared.Alternative;
 import com.anjunar.blomst.shared.alternatives.AlternativeGroupBy;
 import com.anjunar.blomst.shared.alternatives.AlternativesResource;
 import com.anjunar.blomst.shared.alternatives.AlternativesSearch;
+import com.anjunar.blomst.shared.alternatives.alternative.AlternativeForm;
 import com.anjunar.blomst.shared.alternatives.alternative.AlternativeResource;
 import com.anjunar.blomst.social.info.addresses.AddressSearchResource;
 import com.anjunar.blomst.social.sites.SitesResource;
@@ -39,7 +40,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @Path("social/sites/site")
 @ApplicationScoped
-public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
+public class SiteResource implements FormResourceTemplate<SiteForm> {
 
     private final EntityManager entityManager;
 
@@ -74,7 +75,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         final SiteForm resource = new SiteForm();
         Form<SiteForm> form = new Form<>(resource) {};
 
-        linkTo(methodOn(SiteResource.class).save(new Form<>()))
+        linkTo(methodOn(SiteResource.class).save(new SiteForm()))
                 .build(form::addLink);
 
         JsonObject address = form.find("address", JsonObject.class);
@@ -87,7 +88,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         nameSearch.setEntity("Site");
         linkTo(methodOn(AlternativesResource.class).list(nameSearch))
                 .build(name::addLink);
-        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+        linkTo(methodOn(AlternativeResource.class).save(new AlternativeForm()))
                 .build(name::addLink);
         JsonObject phone = form.find("phone", JsonObject.class);
         AlternativesSearch phoneSearch = new AlternativesSearch();
@@ -95,7 +96,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         phoneSearch.setEntity("Site");
         linkTo(methodOn(AlternativesResource.class).list(phoneSearch))
                 .build(phone::addLink);
-        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+        linkTo(methodOn(AlternativeResource.class).save(new AlternativeForm()))
                 .build(phone::addLink);
         JsonObject homepage = form.find("homepage", JsonObject.class);
         AlternativesSearch homepageSearch = new AlternativesSearch();
@@ -103,7 +104,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         homepageSearch.setEntity("Site");
         linkTo(methodOn(AlternativesResource.class).list(homepageSearch))
                 .build(homepage::addLink);
-        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+        linkTo(methodOn(AlternativeResource.class).save(new AlternativeForm()))
                 .build(homepage::addLink);
 
 
@@ -124,7 +125,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         nameSearch.setEntity("Site");
         linkTo(methodOn(AlternativesResource.class).list(nameSearch))
                 .build(name::addLink);
-        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+        linkTo(methodOn(AlternativeResource.class).save(new AlternativeForm()))
                 .build(name::addLink);
         JsonObject phone = form.find("phone", JsonObject.class);
         AlternativesSearch phoneSearch = new AlternativesSearch();
@@ -132,7 +133,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         phoneSearch.setEntity("Site");
         linkTo(methodOn(AlternativesResource.class).list(phoneSearch))
                 .build(phone::addLink);
-        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+        linkTo(methodOn(AlternativeResource.class).save(new AlternativeForm()))
                 .build(phone::addLink);
         JsonObject homepage = form.find("homepage", JsonObject.class);
         AlternativesSearch homepageSearch = new AlternativesSearch();
@@ -140,7 +141,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
         homepageSearch.setEntity("Site");
         linkTo(methodOn(AlternativesResource.class).list(homepageSearch))
                 .build(homepage::addLink);
-        linkTo(methodOn(AlternativeResource.class).save(new Form<>()))
+        linkTo(methodOn(AlternativeResource.class).save(new AlternativeForm()))
                 .build(homepage::addLink);
 
 
@@ -171,7 +172,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
                 .withRel("connections")
                 .build(form::addLink);
 
-        linkTo(methodOn(SiteResource.class).update(id, new Form<>()))
+        linkTo(methodOn(SiteResource.class).update(id, new SiteForm()))
                 .build(form::addLink);
         linkTo(methodOn(SiteResource.class).delete(id))
                 .build(form::addLink);
@@ -182,7 +183,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Site")
     @Override
-    public ResponseOk save(Form<SiteForm> form) {
+    public ResponseOk save(SiteForm form) {
         Site entity = restMapper.map(form, Site.class);
 
         entity.getName().setOwner(identityManager.getUser());
@@ -221,7 +222,7 @@ public class SiteResource implements FormResourceTemplate<Form<SiteForm>> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site")
     @Override
-    public ResponseOk update(UUID id, Form<SiteForm> form) {
+    public ResponseOk update(UUID id, SiteForm form) {
 
         Site entity = restMapper.map(form, Site.class);
 

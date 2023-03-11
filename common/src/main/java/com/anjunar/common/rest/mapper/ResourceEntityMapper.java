@@ -83,7 +83,7 @@ public class ResourceEntityMapper {
                 Class<?> value = type.value();
                 BeanModel<?> typeModel = BeanIntrospector.create(value);
                 MapperPolymorphism polymorphism = typeModel.getAnnotation(MapperPolymorphism.class);
-                if (polymorphism.value().equals(getObjectFromProxy(source))) {
+                if (Objects.nonNull(polymorphism) && polymorphism.value().equals(getObjectFromProxy(source))) {
                     return (D) getNewInstance(value);
                 }
             }
@@ -326,9 +326,7 @@ public class ResourceEntityMapper {
 
 
     private <S extends AbstractEntity> void loadSchema(OwnerProvider source, Class<?> destinationClass, JsonObject jsonObject) {
-
         BeanModel<?> destinationModel = BeanIntrospector.create(destinationClass);
-
         for (Map.Entry<String, JsonNode> entry : jsonObject.getProperties().entrySet()) {
             BeanProperty<?, ?> destinationProperty = destinationModel.get(entry.getKey());
             MapperVisibility visibility = destinationProperty.getAnnotation(MapperVisibility.class);

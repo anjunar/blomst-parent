@@ -2,6 +2,7 @@ package com.anjunar.blomst.social.timeline.post;
 
 import com.anjunar.blomst.shared.users.UserSelectResource;
 import com.anjunar.blomst.shared.users.UserSelectSearch;
+import com.anjunar.blomst.shared.users.user.UserReference;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.*;
 import com.anjunar.blomst.social.timeline.post.comments.CommentsResource;
@@ -39,7 +40,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.*;
 
 @ApplicationScoped
 @Path("home/timeline/post")
-public class PostResource implements FormResourceTemplate<Form<? extends AbstractPostForm>> {
+public class PostResource implements FormResourceTemplate<AbstractPostForm> {
 
     private final EntityManager entityManager;
 
@@ -97,15 +98,15 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
 
         Identity identity = entityManager.find(Identity.class, source);
         if (identity instanceof User) {
-            resource.setSource(entityMapper.map(identity, UserSelect.class));
+            resource.setSource(entityMapper.map(identity, UserReference.class));
         } else {
-            resource.setSource(entityMapper.map(identity, UserSelect.class));
+            resource.setSource(entityMapper.map(identity, UserReference.class));
         }
         if (identityManager.isLoggedIn()) {
             resource.setOwner(entityMapper.map(identityManager.getUser(), UserSelect.class));
         }
 
-        linkTo(methodOn(PostResource.class).save(new Form<>()))
+        linkTo(methodOn(PostResource.class).save(new TextPostForm()))
                         .build(form::addLink);
 
         return form;
@@ -137,7 +138,7 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
             }
         });
 
-        linkTo(methodOn(PostResource.class).update(post.getId(), new Form<>()))
+        linkTo(methodOn(PostResource.class).update(post.getId(), new TextPostForm()))
                 .build(resource::addLink);
         linkTo(methodOn(PostResource.class).delete(post.getId()))
                 .build(resource::addLink);
@@ -168,9 +169,9 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
-    public ResponseOk save(Form<? extends AbstractPostForm> resource) {
+    public ResponseOk save(AbstractPostForm resource) {
 
-        AbstractPost post = resource.getForm().accept(new AbstractPostFormVisitor<>() {
+        AbstractPost post = resource.accept(new AbstractPostFormVisitor<>() {
             @Override
             public AbstractPost visit(VideoPostForm form) {
                 return new VideoPost();
@@ -230,7 +231,7 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
-    public ResponseOk update(UUID id, Form<? extends AbstractPostForm> resource) {
+    public ResponseOk update(UUID id, AbstractPostForm resource) {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
         Set<User> rawLikes = Sets.newHashSet(post.getLikes());
 
@@ -256,7 +257,7 @@ public class PostResource implements FormResourceTemplate<Form<? extends Abstrac
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .withRel("redirect")
                 .build(resource::addLink);
-        linkTo(methodOn(PostResource.class).update(post.getId(), new Form<>()))
+        linkTo(methodOn(PostResource.class).update(post.getId(), new TextPostForm()))
                 .build(resource::addLink);
         linkTo(methodOn(PostResource.class).delete(post.getId()))
                 .build(resource::addLink);

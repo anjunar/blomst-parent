@@ -1,5 +1,5 @@
 import {VisibilityComponent} from "./shared/visibility/visibility.component";
-import {WindowManagerService} from "angular2-simplicity";
+import {WindowManagerService} from "ng2-simplicity";
 import {ActivatedRoute} from "@angular/router";
 
 export class AppView {

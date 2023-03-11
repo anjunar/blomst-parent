@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {AsDialogComponent, AsMetaFormService, MetaFormGroup} from "angular2-simplicity";
+import {AsDialogComponent, AsMetaFormService, MetaFormGroup} from "ng2-simplicity";
 
 @Component({
   selector: 'app-video-post',

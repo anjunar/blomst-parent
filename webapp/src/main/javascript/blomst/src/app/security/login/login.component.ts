@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {AppView} from "../../app.classes";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AsMetaFormService, MetaFormGroup, updateValues, WindowManagerService} from "angular2-simplicity";
+import {AsMetaFormService, MetaFormGroup, updateValues, WindowManagerService} from "ng2-simplicity";
 import {AppStartupService} from "../../app-startup.service";
 import {Form, LoginForm} from "../../rest.classes";
 
@@ -28,7 +28,7 @@ export class LoginComponent extends AppView {
 
   onSubmit() {
     let body = this.form.getValue();
-    secureFetch("service/security/login", "POST", body)
+    secureFetch("service/security/login", "POST", body.form)
       .then(response => {
         this.startUp.init().then(() => {
           this.router.navigate(["/timeline"])

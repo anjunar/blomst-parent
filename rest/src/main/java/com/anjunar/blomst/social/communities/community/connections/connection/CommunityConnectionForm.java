@@ -1,9 +1,11 @@
 package com.anjunar.blomst.social.communities.community.connections.connection;
 
 import com.anjunar.blomst.control.roles.role.RoleForm;
+import com.anjunar.blomst.shared.users.user.UserReference;
 import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.communities.Status;
 import com.anjunar.blomst.social.communities.community.CommunityForm;
+import com.anjunar.blomst.social.communities.community.CommunityReference;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
@@ -15,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true)
 public class CommunityConnectionForm extends AbstractRestEntity {
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "From", readOnly = true)
-    private UserSelect from;
+    @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "From", readOnly = true)
+    private UserReference from;
 
     @JsonSchema(widget = JsonNode.Widget.SELECT, title = "Status")
     private Status status;
@@ -24,14 +26,14 @@ public class CommunityConnectionForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Role")
     private RoleForm role;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To", readOnly = true)
-    private CommunityForm to;
+    @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "To", readOnly = true)
+    private CommunityReference to;
 
-    public UserSelect getFrom() {
+    public UserReference getFrom() {
         return from;
     }
 
-    public void setFrom(UserSelect from) {
+    public void setFrom(UserReference from) {
         this.from = from;
     }
 
@@ -51,11 +53,11 @@ public class CommunityConnectionForm extends AbstractRestEntity {
         this.role = role;
     }
 
-    public CommunityForm getTo() {
+    public CommunityReference getTo() {
         return to;
     }
 
-    public void setTo(CommunityForm to) {
+    public void setTo(CommunityReference to) {
         this.to = to;
     }
 

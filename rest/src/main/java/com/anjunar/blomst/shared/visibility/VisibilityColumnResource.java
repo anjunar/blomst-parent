@@ -66,35 +66,36 @@ public class VisibilityColumnResource {
     @Produces("application/json")
     @Consumes("application/json")
     public ResponseOk save(@QueryParam("property") String property, @QueryParam("class") String clazz, @QueryParam("id") UUID id, Set<CategoryForm> forms) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        AbstractColumnRight<?> columnRight = null;
+        AbstractColumnRight columnRight = null;
         try {
             columnRight = entityManager.createQuery("select a from " + clazz + "Right a where a.source.id = :id and a.column = :property", AbstractColumnRight.class)
                     .setParameter("id", id)
                     .setParameter("property", property)
                     .getSingleResult();
         } catch (NoResultException e) {
-            Optional<EntityType<?>> source = entityManager.getMetamodel()
+            EntityType<?> source = entityManager.getMetamodel()
                     .getEntities()
                     .stream()
                     .filter((entity) -> entity.getName().equals(clazz))
-                    .findFirst();
+                    .findFirst()
+                    .get();
 
-            Object entity = entityManager.find(source.get().getJavaType(), id);
+            Object entity = entityManager.find(source.getJavaType(), id);
 
-            Class<?> right = Class.forName(source.getClass().getPackageName() + "." + source.getClass().getSimpleName() + "Right");
+            Class<?> right = Class.forName(source.getJavaType().getPackageName() + "." + source.getJavaType().getSimpleName() + "Right");
             Constructor<?> constructor = right.getDeclaredConstructor();
-            AbstractColumnRight instance = (AbstractColumnRight<?>) constructor.newInstance();
+            columnRight = (AbstractColumnRight<?>) constructor.newInstance();
 
-            instance.setColumn(property);
-            instance.setSource(entity);
+            columnRight.setColumn(property);
+            columnRight.setSource(entity);
 
-            entityManager.persist(instance);
+            entityManager.persist(columnRight);
         }
 
         Set<Category> categories = new HashSet<>();
 
         for (CategoryForm form : forms) {
-            categories.add(restMapper.map(form, Category.class, null, false));
+            categories.add(restMapper.map(form, Category.class));
         }
 
         columnRight.getCategories().clear();

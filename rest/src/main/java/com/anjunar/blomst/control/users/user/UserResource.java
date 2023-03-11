@@ -62,7 +62,7 @@ import static com.anjunar.common.rest.link.WebURLBuilderFactory.methodOn;
 
 @RequestScoped
 @Path("control/users/user")
-public class UserResource implements FormResourceTemplate<Form<UserForm>> {
+public class UserResource implements FormResourceTemplate<UserForm> {
 
     private static final Logger log = LoggerFactory.getLogger(RegisterResource.class);
 
@@ -161,7 +161,7 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
     private Form<UserForm> getUser(User user) {
         Form<UserForm> resource = entityMapper.map(user, new Form<>() {});
 
-        linkTo(methodOn(UserResource.class).update(user.getId(), (Form<UserForm>) null))
+        linkTo(methodOn(UserResource.class).update(user.getId(), new UserForm()))
                 .build(resource::addLink);
         linkTo(methodOn(UserResource.class).delete(user.getId()))
                 .build(resource::addLink);
@@ -237,7 +237,7 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save User")
-    public ResponseOk save(Form<UserForm> resource) {
+    public ResponseOk save(UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
 
@@ -279,7 +279,7 @@ public class UserResource implements FormResourceTemplate<Form<UserForm>> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update User")
     @MethodPredicate(MyOwnIdentity.class)
-    public ResponseOk update(UUID id, Form<UserForm> resource) {
+    public ResponseOk update(UUID id, UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
 
