@@ -124,6 +124,7 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
         service.addAdministrator(entity);
 
         ResponseOk response = new ResponseOk();
+        response.setId(entity.getId());
 
         linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
                 .withRel("redirect")

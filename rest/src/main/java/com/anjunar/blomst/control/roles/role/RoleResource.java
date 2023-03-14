@@ -91,6 +91,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
         entityManager.persist(role);
 
         ResponseOk response = new ResponseOk();
+        response.setId(role.getId());
 
         linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
                 .withRel("redirect")

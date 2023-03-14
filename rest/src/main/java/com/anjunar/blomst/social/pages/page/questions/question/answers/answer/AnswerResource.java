@@ -123,6 +123,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
         entityManager.persist(answer);
 
         ResponseOk response = new ResponseOk();
+        response.setId(answer.getId());
 
         linkTo(methodOn(AnswersResource.class).list(new AnswersSearch()))
                 .withRel("redirect")

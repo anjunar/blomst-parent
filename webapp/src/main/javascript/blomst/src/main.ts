@@ -6,5 +6,6 @@ declare global {
   function secureFetch(url : string, method? : string, data? : any) : Promise<any>
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+platformBrowserDynamic().bootstrapModule(AppModule, {
+  ngZone: 'noop'
+}).catch(err => console.error(err));

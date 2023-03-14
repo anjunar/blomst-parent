@@ -219,6 +219,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         entityManager.persist(post);
 
         ResponseOk response = new ResponseOk();
+        response.setId(post.getId());
 
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .withRel("redirect")

@@ -117,6 +117,11 @@ body {
   overflow: auto;
 }
 
+fieldset {
+  margin: 0;
+  border: 0;
+}
+
 hr {
   border: none;
   height: 1px;
@@ -129,16 +134,20 @@ a {
   text-decoration: none;
 }
 
+a.left {
+  display: block;
+  text-align: left;
+  height: 24px;
+  line-height: 24px;
+  background-color: var(--main-dark2-color);
+}
+
 a.normal {
   display: block;
   text-align: center;
-  margin-left: 5px;
-  margin-right: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
   height: 24px;
   line-height: 24px;
-  background-color: var(--main-dark1-color);
+  background-color: var(--main-dark2-color);
 }
 
 a.active {
@@ -146,6 +155,11 @@ a.active {
 }
 
 a.normal:hover {
+  background-color: var(--main-selected-color);
+  color: var(--main-dark2-color);
+}
+
+a.left:hover {
   background-color: var(--main-selected-color);
   color: var(--main-dark2-color);
 }
@@ -220,6 +234,67 @@ input[type=checkbox][toggle]::before {
 input[type=checkbox][toggle]:checked::before {
   content: 'toggle_on';
   color: var(--main-selected-color)
+}
+
+input[type=range] {
+  margin: 18px 0;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4.2px;
+  cursor: pointer;
+  background: var(--main-dark1-color);
+}
+input[type=range]::-webkit-slider-thumb {
+  height: 18px;
+  width: 8px;
+  background: var(--main-font-color);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -6px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: var(--main-dark1-color);
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4.2px;
+  cursor: pointer;
+  background: var(--main-dark1-color);
+}
+input[type=range]::-moz-range-thumb {
+  height: 18px;
+  width: 8px;
+  background: var(--main-font-color);
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 4.2px;
+  cursor: pointer;
+  background: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: var(--main-dark1-color);
+}
+input[type=range]::-ms-fill-upper {
+  background: var(--main-dark1-color);
+}
+input[type=range]::-ms-thumb {
+  height: 18px;
+  width: 8px;
+  background: var(--main-font-color);
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: var(--main-dark1-color);
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: var(--main-dark1-color);
 }
 
 textarea {

@@ -1,7 +1,7 @@
 <div style="display: flex; justify-content: center">
   <div style="width: max(400px, 680px);margin-bottom: 16px; background-color: var(--main-dark2-color); padding: 8px">
     <div style="display: flex">
-      <img [src]="'service/shared/media/' + service.model.form.picture.id" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 8px">
+      <img [src]="service.model.form.picture.url" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 8px">
       <as-input-container style="flex: 1" [placeholder]="'What do you do, ' + service.model.form.nickName + '?'">
         <input type="text" ngModel>
       </as-input-container>
@@ -32,41 +32,7 @@
 <div style="display: flex; justify-content: center">
   <as-infinity-scroll (items)="postsLoader($event)">
     <ng-template [typedTemplate]="typeToken" let-item>
-      <div style="max-width: 680px; min-width : 400px; background-color: var(--main-dark2-color); padding: 10px; margin-bottom: 20px">
-        <div style="display: flex; align-items: center; margin-bottom: 5px">
-          <img [src]="'service/shared/media/' + item.owner.picture.id" style="max-width: 48px; max-height: 48px; border-radius: 50%">
-          <div style="display: flex; width: 100%">
-            <div style="margin-left: 5px;">
-              <div>{{item.owner.name}}</div>
-              <div style="font-size: small">{{item.created | humanize}}</div>
-            </div>
-            <div style="flex: 1"></div>
-            <div style="position: relative">
-              <button class="material-icons" type="button" (click)="onOptionsClick($event, item.id)">more_vert</button>
-            </div>
-          </div>
-        </div>
-        <div [innerHTML]="item.editor.html" style="margin-bottom: 5px"></div>
-        <img *ngIf="item.image" [src]="'service/shared/media/' + item.image.id" style="width: 100%">
-        <div *ngIf="item.video" style="text-align: center">
-          <video [src]="'service/shared/media/' + item.video.id" controls style="display: inline-block; height: 400px"></video>
-        </div>
-
-        <div style="margin-top: 10px; margin-bottom: 10px">
-          <app-likes [model]="item"></app-likes>
-        </div>
-        <hr style="background-color: var(--main-dark1-color)">
-        <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 10px">
-          <button class="normal" (click)="onLike(item)">
-            <span class="material-icons" style="font-size: small; vertical-align: -2px; margin-right: 5px">thumb_up</span>I Like
-          </button>
-          <button class="normal" (click)="onCommentClick(item)">Comment</button>
-          <button class="normal">Share</button>
-        </div>
-
-        <app-comments [postId]="item.id"></app-comments>
-
-      </div>
+      <app-post [model]="item" [infinite]="infinite"></app-post>
     </ng-template>
   </as-infinity-scroll>
 </div>

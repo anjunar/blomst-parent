@@ -150,6 +150,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 */
 
         ResponseOk response = new ResponseOk();
+        response.setId(form.getId());
 
         UserConnectionsSearch search = new UserConnectionsSearch();
         search.setFrom(identityManager.getUser().getId());

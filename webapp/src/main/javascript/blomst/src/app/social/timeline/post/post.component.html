@@ -1,0 +1,51 @@
+<div style="max-width: 680px; min-width : 400px; background-color: var(--main-dark2-color); padding: 10px; margin-bottom: 20px">
+  <div style="display: flex; align-items: center; margin-bottom: 5px">
+    <img [src]="model.owner.picture.url" style="max-width: 48px; max-height: 48px; border-radius: 50%">
+    <div style="display: flex; width: 100%">
+      <div style="margin-left: 5px;">
+        <div>{{model.owner.name}}</div>
+        <div style="font-size: small">{{model.created | humanize}}</div>
+      </div>
+      <div style="flex: 1"></div>
+      <div style="position: relative">
+        <button class="material-icons" type="button" (click)="onOptionsClick($event, model)">more_vert</button>
+      </div>
+    </div>
+  </div>
+  <div [innerHTML]="model.editor.html" style="margin-bottom: 5px"></div>
+  <img *ngIf="model.image" [src]="model.image.url" style="width: 100%">
+  <div *ngIf="model.video" style="text-align: center">
+    <img *ngIf="! play" [src]="'service/shared/media/' + model.video.thumbnail.id" (click)="play = ! play" style="height: 400px"/>
+    <video *ngIf="play" [src]="model.video.url" #video controls autoplay style="display: inline-block; height: 400px"></video>
+  </div>
+
+  <div style="margin-top: 10px; margin-bottom: 10px">
+    <app-likes [model]="model"></app-likes>
+  </div>
+  <hr style="background-color: var(--main-dark1-color)">
+  <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 10px">
+    <button class="normal" (click)="onLike(model)">
+      <span class="material-icons" style="font-size: small; vertical-align: -2px; margin-right: 5px">thumb_up</span>I Like
+    </button>
+    <button class="normal">Comment</button>
+    <button class="normal">Share</button>
+  </div>
+
+  <as-scroll-area style="height: 400px">
+    <as-infinity-scroll (items)="onLoad($event)">
+      <ng-template let-comment>
+        <app-comment [model]="comment"></app-comment>
+      </ng-template>
+    </as-infinity-scroll>
+  </as-scroll-area>
+  <div style="display: flex">
+    <img [src]="startUp.model.form.picture.url" style="max-width: 48px; max-height: 48px; border-radius: 50%">
+    <form style="flex: 1" *ngIf="formGroup" [formGroup]="formGroup">
+      <fieldset formGroupName="form">
+        <textarea formControlName="text" (keyup)="onKeyUp($event)" placeholder="Write something here..."></textarea>
+      </fieldset>
+    </form>
+  </div>
+
+</div>
+

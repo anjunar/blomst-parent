@@ -1,0 +1,11 @@
+app-comment {
+  display: block;
+}
+
+app-comment div.options > div > div > button.options {
+  display: none;
+}
+
+app-comment div.options:hover  > div > div > button.options {
+  display: inline;
+}

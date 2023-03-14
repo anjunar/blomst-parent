@@ -115,6 +115,7 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
+        response.setId(entity.getId());
 
         linkTo(methodOn(SiteConnectionsResource.class).list(new SiteConnectionsSearch()))
                 .withRel("redirect")

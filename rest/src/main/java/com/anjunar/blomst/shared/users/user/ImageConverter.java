@@ -1,6 +1,5 @@
 package com.anjunar.blomst.shared.users.user;
 
-import com.anjunar.common.filedisk.FileDiskUtils;
 import com.anjunar.common.filedisk.Media;
 import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverterType;
@@ -19,12 +18,12 @@ public class ImageConverter implements MapperConverterType<Media, MediaType, Obj
             image.setId(harddiskFile.getThumbnail().getId());
             image.setName(harddiskFile.getThumbnail().getName());
             image.setLastModified(harddiskFile.getThumbnail().getLastModified());
-            image.setUrl("service/shared/media/" + harddiskFile.getId().toString());
+            image.setUrl("service/shared/media/" + harddiskFile.getThumbnail().getId().toString());
         } else {
             image.setId(harddiskFile.getId());
             image.setName(harddiskFile.getName());
             image.setLastModified(harddiskFile.getLastModified());
-            image.setUrl("service/shared/media/" + harddiskFile.getId().toString());
+            image.setUrl("service/shared/media/" + harddiskFile.getThumbnail().getId().toString());
         }
         return image;
     }

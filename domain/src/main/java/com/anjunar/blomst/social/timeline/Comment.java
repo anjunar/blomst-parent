@@ -7,6 +7,9 @@ import com.anjunar.common.security.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Filter(name = "deletedFilter", condition = "deleted = false")
 public class Comment extends Likeable {
@@ -26,11 +29,18 @@ public class Comment extends Likeable {
     @ManyToOne
     private Comment parent;
 
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();
+
     @PrePersist
     @PreUpdate
     private void prePersist() {
         String detectedLanguage = Detector.detectLanguageOf(text);
         language = detectedLanguage.toLowerCase();
+    }
+
+    public boolean isEmpty() {
+        return comments.isEmpty();
     }
 
     public String getLanguage() {

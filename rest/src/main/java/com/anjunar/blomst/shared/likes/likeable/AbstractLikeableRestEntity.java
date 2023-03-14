@@ -10,9 +10,9 @@ public class AbstractLikeableRestEntity extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "Views")
     private Integer views = 0;
 
-    @JsonSchema(widget = JsonNode.Widget.LIKE, title = "Likes")
+    @JsonSchema(ignore = true)
     @MapperConverter(LikesConverter.class)
-    private boolean likes = false;
+    private LikesType likes = new LikesType();
 
     public Integer getViews() {
         return views;
@@ -22,11 +22,11 @@ public class AbstractLikeableRestEntity extends AbstractRestEntity {
         this.views = views;
     }
 
-    public boolean isLikes() {
+    public LikesType getLikes() {
         return likes;
     }
 
-    public void setLikes(boolean likes) {
+    public void setLikes(LikesType likes) {
         this.likes = likes;
     }
 }

@@ -71,10 +71,13 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         User user = identityManager.getUser();
         Form<CommentForm> form = new Form<>(resource) {};
 
-        AbstractPostReference post = new AbstractPostReference();
-        post.setId(postId);
-        resource.setPost(post);
         resource.setOwner(entityMapper.map(user, UserSelect.class));
+
+        if (Objects.nonNull(postId)) {
+            AbstractPostReference post = new AbstractPostReference();
+            post.setId(postId);
+            resource.setPost(post);
+        }
 
         if (Objects.nonNull(commentId)) {
             CommentReference commentReference = new CommentReference();
@@ -144,6 +147,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
         entityManager.persist(comment);
 
         ResponseOk response = new ResponseOk();
+        response.setId(comment.getId());
 
         linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
                 .withRel("redirect")

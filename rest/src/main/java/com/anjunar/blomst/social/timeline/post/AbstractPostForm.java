@@ -36,9 +36,6 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Source", readOnly = true)
     private IdentityReference source;
 
-    @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Comments")
-    private List<CommentForm> comments = new ArrayList<>();
-
     public abstract <E> E accept(AbstractPostFormVisitor<E> visitor);
 
     public Editor getEditor() {
@@ -65,11 +62,4 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
         this.source = source;
     }
 
-    public List<CommentForm> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentForm> comments) {
-        this.comments = comments;
-    }
 }

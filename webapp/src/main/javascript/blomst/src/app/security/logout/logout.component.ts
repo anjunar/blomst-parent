@@ -14,7 +14,6 @@ export class LogoutComponent {
 
   onLogout() {
     secureFetch("service/security/logout", "POST")
-      .then(response => response.json())
       .then(response => {
         this.startUp.init().then(() => {
           this.router.navigate(["/security/login"])

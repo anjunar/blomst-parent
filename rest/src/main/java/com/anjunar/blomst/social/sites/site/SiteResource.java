@@ -193,6 +193,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
+        response.setId(entity.getId());
 
         linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
                 .withRel("redirect")

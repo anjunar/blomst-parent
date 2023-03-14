@@ -1,12 +1,15 @@
 import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {
+  AsExpandableListComponent,
   AsInfiniteScrollComponent,
-  AsMetaFormService,
+  AsMetaFormService, ExpandableQuery,
   generateURL,
-  InfinityQuery,
+  InfinityQuery, ListQuery,
   MetaFormGroup
 } from "ng2-simplicity";
 import {CommentForm, Form} from "../../../rest.classes";
+import {Post} from "../timeline.component";
+import {AppStartupService} from "../../../app-startup.service";
 
 @Component({
   selector: 'app-comments',
@@ -16,50 +19,70 @@ import {CommentForm, Form} from "../../../rest.classes";
 })
 export class CommentsComponent implements OnInit {
 
-  @Input() postId! : string
-  @Input() commentId! : string
-  @Input() create!: Form<CommentForm>;
+  @Input() post! : Post
+  @Input() comment! : CommentForm
+
   formGroup! : MetaFormGroup
 
-  @ViewChild(AsInfiniteScrollComponent) scroll! : AsInfiniteScrollComponent
+  @ViewChild(AsExpandableListComponent) list! : AsExpandableListComponent
 
   typeToken!: { $implicit: CommentForm };
 
-  constructor(private service : AsMetaFormService) {}
+  constructor(private service : AsMetaFormService, public startUp : AppStartupService) {}
 
-  ngOnInit(): void {
-/*
-    this.formGroup = this.service.create(this.create.$schema.properties, this.create)
-    this.create = JSON.parse(JSON.stringify(this.create));
-*/
+  self() {
+    return this;
   }
 
-  onLoad(event: { query: InfinityQuery, callback: (rows: any) => void }) : void {
-    let url = generateURL("service/home/timeline/post/comments");
-    url.searchParams.append("index", event.query.index + "")
-    url.searchParams.append("limit", event.query.limit + "")
-    if (this.postId) {
-      url.searchParams.append("post", this.postId)
+  ngOnInit(): void {
+    let url = generateURL("service/home/timeline/post/comments/comment/create");
+    if (this.post) {
+      url.searchParams.append("post", this.post.id)
     }
-
-    if (this.commentId) {
-      url.searchParams.append("parent", this.commentId)
+    if (this.comment) {
+      url.searchParams.append("parent", this.comment.id)
     }
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
-        event.callback(response.rows || [])
+        this.formGroup = this.service.create(response.$schema.properties, response)
+      })
+  }
+
+  onLoad(event: { query: ExpandableQuery, callback: (rows: any, size : number) => void }) : void {
+    let url = generateURL("service/home/timeline/post/comments");
+    url.searchParams.append("index", event.query.index + "")
+    url.searchParams.append("limit", event.query.limit + "")
+    if (this.post) {
+      url.searchParams.append("post", this.post.id)
+    }
+
+    if (this.comment) {
+      url.searchParams.append("parent", this.comment.id)
+    }
+
+    secureFetch(url.toString())
+      .then(response => {
+        event.callback(response.rows || [], response.size)
       })
   }
 
   onKeyUp(event : KeyboardEvent) {
     if (event.key === "Enter") {
-      let value = this.formGroup.getValue();
-      secureFetch("service/home/timeline/post/comments/comment", "POST", value)
-        .then(response => response.json())
+      let value : Form<CommentForm> = this.formGroup.getValue();
+
+      let form = this.formGroup.get("form");
+      if (form) {
+        let text = form.get("text");
+        if (text) {
+          text.setValue("")
+        }
+      }
+
+      secureFetch("service/home/timeline/post/comments/comment", "POST", value.form)
         .then(response => {
-          this.scroll.add(value.form)
+          Object.assign(value.form, response)
+          this.list.add(value.form)
         })
     }
   }

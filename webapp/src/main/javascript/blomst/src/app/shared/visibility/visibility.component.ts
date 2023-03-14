@@ -24,7 +24,6 @@ export class VisibilityComponent {
     url.searchParams.append("owner", this.id)
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size)
       })

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-09 22:22:36.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-11 20:50:02.
 
 export interface UserForm extends AbstractRestEntity {
   "@type": "User";
@@ -25,6 +25,12 @@ export interface AbstractRestEntity extends RestEntity, LinksContainer {
   created: string;
   modified: string;
   links: { [index: string]: Link };
+}
+
+export interface LoginForm {
+  "@type": "User";
+  email: string;
+  password: string;
 }
 
 export interface LoginResponse extends AbstractSchemaEntity {
@@ -102,6 +108,7 @@ export interface MediaType extends AbstractRestEntity {
   name: string;
   lastModified: string;
   data: string;
+  url: string;
   thumbnail: Thumbnail;
 }
 
@@ -152,16 +159,10 @@ export interface CategoryForm extends AbstractRestEntity {
 
 export interface UserConnectionForm extends AbstractRestEntity {
   "@type": "UserConnection";
-  from: UserSelect;
+  from: UserReference;
   category: CategoryForm;
   accepted: boolean;
-  to: UserSelect;
-}
-
-export interface LoginForm {
-  "@type": "User";
-  email: string;
-  password: string;
+  to: UserReference;
 }
 
 export interface CommunityForm extends AbstractRestEntity {
@@ -172,10 +173,10 @@ export interface CommunityForm extends AbstractRestEntity {
 
 export interface CommunityConnectionForm extends AbstractRestEntity {
   "@type": "CommunityConnection";
-  from: UserSelect;
+  from: UserReference;
   status: Status;
   role: RoleForm;
-  to: CommunityForm;
+  to: CommunityReference;
 }
 
 export interface SecuredForm<E> extends AbstractSchemaEntity {
@@ -240,12 +241,12 @@ export interface PageForm extends AbstractLikeableRestEntity {
 export interface AnswerForm extends AbstractLikeableRestEntity {
   "@type": "Answer";
   editor: Editor;
-  question: QuestionForm;
+  question: QuestionReference;
   owner: UserSelect;
 }
 
 export interface QuestionForm extends AbstractLikeableRestEntity {
-  page: PageForm;
+  page: PageReference;
   topic: string;
   editor: Editor;
   owner: UserSelect;
@@ -268,17 +269,17 @@ export interface SiteForm extends AbstractRestEntity {
 export interface CommentForm extends AbstractLikeableRestEntity {
   "@type": "Comment";
   text: string;
-  post: string;
-  parent: string;
+  post: AbstractPostReferenceUnion;
+  parent: CommentReference;
   owner: UserSelect;
+  empty: boolean;
 }
 
 export interface AbstractPostForm extends AbstractLikeableRestEntity {
   "@type": "ImagePost" | "VideoPost" | "TextPost";
   editor: Editor;
   owner: UserSelect;
-  source: IdentitySelect;
-  comments: CommentForm[];
+  source: IdentityReferenceUnion;
 }
 
 export interface Cloneable {
@@ -312,6 +313,7 @@ export interface MovieSearchResult {
 }
 
 export interface IdentitySelect extends AbstractRestEntity {
+  "@type": "IdentitySelect" | "User";
   name: string;
   picture: MediaType;
 }
@@ -341,6 +343,17 @@ export interface JsonNode {
   validators: { [index: string]: ValidatorUnion };
 }
 
+export interface UserReference extends IdentityReference, NamedReference {
+  "@type": "User";
+  nickName: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface CommunityReference extends AbstractRestEntity, NamedReference {
+  "@type": "Community";
+}
+
 export interface Point {
   coordinates: number[];
 }
@@ -352,6 +365,11 @@ export interface Context {
   short_code: string;
 }
 
+export interface LikesType {
+  active: boolean;
+  count: number;
+}
+
 export interface Editor {
   html: string;
   text: string;
@@ -359,7 +377,15 @@ export interface Editor {
 
 export interface AbstractLikeableRestEntity extends AbstractRestEntity {
   views: number;
-  likes: boolean;
+  likes: LikesType;
+}
+
+export interface QuestionReference extends AbstractRestEntity, UUIDReference {
+  "@type": "Question";
+}
+
+export interface PageReference extends AbstractRestEntity, UUIDReference {
+  "@type": "Page";
 }
 
 export interface SiteSelect extends AbstractRestEntity {
@@ -378,6 +404,18 @@ export interface AlternativeForm extends AbstractRestEntity {
   entity: string;
   owner: UserSelect;
   count: number;
+}
+
+export interface AbstractPostReference extends AbstractRestEntity, UUIDReference {
+  "@type": "AbstractPostReference" | "ImagePost" | "VideoPost" | "TextPost";
+}
+
+export interface CommentReference extends AbstractRestEntity, UUIDReference {
+  "@type": "Comment";
+}
+
+export interface IdentityReference extends AbstractRestEntity {
+  "@type": "IdentityReference" | "User";
 }
 
 export interface ImagePostForm extends AbstractPostForm {
@@ -517,6 +555,26 @@ export interface JsonEnum extends JsonNode {
   enum: string[];
 }
 
+export interface NamedReference extends UUIDReference {
+  name: string;
+}
+
+export interface UUIDReference {
+  id: string;
+}
+
+export interface ImagePostReference extends AbstractPostReference {
+  "@type": "ImagePost";
+}
+
+export interface VideoPostReference extends AbstractPostReference {
+  "@type": "VideoPost";
+}
+
+export interface TextPostReference extends AbstractPostReference {
+  "@type": "TextPost";
+}
+
 export interface JsonNumeric extends JsonNode {
   type: "integer" | "double" | "float";
   multiplyOf: number;
@@ -526,7 +584,7 @@ export interface JsonNumeric extends JsonNode {
 
 export type LinkType = "table" | "form";
 
-export type Widget = "no-widget" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week" | "select" | "form" | "table" | "repeat" | "lazy-multi-select" | "lazy-select" | "lazy-select-name" | "textarea" | "editor" | "like" | "json";
+export type Widget = "no-widget" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week" | "select" | "form" | "table" | "repeat" | "lazy-multi-select" | "lazy-select" | "lazy-select-name" | "textarea" | "editor" | "like" | "json" | "reference";
 
 export type Status = "PENDING" | "OK" | "DENIED";
 
@@ -534,6 +592,12 @@ export type Format = "noop" | "date-time" | "time" | "date" | "duration" | "emai
 
 export type AbstractPostFormUnion = ImagePostForm | VideoPostForm | TextPostForm;
 
+export type IdentitySelectUnion = UserSelect;
+
 export type ValidatorUnion = DecimalMaxValidator | DecimalMinValidator | DigitsValidator | EmailValidator | FutureOrPresentValidator | FutureValidator | MaxValidator | MinValidator | NegativeOrZeroValidator | NegativeValidator | NotBlankValidator | NotNullValidator | PastOrPresentValidator | PastValidator | PatternValidator | PositiveOrZeroValidator | SizeValidator;
 
 export type JsonNodeUnion = JsonString | JsonInteger | JsonDouble | JsonFloat | JsonObject | JsonArray | JsonBoolean | JsonNull | JsonImage | JsonEnum;
+
+export type AbstractPostReferenceUnion = ImagePostReference | VideoPostReference | TextPostReference;
+
+export type IdentityReferenceUnion = UserReference;

@@ -114,6 +114,11 @@ body {
   overflow: auto;
 }
 
+fieldset {
+  margin: 0;
+  border: 0;
+}
+
 hr {
   border: none;
   height: 1px;

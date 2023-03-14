@@ -1,16 +1,17 @@
 import {Component, HostListener, ViewEncapsulation} from '@angular/core';
 import {AsInfiniteScrollComponent, AsWindowComponent} from "ng2-simplicity";
+import {Post} from "../timeline.component";
 
 @Component({
-  selector: 'app-options',
+  selector: 'app-post-options',
   templateUrl: 'options.component.html',
   styleUrls: ['options.component.css'],
   encapsulation : ViewEncapsulation.None
 })
-export class OptionsComponent {
+export class PostOptionsComponent {
 
   infinite! : AsInfiniteScrollComponent;
-  id! : string
+  post! : Post
 
   constructor(private window : AsWindowComponent) {}
 
@@ -20,9 +21,9 @@ export class OptionsComponent {
   }
 
   onDeleteClick() {
-    secureFetch(`service/home/timeline/post?id=${this.id}`, "DELETE")
+    secureFetch(`service/home/timeline/post?id=${this.post.id}`, "DELETE")
       .then(() => {
-        this.infinite.delete(this.id)
+        this.infinite.delete(this.post)
       })
   }
 

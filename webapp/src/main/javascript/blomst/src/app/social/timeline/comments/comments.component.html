@@ -1,16 +1,13 @@
-<div content style="height: fit-content">
-  <as-scroll-area>
-    <as-infinity-scroll (items)="onLoad($event)">
-      <ng-template [typedTemplate]="typeToken" let-comment>
-        <app-comment [model]="comment" [create]="create"></app-comment>
-      </ng-template>
-    </as-infinity-scroll>
-  </as-scroll-area>
-<!--
-  <form [formGroup]="formGroup">
+<as-expandable-list (items)="onLoad($event)">
+  <ng-template [typedTemplate]="typeToken" let-comment>
+    <app-comment [model]="comment" [list]="list"></app-comment>
+  </ng-template>
+</as-expandable-list>
+<div style="display: flex">
+  <img [src]="startUp.model.form.picture.url" style="max-width: 48px; max-height: 48px; border-radius: 50%">
+  <form style="flex: 1" *ngIf="formGroup" [formGroup]="formGroup">
     <fieldset formGroupName="form">
-      <textarea formControlName="text" (keyup)="onKeyUp($event)"></textarea>
+      <textarea formControlName="text" (keyup)="onKeyUp($event)" placeholder="Write something here..."></textarea>
     </fieldset>
   </form>
--->
 </div>

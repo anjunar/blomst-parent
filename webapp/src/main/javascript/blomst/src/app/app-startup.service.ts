@@ -1,15 +1,42 @@
-import { Injectable } from '@angular/core';
+import {ApplicationRef, Injectable} from '@angular/core';
 import {Router} from "@angular/router";
+import {Form, UserSelect} from "./rest.classes";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppStartupService {
 
-  model! :any
+  model! :Form<UserSelect>
 
-  constructor(private router : Router) {
-    window.secureFetch = function (url : string, method : string = "GET", data? : any) {
+  constructor(private router : Router, private application : ApplicationRef) {
+    let registry = new WeakMap();
+
+    EventTarget.prototype.addEventListener = (function (_super) {
+      return function (name, callback : (event : Event) => void) {
+        let handler = (event : Event) => {
+          callback(event)
+          application.tick();
+        };
+
+        registry.set(callback, handler);
+
+        // @ts-ignore
+        return _super.apply(this, [name, handler])
+      }
+    })(EventTarget.prototype.addEventListener)
+
+    EventTarget.prototype.removeEventListener = (function (_super) {
+      return function (name, callback : (event : Event) => void) {
+
+        let handler = registry.get(callback);
+
+        // @ts-ignore
+        return _super.apply(this, [name, handler])
+      }
+    })(EventTarget.prototype.removeEventListener)
+
+    window.secureFetch = function (url: string, method: string = "GET", data?: any) {
       return new Promise((resolve, reject) => {
         let options = {
           method: method
@@ -24,29 +51,37 @@ export class AppStartupService {
           })
         }
 
-        fetch(url, options).then(response => {
-          if (response.ok) {
-            resolve(response);
-          } else {
-            switch (response.status) {
-              case 401:
-                router.navigate(["/security/login"])
-                break;
-              default:
-                console.log('Some error occured');
-                break;
+        fetch(url, options)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              switch (response.status) {
+                case 401:
+                  router.navigate(["/security/login"])
+                  throw new Error(response.status + "");
+                default:
+                  throw new Error(response.status + "");
+              }
             }
-
+          })
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((response) => {
             reject(response);
-          }
-        })
+          })
+          .finally(() => {
+            setTimeout(() => {
+              application.tick()
+            })
+          })
       });
     }
   }
 
   init() {
     return secureFetch("service")
-      .then(response => response.json())
       .then(response => {
         this.model = response;
       })

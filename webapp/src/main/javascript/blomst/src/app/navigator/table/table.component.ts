@@ -33,7 +33,6 @@ export class TableComponent {
     url.searchParams.append("limit", event.query.limit + "")
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size, response.$schema)
       })

@@ -101,6 +101,7 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
+        response.setId(entity.getId());
 
         CategoriesSearch search = new CategoriesSearch();
         search.setOwner(identityManager.getUser().getId());

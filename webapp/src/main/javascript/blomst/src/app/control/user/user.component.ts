@@ -58,7 +58,6 @@ export class UserComponent extends AppView {
     url.searchParams.append("limit", event.query.limit + "")
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size);
       })
@@ -70,7 +69,6 @@ export class UserComponent extends AppView {
     url.searchParams.append("limit", event.query.limit + "")
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size);
         this.addressSchema = response.$schema;

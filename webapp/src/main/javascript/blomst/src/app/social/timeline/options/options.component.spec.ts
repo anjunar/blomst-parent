@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionsComponent } from './options.component';
+import { PostOptionsComponent } from './options.component';
 
 describe('OptionsComponent', () => {
-  let component: OptionsComponent;
-  let fixture: ComponentFixture<OptionsComponent>;
+  let component: PostOptionsComponent;
+  let fixture: ComponentFixture<PostOptionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OptionsComponent ]
+      declarations: [ PostOptionsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OptionsComponent);
+    fixture = TestBed.createComponent(PostOptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

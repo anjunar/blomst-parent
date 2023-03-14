@@ -6,7 +6,7 @@
   <div middle>{{name}}</div>
   <div right>
     <a style="cursor: pointer" (click)="onUserSettings($event)">
-      <img *ngIf="image" style="height: 32px; width: 32px;border-radius: 50%" [src]="'service/shared/media/' + image">
+      <img *ngIf="image" style="height: 32px; width: 32px;border-radius: 50%" [src]="image">
     </a>
   </div>
 </as-toolbar>
@@ -23,7 +23,7 @@
     </as-drawer>
     <as-drawer-content>
       <as-scroll-area>
-        <router-outlet></router-outlet>
+        <router-outlet (activate)="onActivate()"></router-outlet>
       </as-scroll-area>
     </as-drawer-content>
   </as-drawer-container>

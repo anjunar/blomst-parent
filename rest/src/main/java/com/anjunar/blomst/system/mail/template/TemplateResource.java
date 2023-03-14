@@ -102,6 +102,7 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
         entityManager.persist(template);
 
         ResponseOk response = new ResponseOk();
+        response.setId(template.getId());
 
         linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
                 .withRel("redirect")

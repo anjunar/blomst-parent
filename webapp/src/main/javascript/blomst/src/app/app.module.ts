@@ -21,13 +21,15 @@ import { LikesPopupComponent } from './shared/likes/likes-popup/likes-popup.comp
 import { UserComponent } from './control/user/user.component';
 import { VisibilityComponent } from './shared/visibility/visibility.component';
 import { AddressComponent } from './control/user/address/address.component';
-import { OptionsComponent } from './social/timeline/options/options.component';
+import { PostOptionsComponent } from './social/timeline/options/options.component';
 import { TextPostComponent } from './social/timeline/post/text-post/text-post.component';
 import { ImagePostComponent } from './social/timeline/post/image-post/image-post.component';
 import { VideoPostComponent } from './social/timeline/post/video-post/video-post.component';
 import { CommentsComponent } from './social/timeline/comments/comments.component';
 import { TypedTemplateDirective } from './typed-template.directive';
 import { CommentComponent } from './social/timeline/comments/comment/comment.component';
+import { PostComponent } from './social/timeline/post/post.component';
+import {CommentOptionsComponent} from "./social/timeline/comments/comment/options/options.component";
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -52,12 +54,14 @@ function appConfigFactory(service : AppStartupService) {
     UserComponent,
     VisibilityComponent,
     AddressComponent,
-    OptionsComponent,
+    PostOptionsComponent,
     TextPostComponent,
     ImagePostComponent,
     VideoPostComponent,
     CommentsComponent,
-    CommentComponent
+    CommentComponent,
+    PostComponent,
+    CommentOptionsComponent
   ],
   imports: [
     BrowserModule,

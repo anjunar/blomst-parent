@@ -60,7 +60,10 @@ public class AlternativeResource implements FormResourceTemplate<AlternativeForm
 
         entityManager.persist(entity);
 
-        return new ResponseOk();
+        ResponseOk responseOk = new ResponseOk();
+        responseOk.setId(entity.getId());
+
+        return responseOk;
     }
 
     @Override

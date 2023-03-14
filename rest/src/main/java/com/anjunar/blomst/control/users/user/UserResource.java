@@ -267,6 +267,7 @@ public class UserResource implements FormResourceTemplate<UserForm> {
         entityManager.persist(user);
 
         ResponseOk response = new ResponseOk();
+        response.setId(user.getId());
 
         linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .withRel("redirect")

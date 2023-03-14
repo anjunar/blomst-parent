@@ -38,7 +38,6 @@ export class FormComponent {
     let url = `service/shared/visibility/column?property=${property}&class=${model["@type"]}&id=${model.id}`;
 
     secureFetch(url)
-      .then(response => response.json())
       .then(response => {
         let windowRef = this.windowManager.create(VisibilityComponent, {header: "Visibility", width: "300px"});
         windowRef.instance.property = property;

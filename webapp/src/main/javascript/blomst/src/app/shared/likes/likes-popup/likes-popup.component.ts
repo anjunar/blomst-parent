@@ -23,7 +23,6 @@ export class LikesPopupComponent implements AfterViewInit {
     url.searchParams.append("limit", event.query.limit + "")
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows || [])
       })

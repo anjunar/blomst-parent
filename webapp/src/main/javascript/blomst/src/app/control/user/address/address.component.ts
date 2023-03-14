@@ -21,7 +21,6 @@ export class AddressComponent {
     url.searchParams.append("value", event.query.value)
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size)
       })
@@ -35,7 +34,6 @@ export class AddressComponent {
     url.searchParams.append("owner", this.service.model.form.id)
 
     secureFetch(url.toString())
-      .then(response => response.json())
       .then(response => {
         event.callback(response.rows, response.size)
       })

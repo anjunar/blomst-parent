@@ -22,20 +22,18 @@ public class CommentForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text", naming = true)
     private String text;
 
-    @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Post", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Post", readOnly = true)
     private AbstractPostReference post;
 
-    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Parent Comment", readOnly = true)
+    @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Parent Comment", readOnly = true)
     private CommentReference parent;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
     private UserSelect owner;
 
-    @NotNull
-    @JsonSchema(widget = JsonNode.Widget.LIKE, title = "Likes")
-    @MapperConverter(LikesConverter.class)
-    private boolean likes = false;
+    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Empty", readOnly = true)
+    private boolean empty;
 
     public String getText() {
         return text;
@@ -69,13 +67,11 @@ public class CommentForm extends AbstractLikeableRestEntity {
         this.owner = owner;
     }
 
-    @Override
-    public boolean isLikes() {
-        return likes;
+    public boolean isEmpty() {
+        return empty;
     }
 
-    @Override
-    public void setLikes(boolean likes) {
-        this.likes = likes;
+    public void setEmpty(boolean empty) {
+        this.empty = empty;
     }
 }

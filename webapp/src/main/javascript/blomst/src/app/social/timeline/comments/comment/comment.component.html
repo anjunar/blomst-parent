@@ -1,18 +1,26 @@
-<div style="display: flex; width: calc(100% - 16px); padding: 8px">
-  <img style="width: 48px; height: 48px; border-radius: 50%" [src]="'service/shared/media/' + model.owner.picture.id">
-  <div style="flex: 1; padding: 5px">
-    {{model.owner.name}}
-    <br/>
-    <div style="display: flex">
-      <div style="flex: 1">{{model.text}}</div>
-      <app-likes #likes [model]="model"></app-likes>
+<div style="display: flex; width: 100%;">
+  <img style="width: 48px; height: 48px; border-radius: 50%" [src]="model.owner.picture.url">
+  <div style="flex: 1; padding: 5px;">
+    <div class="options">
+      <strong style="color: var(--main-grey-color)">
+        {{model.owner.name}}
+      </strong>
+      <br/>
+      <div style="display: flex; margin-top: 5px">
+        <div style="flex: 1; display: flex">
+          <div>{{model.text}}</div>
+          <button type="button" class="material-icons options" (click)="onOptionsClick($event)">more_vert</button>
+        </div>
+        <app-likes #likes [model]="model"></app-likes>
+      </div>
+      <br/>
+      <button class="normal" (click)="onLike(model, likes)">
+        <span class="material-icons" style="font-size: small; vertical-align: -2px; margin-right: 5px">thumb_up</span>I Like
+      </button>
+      <button class="normal" style="margin-left: 5px" (click)="reply = ! reply">Reply</button>
     </div>
-    <br/>
-    <button class="normal" (click)="onLike(model, likes)">
-      <span class="material-icons" style="font-size: small; vertical-align: -2px; margin-right: 5px">thumb_up</span>I Like
-    </button>
-    <button class="normal" style="margin-left: 5px" (click)="reply = ! reply">Reply</button>
-    <app-comments *ngIf="reply" [commentId]="model.id" [create]="create"></app-comments>
+    <app-comments *ngIf="reply || ! model.empty" [comment]="model"></app-comments>
   </div>
 </div>
+
 

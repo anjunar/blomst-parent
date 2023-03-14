@@ -28,7 +28,6 @@ export class RegisterComponent extends AppView {
   onSubmit() {
     let body = this.form.getValue()
     secureFetch("service/security/register", "POST", body)
-      .then(response => response.json())
       .then(response => {
         this.router.navigate(["/timeline"])
       })

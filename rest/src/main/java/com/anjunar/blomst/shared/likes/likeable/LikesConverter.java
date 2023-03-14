@@ -8,20 +8,27 @@ import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.Set;
 
-public class LikesConverter implements MapperConverterType<Set<User>, Boolean, Likeable> {
+public class LikesConverter implements MapperConverterType<Set<User>, LikesType, Likeable> {
 
     @Override
-    public Boolean factory(Set<User> entity) {
+    public LikesType factory(Set<User> entity) {
         IdentityStore identityStore = CDI.current().select(IdentityStore.class).get();
         User user = identityStore.getUser();
-        return entity.contains(user);
+
+        int size = entity.size();
+
+        LikesType likesType = new LikesType();
+        likesType.setCount(size);
+        likesType.setActive(entity.contains(user));
+
+        return likesType;
     }
 
     @Override
-    public Set<User> updater(Boolean dto, Likeable likeable) {
+    public Set<User> updater(LikesType dto, Likeable likeable) {
         IdentityStore identityStore = CDI.current().select(IdentityStore.class).get();
         User user = identityStore.getUser();
-        if (dto) {
+        if (dto.isActive()) {
             likeable.getLikes().add(user);
         } else {
             likeable.getLikes().remove(user);

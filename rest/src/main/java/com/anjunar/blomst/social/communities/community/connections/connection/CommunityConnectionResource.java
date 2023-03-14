@@ -125,6 +125,7 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
         entityManager.persist(entity);
 
         ResponseOk response = new ResponseOk();
+        response.setId(entity.getId());
 
         linkTo(methodOn(CommunityConnectionsResource.class).list(new CommunityConnectionsSearch()))
                 .withRel("redirect")

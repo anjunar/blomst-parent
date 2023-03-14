@@ -118,6 +118,7 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
         entityManager.persist(question);
 
         ResponseOk response = new ResponseOk();
+        response.setId(question.getId());
 
         linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
                 .withRel("redirect")

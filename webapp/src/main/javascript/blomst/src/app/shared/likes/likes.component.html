@@ -1,7 +1,7 @@
 <a style="cursor: pointer" class="container" (click)="onShowUsers($event)">
   <div style="display: flex; align-items: center">
-    <span class="material-icons" [style.color]="model.likes ? 'var(--main-selected-color)' : 'var(--main-font-color)'" style="vertical-align: -5px">thumb_up</span>
-    <span style="font-size: small; margin-left: 5px">{{size}}</span>
+    <span class="material-icons" [style.color]="model.likes.active ? 'var(--main-selected-color)' : 'var(--main-font-color)'" style="vertical-align: -5px">thumb_up</span>
+    <span style="font-size: small; margin-left: 5px">{{model.likes.count}}</span>
   </div>
 </a>
 

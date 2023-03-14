@@ -26,13 +26,7 @@ export class AppResolver implements Resolve<any> {
 
     let promises = [];
     for (const url of processed) {
-      promises.push(secureFetch(url)
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          }
-          throw new Error("")
-        }))
+      promises.push(secureFetch(url));
     }
 
     return Promise.all(promises);
