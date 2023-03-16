@@ -38,7 +38,7 @@ export class AppComponent extends AppMain implements AfterViewInit {
   constructor(
     private router: Router,
     private navigator: AppNavigatorService,
-    private startUp: AppStartupService,
+    public startUp: AppStartupService,
     private changeDetectionRef: ChangeDetectorRef,
     windowManager: WindowManagerService,
     contextManager: ContextManagerService,

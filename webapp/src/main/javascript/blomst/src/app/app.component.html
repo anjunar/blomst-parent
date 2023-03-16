@@ -1,7 +1,7 @@
 <div style="height: 38px"></div>
 <as-toolbar style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position: absolute; z-index: 9999">
   <div left style="display: flex">
-    <a *ngIf="isLoggedIn" class="material-icons" (click)="open = ! open" style="vertical-align: 4px">home</a>
+    <a *ngIf="isLoggedIn" class="material-icons menu" (click)="open = ! open" style="vertical-align: 4px">menu</a>
   </div>
   <div middle>{{name}}</div>
   <div right>
@@ -14,11 +14,43 @@
   <as-drawer-container style="height: calc(100% - 38px)">
     <as-drawer [open]="open && isLoggedIn">
       <nav>
-        <ul>
+
+        <h1>Navigation</h1>
+        <hr/>
+
+        <ul style="list-style: none; padding-left: 20px">
+          <li>
+            <a [routerLink]="['/' + startUp.model.form.nickName]" routerLinkActive="active">
+              <p style="display: flex; align-items: center">
+                <span class="material-icons">home</span>
+                <span style="margin-left: 8px">Home</span>
+              </p>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/timeline" routerLinkActive="active">
+              <p style="display: flex; align-items: center">
+                <span class="material-icons">feed</span>
+                <span style="margin-left: 8px">Timeline</span>
+              </p>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/friends" routerLinkActive="active">
+              <p style="display: flex; align-items: center">
+                <span class="material-icons">diversity_3</span>
+                <span style="margin-left: 8px">Friends</span>
+              </p>
+            </a>
+          </li>
+        </ul>
+
+        <ul style="list-style: none; padding-left: 20px">
           <li *ngFor="let entry of links | keyvalue : originalOrder">
             <a [routerLink]="['/navigator/' + $any(entry).value.type]" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
           </li>
         </ul>
+
       </nav>
     </as-drawer>
     <as-drawer-content>

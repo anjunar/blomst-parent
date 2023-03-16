@@ -18,9 +18,9 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
-    "ng2-simplicity": "^1.0.1",
     "mapbox-gl": "^2.13.0",
     "moment": "^2.29.4",
+    "angular15-simplicity": "^0.9.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

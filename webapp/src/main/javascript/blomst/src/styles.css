@@ -35,6 +35,11 @@ html {
   background-color: inherit;
 }
 
+body {
+  font-family: "Segoe UI", "Helvetica", sans-serif;
+  font-size: 14px;
+}
+
 button.thin {
   border: 0;
   cursor: pointer;

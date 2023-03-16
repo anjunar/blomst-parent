@@ -9,8 +9,13 @@ import {LoginComponent} from "./security/login/login.component";
 import {FormComponent} from "./navigator/form/form.component";
 import {TableComponent} from "./navigator/table/table.component";
 import {UserComponent} from "./control/user/user.component";
+import {FriendsComponent} from "./control/user/friends/friends.component";
 
 const routes: Routes = [
+  {
+    path : "friends",
+    component : FriendsComponent
+  },
   {
     path : "timeline",
     component : TimelineComponent

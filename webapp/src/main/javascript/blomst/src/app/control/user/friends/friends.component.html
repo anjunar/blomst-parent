@@ -1,0 +1,8 @@
+<div style="min-width: 400px; max-width: 680px; margin: auto;">
+  <as-infinity-scroll (items)="postsLoader($event)">
+    <ng-template [typedTemplate]="typeToken" let-friend>
+      <app-friend [model]="friend"></app-friend>
+    </ng-template>
+  </as-infinity-scroll>
+</div>
+

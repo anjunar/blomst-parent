@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
 import {Link, SelectQuery, WindowManagerService} from "ng2-simplicity";
@@ -10,7 +10,7 @@ import {VisibilityComponent} from "../../shared/visibility/visibility.component"
   styleUrls: ['form.component.css'],
   encapsulation : ViewEncapsulation.None
 })
-export class FormComponent {
+export class FormComponent implements OnDestroy {
 
   model : any;
 
@@ -32,6 +32,10 @@ export class FormComponent {
     })
   }
 
+  ngOnDestroy(): void {
+    this.service.links = [];
+  }
+
   onVisibilityColumnClick(event: Event, property: string, model : any) {
     event.stopPropagation();
 
@@ -50,7 +54,6 @@ export class FormComponent {
   onSubmit(event : {link : {key : string, value : Link}, model : any}) {
     let method = event.link.value.method;
     secureFetch(event.link.value.url, method, event.model.form)
-      .then((response) => response.json())
       .then((response) => {
         if (response.$schema.links.redirect) {
           let link = response.$schema.links.redirect;

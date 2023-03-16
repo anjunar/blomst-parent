@@ -26,8 +26,8 @@ public class UserConnectionForm extends AbstractRestEntity {
     private boolean accepted;
 
     @NotNull
-    @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "To")
-    private UserReference to;
+    @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
+    private UserSelect to;
 
     public UserReference getFrom() {
         return from;
@@ -53,11 +53,11 @@ public class UserConnectionForm extends AbstractRestEntity {
         this.accepted = accepted;
     }
 
-    public UserReference getTo() {
+    public UserSelect getTo() {
         return to;
     }
 
-    public void setTo(UserReference to) {
+    public void setTo(UserSelect to) {
         this.to = to;
     }
 

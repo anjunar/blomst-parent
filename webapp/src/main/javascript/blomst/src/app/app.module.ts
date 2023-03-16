@@ -30,6 +30,9 @@ import { TypedTemplateDirective } from './typed-template.directive';
 import { CommentComponent } from './social/timeline/comments/comment/comment.component';
 import { PostComponent } from './social/timeline/post/post.component';
 import {CommentOptionsComponent} from "./social/timeline/comments/comment/options/options.component";
+import { FriendsComponent } from './control/user/friends/friends.component';
+import { FriendComponent } from './control/user/friends/friend/friend.component';
+import { DetailsComponent } from './control/user/details/details.component';
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -61,7 +64,10 @@ function appConfigFactory(service : AppStartupService) {
     CommentsComponent,
     CommentComponent,
     PostComponent,
-    CommentOptionsComponent
+    CommentOptionsComponent,
+    FriendsComponent,
+    FriendComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -76,9 +76,7 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         resource.setFrom(reference);
 
         if (Objects.nonNull(toId)) {
-            UserReference userReference = new UserReference();
-            userReference.setId(toId);
-            resource.setTo(userReference);
+            resource.setTo(restMapper.map(entityManager.find(User.class, toId), UserSelect.class));
         }
 
         linkTo(methodOn(UserConnectionResource.class).save(new UserConnectionForm()))
@@ -109,9 +107,8 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         UserReference from = new UserReference();
         from.setId(entity.getFrom().getId());
         form.getForm().setFrom(from);
-        UserReference to = new UserReference();
-        to.setId(entity.getTo().getId());
-        form.getForm().setTo(to);
+
+        form.getForm().setTo(restMapper.map(entity.getTo(), UserSelect.class));
 
         UserConnection acceptedConnection = service.accepted(entity.getFrom().getId(), entity.getTo().getId());
         if (acceptedConnection != null) {

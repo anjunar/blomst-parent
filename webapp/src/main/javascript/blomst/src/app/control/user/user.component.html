@@ -1,112 +1,42 @@
-<div style="max-width: 600px; margin: auto;">
-  <div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div formGroupName="form">
-        <div style="position: relative">
-          <as-image-upload formControlName="background" style="max-width: 600px; height: 200px" [cropping]="true"></as-image-upload>
-          <div style="height: 128px; width: 128px; bottom: -32px; left: 10px; position: absolute;">
-            <as-image-upload formControlName="picture" [cropping]="true" style="width: 128px; height: 128px"></as-image-upload>
-          </div>
+<div style="display: flex; justify-content: center">
+  <div style="min-width: 400px; max-width: 680px">
+    <div>
+      <div style="position: relative">
+        <as-image-upload [(ngModel)]="$any(user).form.background" style="width: max(400px, 680px); height: 200px" [cropping]="true"></as-image-upload>
+        <div style="height: 128px; width: 128px; bottom: -32px; left: 10px; position: absolute;">
+          <as-image-upload [(ngModel)]="$any(user).form.picture" [cropping]="true" style="width: 128px; height: 128px"></as-image-upload>
         </div>
-
-        <as-tabs [(page)]="page" style="margin-top: 64px; margin-bottom: 10px">
-          <as-tab>Timeline</as-tab>
-          <as-tab>Details</as-tab>
-          <as-tab>Life Events</as-tab>
-        </as-tabs>
-
-        <as-pages [page]="page">
-          <as-page>
-            <ng-template>
-              <app-timeline [owner]="user.form.id"></app-timeline>
-            </ng-template>
-          </as-page>
-          <as-page>
-            <ng-template>
-              <div>
-                <as-input-container placeholder="Nick Name">
-                  <input type="text" formControlName="nickName">
-                </as-input-container>
-                <div style="display: flex; width: 100%;" *ngIf="properties['firstName']">
-                  <as-input-container style="flex: 1" placeholder="First Name">
-                    <input type="text" formControlName="firstName">
-                  </as-input-container>
-                  <button class="material-icons" (click)="onVisibilityColumnClick($event, 'firstName', user.form)">security</button>
-                </div>
-                <div style="display: flex; width: 100%;" *ngIf="properties['lastName']">
-                  <as-input-container style="flex: 1" placeholder="Last Name">
-                    <input type="text" formControlName="lastName">
-                  </as-input-container>
-                  <button class="material-icons" (click)="onVisibilityColumnClick($event, 'lastName', user.form)">security</button>
-                </div>
-                <div style="display: flex; width: 100%;" *ngIf="properties['birthDate']">
-                  <as-input-container style="flex: 1" placeholder="Birthdate">
-                    <input type="date" formControlName="birthDate">
-                  </as-input-container>
-                  <button class="material-icons" (click)="onVisibilityColumnClick($event, 'birthDate', user.form)">security</button>
-                </div>
-                <div *ngIf="properties['roles']">
-                  <as-input-container placeholder="Roles">
-                    <as-lazy-select (items)="onRolesLoad($event)" formControlName="roles" [multiSelect]="true">
-                      <ng-template let-role>
-                        {{role.name}}
-                      </ng-template>
-                    </as-lazy-select>
-                  </as-input-container>
-                </div>
-                <div style="display: flex; width: 100%; align-items: flex-start" *ngIf="properties['emails']">
-                  <div formArrayName="emails" style="flex: 1;">
-                    <div *ngFor="let email of emails.controls" [formGroup]="$any(email)" style="display: flex">
-                      <as-input-container style="flex: 1" placeholder="Email">
-                        <input type="email" formControlName="value">
-                      </as-input-container>
-                      <button type="button" class="material-icons" (click)="removeEmail(email)">delete</button>
-                    </div>
-                    <div style="display: flex; align-items: center">
-                      <button type="button" class="material-icons" (click)="addEmail(properties['emails'])">add</button>
-                      <div style="font-size: small;">Add Email</div>
-                    </div>
-                  </div>
-                  <button class="material-icons" (click)="onVisibilityColumnClick($event, 'emails', user.form)" style="height: 40px">security</button>
-                </div>
-              </div>
-              <div style="display: flex;">
-                <div style="flex: 1;"></div>
-                <button *ngIf="user.$schema.links['update']" type="submit" class="normal">Submit</button>
-              </div>
-
-              <as-lazy-list (items)="onAddressesLoad($event)" #addresses>
-                <ng-template let-address>
-                  <div style="display: flex; align-items: flex-start; padding-top: 10px">
-                    <address style="font-style: normal; font-size: small; flex: 1; display: flex">
-                      <div style="flex: 1">
-                        <div><strong>{{address.description}}</strong></div>
-                        <br/>
-                        <div>{{address.street}}</div>
-                        <div>{{address.zipCode}}</div>
-                        <div>{{address.state}}</div>
-                        <div>{{address.country}}</div>
-                      </div>
-                      <div style="width: 168px; height: 168px" [id]="address.id"></div>
-                    </address>
-                    <button type="button" class="material-icons" (click)="removeAddress(address)" style="height: 40px; margin-left: 5px">delete</button>
-                    <button class="material-icons" (click)="onVisibilityRowClick($event, address)" style="height: 40px">security</button>
-                  </div>
-                </ng-template>
-              </as-lazy-list>
-              <div *ngIf="addressSchema?.links?.create" style="display: flex; align-items: center">
-                <button type="button" class="material-icons" (click)="addAddress($event)">add</button>
-                <span style="font-size: small;">Add Address</span>
-              </div>
-            </ng-template>
-          </as-page>
-          <as-page>
-            <ng-template>
-              Life Events
-            </ng-template>
-          </as-page>
-        </as-pages>
       </div>
-    </form>
+
+      <as-tabs [(page)]="page" style="margin-top: 64px; margin-bottom: 10px">
+        <as-tab>Timeline</as-tab>
+        <as-tab>Details</as-tab>
+        <as-tab>Life Events</as-tab>
+        <as-tab>Friends</as-tab>
+      </as-tabs>
+
+      <as-pages [page]="page">
+        <as-page>
+          <ng-template>
+            <app-timeline [owner]="user.form"></app-timeline>
+          </ng-template>
+        </as-page>
+        <as-page>
+          <ng-template>
+            <app-details [form]="form" [user]="user"></app-details>
+          </ng-template>
+        </as-page>
+        <as-page>
+          <ng-template>
+            Life Events
+          </ng-template>
+        </as-page>
+        <as-page>
+          <ng-template>
+            <app-friends></app-friends>
+          </ng-template>
+        </as-page>
+      </as-pages>
+    </div>
   </div>
 </div>

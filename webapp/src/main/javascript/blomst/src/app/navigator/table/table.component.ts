@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {TableQuery} from "ng2-simplicity";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
@@ -8,7 +8,7 @@ import {AppNavigatorService} from "../app-navigator.service";
   templateUrl: 'table.component.html',
   styleUrls: ['table.component.css']
 })
-export class TableComponent {
+export class TableComponent implements OnDestroy {
 
   link!: string;
 
@@ -18,6 +18,10 @@ export class TableComponent {
     route.queryParams.subscribe(params => {
       this.header = atob(params["link"])
     })
+  }
+
+  ngOnDestroy(): void {
+    this.service.links = [];
   }
 
   ngOnInit(): void {

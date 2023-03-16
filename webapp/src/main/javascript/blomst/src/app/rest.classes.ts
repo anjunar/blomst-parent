@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-11 20:50:02.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-15 16:31:57.
 
 export interface UserForm extends AbstractRestEntity {
   "@type": "User";
@@ -18,6 +18,7 @@ export interface UserForm extends AbstractRestEntity {
 }
 
 export interface ResponseOk extends AbstractSchemaEntity {
+  id: string;
   ok: boolean;
 }
 
@@ -162,7 +163,7 @@ export interface UserConnectionForm extends AbstractRestEntity {
   from: UserReference;
   category: CategoryForm;
   accepted: boolean;
-  to: UserReference;
+  to: UserSelect;
 }
 
 export interface CommunityForm extends AbstractRestEntity {

@@ -11,7 +11,14 @@ import {TextPostComponent} from "./post/text-post/text-post.component";
 import {ImagePostComponent} from "./post/image-post/image-post.component";
 import {VideoPostComponent} from "./post/video-post/video-post.component";
 import {CommentsComponent} from "./comments/comments.component";
-import {AbstractPostForm, AbstractPostFormUnion, MediaType} from "../../rest.classes";
+import {
+  AbstractPostForm,
+  AbstractPostFormUnion,
+  AbstractRestEntity,
+  MediaType,
+  UserForm,
+  UserSelect
+} from "../../rest.classes";
 
 export interface Post extends AbstractPostForm {
   image: MediaType;
@@ -26,14 +33,14 @@ export interface Post extends AbstractPostForm {
 })
 export class TimelineComponent {
 
-  @Input() owner!: string
+  @Input() owner!: AbstractRestEntity
 
   @ViewChild(AsInfiniteScrollComponent) infinite!: AsInfiniteScrollComponent
 
   typeToken!: { $implicit: Post };
 
   constructor(public service: AppStartupService, private windowManager: WindowManagerService) {
-    this.owner = service.model.form.id;
+    this.owner = service.model.form;
   }
 
   postsLoader(event: { query: InfinityQuery, callback: (rows: any) => void }) {
@@ -43,7 +50,7 @@ export class TimelineComponent {
     url.searchParams.append("limit", event.query.limit + "")
 
     if (this.owner) {
-      url.searchParams.append("owner", this.owner)
+      url.searchParams.append("owner", this.owner.id)
     }
 
     secureFetch(url.toString())
