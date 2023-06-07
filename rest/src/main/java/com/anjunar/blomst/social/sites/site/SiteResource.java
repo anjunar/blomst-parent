@@ -183,7 +183,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Site")
     @Override
-    public ResponseOk save(SiteForm form) {
+    public SiteForm save(SiteForm form) {
         Site entity = restMapper.map(form, Site.class);
 
         entity.getName().setOwner(identityManager.getUser());
@@ -191,15 +191,13 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         entity.getPhone().setOwner(identityManager.getUser());
 
         entityManager.persist(entity);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(entity.getId());
+        form.setId(entity.getId());
 
         linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     private Alternative top1(String property, String entity) {
@@ -223,7 +221,7 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site")
     @Override
-    public ResponseOk update(UUID id, SiteForm form) {
+    public SiteForm update(UUID id, SiteForm form) {
 
         Site entity = restMapper.map(form, Site.class);
 
@@ -237,13 +235,11 @@ public class SiteResource implements FormResourceTemplate<SiteForm> {
         entity.setPhone(phone);
         entity.setHomepage(homepage);
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(SitesResource.class).list(new SitesSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User"})

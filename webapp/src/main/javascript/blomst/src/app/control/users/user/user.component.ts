@@ -1,6 +1,6 @@
 import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {AppView} from "../../app.classes";
+import {AppView} from "../../../app.classes";
 import {
   AsLazyListComponent,
   AsMetaFormService,
@@ -11,9 +11,9 @@ import {
   WindowManagerService
 } from "ng2-simplicity";
 import {FormArray, FormGroup} from "@angular/forms";
-import {AddressComponent} from "./address/address.component";
+import {AddressComponent} from "./details/address/address.component";
 import * as mapbox from "mapbox-gl"
-import {Form, JsonNodeUnion, JsonObject, UserForm} from "../../rest.classes";
+import {Form, JsonNodeUnion, JsonObject, UserConnectionForm, UserForm} from "../../../rest.classes";
 
 (mapbox as typeof mapbox).accessToken = "pk.eyJ1IjoiYW5qdW5hciIsImEiOiJjbDFuczBnc20wd2g4M2NvMm1yMWp4aHpiIn0.1KbDOpN0gPaRq5MzS-N0Zw";
 

@@ -58,11 +58,13 @@ public class UserConnectionsResource implements ListResourceTemplate<UserConnect
         for (UserConnection connection : connections) {
             UserConnectionForm form = mapper.map(connection, UserConnectionForm.class, table);
 
+/*
             for (UserConnection acceptedConnection : accepted) {
                 if (acceptedConnection.getFrom().equals(connection.getTo())) {
                     form.setAccepted(true);
                 }
             }
+*/
 
             linkTo(methodOn(UserConnectionResource.class).read(form.getId()))
                     .build(form::addLink);

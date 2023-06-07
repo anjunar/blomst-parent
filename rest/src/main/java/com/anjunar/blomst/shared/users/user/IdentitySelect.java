@@ -1,10 +1,12 @@
 package com.anjunar.blomst.shared.users.user;
 
+import com.anjunar.common.filedisk.MediaURLConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +22,7 @@ public class IdentitySelect extends AbstractRestEntity {
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture", readOnly = true)
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(MediaURLConverter.class)
     private MediaType picture;
 
     public String getName() {

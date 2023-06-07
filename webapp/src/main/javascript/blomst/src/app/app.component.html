@@ -45,17 +45,11 @@
           </li>
         </ul>
 
-        <ul style="list-style: none; padding-left: 20px">
-          <li *ngFor="let entry of links | keyvalue : originalOrder">
-            <a [routerLink]="['/navigator/' + $any(entry).value.type]" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
-          </li>
-        </ul>
-
       </nav>
     </as-drawer>
     <as-drawer-content>
       <as-scroll-area>
-        <router-outlet (activate)="onActivate()"></router-outlet>
+        <router-outlet (activate)="activate()"></router-outlet>
       </as-scroll-area>
     </as-drawer-content>
   </as-drawer-container>

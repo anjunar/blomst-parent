@@ -115,7 +115,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Answer")
-    public ResponseOk save(AnswerForm resource) {
+    public AnswerForm save(AnswerForm resource) {
 
         Answer answer = restMapper.map(resource, Answer.class);
         answer.setOwner(identityManager.getUser());
@@ -129,14 +129,14 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
                 .withRel("redirect")
                 .build(response::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Answer")
     @MethodPredicate(AnswerOwnerPredicate.class)
-    public ResponseOk update(UUID id, AnswerForm resource) {
+    public AnswerForm update(UUID id, AnswerForm resource) {
 
         Answer entity = restMapper.map(resource, Answer.class);
         entity.setOwner(identityManager.getUser());
@@ -147,7 +147,7 @@ public class AnswerResource implements FormResourceTemplate<AnswerForm> {
                 .withRel("redirect")
                 .build(response::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override

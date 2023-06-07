@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.sites.site;
 
-import com.anjunar.blomst.control.users.user.ImageConverter;
+import com.anjunar.common.filedisk.MediaURLConverter;
 import com.anjunar.blomst.shared.alternatives.alternative.AlternativeForm;
 import com.anjunar.blomst.shared.mapbox.MapBoxConverter;
 import com.anjunar.blomst.social.info.addresses.MapBoxAddress;
@@ -31,7 +31,7 @@ public class SiteForm extends AbstractRestEntity {
     private MapBoxAddress address;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Image")
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(MediaURLConverter.class)
     private MediaType picture;
 
     public AlternativeForm getName() {

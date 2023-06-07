@@ -169,7 +169,7 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Post")
-    public ResponseOk save(AbstractPostForm resource) {
+    public AbstractPostForm save(AbstractPostForm resource) {
 
         AbstractPost post = resource.accept(new AbstractPostFormVisitor<>() {
             @Override
@@ -217,22 +217,20 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
         post.setOwner(identityManager.getUser());
 
         entityManager.persist(post);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(post.getId());
+        resource.setId(post.getId());
 
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerPostIdentity.class)
     @LinkDescription("Update Post")
-    public ResponseOk update(UUID id, AbstractPostForm resource) {
+    public AbstractPostForm update(UUID id, AbstractPostForm resource) {
         AbstractPost post = entityManager.find(AbstractPost.class, id);
         Set<User> rawLikes = Sets.newHashSet(post.getLikes());
 
@@ -272,13 +270,11 @@ public class PostResource implements FormResourceTemplate<AbstractPostForm> {
             }
         }
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(TimelineResource.class).list(new TimelineSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override

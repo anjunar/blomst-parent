@@ -1,4 +1,13 @@
 {{header}}
+
+<ul style="list-style: none; padding-left: 20px">
+  <li *ngFor="let entry of links | keyvalue : originalOrder">
+    <a [routerLink]="['/navigator/' + $any(entry).value.type]" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
+  </li>
+</ul>
+
+<br/>
+
 <as-meta-form [model]="model" (submit)="onSubmit($event)">
   <ng-template let-node let-model="model">
     <button type="button" class="material-icons" (click)="onVisibilityColumnClick($event, $any(node).key, model)">security</button>

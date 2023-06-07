@@ -160,6 +160,24 @@ public class ResourceEntityMapper {
                 Object sourcePropertyInstance = sourceProperty.apply(source);
                 Object destinationPropertyInstance = destinationProperty.apply(destination);
 
+                Class<? super Object> propertyType = destinationProperty.getType().getRawType();
+                if (! Objects.nonNull(destinationPropertyInstance) && Collection.class.isAssignableFrom(propertyType)) {
+                    Object collection = null;
+                    if (propertyType.equals(Set.class)) {
+                        collection = new HashSet<>();
+                    }
+                    if (propertyType.equals(List.class)) {
+                        collection = new ArrayList<>();
+                    }
+                    if (propertyType.equals(Map.class)) {
+                        collection = new HashMap<>();
+                    }
+                    if (Objects.nonNull(collection)) {
+                        destinationProperty.accept(destination, collection);
+                        destinationPropertyInstance = collection;
+                    }
+                }
+
                 if (Objects.nonNull(sourcePropertyInstance)) {
                     if (securityProviders.stream().allMatch(securityProvider -> securityProvider.execute(source, sourceProperty, destination, destinationProperty))) {
                         MapperConverter mapperConverter = destinationProperty.getAnnotation(MapperConverter.class);

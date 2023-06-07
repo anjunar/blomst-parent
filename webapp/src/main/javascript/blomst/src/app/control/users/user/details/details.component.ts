@@ -1,6 +1,6 @@
-import {Component, Input, ViewChild, ViewEncapsulation} from '@angular/core';
-import {Form, JsonNodeUnion, JsonObject, UserForm} from "../../../rest.classes";
-import {AppView} from "../../../app.classes";
+import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Form, JsonNodeUnion, JsonObject, UserForm} from "../../../../rest.classes";
+import {AppView} from "../../../../app.classes";
 import {FormArray, FormGroup} from "@angular/forms";
 import {
   AsLazyListComponent,
@@ -12,7 +12,7 @@ import {
   WindowManagerService
 } from "ng2-simplicity";
 import * as mapbox from "mapbox-gl";
-import {AddressComponent} from "../address/address.component";
+import {AddressComponent} from "./address/address.component";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -21,16 +21,21 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['details.component.css'],
   encapsulation : ViewEncapsulation.None
 })
-export class DetailsComponent extends AppView {
+export class DetailsComponent extends AppView implements OnInit {
 
-  @Input() form!: MetaFormGroup;
   @Input() user!: Form<UserForm>;
+
+  form!: MetaFormGroup;
   addressSchema! : any
 
   @ViewChild(AsLazyListComponent) addresses!: AsLazyListComponent
 
   constructor(route: ActivatedRoute, windowManager: WindowManagerService, private model2Schema: AsMetaFormService) {
-    super(route, windowManager);
+    super(route, windowManager)
+  }
+
+  ngOnInit(): void {
+    this.form = this.model2Schema.create(this.user.$schema.properties, this.user)
   }
 
   get properties(): { [p: string]: JsonNodeUnion } {
@@ -45,7 +50,7 @@ export class DetailsComponent extends AppView {
 
   onSubmit() {
     let user = this.form.getValue();
-    secureFetch("service/control/users/user", "PUT", user)
+    secureFetch("service/control/users/user", "PUT", user.form)
   }
 
   onRolesLoad(event: { query: SelectQuery, callback: (rows: any[], size: number) => void }) {

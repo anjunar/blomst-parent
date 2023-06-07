@@ -1,3 +1,9 @@
 app-table {
   display: block;
 }
+
+app-table li {
+  display: inline-block;
+  margin: 5px;
+}
+

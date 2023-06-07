@@ -1,38 +1,40 @@
 <div style="display: flex; justify-content: center">
-  <div style="width: max(400px, 680px);margin-bottom: 16px; background-color: var(--main-dark2-color); padding: 8px">
-    <div style="display: flex">
-      <img [src]="service.model.form.picture.url" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 8px">
-      <as-input-container style="flex: 1" [placeholder]="'What do you do, ' + service.model.form.nickName + '?'">
-        <input type="text" ngModel>
-      </as-input-container>
-    </div>
-    <div style="display: flex; justify-content: space-around; gap: 10px">
-      <a class="normal link" (click)="onImagePostClick()">
-        <div class="container">
-          <span class="material-icons">image</span>
-          <span class="name">Image</span>
-        </div>
-      </a>
-      <a class="normal link" (click)="onVideoPostClick()">
-        <div class="container">
-          <span class="material-icons">videocam</span>
-          <span class="name">Video</span>
-        </div>
-      </a>
-      <a class="normal link" (click)="onTextPostClick()">
-        <div class="container">
-          <span class="material-icons">description</span>
-          <span class="name">Text</span>
-        </div>
-      </a>
+  <div style="min-width: 400px; max-width: 680px; width: 100%;margin-bottom: 16px; background-color: var(--main-dark2-color);">
+    <div style="padding: 8px">
+      <div style="display: flex">
+        <img [src]="service.model.form.picture.thumbnail.url" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 8px">
+        <as-input-container style="flex: 1" [placeholder]="'What do you do, ' + service.model.form.nickName + '?'">
+          <input type="text" ngModel>
+        </as-input-container>
+      </div>
+      <div style="display: flex; justify-content: space-around; gap: 10px">
+        <a class="normal link" (click)="onImagePostClick()">
+          <div class="container">
+            <span class="material-icons">image</span>
+            <span class="name">Image</span>
+          </div>
+        </a>
+        <a class="normal link" (click)="onVideoPostClick()">
+          <div class="container">
+            <span class="material-icons">videocam</span>
+            <span class="name">Video</span>
+          </div>
+        </a>
+        <a class="normal link" (click)="onTextPostClick()">
+          <div class="container">
+            <span class="material-icons">description</span>
+            <span class="name">Text</span>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </div>
 
 <div style="display: flex; justify-content: center">
-  <as-infinity-scroll (items)="postsLoader($event)">
+  <as-infinity-scroll style="min-width: 400px; max-width: 680px; width: 100%" (items)="postsLoader($event)">
     <ng-template [typedTemplate]="typeToken" let-item>
-      <app-post [model]="item" [infinite]="infinite"></app-post>
+      <app-post style="min-width: 400px; max-width: 680px; width: 100%" [model]="item" [infinite]="infinite"></app-post>
     </ng-template>
   </as-infinity-scroll>
 </div>

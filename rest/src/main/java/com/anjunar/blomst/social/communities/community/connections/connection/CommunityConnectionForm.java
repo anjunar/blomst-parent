@@ -9,6 +9,7 @@ import com.anjunar.blomst.social.communities.community.CommunityReference;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -18,15 +19,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class CommunityConnectionForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "From", readOnly = true)
+    @JsonProperty(required = true)
     private UserReference from;
 
     @JsonSchema(widget = JsonNode.Widget.SELECT, title = "Status")
+    @JsonProperty(required = true)
     private Status status;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Role")
+    @JsonProperty(required = true)
     private RoleForm role;
 
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "To", readOnly = true)
+    @JsonProperty(required = true)
     private CommunityReference to;
 
     public UserReference getFrom() {

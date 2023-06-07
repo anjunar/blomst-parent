@@ -8,46 +8,46 @@ import {LogoutComponent} from "./security/logout/logout.component";
 import {LoginComponent} from "./security/login/login.component";
 import {FormComponent} from "./navigator/form/form.component";
 import {TableComponent} from "./navigator/table/table.component";
-import {UserComponent} from "./control/user/user.component";
-import {FriendsComponent} from "./control/user/friends/friends.component";
+import {UserComponent} from "./control/users/user/user.component";
+import {UsersComponent} from "./control/users/users.component";
 
 const routes: Routes = [
   {
-    path : "friends",
-    component : FriendsComponent
+    path: "friends",
+    component: UsersComponent
   },
   {
-    path : "timeline",
-    component : TimelineComponent
+    path: "timeline",
+    component: TimelineComponent
   },
   {
-    path : "security/register",
-    component : RegisterComponent,
-    resolve : {
-      model : AppResolver
+    path: "security/register",
+    component: RegisterComponent,
+    resolve: {
+      model: AppResolver
     },
-    data : {
-      urls : [{
-        name : "model",
-        value : "service/security/register"
+    data: {
+      urls: [{
+        name: "model",
+        value: "service/security/register"
       }]
     }
   },
   {
-    path : "security/logout",
-    component : LogoutComponent
+    path: "security/logout",
+    component: LogoutComponent
   },
   {
-    path : "security/login",
-    component : LoginComponent,
-    resolve : {
-      model : AppResolver
+    path: "security/login",
+    component: LoginComponent,
+    resolve: {
+      model: AppResolver
     },
-    data : {
-      urls : [
+    data: {
+      urls: [
         {
-          name : "model",
-          value : "service/security/login"
+          name: "model",
+          value: "service/security/login"
         }
       ]
     }
@@ -65,15 +65,15 @@ const routes: Routes = [
     component: TableComponent
   },
   {
-    path : ":user",
-    component : UserComponent,
-    resolve : {
-      model : AppResolver
+    path: ":user",
+    component: UserComponent,
+    resolve: {
+      model: AppResolver
     },
-    data : {
-      urls : [{
-        name : "user",
-        value : "service/control/users/user/{user}"
+    data: {
+      urls: [{
+        name: "user",
+        value: "service/control/users/user/{user}"
       }]
     }
   }
@@ -84,4 +84,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

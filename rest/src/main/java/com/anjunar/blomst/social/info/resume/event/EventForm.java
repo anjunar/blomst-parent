@@ -5,6 +5,7 @@ import com.anjunar.blomst.social.sites.site.SiteForm;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,15 +17,19 @@ import java.time.Year;
 public class EventForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonProperty(required = true)
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Site")
+    @JsonProperty(required = true)
     private SiteForm site;
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "Start")
+    @JsonProperty(required = true)
     private Year start;
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "End")
+    @JsonProperty(required = true)
     private Year end;
 
     public UserSelect getOwner() {

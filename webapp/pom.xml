@@ -49,7 +49,13 @@
                     <jsonLibrary>jackson2</jsonLibrary>
                     <classesFromAutomaticJaxrsApplication>true</classesFromAutomaticJaxrsApplication>
                     <outputKind>module</outputKind>
-                    <outputFile>src/main/javascript/blomst/src/app/rest.classes.d.ts</outputFile>
+                    <outputFileType>implementationFile</outputFileType>
+                    <outputFile>src/main/javascript/blomst/src/app/rest.classes.ts</outputFile>
+                    <optionalProperties>useLibraryDefinition</optionalProperties>
+                    <customTypeMappings>
+                        <mapping>java.time.LocalDate:string</mapping>
+                        <mapping>java.time.LocalDateTime:string</mapping>
+                    </customTypeMappings>
                 </configuration>
             </plugin>
         </plugins>

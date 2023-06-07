@@ -3,6 +3,7 @@ package com.anjunar.blomst.system.notifications.notification;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public abstract class AbstractNotificationForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Acknowledge")
+    @JsonProperty(required = true)
     private boolean acknowledge;
 
     public boolean isAcknowledge() {

@@ -10,6 +10,9 @@ import com.anjunar.common.security.Role;
 import com.anjunar.common.security.User;
 import com.anjunar.blomst.ApplicationResource;
 import com.anjunar.blomst.control.users.user.UserForm;
+import com.timgroup.jgravatar.Gravatar;
+import com.timgroup.jgravatar.GravatarDefaultImage;
+import com.timgroup.jgravatar.GravatarRating;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,23 +88,25 @@ public class RegisterResource {
 
         user.setNickName(resource.getEmail().split("@")[0]);
 
-        try {
-            URL picture = getClass()
-                    .getClassLoader()
-                    .getResource("META-INF/resources/user.png");
-            InputStream inputStream = picture.openStream();
-            byte[] bytes = new byte[inputStream.available()];
-            IOUtils.readFully(inputStream, bytes);
-            Media media = new Media();
-            media.setName("user.png");
-            media.setData(bytes);
-            media.setLastModified(LocalDateTime.now());
-            media.setType("image");
-            media.setSubType("png");
-            user.setPicture(media);
-        } catch (IOException e) {
-            log.error(e.getLocalizedMessage());
-        }
+        Gravatar gravatar = new Gravatar()
+                .setSize(50)
+                .setRating(GravatarRating.GENERAL_AUDIENCES)
+                .setDefaultImage(GravatarDefaultImage.IDENTICON);
+        byte[] jpg = gravatar.download(resource.getEmail());
+
+        Media picture = new Media();
+        picture.setData(jpg);
+        picture.setType("image");
+        picture.setSubType("jpg");
+        picture.setName("gravatar.jpg");
+        user.setPicture(picture);
+
+        Media thumbNail = new Media();
+        thumbNail.setData(jpg);
+        thumbNail.setType("image");
+        thumbNail.setSubType("jpg");
+        thumbNail.setName("gravatar.jpg");
+        picture.setThumbnail(thumbNail);
 
         entityManager.persist(user);
 

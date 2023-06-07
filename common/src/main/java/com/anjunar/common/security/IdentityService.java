@@ -42,9 +42,15 @@ public class IdentityService {
         return entityManager.find(User.class, primaryKey);
     }
 
-    public User findUser(String email) {
+    public User findUserByEmail(String email) {
         return entityManager.createQuery("select u from User u join u.emails e where e.value = :email", User.class)
                 .setParameter("email", email)
+                .getSingleResult();
+    }
+
+    public User findUserByNickName(String email) {
+        return entityManager.createQuery("select u from User u where u.nickName = :nickname", User.class)
+                .setParameter("nickname", email)
                 .getSingleResult();
     }
 
@@ -68,7 +74,7 @@ public class IdentityService {
         entityManager.persist(role);
     }
 
-    public User findUser(String firstName, String lastName, LocalDate birthDate) {
+    public User findUserByEmail(String firstName, String lastName, LocalDate birthDate) {
         try {
             return entityManager
                     .createQuery("select e from User e where e.firstName = :firstName and e.lastName = :lastName and e.birthDate = :birthDate", User.class)

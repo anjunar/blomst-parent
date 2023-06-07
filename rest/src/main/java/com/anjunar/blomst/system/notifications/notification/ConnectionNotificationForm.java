@@ -6,6 +6,7 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.mapper.annotations.MapperPolymorphism;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class ConnectionNotificationForm extends AbstractNotificationForm {
 
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "To", readOnly = true)
+    @JsonProperty(required = true)
     private UserReference to;
 
     public UserReference getTo() {

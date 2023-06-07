@@ -62,7 +62,7 @@ public class StartUp {
         }
 
         LocalDate birthdate = LocalDate.of(1980, 4, 1);
-        User patrick = service.findUser("Patrick", "Bittner", birthdate);
+        User patrick = service.findUserByEmail("Patrick", "Bittner", birthdate);
 
         if (patrick == null) {
             Role administratorRole = new Role();

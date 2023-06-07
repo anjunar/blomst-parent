@@ -3,9 +3,11 @@ package com.anjunar.blomst.control.users.user.connections;
 import com.anjunar.common.rest.search.AbstractRestSearch;
 import com.anjunar.common.rest.search.RestPredicate;
 import com.anjunar.common.rest.search.RestSort;
+import com.anjunar.common.rest.search.provider.GenericEnumProvider;
 import com.anjunar.common.rest.search.provider.GenericManyToOneProvider;
 import com.anjunar.common.rest.search.provider.GenericSortProvider;
 
+import com.anjunar.common.security.UserConnection;
 import jakarta.ws.rs.QueryParam;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +25,10 @@ public class UserConnectionsSearch extends AbstractRestSearch {
     @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("category")
     private UUID category;
+
+    @QueryParam("status")
+    @RestPredicate(GenericEnumProvider.class)
+    private UserConnection.ConnectionStatus status;
 
     @RestPredicate(GenericManyToOneProvider.class)
     @QueryParam("to")
@@ -50,6 +56,14 @@ public class UserConnectionsSearch extends AbstractRestSearch {
 
     public void setCategory(UUID category) {
         this.category = category;
+    }
+
+    public UserConnection.ConnectionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserConnection.ConnectionStatus status) {
+        this.status = status;
     }
 
     public UUID getTo() {

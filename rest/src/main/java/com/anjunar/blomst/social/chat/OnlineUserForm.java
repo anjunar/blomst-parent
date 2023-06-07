@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.chat;
 
-import com.anjunar.blomst.control.users.user.ImageConverter;
+import com.anjunar.common.filedisk.MediaURLConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
@@ -24,7 +24,7 @@ public class OnlineUserForm extends AbstractRestEntity {
     private Boolean online;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(MediaURLConverter.class)
     private MediaType picture;
 
     public String getFirstName() {

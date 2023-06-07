@@ -13,12 +13,12 @@ public interface FormResourceTemplate<F extends AbstractRestEntity> {
     @Consumes("application/json")
     @Produces("application/json")
     @POST
-    ResponseOk save(@Valid F form);
+    F save(@Valid F form);
 
     @Consumes("application/json")
     @Produces("application/json")
     @PUT
-    ResponseOk update(@QueryParam("id") UUID id, @Valid F form);
+    F update(@QueryParam("id") UUID id, @Valid F form);
 
     @DELETE
     @Produces("application/json")

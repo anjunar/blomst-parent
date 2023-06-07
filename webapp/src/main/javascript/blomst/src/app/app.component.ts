@@ -62,10 +62,6 @@ export class AppComponent extends AppMain implements AfterViewInit {
     this.open = !matchMedia.matches;
   }
 
-  onActivate() {
-    this.application.tick();
-  }
-
   get isLoggedIn() {
     return Reflect.has(this.startUp.model.$schema.links, "logout")
   }
@@ -79,15 +75,15 @@ export class AppComponent extends AppMain implements AfterViewInit {
   }
 
   get image() {
-    return this.startUp.model.form.picture?.url;
+    return this.startUp.model.form.picture?.thumbnail.url;
   }
 
   get links() {
     return this.navigator.links;
   }
 
-  toBase64(value: any) {
-    return btoa(value)
+  activate() {
+    this.application.tick()
   }
 
   onUserSettings(event: Event) {
@@ -105,10 +101,6 @@ export class AppComponent extends AppMain implements AfterViewInit {
 
     let windowRef = this.windowManager.create(SettingsComponent, options);
     return false;
-  }
-
-  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
-    return 0;
   }
 
 }

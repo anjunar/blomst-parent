@@ -4,6 +4,7 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -13,27 +14,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class AddressForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonProperty(required = true)
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Description", readOnly = true)
+    @JsonProperty(required = true)
     private String description;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Street", readOnly = true)
+    @JsonProperty(required = true)
     private String street;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Zip Code", readOnly = true)
+    @JsonProperty(required = true)
     private String zipCode;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "State", readOnly = true)
+    @JsonProperty(required = true)
     private String state;
 
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Country", readOnly = true)
+    @JsonProperty(required = true)
     private String country;
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "X", readOnly = true)
+    @JsonProperty(required = true)
     private Float x;
 
     @JsonSchema(widget = JsonNode.Widget.NUMBER, title = "Y", readOnly = true)
+    @JsonProperty(required = true)
     private Float y;
 
     public UserSelect getOwner() {

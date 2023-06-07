@@ -50,7 +50,7 @@ public class AlternativeResource implements FormResourceTemplate<AlternativeForm
     }
 
     @Override
-    public ResponseOk save(AlternativeForm form) {
+    public AlternativeForm save(AlternativeForm form) {
 
         Alternative entity = restMapper.map(form, Alternative.class);
         entity.setValue(form.getValue());
@@ -60,14 +60,13 @@ public class AlternativeResource implements FormResourceTemplate<AlternativeForm
 
         entityManager.persist(entity);
 
-        ResponseOk responseOk = new ResponseOk();
-        responseOk.setId(entity.getId());
+        form.setId(entity.getId());
 
-        return responseOk;
+        return form;
     }
 
     @Override
-    public ResponseOk update(UUID id, AlternativeForm form) {
+    public AlternativeForm update(UUID id, AlternativeForm form) {
 
         Alternative entity = restMapper.map(form, Alternative.class);
 
@@ -76,7 +75,7 @@ public class AlternativeResource implements FormResourceTemplate<AlternativeForm
         entity.setEntity(Site.class.getSimpleName());
         entity.setOwner(identityStore.getUser());
 
-        return new ResponseOk();
+        return form;
     }
 
     @Override

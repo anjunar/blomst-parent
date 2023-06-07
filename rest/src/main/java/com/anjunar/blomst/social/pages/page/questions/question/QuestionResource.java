@@ -110,39 +110,35 @@ public class QuestionResource implements FormResourceTemplate<QuestionForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Question")
-    public ResponseOk save(QuestionForm resource) {
+    public QuestionForm save(QuestionForm resource) {
 
         Question question = restMapper.map(resource, Question.class);
         question.setOwner(identityManager.getUser());
 
         entityManager.persist(question);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(question.getId());
+        resource.setId(question.getId());
 
         linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @MethodPredicate(QuestionOwnerPredicate.class)
     @LinkDescription("Update Question")
-    public ResponseOk update(UUID id, QuestionForm resource) {
+    public QuestionForm update(UUID id, QuestionForm resource) {
 
         Question entity = restMapper.map(resource, Question.class);
         entity.setOwner(identityManager.getUser());
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(QuestionsResource.class).list(new QuestionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override

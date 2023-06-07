@@ -1,0 +1,23 @@
+<div *ngIf="isPrivate">
+  <div [ngSwitch]="connection.status">
+    <div *ngSwitchCase="'NONE'">
+      <button class="normal" (click)="onAddClick(user, connection)">Add Friendship</button>
+    </div>
+    <div *ngSwitchCase="'INITIATED'">
+      <button class="normal" (click)="onRemoveClick(user, connection)">Cancel Friendship</button>
+    </div>
+    <div *ngSwitchCase="'PENDING'">
+      <button class="normal" (click)="onModifyClick(user, connection)" style="margin-right: 8px">Add Friendship</button>
+      <button class="normal" (click)="onRemoveClick(user, connection)">Cancel Friendship</button>
+    </div>
+    <div *ngSwitchCase="'ACCEPTED'">
+      <button class="normal" (click)="onRemoveClick(user, connection)">Cancel Friendship</button>
+    </div>
+    <div *ngSwitchCase="'DECLINED'">
+      <button class="normal" (click)="onModifyClick(user, connection)">Add Friendship</button>
+    </div>
+    <div *ngSwitchCase="'CANCELED'">
+      <button class="normal" (click)="onModifyClick(user, connection)">Add Friendship</button>
+    </div>
+  </div>
+</div>

@@ -1,2 +1,14 @@
 {{header}}
-<as-meta-table (items)="loader($event)" (rowClick)="onRowClick($event)" (load)="onLoad($event)"></as-meta-table>
+
+<ul style="list-style: none; padding-left: 20px">
+  <li *ngFor="let entry of links | keyvalue : originalOrder">
+    <a [routerLink]="['/navigator/' + $any(entry).value.type]" [queryParams]="{link : toBase64($any(entry).value.url)}">{{entry.key}}</a>
+  </li>
+</ul>
+
+<br/>
+
+<as-scroll-area style="width: 100%">
+  <as-meta-table (items)="loader($event)" (rowClick)="onRowClick($event)" (load)="onLoad($event)"></as-meta-table>
+</as-scroll-area>
+

@@ -1,6 +1,6 @@
 package com.anjunar.blomst.social.timeline.post;
 
-import com.anjunar.blomst.control.users.user.ImageConverter;
+import com.anjunar.common.filedisk.MediaURLConverter;
 import com.anjunar.blomst.social.timeline.VideoPost;
 import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
@@ -13,7 +13,7 @@ public class VideoPostForm extends AbstractPostForm {
 
     private final static Logger log = LoggerFactory.getLogger(VideoPostForm.class);
 
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(MediaURLConverter.class)
     private MediaType video;
 
     @Override

@@ -1,10 +1,10 @@
 <div content style="height: 100%">
   <as-scroll-area #scrollArea style="height: 100%; width: 100%">
     <as-infinity-scroll (items)="usersLoader($event)">
-      <ng-template let-user>
+      <ng-template [typedTemplate]="typeToken" let-user>
         <div style="display: flex; align-items: center; margin: 5px">
           <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden">
-            <img [src]="user.picture.url" style="max-width: 40px; max-height: 40px">
+            <img [src]="user.picture.thumbnail.url" style="max-width: 40px; max-height: 40px">
           </div>
           <div style="margin-left: 5px;">
             <a [routerLink]="'/' + user.nickName" (click)="onUserClick()">{{user.name}}</a>

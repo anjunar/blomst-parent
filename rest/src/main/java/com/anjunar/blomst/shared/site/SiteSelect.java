@@ -1,6 +1,6 @@
 package com.anjunar.blomst.shared.site;
 
-import com.anjunar.blomst.control.users.user.ImageConverter;
+import com.anjunar.common.filedisk.MediaURLConverter;
 import com.anjunar.blomst.shared.mapbox.MapBoxConverter;
 import com.anjunar.blomst.social.info.addresses.MapBoxAddress;
 import com.anjunar.common.rest.api.AbstractRestEntity;
@@ -32,7 +32,7 @@ public class SiteSelect extends AbstractRestEntity {
     private MapBoxAddress address;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Image")
-    @MapperConverter(ImageConverter.class)
+    @MapperConverter(MediaURLConverter.class)
     private MediaType picture;
 
     public String getName() {

@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AppNavigatorService} from "../app-navigator.service";
 import {Link, SelectQuery, WindowManagerService} from "ng2-simplicity";
 import {VisibilityComponent} from "../../shared/visibility/visibility.component";
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-form',
@@ -10,16 +11,18 @@ import {VisibilityComponent} from "../../shared/visibility/visibility.component"
   styleUrls: ['form.component.css'],
   encapsulation : ViewEncapsulation.None
 })
-export class FormComponent implements OnDestroy {
+export class FormComponent {
+
+  links : any;
 
   model : any;
 
   header! : string
 
-  constructor(private router : Router, private route : ActivatedRoute, private service : AppNavigatorService, private windowManager : WindowManagerService) {
+  constructor(private router : Router, private route : ActivatedRoute, private windowManager : WindowManagerService) {
     let data :any = route.data;
     this.model = data["value"].model
-    service.links = Object
+    this.links = Object
       .entries(this.model.$schema.links)
       .filter(([key , value]) => { let object : any = value; return object.method === "GET"})
       .reduce((prev, [key, value]) => {
@@ -30,10 +33,6 @@ export class FormComponent implements OnDestroy {
     route.queryParams.subscribe(params => {
       this.header = atob(params["link"])
     })
-  }
-
-  ngOnDestroy(): void {
-    this.service.links = [];
   }
 
   onVisibilityColumnClick(event: Event, property: string, model : any) {
@@ -60,6 +59,14 @@ export class FormComponent implements OnDestroy {
           this.router.navigate(["navigator/" + link.type], { queryParams : {link : btoa(link.url)} })
         }
       })
+  }
+
+  toBase64(value: any) {
+    return btoa(value)
+  }
+
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
   }
 
 }

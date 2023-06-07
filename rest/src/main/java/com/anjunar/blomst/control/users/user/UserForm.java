@@ -2,6 +2,7 @@ package com.anjunar.blomst.control.users.user;
 
 import com.anjunar.blomst.control.roles.role.RoleForm;
 import com.anjunar.blomst.system.languages.language.LanguageForm;
+import com.anjunar.common.filedisk.MediaDataConverter;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.api.MediaType;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
@@ -9,8 +10,10 @@ import com.anjunar.common.rest.mapper.annotations.MapperSecurity;
 import com.anjunar.common.rest.mapper.annotations.MapperVisibility;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.google.common.base.Strings;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,19 +35,16 @@ public class UserForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Nick Name")
     private String nickName;
 
-    @NotBlank
     @Size(min = 3, max = 80)
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "First Name", naming = true)
     @MapperVisibility
     private String firstName;
 
-    @NotBlank
     @Size(min = 3, max = 80)
     @JsonSchema(widget = JsonNode.Widget.TEXT, title = "Last Name", naming = true)
     @MapperVisibility
     private String lastName;
 
-    @NotNull
     @JsonSchema(widget = JsonNode.Widget.DATE, title = "Birthdate")
     @MapperVisibility
     private LocalDate birthDate;
@@ -54,11 +54,11 @@ public class UserForm extends AbstractRestEntity {
     private String password;
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Picture")
-    @MapperConverter(ImageFullConverter.class)
+    @MapperConverter(MediaDataConverter.class)
     private MediaType picture = new MediaType();
 
     @JsonSchema(widget = JsonNode.Widget.IMAGE, title = "Background")
-    @MapperConverter(ImageFullConverter.class)
+    @MapperConverter(MediaDataConverter.class)
     private MediaType background = new MediaType();
 
     @JsonSchema(widget = JsonNode.Widget.REPEAT, title = "Emails")
@@ -74,9 +74,8 @@ public class UserForm extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_MULTI_SELECT, title = "Roles")
     @Size(min = 1)
-    @NotNull
     @MapperSecurity(rolesAllowed = {"Administrator"})
-    private Set<RoleForm> roles = new HashSet<>();
+    private Set<RoleForm> roles;
 
     public String getNickName() {
         return nickName;
@@ -164,6 +163,16 @@ public class UserForm extends AbstractRestEntity {
 
     public void setRoles(Set<RoleForm> roles) {
         this.roles = roles;
+    }
+
+    public String getName() {
+        if (! Strings.isNullOrEmpty(firstName) && ! Strings.isNullOrEmpty(lastName)) {
+            return firstName + " " + lastName;
+        }
+        if (! Strings.isNullOrEmpty(nickName)) {
+            return nickName;
+        }
+        return "";
     }
 
 }

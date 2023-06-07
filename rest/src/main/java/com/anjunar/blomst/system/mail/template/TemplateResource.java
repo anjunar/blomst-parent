@@ -95,36 +95,32 @@ public class TemplateResource implements FormResourceTemplate<TemplateForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Template")
-    public ResponseOk save(TemplateForm form) {
+    public TemplateForm save(TemplateForm form) {
 
         Template template = restMapper.map(form, Template.class);
 
         entityManager.persist(template);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(template.getId());
+        form.setId(template.getId());
 
         linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Template")
-    public ResponseOk update(UUID id, TemplateForm form) {
+    public TemplateForm update(UUID id, TemplateForm form) {
 
         restMapper.map(form, Template.class);
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(TemplatesResource.class).list(new TemplatesSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @Override

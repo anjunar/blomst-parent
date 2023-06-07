@@ -6,6 +6,7 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.blomst.social.timeline.post.comments.comment.CommentForm;
 import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.validators.Dom;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
@@ -28,12 +29,15 @@ public abstract class AbstractPostForm extends AbstractLikeableRestEntity {
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "Editor")
     @Dom
     @NotNull
+    @JsonProperty(required = true)
     private Editor editor = new Editor();
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonProperty(required = true)
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Source", readOnly = true)
+    @JsonProperty(required = true)
     private IdentityReference source;
 
     public abstract <E> E accept(AbstractPostFormVisitor<E> visitor);

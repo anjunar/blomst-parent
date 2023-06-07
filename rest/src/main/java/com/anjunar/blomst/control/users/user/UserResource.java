@@ -38,6 +38,9 @@ import com.anjunar.common.security.IdentityManager;
 import com.anjunar.common.security.User;
 import com.anjunar.common.security.UserConnection;
 import com.google.common.collect.Sets;
+import com.timgroup.jgravatar.Gravatar;
+import com.timgroup.jgravatar.GravatarDefaultImage;
+import com.timgroup.jgravatar.GravatarRating;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -237,62 +240,58 @@ public class UserResource implements FormResourceTemplate<UserForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save User")
-    public ResponseOk save(UserForm resource) {
+    public UserForm save(UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
 
         service.confirmationEmail(user, request);
 
-        try {
-            if (user.getPicture() == null) {
-                URL picture = getClass()
-                        .getClassLoader()
-                        .getResource("META-INF/resources/user.png");
-                InputStream inputStream = picture.openStream();
-                byte[] bytes = new byte[inputStream.available()];
-                IOUtils.readFully(inputStream, bytes);
-                Media media = new Media();
-                media.setName("user.png");
-                media.setData(bytes);
-                media.setLastModified(LocalDateTime.now());
-                media.setType("image");
-                media.setSubType("png");
-                user.setPicture(media);
-            }
-        } catch (IOException e) {
-            log.error(e.getLocalizedMessage());
-        }
+        Gravatar gravatar = new Gravatar()
+                .setSize(50)
+                .setRating(GravatarRating.GENERAL_AUDIENCES)
+                .setDefaultImage(GravatarDefaultImage.IDENTICON);
+        byte[] jpg = gravatar.download(resource.getEmails().get(0).getValue());
+
+        Media picture = new Media();
+        picture.setData(jpg);
+        picture.setType("image");
+        picture.setSubType("jpg");
+        picture.setName("gravatar.jpg");
+        user.setPicture(picture);
+
+        Media thumbNail = new Media();
+        thumbNail.setData(jpg);
+        thumbNail.setType("image");
+        thumbNail.setSubType("jpg");
+        thumbNail.setName("gravatar.jpg");
+        picture.setThumbnail(thumbNail);
 
 
         entityManager.persist(user);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(user.getId());
+        resource.setId(user.getId());
 
         linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update User")
     @MethodPredicate(MyOwnIdentity.class)
-    public ResponseOk update(UUID id, UserForm resource) {
+    public UserForm update(UUID id, UserForm resource) {
 
         User user = restMapper.map(resource, User.class);
 
         service.confirmationEmail(user, request);
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(UsersResource.class).list(new UsersSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override

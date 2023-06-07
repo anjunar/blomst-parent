@@ -84,26 +84,24 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Save Role")
-    public ResponseOk save(RoleForm form) {
+    public RoleForm save(RoleForm form) {
 
         Role role = restMapper.map(form, Role.class);
 
         entityManager.persist(role);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(role.getId());
+        form.setId(role.getId());
 
         linkTo(methodOn(RolesResource.class).list(new RolesSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @Override
     @RolesAllowed("Administrator")
     @LinkDescription("Update Role")
-    public ResponseOk update(UUID id, RoleForm form) {
+    public RoleForm update(UUID id, RoleForm form) {
 
         restMapper.map(form, Role.class);
 
@@ -113,7 +111,7 @@ public class RoleResource implements FormResourceTemplate<RoleForm> {
                 .withRel("redirect")
                 .build(response::addLink);
 
-        return response;
+        return form;
     }
 
     @Override

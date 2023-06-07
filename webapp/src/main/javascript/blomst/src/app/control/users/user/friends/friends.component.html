@@ -1,0 +1,54 @@
+<div *ngIf="isPrivate; else elseIf" style="min-width: 400px; max-width: 680px; margin: auto;">
+  <as-infinity-scroll (items)="postsLoader($event, 'ACCEPTED')" [itemWidth]="220">
+    <ng-template [typedTemplate]="typeToken" let-friend>
+      <app-friend style="width : 100%;min-width: 220px;" [model]="friend"></app-friend>
+    </ng-template>
+  </as-infinity-scroll>
+</div>
+
+<ng-template #elseIf>
+  <div style="display: flex">
+    <as-pages [page]="page" style="flex: 1;">
+      <as-page>
+        <ng-template>
+          <div style="min-width: 400px; max-width: 680px; margin: auto;">
+            <as-infinity-scroll (items)="postsLoader($event, 'ACCEPTED')" [itemWidth]="220">
+              <ng-template [typedTemplate]="typeToken" let-friend>
+                <app-friend style="width : 100%;min-width: 220px;" [model]="friend"></app-friend>
+              </ng-template>
+            </as-infinity-scroll>
+          </div>
+        </ng-template>
+      </as-page>
+      <as-page>
+        <ng-template>
+          <div style="min-width: 400px; max-width: 680px; margin: auto;">
+            <as-infinity-scroll (items)="postsLoader($event, 'INITIATED')" [itemWidth]="220">
+              <ng-template [typedTemplate]="typeToken" let-friend>
+                <app-friend style="width : 100%;min-width: 220px;" [model]="friend"></app-friend>
+              </ng-template>
+            </as-infinity-scroll>
+          </div>
+        </ng-template>
+      </as-page>
+      <as-page>
+        <ng-template>
+          <div style="min-width: 400px; max-width: 680px; margin: auto;">
+            <as-infinity-scroll (items)="postsLoader($event, 'PENDING')" [itemWidth]="220">
+              <ng-template [typedTemplate]="typeToken" let-friend>
+                <app-friend style="width : 100%;min-width: 220px;" [model]="friend"></app-friend>
+              </ng-template>
+            </as-infinity-scroll>
+          </div>
+        </ng-template>
+      </as-page>
+    </as-pages>
+
+    <as-tabs [(page)]="page" [horizontal]="false">
+      <as-tab>All</as-tab>
+      <as-tab>Initiated</as-tab>
+      <as-tab>Requests</as-tab>
+    </as-tabs>
+
+  </div>
+</ng-template>

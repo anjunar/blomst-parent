@@ -6,8 +6,8 @@ import com.anjunar.blomst.shared.users.user.UserSelect;
 import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.anjunar.common.security.UserConnection;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.validation.constraints.NotNull;
 
 @JsonSchema(widget = JsonNode.Widget.FORM)
@@ -22,8 +22,8 @@ public class UserConnectionForm extends AbstractRestEntity {
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Category")
     private CategoryForm category;
 
-    @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Accepted", readOnly = true)
-    private boolean accepted;
+    @JsonSchema(widget = JsonNode.Widget.SELECT, title = "Status", readOnly = true)
+    private UserConnection.ConnectionStatus status;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "To")
@@ -45,12 +45,12 @@ public class UserConnectionForm extends AbstractRestEntity {
         this.category = category;
     }
 
-    public boolean isAccepted() {
-        return accepted;
+    public UserConnection.ConnectionStatus getStatus() {
+        return status;
     }
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public void setStatus(UserConnection.ConnectionStatus status) {
+        this.status = status;
     }
 
     public UserSelect getTo() {

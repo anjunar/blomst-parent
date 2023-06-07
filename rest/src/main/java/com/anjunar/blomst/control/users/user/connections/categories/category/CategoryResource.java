@@ -94,41 +94,38 @@ public class CategoryResource implements FormResourceTemplate<CategoryForm> {
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Category")
-    public ResponseOk save(CategoryForm form) {
+    public CategoryForm save(CategoryForm form) {
 
         Category entity = restMapper.map(form, Category.class);
         entity.setOwner(identityManager.getUser());
         entityManager.persist(entity);
 
-        ResponseOk response = new ResponseOk();
-        response.setId(entity.getId());
+        form.setId(entity.getId());
 
         CategoriesSearch search = new CategoriesSearch();
         search.setOwner(identityManager.getUser().getId());
         linkTo(methodOn(CategoriesResource.class).list(search))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Category")
-    public ResponseOk update(UUID id, CategoryForm form) {
+    public CategoryForm update(UUID id, CategoryForm form) {
 
         Category entity = restMapper.map(form, Category.class);
         entity.setOwner(identityManager.getUser());
-
-        ResponseOk response = new ResponseOk();
 
         CategoriesSearch search = new CategoriesSearch();
         search.setOwner(identityManager.getUser().getId());
         linkTo(methodOn(CategoriesResource.class).list(search))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @Override

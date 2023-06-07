@@ -2,10 +2,15 @@
   <div style="min-width: 400px; max-width: 680px">
     <div>
       <div style="position: relative">
-        <as-image-upload [(ngModel)]="$any(user).form.background" style="width: max(400px, 680px); height: 200px" [cropping]="true"></as-image-upload>
-        <div style="height: 128px; width: 128px; bottom: -32px; left: 10px; position: absolute;">
-          <as-image-upload [(ngModel)]="$any(user).form.picture" [cropping]="true" style="width: 128px; height: 128px"></as-image-upload>
-        </div>
+        <form [formGroup]="form">
+          <div formGroupName="form">
+            <as-image-upload formControlName="background" style="width: max(400px, 680px); height: 200px" [cropping]="true"></as-image-upload>
+            <div style="height: 128px; width: 128px; bottom: -32px; left: 10px; position: absolute;">
+              <as-image-upload formControlName="picture" [cropping]="true" style="width: 128px; height: 128px"></as-image-upload>
+            </div>
+          </div>
+        </form>
+        <app-user-connection style="position : absolute; right: 0; bottom: -48px" [user]="user.form"></app-user-connection>
       </div>
 
       <as-tabs [(page)]="page" style="margin-top: 64px; margin-bottom: 10px">
@@ -23,7 +28,7 @@
         </as-page>
         <as-page>
           <ng-template>
-            <app-details [form]="form" [user]="user"></app-details>
+            <app-details [user]="user"></app-details>
           </ng-template>
         </as-page>
         <as-page>
@@ -33,7 +38,7 @@
         </as-page>
         <as-page>
           <ng-template>
-            <app-friends></app-friends>
+            <app-friends [user]="user.form"></app-friends>
           </ng-template>
         </as-page>
       </as-pages>

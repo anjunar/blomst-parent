@@ -1,24 +1,10 @@
-import {Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
-import {
-  AsInfiniteScrollComponent,
-  InfinityQuery, Window,
-  WindowManagerService
-} from "ng2-simplicity";
-import {LikesComponent} from "../../shared/likes/likes.component";
+import {Component, Input, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AsInfiniteScrollComponent, InfinityQuery, WindowManagerService} from "ng2-simplicity";
 import {AppStartupService} from "../../app-startup.service";
-import {PostOptionsComponent} from "./options/options.component";
 import {TextPostComponent} from "./post/text-post/text-post.component";
 import {ImagePostComponent} from "./post/image-post/image-post.component";
 import {VideoPostComponent} from "./post/video-post/video-post.component";
-import {CommentsComponent} from "./comments/comments.component";
-import {
-  AbstractPostForm,
-  AbstractPostFormUnion,
-  AbstractRestEntity,
-  MediaType,
-  UserForm,
-  UserSelect
-} from "../../rest.classes";
+import {AbstractPostForm, AbstractRestEntity, MediaType} from "../../rest.classes";
 
 export interface Post extends AbstractPostForm {
   image: MediaType;
@@ -72,7 +58,7 @@ export class TimelineComponent {
   }
 
   private onPostClick(value: string, component: any) {
-    secureFetch(`service/home/timeline/post/create?type=${value}&source=${this.owner}`)
+    secureFetch(`service/home/timeline/post/create?type=${value}&source=${this.owner.id}`)
       .then(response => {
         let windowRef = <any>this.windowManager.create(component, {
           header: "Post",

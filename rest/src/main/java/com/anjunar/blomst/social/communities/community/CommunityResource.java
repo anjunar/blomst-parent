@@ -115,39 +115,35 @@ public class CommunityResource implements FormResourceTemplate<CommunityForm> {
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community")
     @Override
-    public ResponseOk save(CommunityForm form) {
+    public CommunityForm save(CommunityForm form) {
 
         Community entity = restMapper.map(form, Community.class);
 
         entityManager.persist(entity);
 
         service.addAdministrator(entity);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(entity.getId());
+        form.setId(entity.getId());
 
         linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community")
     @Override
-    public ResponseOk update(UUID id, CommunityForm form) {
+    public CommunityForm update(UUID id, CommunityForm form) {
 
         if (service.hasRole("Administrator", id)) {
             restMapper.map(form, Community.class);
 
-            ResponseOk response = new ResponseOk();
-
             linkTo(methodOn(CommunitiesResource.class).list(new CommunitiesSearch()))
                     .withRel("redirect")
-                    .build(response::addLink);
+                    .build(form::addLink);
 
-            return response;
+            return form;
         }
 
         throw new WebApplicationException(Response.Status.FORBIDDEN);

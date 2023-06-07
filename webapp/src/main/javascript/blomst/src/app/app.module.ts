@@ -18,9 +18,9 @@ import { TableComponent } from './navigator/table/table.component';
 import { LikesComponent } from './shared/likes/likes.component';
 import { HumanizePipe } from './shared/humanize.pipe';
 import { LikesPopupComponent } from './shared/likes/likes-popup/likes-popup.component';
-import { UserComponent } from './control/user/user.component';
+import { UserComponent } from './control/users/user/user.component';
 import { VisibilityComponent } from './shared/visibility/visibility.component';
-import { AddressComponent } from './control/user/address/address.component';
+import { AddressComponent } from './control/users/user/details/address/address.component';
 import { PostOptionsComponent } from './social/timeline/options/options.component';
 import { TextPostComponent } from './social/timeline/post/text-post/text-post.component';
 import { ImagePostComponent } from './social/timeline/post/image-post/image-post.component';
@@ -30,9 +30,12 @@ import { TypedTemplateDirective } from './typed-template.directive';
 import { CommentComponent } from './social/timeline/comments/comment/comment.component';
 import { PostComponent } from './social/timeline/post/post.component';
 import {CommentOptionsComponent} from "./social/timeline/comments/comment/options/options.component";
-import { FriendsComponent } from './control/user/friends/friends.component';
-import { FriendComponent } from './control/user/friends/friend/friend.component';
-import { DetailsComponent } from './control/user/details/details.component';
+import { FriendsComponent } from './control/users/user/friends/friends.component';
+import { FriendComponent } from './control/users/user/friends/friend/friend.component';
+import { DetailsComponent } from './control/users/user/details/details.component';
+import { FriendsOptionsComponent } from './control/users/user/friends/friend/options/options.component';
+import { UsersComponent } from './control/users/users.component';
+import { UserConnectionComponent } from './control/users/user/connection/connection.component';
 
 function appConfigFactory(service : AppStartupService) {
   return (): Promise<any> => {
@@ -67,7 +70,10 @@ function appConfigFactory(service : AppStartupService) {
     CommentOptionsComponent,
     FriendsComponent,
     FriendComponent,
-    DetailsComponent
+    DetailsComponent,
+    FriendsOptionsComponent,
+    UsersComponent,
+    UserConnectionComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import com.anjunar.common.rest.api.AbstractRestEntity;
 import com.anjunar.common.rest.schema.CategoryType;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 public class AddressSelect extends AbstractRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Full Address")
+    @JsonProperty(required = true)
     private MapBoxAddress name = new MapBoxAddress();
 
     public MapBoxAddress getName() {

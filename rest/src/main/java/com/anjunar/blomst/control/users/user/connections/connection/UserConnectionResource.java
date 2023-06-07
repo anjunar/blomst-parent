@@ -23,6 +23,8 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 
 import java.util.Objects;
@@ -33,7 +35,7 @@ import static jakarta.ws.rs.core.Response.*;
 
 @Path("control/users/user/connections/connection")
 @ApplicationScoped
-public class UserConnectionResource implements FormResourceTemplate<UserConnectionForm> {
+public class UserConnectionResource {
 
     private final EntityManager entityManager;
 
@@ -69,8 +71,6 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         UserConnectionForm resource = new UserConnectionForm();
 
         Form<UserConnectionForm> form = new Form<>(resource) {};
-        form.dirty("from", "to");
-
         UserReference reference = new UserReference();
         reference.setId(identityManager.getUser().getId());
         resource.setFrom(reference);
@@ -96,10 +96,33 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         return form;
     }
 
-    @Override
+
+    @Produces("application/json")
+    @GET
+    @Path("resolve")
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Read Connection")
-    public Form<UserConnectionForm> read(UUID id) {
+    public Form<UserConnectionForm> read(@QueryParam("from") UUID from, @QueryParam("to") UUID to) {
+        try {
+            UserConnection result = entityManager.createQuery("select c from UserConnection c where c.from.id = :from and c.to.id = :to", UserConnection.class)
+                    .setParameter("from", from)
+                    .setParameter("to", to)
+                    .getSingleResult();
+            return read(result.getId());
+        } catch (NoResultException e) {
+            UserConnectionForm form = new UserConnectionForm();
+            form.setStatus(UserConnection.ConnectionStatus.NONE);
+            form.setTo(entityMapper.map(entityManager.find(User.class, to), UserSelect.class));
+            form.setFrom(entityMapper.map(entityManager.find(User.class, from), UserReference.class));
+            return new Form<>(form) {};
+        }
+    }
+
+    @RolesAllowed({"Administrator", "User"})
+    @LinkDescription("Read Connection")
+    @Produces("application/json")
+    @GET
+    public Form<UserConnectionForm> read(@QueryParam("id") UUID id) {
         UserConnection entity = entityManager.find(UserConnection.class, id);
 
         Form<UserConnectionForm> form = entityMapper.map(entity, new Form<>() {});
@@ -110,10 +133,12 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
 
         form.getForm().setTo(restMapper.map(entity.getTo(), UserSelect.class));
 
+/*
         UserConnection acceptedConnection = service.accepted(entity.getFrom().getId(), entity.getTo().getId());
         if (acceptedConnection != null) {
             form.getForm().setAccepted(true);
         }
+*/
 
         linkTo(methodOn(UserConnectionResource.class).update(id, new UserConnectionForm()))
                 .build(form::addLink);
@@ -130,72 +155,98 @@ public class UserConnectionResource implements FormResourceTemplate<UserConnecti
         return form;
     }
 
-    @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Connection")
-    public ResponseOk save(UserConnectionForm form) {
+    @Consumes("application/json")
+    @Produces("application/json")
+    @POST
+    public UserConnectionForm save(@Valid UserConnectionForm form) {
 
         UserConnection from = restMapper.map(form, UserConnection.class);
         from.setFrom(identityManager.getUser());
+        from.setStatus(UserConnection.ConnectionStatus.INITIATED);
         entityManager.persist(from);
 
-/*
         UserConnection to = new UserConnection();
         to.setFrom(from.getTo());
         to.setTo(from.getFrom());
+        to.setStatus(UserConnection.ConnectionStatus.PENDING);
         entityManager.persist(to);
-*/
 
-        ResponseOk response = new ResponseOk();
-        response.setId(form.getId());
+        form.setId(from.getId());
+        form.setStatus(UserConnection.ConnectionStatus.INITIATED);
 
         UserConnectionsSearch search = new UserConnectionsSearch();
         search.setFrom(identityManager.getUser().getId());
         linkTo(methodOn(UserConnectionsResource.class).list(search))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
-    @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Connection")
-    public ResponseOk update(UUID id, UserConnectionForm form) {
+    @Consumes("application/json")
+    @Produces("application/json")
+    @PUT
+    public UserConnectionForm update(@QueryParam("id") UUID id, @Valid UserConnectionForm form) {
 
-        restMapper.map(form, UserConnection.class);
+        UserConnection entity = restMapper.map(form, UserConnection.class);
+        UserConnection reverse = service.accepted(entity.getTo().getId(), entity.getFrom().getId());
 
-        ResponseOk response = new ResponseOk();
+        entity.setFrom(identityManager.getUser());
+
+        switch (entity.getStatus()) {
+            case PENDING -> {
+                entity.setStatus(UserConnection.ConnectionStatus.ACCEPTED);
+                reverse.setStatus(UserConnection.ConnectionStatus.ACCEPTED);
+                form.setStatus(UserConnection.ConnectionStatus.ACCEPTED);
+            }
+            case CANCELED, DECLINED -> {
+                entity.setStatus(UserConnection.ConnectionStatus.INITIATED);
+                reverse.setStatus(UserConnection.ConnectionStatus.PENDING);
+                form.setStatus(UserConnection.ConnectionStatus.INITIATED);
+            }
+            case default -> {
+                form.setStatus(UserConnection.ConnectionStatus.NONE);
+                entity.setStatus(UserConnection.ConnectionStatus.NONE);
+                reverse.setStatus(UserConnection.ConnectionStatus.NONE);
+            }
+        }
 
         UserConnectionsSearch search = new UserConnectionsSearch();
         search.setFrom(identityManager.getUser().getId());
         linkTo(methodOn(UserConnectionsResource.class).list(search))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
-    @Override
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Delete Connection")
-    public ResponseOk delete(UUID id) {
+    @DELETE
+    @Produces("application/json")
+    public UserConnectionForm delete(@QueryParam("id") UUID id) {
 
         UserConnection entity = entityManager.find(UserConnection.class, id);
+        UserConnection reverse = service.accepted(entity.getTo().getId(), entity.getFrom().getId());
 
         if (entity.getFrom().equals(identityManager.getUser())) {
-            entityManager.remove(entity);
+            entity.setStatus(UserConnection.ConnectionStatus.DECLINED);
+            reverse.setStatus(UserConnection.ConnectionStatus.CANCELED);
         } else {
             throw new WebApplicationException(Status.FORBIDDEN);
         }
 
-        ResponseOk response = new ResponseOk();
+        UserConnectionForm form = entityMapper.map(entity, UserConnectionForm.class);
 
         linkTo(methodOn(UserConnectionsResource.class).list(new UserConnectionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
 }

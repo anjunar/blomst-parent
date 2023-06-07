@@ -133,7 +133,7 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @LinkDescription("Save Comment")
-    public ResponseOk save(CommentForm resource) {
+    public CommentForm save(CommentForm resource) {
 
         Comment comment = restMapper.map(resource, Comment.class);
         comment.setOwner(identityManager.getUser());
@@ -146,21 +146,20 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
 
         entityManager.persist(comment);
 
-        ResponseOk response = new ResponseOk();
-        response.setId(comment.getId());
+        resource.setId(comment.getId());
 
         linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override
     @RolesAllowed({"Administrator", "User", "Guest"})
     @MethodPredicate(OwnerCommentIdentity.class)
     @LinkDescription("Update Comment")
-    public ResponseOk update(UUID id, CommentForm resource) {
+    public CommentForm update(UUID id, CommentForm resource) {
         Comment rawComment = entityManager.find(Comment.class, id);
         Set<User> rawLikes = Sets.newHashSet(rawComment.getLikes());
 
@@ -176,13 +175,11 @@ public class CommentResource implements FormResourceTemplate<CommentForm> {
             }
         }
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(CommentsResource.class).list(new CommentsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(resource::addLink);
 
-        return response;
+        return resource;
     }
 
     @Override

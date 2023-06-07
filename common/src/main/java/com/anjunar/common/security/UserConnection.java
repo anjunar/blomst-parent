@@ -1,21 +1,31 @@
 package com.anjunar.common.security;
 
 import com.anjunar.common.ddd.AbstractEntity;
-import jakarta.persistence.FetchType;
-import org.hibernate.annotations.Filter;
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 
-@Entity(name = "UserConnection")
-@Filter(name = "deletedFilter", condition = "deleted = false")
+@Entity
 public class UserConnection extends AbstractEntity {
+
+    public enum ConnectionStatus {
+        NONE,
+        INITIATED,
+        PENDING,
+        ACCEPTED,
+        DECLINED,
+        CANCELED
+    }
 
     @ManyToOne
     private User from;
 
     @ManyToOne
     private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private ConnectionStatus status;
 
     @ManyToOne
     private User to;
@@ -34,6 +44,14 @@ public class UserConnection extends AbstractEntity {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public ConnectionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ConnectionStatus status) {
+        this.status = status;
     }
 
     public User getTo() {

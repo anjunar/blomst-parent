@@ -2,15 +2,14 @@ package com.anjunar.common.security;
 
 import com.anjunar.common.i18n.Language;
 import com.anjunar.common.security.enterprise.Authenticator;
-import com.anjunar.common.security.enterprise.CivilCredential;
 import com.anjunar.common.i18n.i18nResolver;
 
 import com.anjunar.common.security.enterprise.EmailCredential;
-import com.google.common.base.Strings;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.AuthenticationStatus;
 import jakarta.security.enterprise.credential.Password;
+import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.transaction.Transactional;
 import java.io.Serializable;
 import java.security.Principal;
@@ -49,7 +48,7 @@ public class IdentityManager implements Serializable {
         AuthenticationStatus authenticate = authenticator.authenticate(credential);
 
         if (authenticate == AuthenticationStatus.SUCCESS) {
-            User user = findUser(email);
+            User user = findUserByEmail(email);
             identityStore.setUser(user);
         }
 
@@ -57,7 +56,7 @@ public class IdentityManager implements Serializable {
     }
 
     public boolean authenticate(User user) {
-        CivilCredential credential = new CivilCredential(user.getFirstName(), user.getLastName(), user.getBirthDate(), new Password(user.getPassword()));
+        UsernamePasswordCredential credential = new UsernamePasswordCredential(user.getNickName(), user.getPassword());
 
         AuthenticationStatus authenticate = authenticator.authenticate(credential);
 
@@ -90,11 +89,15 @@ public class IdentityManager implements Serializable {
     }
 
     public User findUser(String firstName, String lastName, LocalDate birthDate) {
-        return service.findUser(firstName, lastName, birthDate);
+        return service.findUserByEmail(firstName, lastName, birthDate);
     }
 
-    public User findUser(String email) {
-        return service.findUser(email);
+    public User findUserByNickname(String nickname) {
+        return service.findUserByNickName(nickname);
+    }
+
+    public User findUserByEmail(String email) {
+        return service.findUserByEmail(email);
     }
 
     public Category findEverybody() {

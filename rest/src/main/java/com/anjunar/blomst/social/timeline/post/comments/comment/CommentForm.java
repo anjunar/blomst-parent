@@ -8,6 +8,7 @@ import com.anjunar.blomst.social.timeline.post.AbstractPostReference;
 import com.anjunar.common.rest.mapper.annotations.MapperConverter;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
@@ -20,16 +21,19 @@ public class CommentForm extends AbstractLikeableRestEntity {
 
     @Size(max = 1000)
     @JsonSchema(widget = JsonNode.Widget.TEXTAREA, title = "Text", naming = true)
+    @JsonProperty(required = true)
     private String text;
 
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Post", readOnly = true)
     private AbstractPostReference post;
 
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Parent Comment", readOnly = true)
+    
     private CommentReference parent;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonProperty(required = true)
     private UserSelect owner;
 
     @JsonSchema(widget = JsonNode.Widget.CHECKBOX, title = "Empty", readOnly = true)

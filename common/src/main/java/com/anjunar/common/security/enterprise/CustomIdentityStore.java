@@ -8,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
+import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStore;
 
@@ -42,9 +43,15 @@ public class CustomIdentityStore implements IdentityStore {
                 if (result != null) return result;
             }
             case EmailCredential emailCredential -> {
-                User user = identity.findUser(emailCredential.getEmail());
+                User user = identity.findUserByEmail(emailCredential.getEmail());
 
                 CredentialValidationResult result = getCredentialValidationResult(user, emailCredential.getPasswordAsString());
+                if (result != null) return result;
+            }
+            case UsernamePasswordCredential usernamePasswordCredential -> {
+                User user = identity.findUserByNickname(usernamePasswordCredential.getCaller());
+
+                CredentialValidationResult result = getCredentialValidationResult(user, usernamePasswordCredential.getPasswordAsString());
                 if (result != null) return result;
             }
             default -> {

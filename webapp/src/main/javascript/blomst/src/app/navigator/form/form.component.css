@@ -1,3 +1,8 @@
 app-form {
   display: block;
 }
+
+app-form li {
+  display: inline-block;
+  margin: 5px;
+}

@@ -18,6 +18,9 @@ public class Thumbnail extends AbstractRestEntity {
     @JsonInclude
     private String data = "";
 
+    @JsonInclude
+    private String url;
+
     public String getName() {
         return name;
     }
@@ -42,4 +45,11 @@ public class Thumbnail extends AbstractRestEntity {
         this.data = data;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

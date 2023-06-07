@@ -1,6 +1,7 @@
 import {ApplicationRef, Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {Form, UserSelect} from "./rest.classes";
+import {debounce} from "ng2-simplicity";
 
 @Injectable({
   providedIn: 'root'
@@ -57,12 +58,11 @@ export class AppStartupService {
               return response.json();
             } else {
               switch (response.status) {
-                case 401:
-                  router.navigate(["/security/login"])
-                  throw new Error(response.status + "");
-                default:
-                  throw new Error(response.status + "");
+                case 401: router.navigate(["/security/login"]); break;
+                case 403: router.navigate(["/security/login"]); break;
+                default: {}
               }
+              throw {status : response.status, response : response.json()};
             }
           })
           .then((response) => {

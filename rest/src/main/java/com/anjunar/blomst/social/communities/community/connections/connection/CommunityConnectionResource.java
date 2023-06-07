@@ -118,37 +118,34 @@ public class CommunityConnectionResource implements FormResourceTemplate<Communi
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Community Connection")
     @Override
-    public ResponseOk save(CommunityConnectionForm form) {
+    public CommunityConnectionForm save(CommunityConnectionForm form) {
 
         CommunityConnection entity = restMapper.map(form, CommunityConnection.class);
         entity.setFrom(identityManager.getUser());
         entityManager.persist(entity);
 
-        ResponseOk response = new ResponseOk();
-        response.setId(entity.getId());
+        form.setId(entity.getId());
 
         linkTo(methodOn(CommunityConnectionsResource.class).list(new CommunityConnectionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Community Connection")
     @Override
-    public ResponseOk update(UUID id, CommunityConnectionForm form) {
+    public CommunityConnectionForm update(UUID id, CommunityConnectionForm form) {
 
         CommunityConnection entity = restMapper.map(form, CommunityConnection.class);
         entity.setFrom(identityManager.getUser());
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(CommunityConnectionsResource.class).list(new CommunityConnectionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User"})

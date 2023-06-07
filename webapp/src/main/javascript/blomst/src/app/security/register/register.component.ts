@@ -3,6 +3,7 @@ import {AppView} from "../../app.classes";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AsMetaFormService, MetaFormGroup, WindowManagerService} from "ng2-simplicity";
 import {Form, RegisterForm} from "../../rest.classes";
+import {AppStartupService} from "../../app-startup.service";
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ export class RegisterComponent extends AppView {
     private router: Router,
     route: ActivatedRoute,
     private service: AsMetaFormService,
-    windowManager: WindowManagerService
+    windowManager: WindowManagerService,
+    private startUp : AppStartupService
   ) {
     super(route, windowManager);
     this.form = service.create(this.model.$schema.properties, this.model)
@@ -28,8 +30,10 @@ export class RegisterComponent extends AppView {
   onSubmit() {
     let body = this.form.getValue()
     secureFetch("service/security/register", "POST", body)
-      .then(response => {
-        this.router.navigate(["/timeline"])
+      .then(() => {
+        this.startUp.init().then(() => {
+          this.router.navigate(["/timeline"])
+        })
       })
   }
 

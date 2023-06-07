@@ -1,7 +1,7 @@
 <div content>
   <div style="margin: 10px">
     <div style="display: flex; align-items: center; margin-bottom: 8px">
-      <img style="height: 64px; width: 64px;border-radius: 50%" [src]="startupService.model.form.picture.url">
+      <img style="height: 64px; width: 64px;border-radius: 50%" [src]="startupService.model.form.picture.thumbnail.url">
       <div style="margin-left: 8px">{{startupService.model.form.nickName}}</div>
     </div>
     <a routerLink="/navigator/form" [queryParams]="{link : service}" class="left" style="margin-bottom: 8px">

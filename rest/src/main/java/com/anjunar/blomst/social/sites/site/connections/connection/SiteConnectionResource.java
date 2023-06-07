@@ -107,37 +107,33 @@ public class SiteConnectionResource implements FormResourceTemplate<SiteConnecti
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Save Site Connection")
     @Override
-    public ResponseOk save(SiteConnectionForm form) {
+    public SiteConnectionForm save(SiteConnectionForm form) {
 
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
         entity.setFrom(identityManager.getUser());
 
         entityManager.persist(entity);
-
-        ResponseOk response = new ResponseOk();
-        response.setId(entity.getId());
+        form.setId(entity.getId());
 
         linkTo(methodOn(SiteConnectionsResource.class).list(new SiteConnectionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User"})
     @LinkDescription("Update Site Connection")
     @Override
-    public ResponseOk update(UUID id, SiteConnectionForm form) {
+    public SiteConnectionForm update(UUID id, SiteConnectionForm form) {
         SiteConnection entity = restMapper.map(form, SiteConnection.class);
         entity.setFrom(identityManager.getUser());
 
-        ResponseOk response = new ResponseOk();
-
         linkTo(methodOn(SiteConnectionsResource.class).list(new SiteConnectionsSearch()))
                 .withRel("redirect")
-                .build(response::addLink);
+                .build(form::addLink);
 
-        return response;
+        return form;
     }
 
     @RolesAllowed({"Administrator", "User"})

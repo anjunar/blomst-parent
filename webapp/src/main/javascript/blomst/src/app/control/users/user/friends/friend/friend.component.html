@@ -1,0 +1,13 @@
+<div style="display: flex; width: 100%">
+  <div style="flex: 1; border: 1px solid var(--main-dark2-color); margin: 8px; padding: 8px">
+    <div style="display: flex; align-items: center">
+      <a style="flex: 1; display: flex; align-items: center" [routerLink]="['/' + model.to.nickName]">
+        <img style="max-width: 36px; max-height: 36px" [src]="model.to.picture.thumbnail.url">
+        <div style="margin-left: 8px;  flex: 1">
+          {{model.to.name}}
+        </div>
+      </a>
+      <button class="material-icons" type="button" (click)="onOptionsClick($event)">more_vert</button>
+    </div>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import com.anjunar.common.rest.api.Editor;
 import com.anjunar.common.rest.schema.annotations.JsonSchema;
 import com.anjunar.common.rest.schema.schema.JsonNode;
 import com.anjunar.common.validators.Dom;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
@@ -19,14 +20,17 @@ public class AnswerForm extends AbstractLikeableRestEntity {
 
     @JsonSchema(widget = JsonNode.Widget.EDITOR, title = "Editor")
     @Dom
+    @JsonProperty(required = true)
     private Editor editor;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.REFERENCE, title = "Question", readOnly = true)
+    @JsonProperty(required = true)
     private QuestionReference question;
 
     @NotNull
     @JsonSchema(widget = JsonNode.Widget.LAZY_SELECT, title = "Owner", readOnly = true)
+    @JsonProperty(required = true)
     private UserSelect owner;
 
     public Editor getEditor() {
